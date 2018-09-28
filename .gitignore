@@ -1,0 +1,8 @@
+items.json
+*.iml
+.idea/
+protocolize-api/target/
+protocolize-items/target/
+protocolize-plugin/target/
+protocolize-util/target/
+protocolize-plugin/dependency-reduced-pom.xml
