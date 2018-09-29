@@ -12,7 +12,7 @@ public class PacketReceiveEvent<T extends DefinedPacket> extends Event {
 
     private final Connection connection;
     private T packet;
-    private boolean cancelled;
+    private boolean cancelled, dirty;
 
     public PacketReceiveEvent(final Connection connection, final T packet) {
         this.connection = connection;
@@ -59,4 +59,11 @@ public class PacketReceiveEvent<T extends DefinedPacket> extends Event {
         return getPlayer().getServer();
     }
 
+    public void markForRewrite() {
+        dirty = true;
+    }
+
+    public boolean isDirty() {
+        return dirty;
+    }
 }

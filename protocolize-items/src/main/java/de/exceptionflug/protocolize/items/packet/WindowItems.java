@@ -74,8 +74,11 @@ public class WindowItems extends AbstractPacket {
         return items.get(slot);
     }
 
-    public void setItemStackAtSlot(final int slot, final ItemStack stack) {
+    public boolean setItemStackAtSlot(final int slot, final ItemStack stack) {
+        if(items.get(slot).equals(stack))
+            return false;
         items.set(slot, stack);
+        return true;
     }
 
     public short getWindowId() {

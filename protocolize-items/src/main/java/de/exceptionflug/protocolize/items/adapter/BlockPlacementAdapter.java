@@ -1,6 +1,5 @@
 package de.exceptionflug.protocolize.items.adapter;
 
-import de.exceptionflug.protocolize.api.CancelSendSignal;
 import de.exceptionflug.protocolize.api.event.PacketReceiveEvent;
 import de.exceptionflug.protocolize.api.handler.PacketAdapter;
 import de.exceptionflug.protocolize.api.protocol.Stream;
@@ -28,8 +27,14 @@ public class BlockPlacementAdapter extends PacketAdapter<BlockPlacement> {
             return;
         final PlayerInteractEvent event1 = new PlayerInteractEvent(p, inHand, event.getPacket().getPosition(), event.getPacket().getHand());
         ProxyServer.getInstance().getPluginManager().callEvent(event1);
-        event.getPacket().setHand(event1.getHand());
-        event.getPacket().setPosition(event1.getClickedBlockPosition());
+        if(event.getPacket().getHand() != event1.getHand()) {
+            event.getPacket().setHand(event1.getHand());
+            event.markForRewrite();
+        }
+        if(!event.getPacket().getPosition().equals(event1.getClickedBlockPosition())) {
+            event.getPacket().setPosition(event1.getClickedBlockPosition());
+            event.markForRewrite();
+        }
         if(inHand.isHomebrew() || event1.isCancelled()) {
             event.setCancelled(true);
         }

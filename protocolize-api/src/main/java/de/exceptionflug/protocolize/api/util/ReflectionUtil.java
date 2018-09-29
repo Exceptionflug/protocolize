@@ -136,4 +136,19 @@ public final class ReflectionUtil {
         }
         return "UNSUPPORTED_CONNECTION_TYPE";
     }
+
+    public static Object getChannelWrapper(final Connection connection) throws IllegalAccessException {
+        final Object channelWrapper;
+        if(connection instanceof ProxiedPlayer) {
+            channelWrapper = userConnectionChannelWrapperField.get(connection);
+        } else if(connection instanceof Server) {
+            channelWrapper = serverConnectionChannelWrapperField.get(connection);
+        } else if(connection instanceof PendingConnection) {
+            channelWrapper = initialHandlerChannelWrapperField.get(connection);
+        } else {
+            channelWrapper = null;
+        }
+        return channelWrapper;
+    }
+
 }

@@ -17,6 +17,8 @@ import net.md_5.bungee.protocol.Protocol.DirectionData;
 import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.logging.Level;
 
 public class ProtocolizeDecoderChannelHandler extends MessageToMessageDecoder<PacketWrapper> {
@@ -65,6 +67,8 @@ public class ProtocolizeDecoderChannelHandler extends MessageToMessageDecoder<Pa
     protected void decode(final ChannelHandlerContext ctx, final PacketWrapper msg, final List<Object> out) throws Exception {
         if (msg != null) {
             if (msg.packet != null) {
+
+                // Traffic analysis
                 final TrafficData data = ProtocolAPI.getTrafficManager().getData(ReflectionUtil.getConnectionName(connection), connection);
                 if(stream == Stream.UPSTREAM) {
                     data.setUpstreamInputCurrentMinute(data.getUpstreamInputCurrentMinute()+msg.buf.readableBytes());
@@ -74,9 +78,13 @@ public class ProtocolizeDecoderChannelHandler extends MessageToMessageDecoder<Pa
                     data.setDownstreamInput(data.getDownstreamInput()+msg.buf.readableBytes());
                     data.setDownstreamBridgeName(ReflectionUtil.getServerName(connection));
                 }
-                final DefinedPacket packet = ProtocolAPI.getEventManager().handleInboundPacket(msg.packet, abstractPacketHandler);
-                ReflectionUtil.packetField.set(msg, packet);
-                if (packet != null) {
+
+                // Packet handling & rewrite
+                final Entry<DefinedPacket, Boolean> entry = ProtocolAPI.getEventManager().handleInboundPacket(msg.packet, abstractPacketHandler);
+                final DefinedPacket packet = entry.getKey();
+                if(packet == null)
+                    return;
+                if(entry.getValue()) {
                     try {
                         // Try packet rewrite
                         final ByteBuf buf = Unpooled.directBuffer();
@@ -88,6 +96,7 @@ public class ProtocolizeDecoderChannelHandler extends MessageToMessageDecoder<Pa
                     } catch (final UnsupportedOperationException ignored) {
                     } // Packet cannot be written
                 }
+                ReflectionUtil.packetField.set(msg, packet);
                 out.add(msg);
             } else {
                 out.add(msg);

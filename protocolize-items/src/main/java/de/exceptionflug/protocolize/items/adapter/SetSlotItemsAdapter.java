@@ -30,6 +30,7 @@ public class SetSlotItemsAdapter extends PacketAdapter<SetSlot> {
             playerInventory.setItem(packet.getSlot(), stack);
         }
         packet.setItemStack(playerInventory.getItem(packet.getSlot()));
+        event.markForRewrite();
     }
 
 }

@@ -1,6 +1,5 @@
 package de.exceptionflug.protocolize.items.adapter;
 
-import com.google.common.base.Preconditions;
 import de.exceptionflug.protocolize.api.event.PacketReceiveEvent;
 import de.exceptionflug.protocolize.api.handler.PacketAdapter;
 import de.exceptionflug.protocolize.api.protocol.Stream;
@@ -31,7 +30,9 @@ public class WindowItemsAdapter extends PacketAdapter<WindowItems> {
             } else {
                 playerInventory.setItem(i, stack);
             }
-            packet.setItemStackAtSlot(i, playerInventory.getItem(i));
+            if(packet.setItemStackAtSlot(i, playerInventory.getItem(i))) {
+                event.markForRewrite();
+            }
         }
     }
 }
