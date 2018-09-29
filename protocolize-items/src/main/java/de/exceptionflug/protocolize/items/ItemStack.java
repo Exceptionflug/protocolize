@@ -50,6 +50,8 @@ public final class ItemStack {
     }
 
     private void setDisplayNameTag(final String name) {
+        if(name == null)
+            return;
         CompoundTag display = (CompoundTag) nbtdata.getValue().get("display");
         if (display == null) {
             display = new CompoundTag("display", new CompoundMap());
@@ -93,7 +95,14 @@ public final class ItemStack {
             } else {
                 setDisplayNameTag(displayName);
             }
-            writeNBTTag(nbtdata, buf);
+            buf.markWriterIndex();
+            try {
+                writeNBTTag(nbtdata, buf);
+            } catch (final Exception e) {
+                ProxyServer.getInstance().getLogger().log(Level.WARNING, "[Protocolize] Error when writing NBT data to ItemStack: "+nbtdata, e);
+                buf.resetWriterIndex();
+                writeNBTTag(new CompoundTag("", new CompoundMap()), buf);
+            }
         } catch (final Exception e) {
             ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Exception occurred when writing ItemStack to buffer. Protocol version = " + protocolVersion, e);
         }
@@ -198,6 +207,8 @@ public final class ItemStack {
     }
 
     private static String getDisplayNameTag(final CompoundTag nbtdata) {
+        if(nbtdata == null)
+            return null;
         final CompoundTag display = (CompoundTag) nbtdata.getValue().get("display");
         if (display == null) {
             return null;

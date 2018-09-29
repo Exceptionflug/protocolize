@@ -81,6 +81,8 @@ public class ProtocolizeDecoderChannelHandler extends MessageToMessageDecoder<Pa
 
                 // Packet handling & rewrite
                 final Entry<DefinedPacket, Boolean> entry = ProtocolAPI.getEventManager().handleInboundPacket(msg.packet, abstractPacketHandler);
+                if(entry == null)
+                    return;
                 final DefinedPacket packet = entry.getKey();
                 if(packet == null)
                     return;
