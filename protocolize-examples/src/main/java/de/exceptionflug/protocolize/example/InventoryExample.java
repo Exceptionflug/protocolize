@@ -8,6 +8,7 @@ import de.exceptionflug.protocolize.inventory.packet.CloseWindow;
 import de.exceptionflug.protocolize.items.ItemStack;
 import de.exceptionflug.protocolize.items.ItemType;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
@@ -39,7 +40,7 @@ public class InventoryExample implements Listener {
 
     private void openBrewingStandInventory(final ProxiedPlayer player) {
         // Creates a new brewing stand gui
-        final Inventory brewingStand = new Inventory(InventoryType.BREWING_STAND, 0, new TextComponent("§5A brewing stand!"));
+        final Inventory brewingStand = new Inventory(InventoryType.BREWING_STAND, 1, new TextComponent("§5A brewing stand!"));
 
         // A simple item
         final ItemStack item = new ItemStack(ItemType.SIGN);
@@ -52,17 +53,19 @@ public class InventoryExample implements Listener {
     @EventHandler
     public void onInventoryClick(final InventoryClickEvent event) {
         final ItemStack clicked = event.getClickedItem();
-        final String title = event.getInventory().getTitle()[0].toLegacyText();
+        final BaseComponent[] baseComponents = event.getInventory().getTitle();
         final ProxiedPlayer player = event.getPlayer();
-        if(title.equals("§9Inventory title")) {
+        if(clicked == null)
+            return;
+        if(baseComponents[0].toString().equals(new TextComponent("§9Inventory title").toString())) {
             if(clicked.getType() == ItemType.SIGN) {
                 player.sendMessage("§6Hihi, you clicked me!");
             } else if(clicked.getType() == ItemType.BLUE_WOOL) {
                 openBrewingStandInventory(player);
             }
-        } else if(title.equals("§5A brewing stand!")) {
+        } else if(baseComponents[0].toString().equals(new TextComponent("§5A brewing stand!").toString())) {
             if(clicked.getType() == ItemType.SIGN) {
-                player.unsafe().sendPacket(new CloseWindow(event.getWindowId())); // Closes the current gui
+                InventoryModule.closeAllInventories(player); // Closes the current gui
                 player.sendMessage("§6You clicked me again :)");
             }
         }

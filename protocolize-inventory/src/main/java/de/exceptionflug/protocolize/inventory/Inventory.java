@@ -66,7 +66,7 @@ public class Inventory {
     }
 
     public List<ItemStack> getItemsIndexed() {
-        final ItemStack[] outArray = new ItemStack[type == InventoryType.CRAFTING_TABLE ? 45 : getSize()];
+        final ItemStack[] outArray = new ItemStack[(type == InventoryType.CONTAINER || type == InventoryType.CHEST || type == InventoryType.HORSE) ? getSize() : type.getTypicalSize()];
         for(final Integer id : items.keySet()) {
             outArray[id] = items.get(id);
         }

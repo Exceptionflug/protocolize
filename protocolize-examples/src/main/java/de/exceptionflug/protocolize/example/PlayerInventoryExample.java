@@ -39,13 +39,13 @@ public class PlayerInventoryExample implements Listener {
 
         /*
         NOTICE when using PlayerInteractEvent.
-        When using 1.9 upwards, the event will be fired several times:
+        The event will be fired several times:
 
         When interacting while looking at a block with a item in a hand:
           - Call 1: BlockPlacement packet
           - Call 2: UseItem packet
 
-        When interacting with NO item in a hand:
+        When interacting with NO item in a hand (1.9+):
           - Call 1: UseItem packet with hand MAIN_HAND
           - Call 2: UseItem packet with hand OFF_HAND
           - Call 3: BlockPlacement packet

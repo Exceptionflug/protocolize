@@ -19,6 +19,6 @@ public class CloseWindowAdapter extends PacketAdapter<CloseWindow> {
     public void receive(final PacketReceiveEvent<CloseWindow> event) {
         final Inventory inv = InventoryModule.getInventory(event.getPlayer().getUniqueId(), event.getPacket().getWindowId());
         InventoryModule.registerInventory(event.getPlayer().getUniqueId(), event.getPacket().getWindowId(), null);
-        ProxyServer.getInstance().getPluginManager().callEvent(new InventoryCloseEvent(event.getPlayer(), inv, event.getPacket().getWindowId()));
+        ProxyServer.getInstance().getPluginManager().callEvent(new InventoryCloseEvent(event.getPlayer(), inv, null, event.getPacket().getWindowId()));
     }
 }

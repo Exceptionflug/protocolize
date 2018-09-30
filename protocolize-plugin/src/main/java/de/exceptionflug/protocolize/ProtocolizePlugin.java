@@ -3,6 +3,8 @@ package de.exceptionflug.protocolize;
 import de.exceptionflug.protocolize.command.ProtocolizeCommand;
 import de.exceptionflug.protocolize.command.ProxyInvCommand;
 import de.exceptionflug.protocolize.command.TrafficCommand;
+import de.exceptionflug.protocolize.example.InventoryExample;
+import de.exceptionflug.protocolize.example.PlayerInventoryExample;
 import de.exceptionflug.protocolize.injector.NettyPipelineInjector;
 import de.exceptionflug.protocolize.inventory.InventoryModule;
 import de.exceptionflug.protocolize.items.ItemsModule;
@@ -32,4 +34,5 @@ public class ProtocolizePlugin extends Plugin {
     public NettyPipelineInjector getNettyPipelineInjector() {
         return nettyPipelineInjector;
     }
+
 }

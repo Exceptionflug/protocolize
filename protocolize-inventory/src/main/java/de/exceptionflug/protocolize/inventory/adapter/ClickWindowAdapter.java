@@ -10,7 +10,6 @@ import de.exceptionflug.protocolize.inventory.InventoryType;
 import de.exceptionflug.protocolize.inventory.event.InventoryClickEvent;
 import de.exceptionflug.protocolize.inventory.packet.ClickWindow;
 import de.exceptionflug.protocolize.items.InventoryManager;
-import de.exceptionflug.protocolize.items.ItemStack;
 import net.md_5.bungee.api.ProxyServer;
 
 public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
@@ -23,6 +22,10 @@ public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
     public void receive(final PacketReceiveEvent<ClickWindow> event) {
         final ClickWindow clickWindow = event.getPacket();
         final Inventory inventory = InventoryModule.getInventory(event.getPlayer().getUniqueId(), clickWindow.getWindowId());
+        if(inventory == null) {
+            ProxyServer.getInstance().getLogger().warning("[Protocolize] "+event.getPlayer().getName()+" has no open inventory with id "+clickWindow.getWindowId());
+            return;
+        }
 
         short slot = clickWindow.getSlot();
         if(inventory.getType() == InventoryType.BREWING_STAND && ReflectionUtil.getProtocolVersion(event.getPlayer()) == 47) {
@@ -36,10 +39,12 @@ public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
 
         if(clickEvent.isCancelled() || inventory.isHomebrew()) {
             event.setCancelled(true);
-            if(inventory.getType() != InventoryType.PLAYER)
-                InventoryModule.sendInventory(event.getPlayer(), inventory);
-            else
-                InventoryManager.getInventory(event.getPlayer().getUniqueId()).update();
+            if(InventoryModule.getInventory(event.getPlayer().getUniqueId(), clickWindow.getWindowId()) != null) {
+                if(inventory.getType() != InventoryType.PLAYER)
+                    InventoryModule.sendInventory(event.getPlayer(), inventory);
+                else
+                    InventoryManager.getInventory(event.getPlayer().getUniqueId()).update();
+            }
             return;
         }
         if(clickWindow.getActionNumber() != clickEvent.getActionNumber()) {
