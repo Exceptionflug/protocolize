@@ -45,6 +45,12 @@ public class CloseWindow extends AbstractPacket {
 
     private int windowId;
 
+    public CloseWindow(final int windowId) {
+        this.windowId = windowId;
+    }
+
+    public CloseWindow() {}
+
     @Override
     public void read(final ByteBuf buf, final Direction direction, final int protocolVersion) {
         windowId = buf.readUnsignedByte();

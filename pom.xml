@@ -15,6 +15,7 @@
         <module>protocolize-items</module>
         <module>protocolize-inventory</module>
         <module>protocolize-util</module>
+        <module>protocolize-examples</module>
     </modules>
 
     <distributionManagement>
