@@ -1,13 +1,13 @@
 package de.exceptionflug.protocolize.items;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import de.exceptionflug.protocolize.items.packet.HeldItemChange;
 import de.exceptionflug.protocolize.items.packet.SetSlot;
-import de.exceptionflug.protocolize.items.packet.WindowItems;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -15,7 +15,6 @@ public final class PlayerInventory {
 
     private final Map<Integer, ItemStack> map = Maps.newHashMap();
     private short heldItem;
-
     private final UUID uuid;
 
     public PlayerInventory(final UUID uuid) {
@@ -59,6 +58,24 @@ public final class PlayerInventory {
             getPlayer().unsafe().sendPacket(new SetSlot((byte) 0, (short) i, stack));
         }
 
+    }
+
+    public List<ItemStack> getItemsIndexed() {
+        final ItemStack[] outArray = new ItemStack[46];
+        for(final Integer id : map.keySet()) {
+            outArray[id] = map.get(id);
+        }
+        return Arrays.asList(outArray);
+    }
+
+    public List<ItemStack> getItemsIndexedContainer() {
+        final ItemStack[] outArray = new ItemStack[45-9];
+        for(final Integer id : map.keySet()) {
+            if(id < 9 || id == 45)
+                continue;
+            outArray[id-9] = map.get(id);
+        }
+        return Arrays.asList(outArray);
     }
 
     public ProxiedPlayer getPlayer() {

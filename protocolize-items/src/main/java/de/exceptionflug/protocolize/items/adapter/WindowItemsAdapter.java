@@ -8,6 +8,7 @@ import de.exceptionflug.protocolize.items.ItemStack;
 import de.exceptionflug.protocolize.items.ItemType;
 import de.exceptionflug.protocolize.items.PlayerInventory;
 import de.exceptionflug.protocolize.items.packet.WindowItems;
+import net.md_5.bungee.api.ProxyServer;
 
 public class WindowItemsAdapter extends PacketAdapter<WindowItems> {
 

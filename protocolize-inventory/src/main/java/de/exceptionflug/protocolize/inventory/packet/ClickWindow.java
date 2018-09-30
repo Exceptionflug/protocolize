@@ -1,4 +1,4 @@
-package de.exceptionflug.protocolize.items.packet;
+package de.exceptionflug.protocolize.inventory.packet;
 
 import com.google.common.collect.Maps;
 import de.exceptionflug.protocolize.api.ClickType;

@@ -151,4 +151,16 @@ public final class ReflectionUtil {
         return channelWrapper;
     }
 
+    public static int getProtocolVersion(final Connection player) {
+        try {
+            final Object channelWrapper = getChannelWrapper(player);
+            final Channel channel = (Channel) channelWrapperChannelField.get(channelWrapper);
+            return (int) protocolVersionField.get(channel.pipeline().get(MinecraftDecoder.class));
+        } catch (final IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+
 }

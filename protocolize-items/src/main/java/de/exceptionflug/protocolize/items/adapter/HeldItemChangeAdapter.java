@@ -7,10 +7,10 @@ import de.exceptionflug.protocolize.items.InventoryManager;
 import de.exceptionflug.protocolize.items.PlayerInventory;
 import de.exceptionflug.protocolize.items.packet.HeldItemChange;
 
-public class HeldItemChangeDownstreamAdapter extends PacketAdapter<HeldItemChange> {
+public class HeldItemChangeAdapter extends PacketAdapter<HeldItemChange> {
 
-    public HeldItemChangeDownstreamAdapter() {
-        super(Stream.DOWNSTREAM, HeldItemChange.class);
+    public HeldItemChangeAdapter(final Stream stream) {
+        super(stream, HeldItemChange.class);
     }
 
     @Override

@@ -13,6 +13,7 @@
         <module>protocolize-api</module>
         <module>protocolize-plugin</module>
         <module>protocolize-items</module>
+        <module>protocolize-inventory</module>
         <module>protocolize-util</module>
     </modules>
 

@@ -4,6 +4,7 @@ import de.exceptionflug.protocolize.command.ProtocolizeCommand;
 import de.exceptionflug.protocolize.command.ProxyInvCommand;
 import de.exceptionflug.protocolize.command.TrafficCommand;
 import de.exceptionflug.protocolize.injector.NettyPipelineInjector;
+import de.exceptionflug.protocolize.inventory.InventoryModule;
 import de.exceptionflug.protocolize.items.ItemsModule;
 import de.exceptionflug.protocolize.listener.PlayerListener;
 import net.md_5.bungee.api.ProxyServer;
@@ -21,6 +22,7 @@ public class ProtocolizePlugin extends Plugin {
 
         // Init system components
         ItemsModule.initModule();
+        InventoryModule.initModule();
 
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new ProxyInvCommand());
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new ProtocolizeCommand(this));
