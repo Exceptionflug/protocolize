@@ -3,6 +3,7 @@ package de.exceptionflug.protocolize.api.util;
 import com.google.common.base.Preconditions;
 import io.netty.channel.Channel;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.Connection;
 import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -15,7 +16,7 @@ import java.lang.reflect.Field;
 
 public final class ReflectionUtil {
 
-    public static Field packetField, bufferField, serverConnectorChannelWrapperField, channelWrapperChannelField, protocolVersionField, userConnectionChannelWrapperField, initialHandlerChannelWrapperField, protocolField, downstreamConnectionField, upstreamConnectionField, serverConnectorUserConnectionField, handlerBossHandlerField, serverConnectionChannelWrapperField;
+    public static Field packetField, bufferField, serverConnectorChannelWrapperField, channelWrapperChannelField, protocolVersionField, userConnectionChannelWrapperField, initialHandlerChannelWrapperField, protocolField, downstreamConnectionField, upstreamConnectionField, serverConnectorUserConnectionField, handlerBossHandlerField, serverConnectionChannelWrapperField, serverConnectorTargetField;
 
     public static Class<?> serverConnectorClass, downstreamBridgeClass, upstreamBridgeClass, serverConnectionClass;
 
@@ -27,6 +28,8 @@ public final class ReflectionUtil {
             bufferField.setAccessible(true);
             serverConnectorClass = Class.forName("net.md_5.bungee.ServerConnector");
             serverConnectorChannelWrapperField = serverConnectorClass.getDeclaredField("ch");
+            serverConnectorTargetField = serverConnectorClass.getDeclaredField("target");
+            serverConnectorTargetField.setAccessible(true);
             serverConnectorChannelWrapperField.setAccessible(true);
             serverConnectorUserConnectionField = serverConnectorClass.getDeclaredField("user");
             serverConnectorUserConnectionField.setAccessible(true);
@@ -163,4 +166,14 @@ public final class ReflectionUtil {
     }
 
 
+    public static ServerInfo getServerInfo(final AbstractPacketHandler packetHandler) {
+        if(packetHandler.getClass().equals(serverConnectorClass)) {
+            try {
+                return (ServerInfo) serverConnectorTargetField.get(packetHandler);
+            } catch (final IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 }

@@ -3,22 +3,16 @@ package de.exceptionflug.protocolize.api.event;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import de.exceptionflug.protocolize.api.handler.PacketListener;
-import de.exceptionflug.protocolize.api.protocol.AbstractPacket;
 import de.exceptionflug.protocolize.api.protocol.Stream;
 import de.exceptionflug.protocolize.api.util.ReflectionUtil;
-import io.netty.channel.Channel;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.Connection;
-import net.md_5.bungee.api.connection.PendingConnection;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.protocol.AbstractPacketHandler;
 import net.md_5.bungee.protocol.DefinedPacket;
 
-import java.lang.reflect.Field;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 
 public class EventManager {
 
@@ -42,7 +36,7 @@ public class EventManager {
             ProxyServer.getInstance().getLogger().warning("[Protocolize] Handling inbound packet while channel not initialized.");
             return null;
         }
-        final PacketReceiveEvent event = new PacketReceiveEvent<>(connection, packet);
+        final PacketReceiveEvent event = new PacketReceiveEvent<>(connection, abstractPacketHandler, packet);
         listeners.stream().filter(it -> {
             final Stream stream = it.getStream();
             if(stream == Stream.DOWNSTREAM && sentByServer) {
@@ -69,7 +63,7 @@ public class EventManager {
             ProxyServer.getInstance().getLogger().warning("Handling outbound packet while channel not initialized.");
             return packet;
         }
-        final PacketSendEvent event = new PacketSendEvent<>(connection, packet);
+        final PacketSendEvent event = new PacketSendEvent<>(connection, abstractPacketHandler, packet);
         listeners.stream().filter(it -> {
             final Stream stream = it.getStream();
             if(stream == Stream.DOWNSTREAM && sentToServer) {

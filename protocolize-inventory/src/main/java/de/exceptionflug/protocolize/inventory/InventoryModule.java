@@ -75,7 +75,7 @@ public final class InventoryModule {
 
     public static Inventory getInventory(final UUID playerId, final int windowId) {
         if(windowId == 0) {
-            final PlayerInventory inventory = InventoryManager.getInventory(playerId);
+            final PlayerInventory inventory = InventoryManager.getCombinedSendInventory(playerId, ProxyServer.getInstance().getPlayer(playerId).getServer().getInfo().getName());
             final Inventory out = new Inventory(InventoryType.PLAYER, 46);
             out.setItems(inventory.getItemsIndexed());
             return out;

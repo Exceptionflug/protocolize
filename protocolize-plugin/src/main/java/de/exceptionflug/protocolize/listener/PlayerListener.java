@@ -32,11 +32,6 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler
-    public void onLogin(final LoginEvent e) {
-        InventoryManager.map(e.getConnection().getUniqueId());
-    }
-
-    @EventHandler
     public void onServerSwitch(final ServerConnectedEvent e) {
         plugin.getNettyPipelineInjector().injectBefore(e.getServer(), "inbound-boss", "protocolize-decoder", new ProtocolizeDecoderChannelHandler(ReflectionUtil.getDownstreamBridge(e.getServer()), Stream.DOWNSTREAM));
         plugin.getNettyPipelineInjector().injectAfter(e.getServer(), "protocolize-decoder", "protocolize-encoder", new ProtocolizeEncoderChannelHandler(ReflectionUtil.getDownstreamBridge(e.getServer())));

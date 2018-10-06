@@ -21,7 +21,7 @@ public class WindowItemsAdapter extends PacketAdapter<WindowItems> {
         final WindowItems packet = event.getPacket();
         if(packet.getWindowId() != 0)
             return;
-        final PlayerInventory playerInventory = InventoryManager.getInventory(event.getPlayer().getUniqueId());
+        final PlayerInventory playerInventory = InventoryManager.getCombinedSendInventory(event.getPlayer().getUniqueId(), event.getServerInfo().getName());
         for (int i = 0; i < packet.getItems().size(); i++) {
             final ItemStack stack = packet.getItemStackAtSlot(i);
             if(stack == null || stack.getType() == ItemType.NO_DATA) {

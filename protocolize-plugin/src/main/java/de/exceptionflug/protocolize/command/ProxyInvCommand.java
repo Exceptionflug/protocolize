@@ -16,7 +16,7 @@ public class ProxyInvCommand extends Command {
     public void execute(final CommandSender commandSender, final String[] strings) {
         if(commandSender instanceof ProxiedPlayer) {
             final ProxiedPlayer p = (ProxiedPlayer) commandSender;
-            final PlayerInventory inventory = InventoryManager.getInventory(p.getUniqueId());
+            final PlayerInventory inventory = InventoryManager.getCombinedSendInventory(p.getUniqueId(), p.getServer().getInfo().getName());
             inventory.update();
             p.sendMessage("§aInventory sent.");
         }

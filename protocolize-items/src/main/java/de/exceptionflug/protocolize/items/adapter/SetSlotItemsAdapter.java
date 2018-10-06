@@ -1,6 +1,5 @@
 package de.exceptionflug.protocolize.items.adapter;
 
-import com.google.common.base.Preconditions;
 import de.exceptionflug.protocolize.api.event.PacketReceiveEvent;
 import de.exceptionflug.protocolize.api.handler.PacketAdapter;
 import de.exceptionflug.protocolize.api.protocol.Stream;
@@ -21,7 +20,7 @@ public class SetSlotItemsAdapter extends PacketAdapter<SetSlot> {
         final SetSlot packet = event.getPacket();
         if (packet.getWindowId() != 0)
             return;
-        final PlayerInventory playerInventory = InventoryManager.getInventory(event.getPlayer().getUniqueId());
+        final PlayerInventory playerInventory = InventoryManager.getInventory(event.getPlayer().getUniqueId(), event.getServerInfo().getName());
         final ItemStack stack = packet.getItemStack();
         if (stack == null || stack.getType() == ItemType.NO_DATA) {
             if (playerInventory.getItem(packet.getSlot()) != null && !playerInventory.getItem(packet.getSlot()).isHomebrew())

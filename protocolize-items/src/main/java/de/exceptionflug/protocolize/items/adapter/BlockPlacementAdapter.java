@@ -21,7 +21,7 @@ public class BlockPlacementAdapter extends PacketAdapter<BlockPlacement> {
     @Override
     public void receive(final PacketReceiveEvent<BlockPlacement> event) {
         final ProxiedPlayer p = event.getPlayer();
-        final PlayerInventory playerInventory = InventoryManager.getInventory(p.getUniqueId());
+        final PlayerInventory playerInventory = InventoryManager.getCombinedSendInventory(p.getUniqueId(), event.getServerInfo().getName());
         final ItemStack inHand = playerInventory.getItem(playerInventory.getHeldItem()+36);
         if(inHand == null || inHand.getType() == ItemType.NO_DATA)
             return;

@@ -30,7 +30,7 @@ public class WindowItemsAdapter extends PacketAdapter<WindowItems> {
             ProxyServer.getInstance().getLogger().warning("[Protocolize] Try to set items in unknown inventory! player = "+event.getPlayer().getName()+" packet = "+packet);
             return;
         }
-        final PlayerInventory playerInventory = InventoryManager.getInventory(event.getPlayer().getUniqueId());
+        final PlayerInventory playerInventory = InventoryManager.getCombinedSendInventory(event.getPlayer().getUniqueId(), event.getServerInfo().getName());
         for (int i = 0; i < packet.getItems().size(); i++) {
             if(InventoryUtil.isLowerInventory(i, inventory)) {
                 // LOWER PLAYER INVENTORY

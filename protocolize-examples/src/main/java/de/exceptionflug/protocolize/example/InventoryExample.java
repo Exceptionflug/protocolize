@@ -57,6 +57,8 @@ public class InventoryExample implements Listener {
         final ProxiedPlayer player = event.getPlayer();
         if(clicked == null)
             return;
+        if(baseComponents.length == 0)
+            return;
         if(baseComponents[0].toString().equals(new TextComponent("§9Inventory title").toString())) {
             if(clicked.getType() == ItemType.SIGN) {
                 player.sendMessage("§6Hihi, you clicked me!");
