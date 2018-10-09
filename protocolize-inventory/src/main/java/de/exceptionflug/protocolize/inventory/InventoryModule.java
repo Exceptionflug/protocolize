@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1_8;
+
 public final class InventoryModule {
 
     private static final Map<UUID, Map<Integer, Inventory>> WINDOW_MAP = Maps.newHashMap();
@@ -152,7 +154,7 @@ public final class InventoryModule {
         p.unsafe().sendPacket(new OpenWindow(windowId, inventory.getSize(), inventory.getType(), inventory.getTitle()));
         final List<ItemStack> items = Lists.newArrayList(inventory.getItemsIndexed());
 
-        if(inventory.getType() == InventoryType.BREWING_STAND && ReflectionUtil.getProtocolVersion(p) == 47)
+        if(inventory.getType() == InventoryType.BREWING_STAND && ReflectionUtil.getProtocolVersion(p) == MINECRAFT_1_8)
             items.remove(4);
 
 //        ProxyServer.getInstance().broadcast(items.toString());

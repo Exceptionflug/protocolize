@@ -12,24 +12,26 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 
+import static de.exceptionflug.protocolize.api.util.ProtocolVersions.*;
+
 public class OpenWindow extends AbstractPacket {
 
     public static final Map<Integer, Integer> MAPPING = Maps.newHashMap();
 
     static {
-        MAPPING.put(47, 0x2D);
-        MAPPING.put(107, 0x13);
-        MAPPING.put(108, 0x13);
-        MAPPING.put(109, 0x13);
-        MAPPING.put(110, 0x13);
-        MAPPING.put(210, 0x13);
-        MAPPING.put(315, 0x13);
-        MAPPING.put(316, 0x13);
-        MAPPING.put(335, 0x13);
-        MAPPING.put(338, 0x13);
-        MAPPING.put(340, 0x13);
-        MAPPING.put(393, 0x14);
-        MAPPING.put(401, 0x14);
+        MAPPING.put(MINECRAFT_1_8, 0x2D);
+        MAPPING.put(MINECRAFT_1_9, 0x13);
+        MAPPING.put(MINECRAFT_1_9_1, 0x13);
+        MAPPING.put(MINECRAFT_1_9_2, 0x13);
+        MAPPING.put(MINECRAFT_1_9_3, 0x13);
+        MAPPING.put(MINECRAFT_1_10, 0x13);
+        MAPPING.put(MINECRAFT_1_11, 0x13);
+        MAPPING.put(MINECRAFT_1_11_1, 0x13);
+        MAPPING.put(MINECRAFT_1_12, 0x13);
+        MAPPING.put(MINECRAFT_1_12_1, 0x13);
+        MAPPING.put(MINECRAFT_1_12_2, 0x13);
+        MAPPING.put(MINECRAFT_1_13, 0x14);
+        MAPPING.put(MINECRAFT_1_13_1, 0x14);
     }
 
     private int windowId, size, entityId;

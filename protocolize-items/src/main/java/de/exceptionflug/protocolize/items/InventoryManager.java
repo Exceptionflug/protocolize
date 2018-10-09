@@ -1,8 +1,10 @@
 package de.exceptionflug.protocolize.items;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -39,5 +41,22 @@ public final class InventoryManager {
 
     public static void unmap(final UUID uniqueId) {
         INVENTORY_MAP.remove(uniqueId);
+    }
+
+    public static void unmapServer(final UUID uniqueId, final String name) {
+        final PlayerInventory inv = getInventory(uniqueId, name);
+        boolean dontDelete = false;
+        for (int i = 0; i < 45; i++) {
+            final ItemStack stack = inv.getItem(i);
+            if(stack == null || !stack.isHomebrew()) {
+                inv.setItem(i, null);
+            }
+            if(stack != null && stack.isHomebrew()) {
+                dontDelete = true;
+            }
+        }
+        if(!dontDelete) {
+            INVENTORY_MAP.get(uniqueId).remove(name);
+        }
     }
 }

@@ -8,39 +8,41 @@ import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 import java.util.Map;
 import java.util.Objects;
 
+import static de.exceptionflug.protocolize.api.util.ProtocolVersions.*;
+
 public class HeldItemChange extends AbstractPacket {
 
     public static final Map<Integer, Integer> MAPPING_CLIENTBOUND = Maps.newHashMap();
     public static final Map<Integer, Integer> MAPPING_SERVERBOUND = Maps.newHashMap();
 
     static {
-        MAPPING_CLIENTBOUND.put(47, 0x09);
-        MAPPING_CLIENTBOUND.put(107, 0x37);
-        MAPPING_CLIENTBOUND.put(108, 0x37);
-        MAPPING_CLIENTBOUND.put(109, 0x37);
-        MAPPING_CLIENTBOUND.put(110, 0x37);
-        MAPPING_CLIENTBOUND.put(210, 0x37);
-        MAPPING_CLIENTBOUND.put(315, 0x37);
-        MAPPING_CLIENTBOUND.put(316, 0x37);
-        MAPPING_CLIENTBOUND.put(335, 0x3A);
-        MAPPING_CLIENTBOUND.put(338, 0x3A);
-        MAPPING_CLIENTBOUND.put(340, 0x3A);
-        MAPPING_CLIENTBOUND.put(393, 0x3D);
-        MAPPING_CLIENTBOUND.put(401, 0x3D);
+        MAPPING_CLIENTBOUND.put(MINECRAFT_1_8, 0x09);
+        MAPPING_CLIENTBOUND.put(MINECRAFT_1_9, 0x37);
+        MAPPING_CLIENTBOUND.put(MINECRAFT_1_9_1, 0x37);
+        MAPPING_CLIENTBOUND.put(MINECRAFT_1_9_2, 0x37);
+        MAPPING_CLIENTBOUND.put(MINECRAFT_1_9_3, 0x37);
+        MAPPING_CLIENTBOUND.put(MINECRAFT_1_10, 0x37);
+        MAPPING_CLIENTBOUND.put(MINECRAFT_1_11, 0x37);
+        MAPPING_CLIENTBOUND.put(MINECRAFT_1_11_1, 0x37);
+        MAPPING_CLIENTBOUND.put(MINECRAFT_1_12, 0x3A);
+        MAPPING_CLIENTBOUND.put(MINECRAFT_1_12_1, 0x3A);
+        MAPPING_CLIENTBOUND.put(MINECRAFT_1_12_2, 0x3A);
+        MAPPING_CLIENTBOUND.put(MINECRAFT_1_13, 0x3D);
+        MAPPING_CLIENTBOUND.put(MINECRAFT_1_13_1, 0x3D);
 
-        MAPPING_SERVERBOUND.put(47, 0x09);
-        MAPPING_SERVERBOUND.put(107, 0x17);
-        MAPPING_SERVERBOUND.put(108, 0x17);
-        MAPPING_SERVERBOUND.put(109, 0x17);
-        MAPPING_SERVERBOUND.put(110, 0x17);
-        MAPPING_SERVERBOUND.put(210, 0x17);
-        MAPPING_SERVERBOUND.put(315, 0x17);
-        MAPPING_SERVERBOUND.put(316, 0x17);
-        MAPPING_SERVERBOUND.put(335, 0x1A);
-        MAPPING_SERVERBOUND.put(338, 0x1A);
-        MAPPING_SERVERBOUND.put(340, 0x1A);
-        MAPPING_SERVERBOUND.put(393, 0x21);
-        MAPPING_SERVERBOUND.put(401, 0x21);
+        MAPPING_SERVERBOUND.put(MINECRAFT_1_8, 0x09);
+        MAPPING_SERVERBOUND.put(MINECRAFT_1_9, 0x17);
+        MAPPING_SERVERBOUND.put(MINECRAFT_1_9_1, 0x17);
+        MAPPING_SERVERBOUND.put(MINECRAFT_1_9_2, 0x17);
+        MAPPING_SERVERBOUND.put(MINECRAFT_1_9_3, 0x17);
+        MAPPING_SERVERBOUND.put(MINECRAFT_1_10, 0x17);
+        MAPPING_SERVERBOUND.put(MINECRAFT_1_11, 0x17);
+        MAPPING_SERVERBOUND.put(MINECRAFT_1_11_1, 0x17);
+        MAPPING_SERVERBOUND.put(MINECRAFT_1_12, 0x1A);
+        MAPPING_SERVERBOUND.put(MINECRAFT_1_12_1, 0x1A);
+        MAPPING_SERVERBOUND.put(MINECRAFT_1_12_2, 0x1A);
+        MAPPING_SERVERBOUND.put(MINECRAFT_1_13, 0x21);
+        MAPPING_SERVERBOUND.put(MINECRAFT_1_13_1, 0x21);
     }
 
     private short newSlot;

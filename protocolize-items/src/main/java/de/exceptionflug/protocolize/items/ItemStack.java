@@ -4,6 +4,7 @@ import com.flowpowered.nbt.*;
 import com.flowpowered.nbt.stream.NBTInputStream;
 import com.flowpowered.nbt.stream.NBTOutputStream;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
@@ -13,14 +14,20 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
+
+import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1_13;
 
 public final class ItemStack {
 
     public final static ItemStack NO_DATA = new ItemStack(ItemType.NO_DATA);
 
     private String displayName;
+    private List<String> lore;
     private byte amount;
     private short durability;
     private ItemType type;
@@ -61,6 +68,18 @@ public final class ItemStack {
         nbtdata.getValue().put(display);
     }
 
+    private void setLoreTag(final List<String> lore) {
+        if(lore == null)
+            return;
+        CompoundTag display = (CompoundTag) nbtdata.getValue().get("display");
+        if (display == null) {
+            display = new CompoundTag("display", new CompoundMap());
+        }
+        final ListTag<StringTag> tag = new ListTag<>("Lore", StringTag.class, lore.stream().map(i -> new StringTag(String.valueOf(ThreadLocalRandom.current().nextLong()), i)).collect(Collectors.toList()));
+        display.getValue().put(tag);
+        nbtdata.getValue().put(display);
+    }
+
     public void setNBTTag(final CompoundTag nbtdata) {
         this.nbtdata = nbtdata;
     }
@@ -69,10 +88,11 @@ public final class ItemStack {
         Preconditions.checkNotNull(buf, "The buf cannot be null!");
         try {
             final int protocolID;
+            final IDMapping applicableMapping = type.getApplicableMapping(protocolVersion);
             if(type == null)
                 protocolID = -1;
             else
-                protocolID = type.getProtocolID(protocolVersion);
+                protocolID = Objects.requireNonNull(applicableMapping).getId();
             if(protocolID == -2) {
                 buf.writeShort(-1);
                 ProxyServer.getInstance().getLogger().warning("[Protocolize] "+type.name()+" cannot be used on protocol version "+protocolVersion);
@@ -82,18 +102,30 @@ public final class ItemStack {
             if (protocolID == -1)
                 return;
             if(durability == -1)
-                durability = (short) type.getProtocolData(protocolVersion);
+                durability = (short) Objects.requireNonNull(applicableMapping).getData();
             buf.writeByte(amount);
-            if (protocolVersion < 393)
+            if (protocolVersion < MINECRAFT_1_13)
                 buf.writeShort(durability);
             if (nbtdata == null) {
                 nbtdata = new CompoundTag("", new CompoundMap());
             }
-            if (protocolVersion >= 393) {
+            if (protocolVersion >= MINECRAFT_1_13) {
                 nbtdata.getValue().put(new IntTag("Damage", durability));
                 setDisplayNameTag(ComponentSerializer.toString(new TextComponent(displayName)));
+//                if(lore != null) {
+//                    final List<String> out = Lists.newArrayList();
+//                    for(final String i : lore) {
+//                        out.add(ComponentSerializer.toString(new TextComponent(i)));
+//                    }
+//                    setLoreTag(out);
+//                }
             } else {
                 setDisplayNameTag(displayName);
+//                setLoreTag(lore);
+            }
+            setLoreTag(lore);
+            if(applicableMapping instanceof AbstractCustomMapping) {
+                ((AbstractCustomMapping) applicableMapping).apply(this, protocolVersion);
             }
             buf.markWriterIndex();
             try {
@@ -125,17 +157,18 @@ public final class ItemStack {
             if (id >= 0) {
                 final byte amount = buf.readByte();
                 short durability = 0;
-                if (protocolVersion < 393) {
+                if (protocolVersion < MINECRAFT_1_13) {
                     durability = buf.readShort();
                 }
                 if (id == 0) {
-                    final ItemStack out = new ItemStack(ItemType.getType(id, protocolVersion), amount, durability);
+                    final ItemStack out = new ItemStack(ItemType.AIR, amount, durability);
                     out.homebrew = false;
                     return out;
                 } else {
                     final CompoundTag tag = (CompoundTag) readNBTTag(buf);
                     String displayName = null;
-                    if (protocolVersion >= 393 && tag != null) {
+                    List<String> loreOut = Lists.newArrayList();
+                    if (protocolVersion >= MINECRAFT_1_13 && tag != null) {
                         final CompoundMap value = tag.getValue();
                         final IntTag damage = (IntTag) value.get("Damage");
                         if (damage != null)
@@ -145,13 +178,22 @@ public final class ItemStack {
                             final BaseComponent[] displayNameComponents = ComponentSerializer.parse(json);
                             displayName = BaseComponent.toLegacyText(displayNameComponents);
                         }
+//                        final List<String> lore = getLoreTag(tag);
+//                        if(lore != null) {
+//                            for(final String i : lore) {
+//                                loreOut.add(BaseComponent.toLegacyText(ComponentSerializer.parse(i)));
+//                            }
+//                        }
                     } else {
                         displayName = getDisplayNameTag(tag);
                     }
-                    final ItemStack out = new ItemStack(ItemType.getType(id, durability, protocolVersion), amount, durability);
+                    loreOut = getLoreTag(tag);
+                    final ItemStack out = new ItemStack(null, amount, durability);
                     out.homebrew = false;
                     out.displayName = displayName;
+                    out.lore = loreOut;
                     out.setNBTTag(tag);
+                    out.setType(ItemType.getType(id, durability, protocolVersion, out));
                     return out;
                 }
             }
@@ -218,6 +260,28 @@ public final class ItemStack {
             return null;
         }
         return name.getValue();
+    }
+
+    private static List<String> getLoreTag(final CompoundTag nbtdata) {
+        if(nbtdata == null)
+            return null;
+        final CompoundTag display = (CompoundTag) nbtdata.getValue().get("display");
+        if (display == null) {
+            return null;
+        }
+        final ListTag<StringTag> lore = (ListTag<StringTag>) display.getValue().get("Lore");
+        if (lore == null) {
+            return null;
+        }
+        return lore.getValue().stream().map(StringTag::getValue).collect(Collectors.toList());
+    }
+
+    public List<String> getLore() {
+        return lore;
+    }
+
+    public void setLore(final List<String> lore) {
+        this.lore = lore;
     }
 
     @Override

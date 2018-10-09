@@ -12,6 +12,8 @@ import de.exceptionflug.protocolize.inventory.packet.ClickWindow;
 import de.exceptionflug.protocolize.items.InventoryManager;
 import net.md_5.bungee.api.ProxyServer;
 
+import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1_8;
+
 public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
 
     public ClickWindowAdapter() {
@@ -28,7 +30,7 @@ public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
         }
 
         short slot = clickWindow.getSlot();
-        if(inventory.getType() == InventoryType.BREWING_STAND && ReflectionUtil.getProtocolVersion(event.getPlayer()) == 47) {
+        if(inventory.getType() == InventoryType.BREWING_STAND && ReflectionUtil.getProtocolVersion(event.getPlayer()) == MINECRAFT_1_8) {
             // Insert missing slot 4 for 1.8 clients into slot calculation
             if(slot >= 4)
                 slot ++;

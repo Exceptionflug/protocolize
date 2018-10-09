@@ -1,11 +1,13 @@
 package de.exceptionflug.protocolize.netty;
 
+import com.google.common.collect.Lists;
 import de.exceptionflug.protocolize.api.CancelSendSignal;
 import de.exceptionflug.protocolize.api.protocol.ProtocolAPI;
 import de.exceptionflug.protocolize.api.protocol.Stream;
 import de.exceptionflug.protocolize.api.traffic.TrafficData;
 import de.exceptionflug.protocolize.api.util.ReflectionUtil;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -16,6 +18,8 @@ import net.md_5.bungee.protocol.*;
 import net.md_5.bungee.protocol.Protocol.DirectionData;
 import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;

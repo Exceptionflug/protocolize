@@ -5,14 +5,14 @@ import de.exceptionflug.protocolize.api.protocol.AbstractPacket;
 import de.exceptionflug.protocolize.items.ItemStack;
 import de.exceptionflug.protocolize.items.ItemType;
 import io.netty.buffer.ByteBuf;
-import net.md_5.bungee.protocol.Protocol;
-import net.md_5.bungee.protocol.Protocol.DirectionData;
 import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+
+import static de.exceptionflug.protocolize.api.util.ProtocolVersions.*;
 
 public class WindowItems extends AbstractPacket {
 
@@ -22,19 +22,19 @@ public class WindowItems extends AbstractPacket {
     private List<ItemStack> items = new ArrayList<>();
 
     static {
-        MAPPING.put(47, 0x30);
-        MAPPING.put(107, 0x14);
-        MAPPING.put(108, 0x14);
-        MAPPING.put(109, 0x14);
-        MAPPING.put(110, 0x14);
-        MAPPING.put(210, 0x14);
-        MAPPING.put(315, 0x14);
-        MAPPING.put(316, 0x14);
-        MAPPING.put(335, 0x14);
-        MAPPING.put(338, 0x14);
-        MAPPING.put(340, 0x14);
-        MAPPING.put(393, 0x15);
-        MAPPING.put(401, 0x15);
+        MAPPING.put(MINECRAFT_1_8, 0x30);
+        MAPPING.put(MINECRAFT_1_9, 0x14);
+        MAPPING.put(MINECRAFT_1_9_1, 0x14);
+        MAPPING.put(MINECRAFT_1_9_2, 0x14);
+        MAPPING.put(MINECRAFT_1_9_3, 0x14);
+        MAPPING.put(MINECRAFT_1_10, 0x14);
+        MAPPING.put(MINECRAFT_1_11, 0x14);
+        MAPPING.put(MINECRAFT_1_11_1, 0x14);
+        MAPPING.put(MINECRAFT_1_12, 0x14);
+        MAPPING.put(MINECRAFT_1_12_1, 0x14);
+        MAPPING.put(MINECRAFT_1_12_2, 0x14);
+        MAPPING.put(MINECRAFT_1_13, 0x15);
+        MAPPING.put(MINECRAFT_1_13_1, 0x15);
     }
 
     public WindowItems(final short windowId, final List<ItemStack> items) {

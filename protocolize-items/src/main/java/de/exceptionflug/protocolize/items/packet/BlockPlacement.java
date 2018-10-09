@@ -14,22 +14,24 @@ import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 import java.util.Map;
 import java.util.Objects;
 
+import static de.exceptionflug.protocolize.api.util.ProtocolVersions.*;
+
 public class BlockPlacement extends AbstractPacket {
 
     public static final Map<Integer, Integer> MAPPING = Maps.newHashMap();
 
     static {
-        MAPPING.put(47, 0x08);
-        MAPPING.put(107, 0x1C);
-        MAPPING.put(108, 0x1C);
-        MAPPING.put(109, 0x1C);
-        MAPPING.put(110, 0x1C);
-        MAPPING.put(210, 0x1C);
-        MAPPING.put(315, 0x1C);
-        MAPPING.put(335, 0x1F);
-        MAPPING.put(340, 0x1F);
-        MAPPING.put(393, 0x29);
-        MAPPING.put(401, 0x29);
+        MAPPING.put(MINECRAFT_1_8, 0x08);
+        MAPPING.put(MINECRAFT_1_9, 0x1C);
+        MAPPING.put(MINECRAFT_1_9_1, 0x1C);
+        MAPPING.put(MINECRAFT_1_9_2, 0x1C);
+        MAPPING.put(MINECRAFT_1_9_3, 0x1C);
+        MAPPING.put(MINECRAFT_1_10, 0x1C);
+        MAPPING.put(MINECRAFT_1_11, 0x1C);
+        MAPPING.put(MINECRAFT_1_12, 0x1F);
+        MAPPING.put(MINECRAFT_1_12_2, 0x1F);
+        MAPPING.put(MINECRAFT_1_13, 0x29);
+        MAPPING.put(MINECRAFT_1_13_1, 0x29);
     }
 
     private BlockPosition position;
@@ -58,7 +60,7 @@ public class BlockPlacement extends AbstractPacket {
     @Override
     public void read(final ByteBuf buf, final Direction direction, final int protocolVersion) {
         position = BlockPosition.read(buf);
-        if(protocolVersion > 47) {
+        if(protocolVersion > MINECRAFT_1_8) {
             face = BlockFace.getBlockFace(readVarInt(buf));
             hand = Hand.getHandByID(readVarInt(buf));
             if(protocolVersion < 300) {
@@ -86,7 +88,7 @@ public class BlockPlacement extends AbstractPacket {
         Preconditions.checkNotNull(face, "The face cannot be null!");
         Preconditions.checkNotNull(hand, "The hand cannot be null!");
         position.write(buf);
-        if(protocolVersion > 47) {
+        if(protocolVersion > MINECRAFT_1_8) {
             writeVarInt(face.getProtocolId(), buf);
             writeVarInt(hand.getProtocolId(), buf);
             if(protocolVersion < 300) {
@@ -149,6 +151,16 @@ public class BlockPlacement extends AbstractPacket {
 
     public void setHitVecZ(final float hitVecZ) {
         this.hitVecZ = hitVecZ;
+    }
+
+    @Deprecated
+    public ItemStack getItemStack() {
+        return stack;
+    }
+
+    @Deprecated
+    public void setItemStack(final ItemStack stack) {
+        this.stack = stack;
     }
 
     @Override

@@ -11,24 +11,26 @@ import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 import java.util.Map;
 import java.util.Objects;
 
+import static de.exceptionflug.protocolize.api.util.ProtocolVersions.*;
+
 public class SetSlot extends AbstractPacket {
 
     public static final Map<Integer, Integer> MAPPING = Maps.newHashMap();
 
     static {
-        MAPPING.put(47, 0x2F);
-        MAPPING.put(107, 0x16);
-        MAPPING.put(108, 0x16);
-        MAPPING.put(109, 0x16);
-        MAPPING.put(110, 0x16);
-        MAPPING.put(210, 0x16);
-        MAPPING.put(315, 0x16);
-        MAPPING.put(316, 0x16);
-        MAPPING.put(335, 0x16);
-        MAPPING.put(338, 0x16);
-        MAPPING.put(340, 0x16);
-        MAPPING.put(393, 0x17);
-        MAPPING.put(401, 0x17);
+        MAPPING.put(MINECRAFT_1_8, 0x2F);
+        MAPPING.put(MINECRAFT_1_9, 0x16);
+        MAPPING.put(MINECRAFT_1_9_1, 0x16);
+        MAPPING.put(MINECRAFT_1_9_2, 0x16);
+        MAPPING.put(MINECRAFT_1_9_3, 0x16);
+        MAPPING.put(MINECRAFT_1_10, 0x16);
+        MAPPING.put(MINECRAFT_1_11, 0x16);
+        MAPPING.put(MINECRAFT_1_11_1, 0x16);
+        MAPPING.put(MINECRAFT_1_12, 0x16);
+        MAPPING.put(MINECRAFT_1_12_1, 0x16);
+        MAPPING.put(MINECRAFT_1_12_2, 0x16);
+        MAPPING.put(MINECRAFT_1_13, 0x17);
+        MAPPING.put(MINECRAFT_1_13_1, 0x17);
     }
 
     private byte windowId;

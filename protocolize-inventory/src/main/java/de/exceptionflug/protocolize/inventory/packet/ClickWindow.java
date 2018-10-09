@@ -10,24 +10,26 @@ import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 import java.util.Map;
 import java.util.Objects;
 
+import static de.exceptionflug.protocolize.api.util.ProtocolVersions.*;
+
 public class ClickWindow extends AbstractPacket {
 
     public static final Map<Integer, Integer> MAPPING = Maps.newHashMap();
 
     static {
-        MAPPING.put(47, 0x0E);
-        MAPPING.put(107, 0x07);
-        MAPPING.put(108, 0x07);
-        MAPPING.put(109, 0x07);
-        MAPPING.put(110, 0x07);
-        MAPPING.put(210, 0x07);
-        MAPPING.put(315, 0x07);
-        MAPPING.put(316, 0x07);
-        MAPPING.put(335, 0x07);
-        MAPPING.put(338, 0x07);
-        MAPPING.put(340, 0x07);
-        MAPPING.put(393, 0x08);
-        MAPPING.put(401, 0x08);
+        MAPPING.put(MINECRAFT_1_8, 0x0E);
+        MAPPING.put(MINECRAFT_1_9, 0x07);
+        MAPPING.put(MINECRAFT_1_9_1, 0x07);
+        MAPPING.put(MINECRAFT_1_9_2, 0x07);
+        MAPPING.put(MINECRAFT_1_9_3, 0x07);
+        MAPPING.put(MINECRAFT_1_10, 0x07);
+        MAPPING.put(MINECRAFT_1_11, 0x07);
+        MAPPING.put(MINECRAFT_1_11_1, 0x07);
+        MAPPING.put(MINECRAFT_1_12, 0x07);
+        MAPPING.put(MINECRAFT_1_12_1, 0x07);
+        MAPPING.put(MINECRAFT_1_12_2, 0x07);
+        MAPPING.put(MINECRAFT_1_13, 0x08);
+        MAPPING.put(MINECRAFT_1_13_1, 0x08);
     }
 
     private int windowId, actionNumber;
@@ -53,7 +55,7 @@ public class ClickWindow extends AbstractPacket {
         final byte button = buf.readByte();
         actionNumber = buf.readShort();
         final int mode;
-        if(protocolVersion == 47)
+        if(protocolVersion == MINECRAFT_1_8)
             mode = buf.readByte();
         else
             mode = readVarInt(buf);
@@ -67,7 +69,7 @@ public class ClickWindow extends AbstractPacket {
         buf.writeShort(slot);
         buf.writeByte(clickType.getButton());
         buf.writeShort(actionNumber);
-        if(protocolVersion == 47)
+        if(protocolVersion == MINECRAFT_1_8)
             buf.writeByte(clickType.getMode());
         else
             writeVarInt(clickType.getMode(), buf);

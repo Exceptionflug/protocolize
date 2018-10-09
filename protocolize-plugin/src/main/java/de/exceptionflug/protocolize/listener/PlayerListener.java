@@ -8,10 +8,7 @@ import de.exceptionflug.protocolize.items.InventoryManager;
 import de.exceptionflug.protocolize.netty.ProtocolizeDecoderChannelHandler;
 import de.exceptionflug.protocolize.netty.ProtocolizeEncoderChannelHandler;
 import de.exceptionflug.protocolize.netty.ProtocolizeOutboundTrafficHandler;
-import net.md_5.bungee.api.event.LoginEvent;
-import net.md_5.bungee.api.event.PlayerDisconnectEvent;
-import net.md_5.bungee.api.event.PreLoginEvent;
-import net.md_5.bungee.api.event.ServerConnectedEvent;
+import net.md_5.bungee.api.event.*;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.protocol.AbstractPacketHandler;
@@ -29,6 +26,11 @@ public class PlayerListener implements Listener {
         plugin.getNettyPipelineInjector().injectBefore(e.getConnection(), "inbound-boss", "protocolize-decoder", new ProtocolizeDecoderChannelHandler((AbstractPacketHandler) e.getConnection(), Stream.UPSTREAM));
         plugin.getNettyPipelineInjector().injectAfter(e.getConnection(), "protocolize-decoder", "protocolize-encoder", new ProtocolizeEncoderChannelHandler((AbstractPacketHandler) e.getConnection()));
         plugin.getNettyPipelineInjector().injectAfter(e.getConnection(), "frame-prepender", "protocolize-outbound-traffic-monitor", new ProtocolizeOutboundTrafficHandler((AbstractPacketHandler) e.getConnection(), Stream.UPSTREAM));
+    }
+
+    @EventHandler
+    public void onServerDisconnect(final ServerDisconnectEvent e) {
+        InventoryManager.unmapServer(e.getPlayer().getUniqueId(), e.getTarget().getName());
     }
 
     @EventHandler
