@@ -15,7 +15,17 @@ public class ProtocolizeCommand extends Command {
 
     @Override
     public void execute(final CommandSender commandSender, final String[] args) {
-        commandSender.sendMessage("§aProtocolize version "+plugin.getDescription().getVersion()+" by "+plugin.getDescription().getAuthor());
+        if(args.length == 0) {
+            commandSender.sendMessage("§aProtocolize version "+plugin.getDescription().getVersion()+" by "+plugin.getDescription().getAuthor());
+            if(commandSender.hasPermission("protocolize.toggle")) {
+                commandSender.sendMessage("Protocolize is currently " + (plugin.isEnabled() ? "§aenabled" : "§cdisabled"));
+            }
+        } else {
+            if(args[0].equalsIgnoreCase("toggle") && commandSender.hasPermission("protocolize.toggle")) {
+                plugin.setEnabled(!plugin.isEnabled());
+                commandSender.sendMessage("Protocolize is now " + (plugin.isEnabled() ? "§aenabled" : "§cdisabled"));
+            }
+        }
     }
 
 }

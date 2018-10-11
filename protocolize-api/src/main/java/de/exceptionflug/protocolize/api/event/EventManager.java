@@ -46,7 +46,7 @@ public class EventManager {
             }
             return false;
         }).forEach(it -> it.receive(event));
-        ProxyServer.getInstance().getPluginManager().callEvent(event);
+//        ProxyServer.getInstance().getPluginManager().callEvent(event);
         if(event.isCancelled())
             return null;
         return new SimpleEntry<>(event.getPacket(), event.isDirty());
@@ -73,7 +73,7 @@ public class EventManager {
             }
             return false;
         }).forEach(it -> it.send(event));
-        ProxyServer.getInstance().getPluginManager().callEvent(event);
+//        ProxyServer.getInstance().getPluginManager().callEvent(event);
         if(event.isCancelled())
             return null;
         return event.getPacket();

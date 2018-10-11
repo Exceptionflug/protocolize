@@ -57,7 +57,7 @@ public final class ItemStack {
     }
 
     private void setDisplayNameTag(final String name) {
-        if(name == null)
+        if (name == null)
             return;
         CompoundTag display = (CompoundTag) nbtdata.getValue().get("display");
         if (display == null) {
@@ -69,7 +69,7 @@ public final class ItemStack {
     }
 
     private void setLoreTag(final List<String> lore) {
-        if(lore == null)
+        if (lore == null)
             return;
         CompoundTag display = (CompoundTag) nbtdata.getValue().get("display");
         if (display == null) {
@@ -88,20 +88,27 @@ public final class ItemStack {
         Preconditions.checkNotNull(buf, "The buf cannot be null!");
         try {
             final int protocolID;
-            final IDMapping applicableMapping = type.getApplicableMapping(protocolVersion);
-            if(type == null)
+            final IDMapping applicableMapping;
+            if (type == null) {
                 protocolID = -1;
-            else
-                protocolID = Objects.requireNonNull(applicableMapping).getId();
-            if(protocolID == -2) {
+                applicableMapping = null;
+            } else {
+                applicableMapping = type.getApplicableMapping(protocolVersion);
+                if(applicableMapping == null) {
+                    protocolID = -2;
+                } else {
+                    protocolID = Objects.requireNonNull(applicableMapping).getId();
+                }
+            }
+            if (protocolID == -2) {
                 buf.writeShort(-1);
-                ProxyServer.getInstance().getLogger().warning("[Protocolize] "+type.name()+" cannot be used on protocol version "+protocolVersion);
+                ProxyServer.getInstance().getLogger().warning("[Protocolize] " + type.name() + " cannot be used on protocol version " + protocolVersion);
                 return;
             }
             buf.writeShort(protocolID);
             if (protocolID == -1)
                 return;
-            if(durability == -1)
+            if (durability == -1)
                 durability = (short) Objects.requireNonNull(applicableMapping).getData();
             buf.writeByte(amount);
             if (protocolVersion < MINECRAFT_1_13)
@@ -124,14 +131,14 @@ public final class ItemStack {
 //                setLoreTag(lore);
             }
             setLoreTag(lore);
-            if(applicableMapping instanceof AbstractCustomMapping) {
+            if (applicableMapping instanceof AbstractCustomMapping) {
                 ((AbstractCustomMapping) applicableMapping).apply(this, protocolVersion);
             }
             buf.markWriterIndex();
             try {
                 writeNBTTag(nbtdata, buf);
             } catch (final Exception e) {
-                ProxyServer.getInstance().getLogger().log(Level.WARNING, "[Protocolize] Error when writing NBT data to ItemStack: "+nbtdata, e);
+                ProxyServer.getInstance().getLogger().log(Level.WARNING, "[Protocolize] Error when writing NBT data to ItemStack: " + nbtdata, e);
                 buf.resetWriterIndex();
                 writeNBTTag(new CompoundTag("", new CompoundMap()), buf);
             }
@@ -152,7 +159,7 @@ public final class ItemStack {
         Preconditions.checkNotNull(buf, "The buf cannot be null!");
         try {
             final int id = buf.readShort();
-            if(id == -1)
+            if (id == -1)
                 return ItemStack.NO_DATA;
             if (id >= 0) {
                 final byte amount = buf.readByte();
@@ -174,7 +181,7 @@ public final class ItemStack {
                         if (damage != null)
                             durability = damage.getValue().shortValue();
                         final String json = getDisplayNameTag(tag);
-                        if(json != null) {
+                        if (json != null) {
                             final BaseComponent[] displayNameComponents = ComponentSerializer.parse(json);
                             displayName = BaseComponent.toLegacyText(displayNameComponents);
                         }
@@ -249,7 +256,7 @@ public final class ItemStack {
     }
 
     private static String getDisplayNameTag(final CompoundTag nbtdata) {
-        if(nbtdata == null)
+        if (nbtdata == null)
             return null;
         final CompoundTag display = (CompoundTag) nbtdata.getValue().get("display");
         if (display == null) {
@@ -263,7 +270,7 @@ public final class ItemStack {
     }
 
     private static List<String> getLoreTag(final CompoundTag nbtdata) {
-        if(nbtdata == null)
+        if (nbtdata == null)
             return null;
         final CompoundTag display = (CompoundTag) nbtdata.getValue().get("display");
         if (display == null) {

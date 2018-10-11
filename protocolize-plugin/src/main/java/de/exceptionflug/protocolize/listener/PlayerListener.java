@@ -23,6 +23,9 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPreLogin(final PreLoginEvent e) {
+        if(!plugin.isEnabled()) {
+            return;
+        }
         plugin.getNettyPipelineInjector().injectBefore(e.getConnection(), "inbound-boss", "protocolize-decoder", new ProtocolizeDecoderChannelHandler((AbstractPacketHandler) e.getConnection(), Stream.UPSTREAM));
         plugin.getNettyPipelineInjector().injectAfter(e.getConnection(), "protocolize-decoder", "protocolize-encoder", new ProtocolizeEncoderChannelHandler((AbstractPacketHandler) e.getConnection()));
         plugin.getNettyPipelineInjector().injectAfter(e.getConnection(), "frame-prepender", "protocolize-outbound-traffic-monitor", new ProtocolizeOutboundTrafficHandler((AbstractPacketHandler) e.getConnection(), Stream.UPSTREAM));
@@ -35,6 +38,9 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onServerSwitch(final ServerConnectedEvent e) {
+        if(!plugin.isEnabled()) {
+            return;
+        }
         plugin.getNettyPipelineInjector().injectBefore(e.getServer(), "inbound-boss", "protocolize-decoder", new ProtocolizeDecoderChannelHandler(ReflectionUtil.getDownstreamBridge(e.getServer()), Stream.DOWNSTREAM));
         plugin.getNettyPipelineInjector().injectAfter(e.getServer(), "protocolize-decoder", "protocolize-encoder", new ProtocolizeEncoderChannelHandler(ReflectionUtil.getDownstreamBridge(e.getServer())));
         plugin.getNettyPipelineInjector().injectAfter(e.getServer(), "frame-prepender", "protocolize-outbound-traffic-monitor", new ProtocolizeOutboundTrafficHandler(ReflectionUtil.getDownstreamBridge(e.getServer()), Stream.DOWNSTREAM));

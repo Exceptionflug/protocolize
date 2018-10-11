@@ -13,6 +13,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 public class ProtocolizePlugin extends Plugin {
 
     private final NettyPipelineInjector nettyPipelineInjector = new NettyPipelineInjector();
+    private boolean enabled = true;
 
     @Override
     public void onEnable() {
@@ -33,4 +34,11 @@ public class ProtocolizePlugin extends Plugin {
         return nettyPipelineInjector;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(final boolean enabled) {
+        this.enabled = enabled;
+    }
 }

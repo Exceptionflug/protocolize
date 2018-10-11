@@ -2,13 +2,9 @@ package de.exceptionflug.protocolize.netty;
 
 import de.exceptionflug.protocolize.api.CancelSendSignal;
 import de.exceptionflug.protocolize.api.protocol.ProtocolAPI;
-import de.exceptionflug.protocolize.api.protocol.Stream;
-import de.exceptionflug.protocolize.api.traffic.TrafficData;
-import de.exceptionflug.protocolize.api.util.ReflectionUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.connection.Connection;
 import net.md_5.bungee.protocol.AbstractPacketHandler;
 import net.md_5.bungee.protocol.DefinedPacket;
 
