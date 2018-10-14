@@ -38,27 +38,44 @@ public class WindowItemsAdapter extends PacketAdapter<WindowItems> {
                 final ItemStack stack = packet.getItemStackAtSlot(i);
                 final ItemStack item = playerInventory.getItem(playerSlot);
                 if(stack == null || stack.getType() == ItemType.NO_DATA) {
-                    if(item != null && !item.isHomebrew()) {
+                    if(item != null && !item.isHomebrew() && InventoryModule.isSpigotInventoryTracking()) {
                         playerInventory.removeItem(playerSlot);
                     }
-                } else {
+                } else if(InventoryModule.isSpigotInventoryTracking()) {
                     playerInventory.setItem(playerSlot, stack);
                 }
-                if(packet.setItemStackAtSlot(i, item)) {
-                    event.markForRewrite();
+                if(InventoryModule.isSpigotInventoryTracking()) {
+                    if(packet.setItemStackAtSlot(i, item)) {
+                        event.markForRewrite();
+                    }
+                } else {
+                    if(item != null && item.isHomebrew()) {
+                        if(packet.setItemStackAtSlot(i, item)) {
+                            event.markForRewrite();
+                        }
+                    }
                 }
             } else {
                 // CONTAINER
                 final ItemStack stack = packet.getItemStackAtSlot(i);
                 if(stack == null || stack.getType() == ItemType.NO_DATA) {
-                    if(inventory.getItem(i) != null && !inventory.getItem(i).isHomebrew()) {
+                    if(inventory.getItem(i) != null && !inventory.getItem(i).isHomebrew() && InventoryModule.isSpigotInventoryTracking()) {
                         inventory.removeItem(i);
                     }
-                } else {
+                } else if(InventoryModule.isSpigotInventoryTracking()) {
                     inventory.setItem(i, stack);
                 }
-                if(packet.setItemStackAtSlot(i, inventory.getItem(i))) {
-                    event.markForRewrite();
+                if(InventoryModule.isSpigotInventoryTracking()) {
+                    if(packet.setItemStackAtSlot(i, inventory.getItem(i))) {
+                        event.markForRewrite();
+                    }
+                } else {
+                    final ItemStack toWrite = inventory.getItem(i);
+                    if(toWrite != null && toWrite.isHomebrew()) {
+                        if(packet.setItemStackAtSlot(i, toWrite)) {
+                            event.markForRewrite();
+                        }
+                    }
                 }
             }
         }

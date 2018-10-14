@@ -8,6 +8,8 @@ import net.md_5.bungee.protocol.Protocol;
 
 public class ItemsModule {
 
+    private static boolean spigotInventoryTracking = false;
+
     private ItemsModule() {
     }
 
@@ -31,4 +33,11 @@ public class ItemsModule {
         ProtocolAPI.getEventManager().registerListener(new HeldItemChangeAdapter(Stream.DOWNSTREAM));
     }
 
+    public static void setSpigotInventoryTracking(final boolean spigotInventoryTracking) {
+        ItemsModule.spigotInventoryTracking = spigotInventoryTracking;
+    }
+
+    public static boolean isSpigotInventoryTracking() {
+        return spigotInventoryTracking;
+    }
 }

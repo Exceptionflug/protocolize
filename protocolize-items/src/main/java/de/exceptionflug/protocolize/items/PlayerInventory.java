@@ -1,21 +1,22 @@
 package de.exceptionflug.protocolize.items;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import de.exceptionflug.protocolize.items.packet.HeldItemChange;
 import de.exceptionflug.protocolize.items.packet.SetSlot;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public final class PlayerInventory {
 
     private final Map<Integer, ItemStack> map = Maps.newHashMap();
+    private final Set<Integer> draggingSlots = new HashSet<>();
+    private ItemStack onCursor;
     private short heldItem;
     private final UUID uuid;
+    private boolean dragging;
 
     public PlayerInventory(final UUID uuid) {
         this.uuid = uuid;
@@ -52,10 +53,11 @@ public final class PlayerInventory {
 //        getPlayer().unsafe().sendPacket(items);
         for (int i = 0; i <= 44; i++) {
             final ItemStack stack = getItem(i);
-            if(stack == null || stack.getType() == ItemType.NO_DATA) {
-                continue;
-            }
-            getPlayer().unsafe().sendPacket(new SetSlot((byte) 0, (short) i, stack));
+//            if(stack == null || stack.getType() == ItemType.NO_DATA) {
+//                getPlayer().unsafe().sendPacket(new SetSlot((byte) 0, (short) i, stack));
+//                continue;
+//            }
+            getPlayer().unsafe().sendPacket(new SetSlot((byte) 0, (short) i, stack == null ? ItemStack.NO_DATA : stack));
         }
 
     }
@@ -78,6 +80,18 @@ public final class PlayerInventory {
         return Arrays.asList(outArray);
     }
 
+    public void apply(final InventoryAction action) {
+        Preconditions.checkNotNull(action, "The action cannot be null!");
+        for(final int slot : action.getChanges().keySet()) {
+            final ItemStack stack = action.getChanges().get(slot);
+            if(stack == null) {
+                removeItem(slot);
+            } else {
+                setItem(slot, stack);
+            }
+        }
+    }
+
     public ProxiedPlayer getPlayer() {
         return ProxyServer.getInstance().getPlayer(uuid);
     }
@@ -95,6 +109,32 @@ public final class PlayerInventory {
         if(getPlayer() == null) return;
         getPlayer().unsafe().sendPacket(new HeldItemChange(rawSlot));
         getPlayer().getServer().unsafe().sendPacket(new HeldItemChange(rawSlot));
+    }
+
+    public void setOnCursor(final ItemStack onCursor) {
+        this.onCursor = onCursor;
+    }
+
+    public Set<Integer> getDraggingSlots() {
+        return draggingSlots;
+    }
+
+    public ItemStack getOnCursor() {
+        return onCursor;
+    }
+
+    public void clear() {
+        map.clear();
+    }
+
+    public void setDragging(final boolean dragging) {
+        if(!dragging)
+            draggingSlots.clear();
+        this.dragging = dragging;
+    }
+
+    public boolean isDragging() {
+        return dragging;
     }
 
 }

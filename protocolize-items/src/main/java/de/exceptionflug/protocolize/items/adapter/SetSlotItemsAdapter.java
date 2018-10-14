@@ -3,11 +3,9 @@ package de.exceptionflug.protocolize.items.adapter;
 import de.exceptionflug.protocolize.api.event.PacketReceiveEvent;
 import de.exceptionflug.protocolize.api.handler.PacketAdapter;
 import de.exceptionflug.protocolize.api.protocol.Stream;
-import de.exceptionflug.protocolize.items.InventoryManager;
-import de.exceptionflug.protocolize.items.ItemStack;
-import de.exceptionflug.protocolize.items.ItemType;
-import de.exceptionflug.protocolize.items.PlayerInventory;
+import de.exceptionflug.protocolize.items.*;
 import de.exceptionflug.protocolize.items.packet.SetSlot;
+import net.md_5.bungee.api.ProxyServer;
 
 public class SetSlotItemsAdapter extends PacketAdapter<SetSlot> {
 
@@ -23,13 +21,21 @@ public class SetSlotItemsAdapter extends PacketAdapter<SetSlot> {
         final PlayerInventory playerInventory = InventoryManager.getInventory(event.getPlayer().getUniqueId(), event.getServerInfo().getName());
         final ItemStack stack = packet.getItemStack();
         if (stack == null || stack.getType() == ItemType.NO_DATA) {
-            if (playerInventory.getItem(packet.getSlot()) != null && !playerInventory.getItem(packet.getSlot()).isHomebrew())
+            if (playerInventory.getItem(packet.getSlot()) != null && !playerInventory.getItem(packet.getSlot()).isHomebrew() && ItemsModule.isSpigotInventoryTracking())
                 playerInventory.removeItem(packet.getSlot());
-        } else {
+        } else if(ItemsModule.isSpigotInventoryTracking()) {
             playerInventory.setItem(packet.getSlot(), stack);
         }
-        packet.setItemStack(playerInventory.getItem(packet.getSlot()));
-        event.markForRewrite();
+        if(ItemsModule.isSpigotInventoryTracking()) {
+            packet.setItemStack(playerInventory.getItem(packet.getSlot()));
+            event.markForRewrite();
+        } else {
+            final ItemStack toWrite = playerInventory.getItem(packet.getSlot());
+            if(toWrite != null && toWrite.isHomebrew()) {
+                packet.setItemStack(toWrite);
+                event.markForRewrite();
+            }
+        }
     }
 
 }

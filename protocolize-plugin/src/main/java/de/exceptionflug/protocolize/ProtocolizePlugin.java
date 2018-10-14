@@ -1,5 +1,6 @@
 package de.exceptionflug.protocolize;
 
+import com.google.common.io.ByteStreams;
 import de.exceptionflug.protocolize.command.ProtocolizeCommand;
 import de.exceptionflug.protocolize.command.ProxyInvCommand;
 import de.exceptionflug.protocolize.command.TrafficCommand;
@@ -7,8 +8,15 @@ import de.exceptionflug.protocolize.injector.NettyPipelineInjector;
 import de.exceptionflug.protocolize.inventory.InventoryModule;
 import de.exceptionflug.protocolize.items.ItemsModule;
 import de.exceptionflug.protocolize.listener.PlayerListener;
+import de.exceptionflug.protocolize.world.WorldModule;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.config.Configuration;
+import net.md_5.bungee.config.ConfigurationProvider;
+import net.md_5.bungee.config.YamlConfiguration;
+
+import java.io.*;
+import java.util.logging.Level;
 
 public class ProtocolizePlugin extends Plugin {
 
@@ -21,7 +29,28 @@ public class ProtocolizePlugin extends Plugin {
         ProxyServer.getInstance().getLogger().info("Version "+getDescription().getVersion()+" by "+getDescription().getAuthor());
         ProxyServer.getInstance().getPluginManager().registerListener(this, new PlayerListener(this));
 
+        try {
+            if(!getDataFolder().exists()) {
+                getDataFolder().mkdir();
+            }
+            final File file = new File(getDataFolder(), "config.yml");
+            if(!file.exists()) {
+                file.createNewFile();
+                try (final InputStream is = getResourceAsStream("config.yml");
+                     final OutputStream os = new FileOutputStream(file)) {
+                     ByteStreams.copy(is, os);
+                }
+            }
+            final Configuration configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
+            InventoryModule.setSpigotInventoryTracking(configuration.getBoolean("experimental.spigot-gui-inventory-tracking"));
+            ItemsModule.setSpigotInventoryTracking(configuration.getBoolean("experimental.spigot-player-inventory-tracking"));
+        } catch (final IOException e) {
+            ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Failed to load config", e);
+        }
+
+
         // Init system components
+        WorldModule.initModule();
         ItemsModule.initModule();
         InventoryModule.initModule();
 

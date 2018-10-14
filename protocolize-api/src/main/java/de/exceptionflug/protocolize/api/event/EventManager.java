@@ -13,6 +13,7 @@ import net.md_5.bungee.protocol.DefinedPacket;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 
 public class EventManager {
 
@@ -45,7 +46,13 @@ public class EventManager {
                 return true;
             }
             return false;
-        }).forEach(it -> it.receive(event));
+        }).forEach(it -> {
+            try {
+                it.receive(event);
+            } catch (final Exception e) {
+                ProxyServer.getInstance().getLogger().log(Level.SEVERE,"[Protocolize] Exception caught in listener while receiving packet "+packet.getClass().getName(), e);
+            }
+        });
 //        ProxyServer.getInstance().getPluginManager().callEvent(event);
         if(event.isCancelled())
             return null;
@@ -72,7 +79,13 @@ public class EventManager {
                 return true;
             }
             return false;
-        }).forEach(it -> it.send(event));
+        }).forEach(it -> {
+            try {
+                it.send(event);
+            } catch (final Exception e) {
+                ProxyServer.getInstance().getLogger().log(Level.SEVERE,"[Protocolize] Exception caught in listener while sending packet "+packet.getClass().getName(), e);
+            }
+        });
 //        ProxyServer.getInstance().getPluginManager().callEvent(event);
         if(event.isCancelled())
             return null;

@@ -3,10 +3,7 @@ package de.exceptionflug.protocolize.items.adapter;
 import de.exceptionflug.protocolize.api.event.PacketReceiveEvent;
 import de.exceptionflug.protocolize.api.handler.PacketAdapter;
 import de.exceptionflug.protocolize.api.protocol.Stream;
-import de.exceptionflug.protocolize.items.InventoryManager;
-import de.exceptionflug.protocolize.items.ItemStack;
-import de.exceptionflug.protocolize.items.ItemType;
-import de.exceptionflug.protocolize.items.PlayerInventory;
+import de.exceptionflug.protocolize.items.*;
 import de.exceptionflug.protocolize.items.packet.WindowItems;
 import net.md_5.bungee.api.ProxyServer;
 
@@ -25,14 +22,23 @@ public class WindowItemsAdapter extends PacketAdapter<WindowItems> {
         for (int i = 0; i < packet.getItems().size(); i++) {
             final ItemStack stack = packet.getItemStackAtSlot(i);
             if(stack == null || stack.getType() == ItemType.NO_DATA) {
-                if(playerInventory.getItem(i) != null && !playerInventory.getItem(i).isHomebrew()) {
+                if(playerInventory.getItem(i) != null && !playerInventory.getItem(i).isHomebrew() && ItemsModule.isSpigotInventoryTracking()) {
                     playerInventory.removeItem(i);
                 }
-            } else {
+            } else if(ItemsModule.isSpigotInventoryTracking()) {
                 playerInventory.setItem(i, stack);
             }
-            if(packet.setItemStackAtSlot(i, playerInventory.getItem(i))) {
-                event.markForRewrite();
+            if(ItemsModule.isSpigotInventoryTracking()) {
+                if(packet.setItemStackAtSlot(i, playerInventory.getItem(i))) {
+                    event.markForRewrite();
+                }
+            } else {
+                final ItemStack toWrite = playerInventory.getItem(i);
+                if(toWrite != null && toWrite.isHomebrew()) {
+                    if(packet.setItemStackAtSlot(i, toWrite)) {
+                        event.markForRewrite();
+                    }
+                }
             }
         }
     }

@@ -8,6 +8,7 @@ import de.exceptionflug.protocolize.items.InventoryManager;
 import de.exceptionflug.protocolize.netty.ProtocolizeDecoderChannelHandler;
 import de.exceptionflug.protocolize.netty.ProtocolizeEncoderChannelHandler;
 import de.exceptionflug.protocolize.netty.ProtocolizeOutboundTrafficHandler;
+import de.exceptionflug.protocolize.world.WorldModule;
 import net.md_5.bungee.api.event.*;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
@@ -50,6 +51,7 @@ public class PlayerListener implements Listener {
     public void onQuit(final PlayerDisconnectEvent e) {
         InventoryManager.unmap(e.getPlayer().getUniqueId());
         ProtocolAPI.getTrafficManager().uncache(e.getPlayer().getName());
+        WorldModule.uncache(e.getPlayer().getUniqueId());
     }
 
 }

@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
+import io.netty.buffer.Unpooled;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -21,8 +22,9 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1_13;
+import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1_8;
 
-public final class ItemStack {
+public final class ItemStack implements Cloneable {
 
     public final static ItemStack NO_DATA = new ItemStack(ItemType.NO_DATA);
 
@@ -302,6 +304,18 @@ public final class ItemStack {
                 Objects.equals(displayName, stack.displayName) &&
                 type == stack.type &&
                 Objects.equals(nbtdata, stack.nbtdata);
+    }
+
+    public ItemStack deepClone() {
+        final ByteBuf buf = Unpooled.buffer();
+        write(buf, MINECRAFT_1_8);
+        final ItemStack itemStack = read(buf, MINECRAFT_1_8);
+        itemStack.homebrew = homebrew;
+        return itemStack;
+    }
+
+    public boolean canBeStacked(final ItemStack stack) {
+        return stack.getType() == type && stack.getNBTTag().equals(nbtdata);
     }
 
     @Override

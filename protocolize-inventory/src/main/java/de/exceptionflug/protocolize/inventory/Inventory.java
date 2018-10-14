@@ -1,6 +1,8 @@
 package de.exceptionflug.protocolize.inventory;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
+import de.exceptionflug.protocolize.items.InventoryAction;
 import de.exceptionflug.protocolize.items.ItemStack;
 import de.exceptionflug.protocolize.items.ItemType;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -97,6 +99,18 @@ public class Inventory {
 
     public void setHomebrew(final boolean homebrew) {
         this.homebrew = homebrew;
+    }
+
+    public void apply(final InventoryAction action) {
+        Preconditions.checkNotNull(action, "The action cannot be null!");
+        for(final int slot : action.getChanges().keySet()) {
+            final ItemStack stack = action.getChanges().get(slot);
+            if(stack == null) {
+                removeItem(slot);
+            } else {
+                setItem(slot, stack);
+            }
+        }
     }
 
     @Override
