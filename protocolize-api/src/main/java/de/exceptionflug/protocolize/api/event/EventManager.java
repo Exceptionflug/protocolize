@@ -11,6 +11,7 @@ import net.md_5.bungee.protocol.AbstractPacketHandler;
 import net.md_5.bungee.protocol.DefinedPacket;
 
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -38,7 +39,7 @@ public class EventManager {
             return null;
         }
         final PacketReceiveEvent event = new PacketReceiveEvent<>(connection, abstractPacketHandler, packet);
-        listeners.stream().filter(it -> {
+        listeners.stream().sorted(Comparator.comparingInt(PacketListener::getPriority)).filter(it -> {
             final Stream stream = it.getStream();
             if(stream == Stream.DOWNSTREAM && sentByServer) {
                 return true;
@@ -71,7 +72,7 @@ public class EventManager {
             return packet;
         }
         final PacketSendEvent event = new PacketSendEvent<>(connection, abstractPacketHandler, packet);
-        listeners.stream().filter(it -> {
+        listeners.stream().sorted(Comparator.comparingInt(PacketListener::getPriority)).filter(it -> {
             final Stream stream = it.getStream();
             if(stream == Stream.DOWNSTREAM && sentToServer) {
                 return true;

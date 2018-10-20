@@ -12,5 +12,6 @@ public interface PacketListener<T extends DefinedPacket> {
 
     Stream getStream();
     Class<T> getPacketClass();
+    byte getPriority();
 
 }
