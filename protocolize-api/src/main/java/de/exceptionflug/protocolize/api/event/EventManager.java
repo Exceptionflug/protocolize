@@ -35,7 +35,7 @@ public class EventManager {
         final Connection connection = ReflectionUtil.getConnection(abstractPacketHandler, sentByServer);
         if(connection == null) {
             // Channel not initialized.
-            ProxyServer.getInstance().getLogger().warning("[Protocolize] Handling inbound packet while channel not initialized.");
+//            ProxyServer.getInstance().getLogger().warning("[Protocolize] Handling inbound packet while channel not initialized.");
             return null;
         }
         final PacketReceiveEvent event = new PacketReceiveEvent<>(connection, abstractPacketHandler, packet);
@@ -68,7 +68,7 @@ public class EventManager {
         final Connection connection = ReflectionUtil.getConnection(abstractPacketHandler, sentToServer);
         if(connection == null) {
             // Channel not initialized.
-            ProxyServer.getInstance().getLogger().warning("Handling outbound packet while channel not initialized.");
+//            ProxyServer.getInstance().getLogger().warning("Handling outbound packet while channel not initialized.");
             return packet;
         }
         final PacketSendEvent event = new PacketSendEvent<>(connection, abstractPacketHandler, packet);

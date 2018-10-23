@@ -293,19 +293,6 @@ public final class ItemStack implements Cloneable {
         this.lore = lore;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ItemStack stack = (ItemStack) o;
-        return amount == stack.amount &&
-                durability == stack.durability &&
-                homebrew == stack.homebrew &&
-                Objects.equals(displayName, stack.displayName) &&
-                type == stack.type &&
-                Objects.equals(nbtdata, stack.nbtdata);
-    }
-
     public ItemStack deepClone() {
         final ByteBuf buf = Unpooled.buffer();
         write(buf, MINECRAFT_1_8);
@@ -319,19 +306,33 @@ public final class ItemStack implements Cloneable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ItemStack stack = (ItemStack) o;
+        return amount == stack.amount &&
+                durability == stack.durability &&
+                homebrew == stack.homebrew &&
+                Objects.equals(displayName, stack.displayName) &&
+                Objects.equals(lore, stack.lore) &&
+                type == stack.type &&
+                Objects.equals(nbtdata, stack.nbtdata);
+    }
+
+    @Override
     public int hashCode() {
-        return Objects.hash(displayName, amount, durability, type, homebrew, nbtdata);
+        return Objects.hash(displayName, lore, amount, durability, type, homebrew, nbtdata);
     }
 
     @Override
     public String toString() {
         return "ItemStack{" +
                 "displayName='" + displayName + '\'' +
+                ", lore=" + lore +
                 ", amount=" + amount +
                 ", durability=" + durability +
                 ", type=" + type +
                 ", homebrew=" + homebrew +
-                ", nbtdata=" + nbtdata +
                 '}';
     }
 }
