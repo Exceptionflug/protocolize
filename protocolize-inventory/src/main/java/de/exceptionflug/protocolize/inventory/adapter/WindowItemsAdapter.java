@@ -27,7 +27,8 @@ public class WindowItemsAdapter extends PacketAdapter<WindowItems> {
             return;
         final Inventory inventory = InventoryModule.getInventory(event.getPlayer().getUniqueId(), packet.getWindowId());
         if(inventory == null) {
-            ProxyServer.getInstance().getLogger().warning("[Protocolize] Try to set items in unknown inventory! player = "+event.getPlayer().getName()+" packet = "+packet);
+            if(InventoryModule.isSpigotInventoryTracking())
+                ProxyServer.getInstance().getLogger().warning("[Protocolize] Try to set items in unknown inventory! player = "+event.getPlayer().getName()+" packet = "+packet);
             return;
         }
         final PlayerInventory playerInventory = InventoryManager.getCombinedSendInventory(event.getPlayer().getUniqueId(), event.getServerInfo().getName());

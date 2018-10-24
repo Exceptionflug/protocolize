@@ -25,7 +25,7 @@ public class ConfirmTransactionAdapter extends PacketAdapter<ConfirmTransaction>
         final ConfirmTransaction packet = event.getPacket();
         final UUID uniqueId = event.getPlayer().getUniqueId();
         final InventoryAction action = InventoryModule.getInventoryAction(uniqueId, packet.getWindowId(), packet.getActionNumber());
-        if(action == null) {
+        if(action == null || InventoryModule.isSpigotInventoryTracking()) {
             return;
         }
         if(packet.isAccepted()) {
@@ -61,15 +61,11 @@ public class ConfirmTransactionAdapter extends PacketAdapter<ConfirmTransaction>
                 playerInventory.setDragging(false);
             }
             if(packet.getWindowId() == 0) {
-                InventoryManager.getInventory(ProxyServer.getInstance().getPlayer("Exceptionflausch").getUniqueId(), event.getServerInfo().getName()).apply(action);
-                InventoryManager.getInventory(ProxyServer.getInstance().getPlayer("Exceptionflausch").getUniqueId(), event.getServerInfo().getName()).update();
                 playerInventory.apply(action);
             } else {
                 InventoryModule.getInventory(uniqueId, packet.getWindowId()).apply(action);
             }
             playerInventory.setOnCursor(action.getNewCursor());
-        } else {
-
         }
         InventoryModule.unregisterInventoryAction(uniqueId, packet.getWindowId(), packet.getActionNumber());
     }
