@@ -10,10 +10,10 @@ import de.exceptionflug.protocolize.inventory.InventoryModule;
 import de.exceptionflug.protocolize.inventory.InventoryType;
 import de.exceptionflug.protocolize.inventory.event.InventoryClickEvent;
 import de.exceptionflug.protocolize.inventory.packet.ClickWindow;
-import de.exceptionflug.protocolize.items.InventoryAction;
-import de.exceptionflug.protocolize.items.InventoryManager;
-import de.exceptionflug.protocolize.items.ItemStack;
-import de.exceptionflug.protocolize.items.PlayerInventory;
+import de.exceptionflug.protocolize.inventory.packet.ConfirmTransaction;
+import de.exceptionflug.protocolize.inventory.packet.OpenWindow;
+import de.exceptionflug.protocolize.items.*;
+import de.exceptionflug.protocolize.items.packet.SetSlot;
 import de.exceptionflug.protocolize.world.Gamemode;
 import de.exceptionflug.protocolize.world.WorldModule;
 import net.md_5.bungee.api.ProxyServer;
@@ -53,6 +53,8 @@ public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
                 else
                     InventoryManager.getInventory(event.getPlayer().getUniqueId()).update();
             }
+            event.getPlayer().unsafe().sendPacket(new SetSlot((byte)-1, (short)-1, new ItemStack(ItemType.NO_DATA)));
+//            event.getPlayer().unsafe().sendPacket(new ConfirmTransaction((byte)clickWindow.getWindowId(), (short) clickWindow.getActionNumber(), false));
             return;
         }
         if(clickWindow.getActionNumber() != clickEvent.getActionNumber()) {

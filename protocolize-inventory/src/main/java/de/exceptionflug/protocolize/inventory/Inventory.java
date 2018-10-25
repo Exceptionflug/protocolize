@@ -5,7 +5,9 @@ import com.google.common.collect.Maps;
 import de.exceptionflug.protocolize.items.InventoryAction;
 import de.exceptionflug.protocolize.items.ItemStack;
 import de.exceptionflug.protocolize.items.ItemType;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.Arrays;
 import java.util.List;
@@ -77,8 +79,9 @@ public class Inventory {
 
     public boolean setItem(final int slot, final ItemStack stack) {
         if(getItem(slot) != null) {
-            if(getItem(slot).isHomebrew() && !stack.isHomebrew())
+            if(getItem(slot).isHomebrew() && !stack.isHomebrew()) {
                 return false;
+            }
         }
         items.put(slot, stack);
         return true;

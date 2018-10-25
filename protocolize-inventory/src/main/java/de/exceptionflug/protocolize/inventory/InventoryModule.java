@@ -10,10 +10,7 @@ import de.exceptionflug.protocolize.inventory.adapter.*;
 import de.exceptionflug.protocolize.inventory.event.InventoryCloseEvent;
 import de.exceptionflug.protocolize.inventory.event.InventoryOpenEvent;
 import de.exceptionflug.protocolize.inventory.packet.*;
-import de.exceptionflug.protocolize.items.InventoryAction;
-import de.exceptionflug.protocolize.items.InventoryManager;
-import de.exceptionflug.protocolize.items.ItemStack;
-import de.exceptionflug.protocolize.items.PlayerInventory;
+import de.exceptionflug.protocolize.items.*;
 import de.exceptionflug.protocolize.items.packet.WindowItems;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -176,15 +173,17 @@ public final class InventoryModule {
         if(inventory.getType() == InventoryType.CRAFTING_TABLE)
             inventory.setSize(0);
 
-        p.unsafe().sendPacket(new OpenWindow(windowId, inventory.getSize(), inventory.getType(), inventory.getTitle()));
+        if(!alreadyOpen)
+            p.unsafe().sendPacket(new OpenWindow(windowId, inventory.getSize(), inventory.getType(), inventory.getTitle()));
         final List<ItemStack> items = Lists.newArrayList(inventory.getItemsIndexed());
 
         if(inventory.getType() == InventoryType.BREWING_STAND && ReflectionUtil.getProtocolVersion(p) == MINECRAFT_1_8)
             items.remove(4);
 
-//        ProxyServer.getInstance().broadcast(items.toString());
-        final PlayerInventory playerInventory = InventoryManager.getInventory(p.getUniqueId());
-        items.addAll(playerInventory.getItemsIndexedContainer());
+        if(ItemsModule.isSpigotInventoryTracking()) {
+            final PlayerInventory playerInventory = InventoryManager.getInventory(p.getUniqueId());
+            items.addAll(playerInventory.getItemsIndexedContainer());
+        }
         p.unsafe().sendPacket(new WindowItems((short)windowId, items));
     }
 
