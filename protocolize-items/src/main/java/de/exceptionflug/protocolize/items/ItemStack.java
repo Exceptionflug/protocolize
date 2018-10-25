@@ -13,6 +13,7 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
+import net.md_5.bungee.protocol.DefinedPacket;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1_13;
+import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1_13_2;
 import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1_8;
 
 public final class ItemStack implements Cloneable {
@@ -107,9 +109,19 @@ public final class ItemStack implements Cloneable {
                 ProxyServer.getInstance().getLogger().warning("[Protocolize] " + type.name() + " cannot be used on protocol version " + protocolVersion);
                 return;
             }
-            buf.writeShort(protocolID);
-            if (protocolID == -1)
-                return;
+            if(protocolVersion < MINECRAFT_1_13_2) {
+                buf.writeShort(protocolID);
+                if (protocolID == -1)
+                    return;
+            } else {
+                if(protocolID == -1) {
+                    buf.writeBoolean(false);
+                    return;
+                } else {
+                    buf.writeBoolean(true);
+                    DefinedPacket.writeVarInt(protocolID, buf);
+                }
+            }
             if (durability == -1)
                 durability = (short) Objects.requireNonNull(applicableMapping).getData();
             buf.writeByte(amount);
@@ -160,7 +172,16 @@ public final class ItemStack implements Cloneable {
     public static ItemStack read(final ByteBuf buf, final int protocolVersion) {
         Preconditions.checkNotNull(buf, "The buf cannot be null!");
         try {
-            final int id = buf.readShort();
+            final int id;
+            if(protocolVersion < MINECRAFT_1_13_2) {
+                id = buf.readShort();
+            } else {
+                final boolean present = buf.readBoolean();
+                if(present)
+                    id = DefinedPacket.readVarInt(buf);
+                else
+                    id = -1;
+            }
             if (id == -1)
                 return ItemStack.NO_DATA;
             if (id >= 0) {

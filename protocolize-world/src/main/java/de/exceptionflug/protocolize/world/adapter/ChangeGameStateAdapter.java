@@ -17,15 +17,7 @@ public class ChangeGameStateAdapter extends PacketAdapter<ChangeGameState> {
     @Override
     public void receive(final PacketReceiveEvent<ChangeGameState> event) {
         if(event.getPacket().getReason() == Reason.CHANGE_GAMEMODE) {
-            if (event.getPacket().getValue() == 0) {
-                WorldModule.setInternalGamemode(event.getPlayer().getUniqueId(), Gamemode.SURVIVAL);
-            } else if (event.getPacket().getValue() == 1) {
-                WorldModule.setInternalGamemode(event.getPlayer().getUniqueId(), Gamemode.CREATIVE);
-            } else if (event.getPacket().getValue() == 2) {
-                WorldModule.setInternalGamemode(event.getPlayer().getUniqueId(), Gamemode.ADVENTURE);
-            } else if (event.getPacket().getValue() == 3) {
-                WorldModule.setInternalGamemode(event.getPlayer().getUniqueId(), Gamemode.SPECTATOR);
-            }
+            WorldModule.setInternalGamemode(event.getPlayer().getUniqueId(), Gamemode.getByID((int) event.getPacket().getValue()));
         }
     }
 }

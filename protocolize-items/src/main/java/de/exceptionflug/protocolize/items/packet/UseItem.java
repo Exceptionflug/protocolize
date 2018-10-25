@@ -28,6 +28,7 @@ public class UseItem extends AbstractPacket {
         MAPPING.put(MINECRAFT_1_12_2, 0x20);
         MAPPING.put(MINECRAFT_1_13, 0x2A);
         MAPPING.put(MINECRAFT_1_13_1, 0x2A);
+        MAPPING.put(MINECRAFT_1_13_2, 0x2A);
     }
 
     private Hand hand;

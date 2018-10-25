@@ -29,6 +29,7 @@ public class CloseWindow extends AbstractPacket {
         MAPPING_CLIENTBOUND.put(MINECRAFT_1_12_2, 0x12);
         MAPPING_CLIENTBOUND.put(MINECRAFT_1_13, 0x13);
         MAPPING_CLIENTBOUND.put(MINECRAFT_1_13_1, 0x13);
+        MAPPING_CLIENTBOUND.put(MINECRAFT_1_13_2, 0x13);
 
         MAPPING_SERVERBOUND.put(MINECRAFT_1_8, 0x0D);
         MAPPING_SERVERBOUND.put(MINECRAFT_1_9, 0x08);
@@ -43,6 +44,7 @@ public class CloseWindow extends AbstractPacket {
         MAPPING_SERVERBOUND.put(MINECRAFT_1_12_2, 0x09);
         MAPPING_SERVERBOUND.put(MINECRAFT_1_13, 0x09);
         MAPPING_SERVERBOUND.put(MINECRAFT_1_13_1, 0x09);
+        MAPPING_SERVERBOUND.put(MINECRAFT_1_13_2, 0x09);
     }
 
     private int windowId;
