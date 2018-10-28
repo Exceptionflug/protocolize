@@ -3,6 +3,7 @@ package de.exceptionflug.protocolize.inventory.packet;
 import com.google.common.collect.Maps;
 import de.exceptionflug.protocolize.api.protocol.AbstractPacket;
 import io.netty.buffer.ByteBuf;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 
 import java.util.Map;
@@ -30,7 +31,7 @@ public class ConfirmTransaction extends AbstractPacket {
         MAPPING_CLIENTBOUND.put(MINECRAFT_1_12_2, 0x11);
         MAPPING_CLIENTBOUND.put(MINECRAFT_1_13, 0x11);
         MAPPING_CLIENTBOUND.put(MINECRAFT_1_13_1, 0x12);
-        MAPPING_CLIENTBOUND.put(MINECRAFT_1_13_2, 0x13);
+        MAPPING_CLIENTBOUND.put(MINECRAFT_1_13_2, 0x12);
 
         MAPPING_SERVERBOUND.put(MINECRAFT_1_9, 0x05);
         MAPPING_SERVERBOUND.put(MINECRAFT_1_9_1, 0x05);
@@ -47,7 +48,7 @@ public class ConfirmTransaction extends AbstractPacket {
         MAPPING_SERVERBOUND.put(MINECRAFT_1_13_2, 0x06);
     }
 
-    private byte windowId;
+    private int windowId;
     private short actionNumber;
     private boolean accepted;
 
@@ -61,11 +62,11 @@ public class ConfirmTransaction extends AbstractPacket {
 
     }
 
-    public byte getWindowId() {
+    public int getWindowId() {
         return windowId;
     }
 
-    public void setWindowId(final byte windowId) {
+    public void setWindowId(final int windowId) {
         this.windowId = windowId;
     }
 
@@ -87,7 +88,10 @@ public class ConfirmTransaction extends AbstractPacket {
 
     @Override
     public void read(final ByteBuf buf, final Direction direction, final int protocolVersion) {
-        windowId = buf.readByte();
+        if (protocolVersion >= MINECRAFT_1_13 && direction == Direction.TO_CLIENT)
+            windowId = buf.readUnsignedByte();
+        else
+            windowId = buf.readByte();
         actionNumber = buf.readShort();
         accepted = buf.readBoolean();
     }

@@ -57,12 +57,15 @@ public class CloseWindow extends AbstractPacket {
 
     @Override
     public void read(final ByteBuf buf, final Direction direction, final int protocolVersion) {
-        windowId = buf.readUnsignedByte();
+        if(protocolVersion >= MINECRAFT_1_13 && direction == Direction.TO_CLIENT)
+            windowId = buf.readByte();
+        else
+            windowId = buf.readUnsignedByte();
     }
 
     @Override
     public void write(final ByteBuf buf, final Direction direction, final int protocolVersion) {
-        buf.writeByte(windowId & 0xFF);
+        buf.writeByte(windowId);
     }
 
     public int getWindowId() {
