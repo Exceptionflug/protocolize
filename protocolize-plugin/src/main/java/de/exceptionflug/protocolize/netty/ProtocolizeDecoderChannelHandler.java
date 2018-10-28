@@ -16,6 +16,7 @@ import net.md_5.bungee.protocol.*;
 import net.md_5.bungee.protocol.Protocol.DirectionData;
 import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 
+import java.nio.channels.ClosedChannelException;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -109,7 +110,15 @@ public class ProtocolizeDecoderChannelHandler extends MessageToMessageDecoder<Pa
     public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) throws Exception {
         if (cause.getClass().equals(CancelSendSignal.INSTANCE.getClass()))
             throw ((Error) cause);
-        ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Exception caught in decoder.", cause);
+        if(cause instanceof ClosedChannelException) {
+            ProxyServer.getInstance().getLogger().warning("[Protocolize] Connection interrupted: "+connection.toString()+" @ protocol "+protocolVersion+" for "+stream.name()+" (channel closed)");
+            return;
+        }
+        ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] === EXCEPTION CAUGHT IN DECODER ===");
+        ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Stream: "+stream.name());
+        ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Connection: "+connection.toString());
+        ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Protocol version: "+protocolVersion);
+        cause.printStackTrace();
     }
 
     private DirectionData getDirectionData() {

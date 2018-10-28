@@ -1,6 +1,7 @@
 package de.exceptionflug.protocolize;
 
 import com.google.common.io.ByteStreams;
+import de.exceptionflug.protocolize.api.protocol.ProtocolAPI;
 import de.exceptionflug.protocolize.command.ProtocolizeCommand;
 import de.exceptionflug.protocolize.command.ProxyInvCommand;
 import de.exceptionflug.protocolize.command.TrafficCommand;
@@ -44,6 +45,7 @@ public class ProtocolizePlugin extends Plugin {
             final Configuration configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
             InventoryModule.setSpigotInventoryTracking(configuration.getBoolean("experimental.spigot-gui-inventory-tracking"));
             ItemsModule.setSpigotInventoryTracking(configuration.getBoolean("experimental.spigot-player-inventory-tracking"));
+            ProtocolAPI.getEventManager().setFireBungeeEvent(configuration.getBoolean("fireBungeeEvents"));
         } catch (final IOException e) {
             ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Failed to load config", e);
         }

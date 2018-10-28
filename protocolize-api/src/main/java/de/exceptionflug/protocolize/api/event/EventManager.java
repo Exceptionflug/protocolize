@@ -19,6 +19,7 @@ import java.util.logging.Level;
 public class EventManager {
 
     private final List<PacketListener> packetListeners = Lists.newArrayList();
+    private boolean fireBungeeEvent;
 
     public void registerListener(final PacketListener listener) {
         Preconditions.checkNotNull(listener, "The listener cannot be null!");
@@ -87,7 +88,9 @@ public class EventManager {
                 ProxyServer.getInstance().getLogger().log(Level.SEVERE,"[Protocolize] Exception caught in listener while sending packet "+packet.getClass().getName(), e);
             }
         });
-//        ProxyServer.getInstance().getPluginManager().callEvent(event);
+        if(shouldFireBungeeEvent()) {
+            ProxyServer.getInstance().getPluginManager().callEvent(event);
+        }
         if(event.isCancelled())
             return null;
         return event.getPacket();
@@ -103,4 +106,11 @@ public class EventManager {
         return out;
     }
 
+    public void setFireBungeeEvent(final boolean fireBungeeEvent) {
+        this.fireBungeeEvent = fireBungeeEvent;
+    }
+
+    public boolean shouldFireBungeeEvent() {
+        return fireBungeeEvent;
+    }
 }
