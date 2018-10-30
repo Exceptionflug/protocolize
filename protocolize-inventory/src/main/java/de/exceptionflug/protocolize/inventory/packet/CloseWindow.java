@@ -39,7 +39,7 @@ public class CloseWindow extends AbstractPacket {
         MAPPING_SERVERBOUND.put(MINECRAFT_1_10, 0x08);
         MAPPING_SERVERBOUND.put(MINECRAFT_1_11, 0x08);
         MAPPING_SERVERBOUND.put(MINECRAFT_1_11_1, 0x08);
-        MAPPING_SERVERBOUND.put(MINECRAFT_1_12, 0x08);
+        MAPPING_SERVERBOUND.put(MINECRAFT_1_12, 0x09);
         MAPPING_SERVERBOUND.put(MINECRAFT_1_12_1, 0x08);
         MAPPING_SERVERBOUND.put(MINECRAFT_1_12_2, 0x08);
         MAPPING_SERVERBOUND.put(MINECRAFT_1_13, 0x09);
@@ -57,7 +57,7 @@ public class CloseWindow extends AbstractPacket {
 
     @Override
     public void read(final ByteBuf buf, final Direction direction, final int protocolVersion) {
-        if(protocolVersion >= MINECRAFT_1_13 && direction == Direction.TO_CLIENT)
+        if(protocolVersion >= MINECRAFT_1_12 && direction == Direction.TO_CLIENT)
             windowId = buf.readByte();
         else
             windowId = buf.readUnsignedByte();

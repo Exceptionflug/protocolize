@@ -88,7 +88,7 @@ public class ConfirmTransaction extends AbstractPacket {
 
     @Override
     public void read(final ByteBuf buf, final Direction direction, final int protocolVersion) {
-        if (protocolVersion >= MINECRAFT_1_13 && direction == Direction.TO_CLIENT)
+        if (protocolVersion >= MINECRAFT_1_12 && direction == Direction.TO_CLIENT)
             windowId = buf.readUnsignedByte();
         else
             windowId = buf.readByte();

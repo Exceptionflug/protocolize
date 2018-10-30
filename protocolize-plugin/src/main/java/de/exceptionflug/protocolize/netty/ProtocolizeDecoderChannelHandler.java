@@ -9,6 +9,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.unix.Errors.NativeIoException;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.Connection;
@@ -113,6 +114,8 @@ public class ProtocolizeDecoderChannelHandler extends MessageToMessageDecoder<Pa
         if(cause instanceof ClosedChannelException) {
             ProxyServer.getInstance().getLogger().warning("[Protocolize] Connection interrupted: "+connection.toString()+" @ protocol "+protocolVersion+" for "+stream.name()+" (channel closed)");
             return;
+        } else if(cause instanceof NativeIoException) {
+            return; // Suppress this annoying shit...
         }
         ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] === EXCEPTION CAUGHT IN DECODER ===");
         ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Stream: "+stream.name());
