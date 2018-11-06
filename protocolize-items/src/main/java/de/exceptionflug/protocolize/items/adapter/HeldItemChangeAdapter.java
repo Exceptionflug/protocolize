@@ -15,6 +15,8 @@ public class HeldItemChangeAdapter extends PacketAdapter<HeldItemChange> {
 
     @Override
     public void receive(final PacketReceiveEvent<HeldItemChange> event) {
+        if(event.getServerInfo() == null)
+            return;
         final PlayerInventory inventory = InventoryManager.getInventory(event.getPlayer().getUniqueId(), event.getServerInfo().getName());
         inventory.setHeldItem(event.getPacket().getNewSlot());
     }

@@ -30,51 +30,50 @@ public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
     public void receive(final PacketReceiveEvent<ClickWindow> event) {
         final ClickWindow clickWindow = event.getPacket();
         final Inventory inventory = InventoryModule.getInventory(event.getPlayer().getUniqueId(), clickWindow.getWindowId());
-        if(inventory == null) {
-            ProxyServer.getInstance().getLogger().warning("[Protocolize] "+event.getPlayer().getName()+" has no open inventory with id "+clickWindow.getWindowId());
+        if (inventory == null) {
+            ProxyServer.getInstance().getLogger().warning("[Protocolize] " + event.getPlayer().getName() + " has no open inventory with id " + clickWindow.getWindowId());
             return;
         }
 
         short slot = clickWindow.getSlot();
-        if(inventory.getType() == InventoryType.BREWING_STAND && ReflectionUtil.getProtocolVersion(event.getPlayer()) == MINECRAFT_1_8) {
+        if (inventory.getType() == InventoryType.BREWING_STAND && ReflectionUtil.getProtocolVersion(event.getPlayer()) == MINECRAFT_1_8) {
             // Insert missing slot 4 for 1.8 clients into slot calculation
-            if(slot >= 4)
-                slot ++;
+            if (slot >= 4)
+                slot++;
         }
 
         final InventoryClickEvent clickEvent = new InventoryClickEvent(event.getPlayer(), inventory, slot, clickWindow.getWindowId(), clickWindow.getClickType(), clickWindow.getActionNumber());
         ProxyServer.getInstance().getPluginManager().callEvent(clickEvent);
 
-        if(clickEvent.isCancelled() || inventory.isHomebrew()) {
+        if (clickEvent.isCancelled() || inventory.isHomebrew()) {
             event.setCancelled(true);
-            if(InventoryModule.getInventory(event.getPlayer().getUniqueId(), clickWindow.getWindowId()) != null) {
-                if(inventory.getType() != InventoryType.PLAYER)
-                    InventoryModule.sendInventory(event.getPlayer(), inventory);
-                else
-                    InventoryManager.getInventory(event.getPlayer().getUniqueId()).update();
-            }
-            event.getPlayer().unsafe().sendPacket(new SetSlot((byte)-1, (short)-1, new ItemStack(ItemType.NO_DATA)));
+            event.getPlayer().sendMessage(clickEvent.getClickedItem() == null ? "EMPTY" : clickEvent.getClickedItem().getType().name());
+            if (inventory.getType() != InventoryType.PLAYER)
+                InventoryModule.sendInventory(event.getPlayer(), inventory);
+            else
+                InventoryManager.getInventory(event.getPlayer().getUniqueId()).update();
+            event.getPlayer().unsafe().sendPacket(new SetSlot((byte) -1, (short) -1, new ItemStack(ItemType.NO_DATA)));
 //            event.getPlayer().unsafe().sendPacket(new ConfirmTransaction((byte)clickWindow.getWindowId(), (short) clickWindow.getActionNumber(), false));
             return;
         }
-        if(clickWindow.getActionNumber() != clickEvent.getActionNumber()) {
+        if (clickWindow.getActionNumber() != clickEvent.getActionNumber()) {
             clickWindow.setActionNumber(clickEvent.getActionNumber());
             event.markForRewrite();
         }
-        if(clickWindow.getWindowId() != clickEvent.getWindowId()) {
+        if (clickWindow.getWindowId() != clickEvent.getWindowId()) {
             clickWindow.setWindowId(clickEvent.getWindowId());
             event.markForRewrite();
         }
-        if(clickWindow.getClickType() != clickEvent.getClickType()) {
+        if (clickWindow.getClickType() != clickEvent.getClickType()) {
             clickWindow.setClickType(clickEvent.getClickType());
             event.markForRewrite();
         }
-        if(slot != clickEvent.getSlot()) {
+        if (slot != clickEvent.getSlot()) {
             clickWindow.setSlot((short) clickEvent.getSlot());
             event.markForRewrite();
         }
 
-        if(InventoryModule.isSpigotInventoryTracking()) {
+        if (InventoryModule.isSpigotInventoryTracking()) {
             handleClick(clickEvent, event);
         }
     }
@@ -84,22 +83,22 @@ public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
         final InventoryAction action = new InventoryAction();
         action.setPreviousCursor(playerInventory.getOnCursor());
 
-        if(clickEvent.getClickType() == ClickType.LEFT_CLICK) {
-            if(playerInventory.getOnCursor() == null) {
-                if(clickEvent.getClickedItem() != null) {
+        if (clickEvent.getClickType() == ClickType.LEFT_CLICK) {
+            if (playerInventory.getOnCursor() == null) {
+                if (clickEvent.getClickedItem() != null) {
                     action.setNewCursor(clickEvent.getClickedItem().deepClone());
                     action.removeItem(clickEvent.getSlot());
                 }
             } else {
-                if(clickEvent.getClickedItem() == null) {
+                if (clickEvent.getClickedItem() == null) {
                     action.setItem(clickEvent.getSlot(), playerInventory.getOnCursor().deepClone());
                     action.setNewCursor(null);
                 } else {
-                    if(clickEvent.getClickedItem().canBeStacked(playerInventory.getOnCursor())) {
-                        if(clickEvent.getClickedItem().getAmount() + playerInventory.getOnCursor().getAmount() > clickEvent.getClickedItem().getType().getMaxStackSize()) {
+                    if (clickEvent.getClickedItem().canBeStacked(playerInventory.getOnCursor())) {
+                        if (clickEvent.getClickedItem().getAmount() + playerInventory.getOnCursor().getAmount() > clickEvent.getClickedItem().getType().getMaxStackSize()) {
                             final int tillFull = clickEvent.getClickedItem().getType().getMaxStackSize() - clickEvent.getClickedItem().getAmount();
                             final ItemStack newCursor = playerInventory.getOnCursor().deepClone();
-                            newCursor.setAmount((byte) (newCursor.getAmount()-tillFull));
+                            newCursor.setAmount((byte) (newCursor.getAmount() - tillFull));
                             action.setNewCursor(newCursor);
                             final ItemStack stack = clickEvent.getClickedItem().deepClone();
                             stack.setAmount((byte) stack.getType().getMaxStackSize());
@@ -116,9 +115,9 @@ public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
                     }
                 }
             }
-        } else if(clickEvent.getClickType() == ClickType.RIGHT_CLICK) {
-            if(playerInventory.getOnCursor() == null) {
-                if(clickEvent.getClickedItem() != null) {
+        } else if (clickEvent.getClickType() == ClickType.RIGHT_CLICK) {
+            if (playerInventory.getOnCursor() == null) {
+                if (clickEvent.getClickedItem() != null) {
                     final ItemStack inv = clickEvent.getClickedItem().deepClone();
                     final ItemStack cursor = inv.deepClone();
                     final double half = (double) cursor.getAmount() / 2;
@@ -128,14 +127,14 @@ public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
                     action.setItem(clickEvent.getSlot(), inv);
                 }
             } else {
-                if(clickEvent.getClickedItem() == null) {
+                if (clickEvent.getClickedItem() == null) {
                     final ItemStack newItem = playerInventory.getOnCursor().deepClone();
                     newItem.setAmount((byte) 1);
                     action.setItem(clickEvent.getSlot(), newItem);
 
                     final ItemStack cursor = playerInventory.getOnCursor().deepClone();
-                    cursor.setAmount((byte) (cursor.getAmount() -1));
-                    if(cursor.getAmount() <= 0) {
+                    cursor.setAmount((byte) (cursor.getAmount() - 1));
+                    if (cursor.getAmount() <= 0) {
                         action.setNewCursor(null);
                     } else {
                         action.setNewCursor(cursor);
@@ -143,13 +142,13 @@ public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
                 } else {
                     final ItemStack cursor = playerInventory.getOnCursor().deepClone();
                     final ItemStack current = clickEvent.getClickedItem().deepClone();
-                    if(current.canBeStacked(cursor)) {
-                        if(current.getAmount()+1 < current.getType().getMaxStackSize()) {
-                            cursor.setAmount((byte) (cursor.getAmount()-1));
-                            current.setAmount((byte) (current.getAmount()+1));
+                    if (current.canBeStacked(cursor)) {
+                        if (current.getAmount() + 1 < current.getType().getMaxStackSize()) {
+                            cursor.setAmount((byte) (cursor.getAmount() - 1));
+                            current.setAmount((byte) (current.getAmount() + 1));
                             action.setItem(clickEvent.getSlot(), current);
                         }
-                        if(cursor.getAmount() <= 0) {
+                        if (cursor.getAmount() <= 0) {
                             action.setNewCursor(null);
                         } else {
                             action.setNewCursor(cursor);
@@ -160,38 +159,38 @@ public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
                     }
                 }
             }
-        } else if(clickEvent.getClickType() == ClickType.CREATIVE_MIDDLE_CLICK) {
-            if(WorldModule.getGamemode(event.getPlayer().getUniqueId()) != null && WorldModule.getGamemode(event.getPlayer().getUniqueId()) == Gamemode.CREATIVE) {
+        } else if (clickEvent.getClickType() == ClickType.CREATIVE_MIDDLE_CLICK) {
+            if (WorldModule.getGamemode(event.getPlayer().getUniqueId()) != null && WorldModule.getGamemode(event.getPlayer().getUniqueId()) == Gamemode.CREATIVE) {
                 final ItemStack newCursor = clickEvent.getClickedItem().deepClone();
                 newCursor.setAmount((byte) newCursor.getType().getMaxStackSize());
                 action.setNewCursor(newCursor);
             } else {
                 action.setNewCursor(playerInventory.getOnCursor());
             }
-        } else if(clickEvent.getClickType() == ClickType.DROP) {
-            if(clickEvent.getSlot() == -999) {
+        } else if (clickEvent.getClickType() == ClickType.DROP) {
+            if (clickEvent.getSlot() == -999) {
                 action.setNewCursor(null);
             } else {
                 final ItemStack inv = clickEvent.getClickedItem().deepClone();
-                inv.setAmount((byte) (inv.getAmount() -1));
-                if(inv.getAmount() <= 0) {
+                inv.setAmount((byte) (inv.getAmount() - 1));
+                if (inv.getAmount() <= 0) {
                     action.removeItem(clickEvent.getSlot());
                 } else {
                     action.setItem(clickEvent.getSlot(), inv);
                 }
             }
-        } else if(clickEvent.getClickType() == ClickType.DROP_ALL) {
+        } else if (clickEvent.getClickType() == ClickType.DROP_ALL) {
             action.setNewCursor(null);
-        } else if(clickEvent.getClickType() == ClickType.DRAG_START_LEFT || clickEvent.getClickType() == ClickType.DRAG_START_CREATIVE_MIDDLE || clickEvent.getClickType() == ClickType.DRAG_START_RIGHT) {
+        } else if (clickEvent.getClickType() == ClickType.DRAG_START_LEFT || clickEvent.getClickType() == ClickType.DRAG_START_CREATIVE_MIDDLE || clickEvent.getClickType() == ClickType.DRAG_START_RIGHT) {
             action.beginDragging();
             action.setNewCursor(playerInventory.getOnCursor());
-        } else if(clickEvent.getClickType() == ClickType.DRAG_STOP_LEFT || clickEvent.getClickType() == ClickType.DRAG_STOP_CREATIVE_MIDDLE || clickEvent.getClickType() == ClickType.DRAG_STOP_RIGHT) {
+        } else if (clickEvent.getClickType() == ClickType.DRAG_STOP_LEFT || clickEvent.getClickType() == ClickType.DRAG_STOP_CREATIVE_MIDDLE || clickEvent.getClickType() == ClickType.DRAG_STOP_RIGHT) {
             action.endDragging(clickEvent.getClickType());
             action.setNewCursor(playerInventory.getOnCursor());
-        } else if(clickEvent.getClickType() == ClickType.DRAG_ADD_SLOT_LEFT || clickEvent.getClickType() == ClickType.DRAG_ADD_SLOT_CREATIVE_MIDDLE || clickEvent.getClickType() == ClickType.DRAG_ADD_SLOT_RIGHT) {
+        } else if (clickEvent.getClickType() == ClickType.DRAG_ADD_SLOT_LEFT || clickEvent.getClickType() == ClickType.DRAG_ADD_SLOT_CREATIVE_MIDDLE || clickEvent.getClickType() == ClickType.DRAG_ADD_SLOT_RIGHT) {
             action.setDragSlot(clickEvent.getSlot());
             action.setNewCursor(playerInventory.getOnCursor());
-        } else if(clickEvent.getClickType() == ClickType.SHIFT_LEFT_CLICK) {
+        } else if (clickEvent.getClickType() == ClickType.SHIFT_LEFT_CLICK) {
 
         }
         InventoryModule.registerInventoryAction(event.getPlayer().getUniqueId(), clickEvent.getWindowId(), clickEvent.getActionNumber(), action);

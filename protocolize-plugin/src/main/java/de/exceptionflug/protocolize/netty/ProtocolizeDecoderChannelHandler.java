@@ -112,7 +112,6 @@ public class ProtocolizeDecoderChannelHandler extends MessageToMessageDecoder<Pa
         if (cause.getClass().equals(CancelSendSignal.INSTANCE.getClass()))
             throw ((Error) cause);
         if(cause instanceof ClosedChannelException) {
-            ProxyServer.getInstance().getLogger().warning("[Protocolize] Connection interrupted: "+connection.toString()+" @ protocol "+protocolVersion+" for "+stream.name()+" (channel closed)");
             return;
         } else if(cause instanceof NativeIoException) {
             return; // Suppress this annoying shit...

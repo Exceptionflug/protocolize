@@ -61,13 +61,13 @@ public class ChangeGameState extends AbstractPacket {
 
     @Override
     public void read(final ByteBuf buf, final Direction direction, final int protocolVersion) {
-        reason = Reason.values()[buf.readUnsignedByte()];
+        reason = Reason.getById(buf.readUnsignedByte());
         value = buf.readFloat();
     }
 
     @Override
     public void write(final ByteBuf buf, final Direction direction, final int protocolVersion) {
-        buf.writeByte(((byte)reason.ordinal()) & 0xFF);
+        buf.writeByte(((byte)reason.getId()) & 0xFF);
         buf.writeFloat(value);
     }
 
@@ -95,7 +95,25 @@ public class ChangeGameState extends AbstractPacket {
 
     public enum Reason {
 
-        INVALID_BED, END_RAINING, BEGIN_RAINING, CHANGE_GAMEMODE, EXIT_END, DEMO_MESSAGE, ARROW_HITTING_PLAYER, FADE_VALUE, FADE_TIME, ELDER_GUARDIAN_APPEARANCE
+        INVALID_BED(0), END_RAINING(1), BEGIN_RAINING(2), CHANGE_GAMEMODE(3), EXIT_END(4), DEMO_MESSAGE(5), ARROW_HITTING_PLAYER(6), FADE_VALUE(7), FADE_TIME(8), ELDER_GUARDIAN_APPEARANCE(10);
+
+        private final int id;
+
+        Reason(final int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public static Reason getById(final int id) {
+            for(final Reason r : values()) {
+                if(r.getId() == id)
+                    return r;
+            }
+            return null;
+        }
 
     }
 
