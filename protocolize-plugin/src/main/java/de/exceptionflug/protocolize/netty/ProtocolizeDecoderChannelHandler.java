@@ -1,5 +1,6 @@
 package de.exceptionflug.protocolize.netty;
 
+import de.exceptionflug.protocolize.ProtocolizePlugin;
 import de.exceptionflug.protocolize.api.CancelSendSignal;
 import de.exceptionflug.protocolize.api.protocol.ProtocolAPI;
 import de.exceptionflug.protocolize.api.protocol.Stream;
@@ -116,11 +117,15 @@ public class ProtocolizeDecoderChannelHandler extends MessageToMessageDecoder<Pa
         } else if(cause instanceof NativeIoException) {
             return; // Suppress this annoying shit...
         }
-        ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] === EXCEPTION CAUGHT IN DECODER ===");
-        ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Stream: "+stream.name());
-        ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Connection: "+connection.toString());
-        ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Protocol version: "+protocolVersion);
-        cause.printStackTrace();
+        if(ProtocolizePlugin.isExceptionCausedByProtocolize(cause)) {
+            ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] === EXCEPTION CAUGHT IN DECODER ===");
+            ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Stream: "+stream.name());
+            ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Connection: "+connection.toString());
+            ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Protocol version: "+protocolVersion);
+            cause.printStackTrace();
+        } else {
+            super.exceptionCaught(ctx, cause); // We don't argue with foreign exceptions anymore.
+        }
     }
 
     private DirectionData getDirectionData() {

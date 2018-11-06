@@ -72,4 +72,13 @@ public class ProtocolizePlugin extends Plugin {
     public void setEnabled(final boolean enabled) {
         this.enabled = enabled;
     }
+
+    public static boolean isExceptionCausedByProtocolize(final Throwable e) {
+        for(final StackTraceElement element : e.getStackTrace()) {
+            if(element.getClassName().toLowerCase().contains("de.exceptionflug"))
+                return true;
+        }
+        return false;
+    }
+
 }
