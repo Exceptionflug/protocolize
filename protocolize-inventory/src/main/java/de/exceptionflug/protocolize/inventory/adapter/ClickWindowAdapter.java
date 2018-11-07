@@ -47,7 +47,6 @@ public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
 
         if (clickEvent.isCancelled() || inventory.isHomebrew()) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage(clickEvent.getClickedItem() == null ? "EMPTY" : clickEvent.getClickedItem().getType().name());
             if (inventory.getType() != InventoryType.PLAYER)
                 InventoryModule.sendInventory(event.getPlayer(), inventory);
             else
