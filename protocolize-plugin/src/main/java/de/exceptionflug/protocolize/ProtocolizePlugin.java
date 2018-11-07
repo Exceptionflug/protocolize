@@ -17,6 +17,9 @@ import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 
 public class ProtocolizePlugin extends Plugin {
@@ -74,11 +77,19 @@ public class ProtocolizePlugin extends Plugin {
     }
 
     public static boolean isExceptionCausedByProtocolize(final Throwable e) {
-        for(final StackTraceElement element : e.getStackTrace()) {
+        final List<StackTraceElement> all = getEverything(e, new ArrayList<>());
+        for(final StackTraceElement element : all) {
             if(element.getClassName().toLowerCase().contains("de.exceptionflug"))
                 return true;
         }
         return false;
+    }
+
+    private static List<StackTraceElement> getEverything(final Throwable e, List<StackTraceElement> objects) {
+        if(e.getCause() != null)
+            objects = getEverything(e.getCause(), objects);
+        objects.addAll(Arrays.asList(e.getStackTrace()));
+        return objects;
     }
 
 }

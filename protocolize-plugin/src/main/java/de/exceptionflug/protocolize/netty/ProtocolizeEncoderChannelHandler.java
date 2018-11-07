@@ -1,5 +1,6 @@
 package de.exceptionflug.protocolize.netty;
 
+import de.exceptionflug.protocolize.ProtocolizePlugin;
 import de.exceptionflug.protocolize.api.CancelSendSignal;
 import de.exceptionflug.protocolize.api.protocol.ProtocolAPI;
 import io.netty.channel.ChannelHandlerContext;
@@ -30,7 +31,11 @@ public class ProtocolizeEncoderChannelHandler extends MessageToMessageEncoder<De
     public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) throws Exception {
         if(cause.getClass().equals(CancelSendSignal.INSTANCE.getClass()))
             throw ((Error)cause);
-        ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Exception caught in encoder.", cause);
+        if(ProtocolizePlugin.isExceptionCausedByProtocolize(cause)) {
+            ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Exception caught in encoder.", cause);
+        } else {
+            super.exceptionCaught(ctx, cause);
+        }
     }
 
 }
