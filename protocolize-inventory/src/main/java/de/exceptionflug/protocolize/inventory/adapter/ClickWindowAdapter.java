@@ -47,11 +47,13 @@ public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
 
         if (clickEvent.isCancelled() || inventory.isHomebrew()) {
             event.setCancelled(true);
-            if (inventory.getType() != InventoryType.PLAYER)
-                InventoryModule.sendInventory(event.getPlayer(), inventory);
-            else
-                InventoryManager.getInventory(event.getPlayer().getUniqueId()).update();
-            event.getPlayer().unsafe().sendPacket(new SetSlot((byte) -1, (short) -1, new ItemStack(ItemType.NO_DATA)));
+            if(InventoryModule.getInventory(event.getPlayer().getUniqueId(), clickWindow.getWindowId()) != null) {
+                if (inventory.getType() != InventoryType.PLAYER)
+                    InventoryModule.sendInventory(event.getPlayer(), inventory);
+                else
+                    InventoryManager.getInventory(event.getPlayer().getUniqueId()).update();
+                event.getPlayer().unsafe().sendPacket(new SetSlot((byte) -1, (short) -1, new ItemStack(ItemType.NO_DATA)));
+            }
 //            event.getPlayer().unsafe().sendPacket(new ConfirmTransaction((byte)clickWindow.getWindowId(), (short) clickWindow.getActionNumber(), false));
             return;
         }

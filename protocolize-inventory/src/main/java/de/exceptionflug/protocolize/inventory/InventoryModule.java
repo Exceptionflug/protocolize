@@ -31,7 +31,8 @@ public final class InventoryModule {
 
     private static boolean spigotInventoryTracking = false;
 
-    private InventoryModule() {}
+    private InventoryModule() {
+    }
 
     public static void initModule() {
         // TO_CLIENT
@@ -66,7 +67,7 @@ public final class InventoryModule {
 
     public static void registerInventory(final UUID playerId, final int windowId, final Inventory inventory) {
         Preconditions.checkNotNull(playerId, "The playerId cannot be null!");
-        if(inventory == null) {
+        if (inventory == null) {
             WINDOW_MAP.computeIfAbsent(playerId, (id) -> Maps.newHashMap()).remove(windowId);
             ACTION_MAP.computeIfAbsent(playerId, (id) -> Maps.newHashMap()).remove(windowId);
             return;
@@ -79,7 +80,7 @@ public final class InventoryModule {
     }
 
     public static Inventory getInventory(final UUID playerId, final int windowId) {
-        if(windowId == 0) {
+        if (windowId == 0) {
             final PlayerInventory inventory = InventoryManager.getCombinedSendInventory(playerId, ProxyServer.getInstance().getPlayer(playerId).getServer().getInfo().getName());
             final Inventory out = new Inventory(InventoryType.PLAYER, 46);
             out.setItems(inventory.getItemsIndexed());
@@ -95,10 +96,10 @@ public final class InventoryModule {
 
     private static int generateWindowId(final UUID playerId) {
         int out = WINDOW_ID_COUNTER_MAP.getOrDefault(playerId, 101);
-        if(out >= 200) {
+        if (out >= 200) {
             out = 101;
         }
-        WINDOW_ID_COUNTER_MAP.put(playerId, out+1);
+        WINDOW_ID_COUNTER_MAP.put(playerId, out + 1);
         return out;
     }
 
@@ -121,22 +122,22 @@ public final class InventoryModule {
     public static void sendInventory(final ProxiedPlayer p, Inventory inventory) {
         Preconditions.checkNotNull(p, "The player cannot be null!");
         Preconditions.checkNotNull(inventory, "The inventory cannot be null!");
-        if(inventory.getType() == InventoryType.PLAYER)
+        if (inventory.getType() == InventoryType.PLAYER)
             throw new IllegalStateException("Inventory type PLAYER is only for internal usage");
 
         boolean alreadyOpen = false;
         int windowId = -1;
         final Map<Integer, Inventory> playerMap = WINDOW_MAP.computeIfAbsent(p.getUniqueId(), (id) -> Maps.newHashMap());
-        for(final Integer id : playerMap.keySet()) {
+        for (final Integer id : playerMap.keySet()) {
             final Inventory val = playerMap.get(id);
-            if(val == inventory) {
+            if (val == inventory) {
                 alreadyOpen = true;
                 break;
             }
         }
 
         // Close all inventories if not opened
-        if(!alreadyOpen) {
+        if (!alreadyOpen) {
             final Map<Integer, Inventory> toDel = Maps.newHashMap();
             final Inventory finalInventory = inventory;
             getInventories(p.getUniqueId()).forEach((id, it) -> {
@@ -146,15 +147,15 @@ public final class InventoryModule {
             toDel.forEach((id, it) -> registerInventory(p.getUniqueId(), id, null));
         }
 
-        if(playerMap.containsValue(inventory)) {
-            for(final Integer id : playerMap.keySet()) {
+        if (playerMap.containsValue(inventory)) {
+            for (final Integer id : playerMap.keySet()) {
                 final Inventory val = playerMap.get(id);
-                if(val == inventory) {
+                if (val == inventory) {
                     windowId = id;
                     break;
                 }
             }
-            if(windowId == -1) {
+            if (windowId == -1) {
                 windowId = generateWindowId(p.getUniqueId());
                 registerInventory(p.getUniqueId(), windowId, inventory);
             }
@@ -165,26 +166,26 @@ public final class InventoryModule {
 
         final InventoryOpenEvent event = new InventoryOpenEvent(p, inventory, windowId);
         ProxyServer.getInstance().getPluginManager().callEvent(event);
-        if(event.isCancelled())
+        if (event.isCancelled())
             return;
         windowId = event.getWindowId();
         inventory = event.getInventory();
 
-        if(inventory.getType() == InventoryType.CRAFTING_TABLE)
+        if (inventory.getType() == InventoryType.CRAFTING_TABLE)
             inventory.setSize(0);
 
         if(!alreadyOpen)
             p.unsafe().sendPacket(new OpenWindow(windowId, inventory.getSize(), inventory.getType(), inventory.getTitle()));
         final List<ItemStack> items = Lists.newArrayList(inventory.getItemsIndexed());
 
-        if(inventory.getType() == InventoryType.BREWING_STAND && ReflectionUtil.getProtocolVersion(p) == MINECRAFT_1_8)
+        if (inventory.getType() == InventoryType.BREWING_STAND && ReflectionUtil.getProtocolVersion(p) == MINECRAFT_1_8)
             items.remove(4);
 
         if(ItemsModule.isSpigotInventoryTracking()) {
             final PlayerInventory playerInventory = InventoryManager.getInventory(p.getUniqueId());
             items.addAll(playerInventory.getItemsIndexedContainer());
         }
-        p.unsafe().sendPacket(new WindowItems((short)windowId, items));
+        p.unsafe().sendPacket(new WindowItems((short) windowId, items));
     }
 
     public static void setSpigotInventoryTracking(final boolean spigotInventoryTracking) {
