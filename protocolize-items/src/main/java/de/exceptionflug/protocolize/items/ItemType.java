@@ -812,7 +812,7 @@ public enum ItemType {
         return maxStackSize;
     }
 
-    public static ItemType getType(int i, final int id, final int protocolVersion, final ItemStack stack) {
+    public static ItemType getType(final int id, final int protocolVersion, final ItemStack stack) {
         return getType(id, (short) 0, protocolVersion, stack);
     }
 

@@ -152,7 +152,7 @@ public final class ItemStack implements Cloneable {
             try {
                 writeNBTTag(nbtdata, buf);
             } catch (final Exception e) {
-                ProxyServer.getInstance().getLogger().log(Level.WARNING, "[Protocolize] Error when writing NBT data to ItemStack: " + nbtdata, e);
+                ProxyServer.getInstance().getLogger().log(Level.WARNING, "[Protocolize] Error when writing NBT data to ItemStack:", e);
                 buf.resetWriterIndex();
                 writeNBTTag(new CompoundTag("", new CompoundMap()), buf);
             }

@@ -39,6 +39,7 @@ public final class InventoryModule {
         ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME.TO_CLIENT, OpenWindow.class, OpenWindow.MAPPING);
         ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME.TO_CLIENT, CloseWindow.class, CloseWindow.MAPPING_CLIENTBOUND);
         ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME.TO_CLIENT, ConfirmTransaction.class, ConfirmTransaction.MAPPING_CLIENTBOUND);
+        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME.TO_CLIENT, WindowProperty.class, WindowProperty.MAPPING);
 
         // TO_SERVER
         ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME.TO_SERVER, CloseWindow.class, CloseWindow.MAPPING_SERVERBOUND);
