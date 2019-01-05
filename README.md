@@ -20,7 +20,7 @@ and register it.
 ```java
 ProtocolAPI.getEventManager().registerListener(new MyPacketAdapter());
 ```
-Now you can override the following methods to access the packets. Please note that you only can manipulate inbound packets.
+Now you can override the following methods to access the packets.
 ```java
 @Override  
 public void receive(final PacketReceiveEvent<Chat> event) {  
