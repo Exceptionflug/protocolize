@@ -4,6 +4,9 @@ import de.exceptionflug.protocolize.api.CancelSendSignal;
 import net.md_5.bungee.protocol.AbstractPacketHandler;
 import net.md_5.bungee.protocol.DefinedPacket;
 
+/**
+ * This class can be used when implementing custom packets. Please note that custom implemented packets need to be registered by the {@link PacketRegistration}.
+ */
 public abstract class AbstractPacket extends DefinedPacket {
 
     private boolean cancelSend;

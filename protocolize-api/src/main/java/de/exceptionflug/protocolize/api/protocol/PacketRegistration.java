@@ -11,6 +11,9 @@ import java.lang.reflect.*;
 import java.util.Map;
 import java.util.logging.Level;
 
+/**
+ * This class provides access to the access protected BungeeCord protocol implementation.
+ */
 public final class PacketRegistration {
 
     private Constructor protocolMappingConstructor;
@@ -31,14 +34,34 @@ public final class PacketRegistration {
         }
     }
 
+    /**
+     * This method registers a {@link AbstractPacket} for the PLAY / GAME protocol in direction to the client. This method is equal to
+     * {@code registerPacket(Protocol.GAME.TO_CLIENT, clazz, protocolIdMapping);}
+     * @see PacketRegistration#registerPacket(DirectionData, Class, Map)
+     * @param clazz the class of the packet
+     * @param protocolIdMapping a map containing the protocol versions and their corresponding packet id.
+     */
     public void registerPlayClientPacket(final Class<? extends AbstractPacket> clazz, final Map<Integer, Integer> protocolIdMapping) {
         registerPacket(Protocol.GAME.TO_CLIENT, clazz, protocolIdMapping);
     }
 
+    /**
+     * This method registers a {@link AbstractPacket} for the PLAY / GAME protocol in direction to the client. This method is equal to
+     * {@code registerPacket(Protocol.GAME.TO_SERVER, clazz, protocolIdMapping);}
+     * @see PacketRegistration#registerPacket(DirectionData, Class, Map)
+     * @param clazz the class of the packet
+     * @param protocolIdMapping a map containing the protocol versions and their corresponding packet id.
+     */
     public void registerPlayServerPacket(final Class<? extends AbstractPacket> clazz, final Map<Integer, Integer> protocolIdMapping) {
         registerPacket(Protocol.GAME.TO_SERVER, clazz, protocolIdMapping);
     }
 
+    /**
+     * This method registers a {@link AbstractPacket}.
+     * @param data the protocol and direction. May be {@code Protocol.GAME.TO_SERVER} or {@code Protocol.GAME.TO_CLIENT}.
+     * @param clazz the class of the packet
+     * @param protocolIdMapping a map containing the protocol versions and their corresponding packet id.
+     */
     public void registerPacket(final DirectionData data, final Class<? extends AbstractPacket> clazz, final Map<Integer, Integer> protocolIdMapping) {
         Preconditions.checkNotNull(clazz, "The clazz cannot be null!");
         Preconditions.checkNotNull(data, "The data cannot be null!");
@@ -58,6 +81,14 @@ public final class PacketRegistration {
         }
     }
 
+    /**
+     * Returns a packet id for the given protocol and it's version.
+     * @see de.exceptionflug.protocolize.api.util.ProtocolVersions
+     * @param data the protocol and direction. May be {@code Protocol.GAME.TO_SERVER} or {@code Protocol.GAME.TO_CLIENT}.
+     * @param protocolVersion the protocol version
+     * @param clazz the class of the packet
+     * @return the packet id or -1 if the packet is not registered in that specific direction
+     */
     public int getPacketID(final DirectionData data, final int protocolVersion, final Class<? extends DefinedPacket> clazz) {
         try {
             return (int) getIdMethod.invoke(data, clazz, protocolVersion);

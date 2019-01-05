@@ -16,11 +16,18 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
+/**
+ * Handles all event logic when packets arrive and packets are being sent.
+ */
 public class EventManager {
 
     private final List<PacketListener> packetListeners = Lists.newArrayList();
     private boolean fireBungeeEvent;
 
+    /**
+     * Registers a new packet listenexr
+     * @param listener the listener instance
+     */
     public void registerListener(final PacketListener listener) {
         Preconditions.checkNotNull(listener, "The listener cannot be null!");
         if(packetListeners.contains(listener))
@@ -28,6 +35,12 @@ public class EventManager {
         packetListeners.add(listener);
     }
 
+    /**
+     * Called by the ProtocolizeDecoderChannelHandler when a packet arrives.
+     * @param packet the incoming packet
+     * @param abstractPacketHandler the bungee packet handler for this packet
+     * @return key value pair with the resulting packet instance and a boolean determining if the packet needs to be rewritten again.
+     */
     public Entry<DefinedPacket, Boolean> handleInboundPacket(final DefinedPacket packet, final AbstractPacketHandler abstractPacketHandler) {
         Preconditions.checkNotNull(packet, "The packet cannot be null!");
         Preconditions.checkNotNull(abstractPacketHandler, "The abstractPacketHandler cannot be null!");
@@ -55,12 +68,19 @@ public class EventManager {
                 ProxyServer.getInstance().getLogger().log(Level.SEVERE,"[Protocolize] Exception caught in listener while receiving packet "+packet.getClass().getName(), e);
             }
         });
-//        ProxyServer.getInstance().getPluginManager().callEvent(event);
+        if(shouldFireBungeeEvent())
+            ProxyServer.getInstance().getPluginManager().callEvent(event);
         if(event.isCancelled())
             return null;
         return new SimpleEntry<>(event.getPacket(), event.isDirty());
     }
 
+    /**
+     * Called by the ProtocolizeEncoderChannelHandler before a packet gets sent.
+     * @param packet the outgoing packet
+     * @param abstractPacketHandler the bungee packet handler for this packet
+     * @return maybe manipulated packet instance
+     */
     public DefinedPacket handleOutboundPacket(final DefinedPacket packet, final AbstractPacketHandler abstractPacketHandler) {
         Preconditions.checkNotNull(packet, "The packet cannot be null!");
         Preconditions.checkNotNull(abstractPacketHandler, "The abstractPacketHandler cannot be null!");
@@ -106,10 +126,17 @@ public class EventManager {
         return out;
     }
 
+    /**
+     * Fires normal BungeeCord events when packets arrive / being sent. May impact performance when enabled.
+     * @param fireBungeeEvent true if the events should be fired
+     */
     public void setFireBungeeEvent(final boolean fireBungeeEvent) {
         this.fireBungeeEvent = fireBungeeEvent;
     }
 
+    /**
+     * @return true if the events should be fired
+     */
     public boolean shouldFireBungeeEvent() {
         return fireBungeeEvent;
     }

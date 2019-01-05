@@ -133,16 +133,8 @@ public final class ItemStack implements Cloneable {
             if (protocolVersion >= MINECRAFT_1_13) {
                 nbtdata.getValue().put(new IntTag("Damage", durability));
                 setDisplayNameTag(ComponentSerializer.toString(new TextComponent(displayName)));
-//                if(lore != null) {
-//                    final List<String> out = Lists.newArrayList();
-//                    for(final String i : lore) {
-//                        out.add(ComponentSerializer.toString(new TextComponent(i)));
-//                    }
-//                    setLoreTag(out);
-//                }
             } else {
                 setDisplayNameTag(displayName);
-//                setLoreTag(lore);
             }
             setLoreTag(lore);
             if (applicableMapping instanceof AbstractCustomMapping) {
@@ -208,12 +200,6 @@ public final class ItemStack implements Cloneable {
                             final BaseComponent[] displayNameComponents = ComponentSerializer.parse(json);
                             displayName = BaseComponent.toLegacyText(displayNameComponents);
                         }
-//                        final List<String> lore = getLoreTag(tag);
-//                        if(lore != null) {
-//                            for(final String i : lore) {
-//                                loreOut.add(BaseComponent.toLegacyText(ComponentSerializer.parse(i)));
-//                            }
-//                        }
                     } else {
                         displayName = getDisplayNameTag(tag);
                     }
@@ -316,9 +302,10 @@ public final class ItemStack implements Cloneable {
 
     public ItemStack deepClone() {
         final ByteBuf buf = Unpooled.buffer();
-        write(buf, MINECRAFT_1_8);
-        final ItemStack itemStack = read(buf, MINECRAFT_1_8);
+        write(buf, MINECRAFT_1_13_2);
+        final ItemStack itemStack = read(buf, MINECRAFT_1_13_2);
         itemStack.homebrew = homebrew;
+        buf.release();
         return itemStack;
     }
 

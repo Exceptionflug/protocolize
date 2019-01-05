@@ -1,5 +1,8 @@
 package de.exceptionflug.protocolize.api.util;
 
+/**
+ * This class contains protocol constants similar to {@link net.md_5.bungee.protocol.ProtocolConstants}
+ */
 public final class ProtocolVersions {
 
     public final static int MINECRAFT_1_8 = 47;

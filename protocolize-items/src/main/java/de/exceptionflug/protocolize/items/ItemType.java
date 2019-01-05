@@ -4,7 +4,7 @@ import static de.exceptionflug.protocolize.api.util.ProtocolVersions.*;
 
 public enum ItemType {
 
-    AIR(1, new IDMapping(MINECRAFT_1_13, MINECRAFT_1_13_2, 0), new IDMapping(MINECRAFT_1_8, MINECRAFT_1_12_2, 0)),
+    AIR(1, new IDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, 0)),
     STONE(new IDMapping(MINECRAFT_1_13, MINECRAFT_1_13_2, 1), new IDMapping(MINECRAFT_1_8, MINECRAFT_1_12_2, 1)),
     GRANITE(new IDMapping(MINECRAFT_1_13, MINECRAFT_1_13_2, 2), new IDMapping(MINECRAFT_1_8, MINECRAFT_1_12_2, 1, 1)),
     POLISHED_GRANITE(new IDMapping(MINECRAFT_1_13, MINECRAFT_1_13_2, 3), new IDMapping(MINECRAFT_1_8, MINECRAFT_1_12_2, 1, 2)),
