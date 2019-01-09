@@ -7,6 +7,42 @@ Protocolize has no currently known compatibility issues yet.
 ## How To Use
 Please take a look at the examples which I made: https://github.com/Exceptionflug/protocolize/tree/master/protocolize-examples/src/main/java/de/exceptionflug/protocolize/example
 
+### Maven
+Add the following repository to your pom.xml:
+```xml
+<repository>
+  <id>exceptionflug</id>
+  <url>http://unshown.net:8081/repository/exceptionflug/</url>
+</repository>
+```
+This is the full portfolio of protocolize dependencies:
+```xml
+<dependency>
+  <groupId>de.exceptionflug</groupId>
+  <artifactId>protocolize-api</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <scope>provided</scope>
+</dependency>
+<dependency>
+  <groupId>de.exceptionflug</groupId>
+  <artifactId>protocolize-items</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <scope>provided</scope>
+</dependency>
+<dependency>
+  <groupId>de.exceptionflug</groupId>
+  <artifactId>protocolize-inventory</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <scope>provided</scope>
+</dependency>
+<dependency>
+  <groupId>de.exceptionflug</groupId>
+  <artifactId>protocolize-world</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <scope>provided</scope>
+</dependency>
+```
+
 ### Listen for incoming and outgoing packets
 At first you need to create a new PacketListener (eg. when you want to interact with chat messages)
 ```java
