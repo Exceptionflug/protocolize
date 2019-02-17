@@ -20,14 +20,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1_8;
 
 public final class InventoryModule {
 
-    private static final Map<UUID, Map<Integer, Inventory>> WINDOW_MAP = Maps.newHashMap();
-    private static final Map<UUID, Map<Integer, Map<Integer, InventoryAction>>> ACTION_MAP = Maps.newHashMap();
-    private static final Map<UUID, Integer> WINDOW_ID_COUNTER_MAP = Maps.newHashMap();
+    private static final Map<UUID, Map<Integer, Inventory>> WINDOW_MAP = new ConcurrentHashMap<>();
+    private static final Map<UUID, Map<Integer, Map<Integer, InventoryAction>>> ACTION_MAP = new ConcurrentHashMap<>();
+    private static final Map<UUID, Integer> WINDOW_ID_COUNTER_MAP = new ConcurrentHashMap<>();
 
     private static boolean spigotInventoryTracking = false;
 
@@ -82,7 +83,10 @@ public final class InventoryModule {
 
     public static Inventory getInventory(final UUID playerId, final int windowId) {
         if (windowId == 0) {
-            final PlayerInventory inventory = InventoryManager.getCombinedSendInventory(playerId, ProxyServer.getInstance().getPlayer(playerId).getServer().getInfo().getName());
+            final ProxiedPlayer player = ProxyServer.getInstance().getPlayer(playerId);
+            if(player.getServer() == null || player.getServer().getInfo() == null)
+                return null;
+            final PlayerInventory inventory = InventoryManager.getCombinedSendInventory(playerId, player.getServer().getInfo().getName());
             final Inventory out = new Inventory(InventoryType.PLAYER, 46);
             out.setItems(inventory.getItemsIndexed());
             out.setHomebrew(false);
@@ -128,7 +132,7 @@ public final class InventoryModule {
 
         boolean alreadyOpen = false;
         int windowId = -1;
-        final Map<Integer, Inventory> playerMap = WINDOW_MAP.computeIfAbsent(p.getUniqueId(), (id) -> Maps.newHashMap());
+        final Map<Integer, Inventory> playerMap = WINDOW_MAP.computeIfAbsent(p.getUniqueId(), (id) -> new ConcurrentHashMap<>());
         for (final Integer id : playerMap.keySet()) {
             final Inventory val = playerMap.get(id);
             if (val == inventory) {

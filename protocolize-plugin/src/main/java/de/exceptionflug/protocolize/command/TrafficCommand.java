@@ -18,7 +18,7 @@ public class TrafficCommand extends Command {
 
     @Override
     public void execute(final CommandSender commandSender, final String[] args) {
-        if(commandSender instanceof ProxiedPlayer) {
+        if(commandSender instanceof ProxiedPlayer && commandSender.hasPermission("protocolize.command.traffic")) {
             final ProxiedPlayer p = (ProxiedPlayer) commandSender;
             if(args.length == 0) {
                 showStatisticsFor(p, p.getName());
