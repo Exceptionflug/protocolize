@@ -16,8 +16,7 @@ import net.md_5.bungee.chat.ComponentSerializer;
 import net.md_5.bungee.protocol.DefinedPacket;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -37,6 +36,7 @@ public final class ItemStack implements Cloneable {
     private ItemType type;
     private boolean homebrew = true;
     private CompoundTag nbtdata = new CompoundTag("", new CompoundMap());
+    private int hideFlags;
 
     public ItemStack(final ItemType type) {
         this(type, (byte) 1, (short) -1);
@@ -137,6 +137,7 @@ public final class ItemStack implements Cloneable {
                 setDisplayNameTag(displayName);
             }
             setLoreTag(lore);
+            setHideFlags(hideFlags);
             if (applicableMapping instanceof AbstractCustomMapping) {
                 ((AbstractCustomMapping) applicableMapping).apply(this, protocolVersion);
             }
@@ -151,6 +152,10 @@ public final class ItemStack implements Cloneable {
         } catch (final Exception e) {
             ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Exception occurred when writing ItemStack to buffer. Protocol version = " + protocolVersion, e);
         }
+    }
+
+    private void setHideFlags(final int hideFlags) {
+        nbtdata.getValue().put(new IntTag("HideFlags", hideFlags));
     }
 
     private void writeNBTTag(final Tag nbtdata, final ByteBuf buf) throws IOException {
@@ -189,7 +194,7 @@ public final class ItemStack implements Cloneable {
                 } else {
                     final CompoundTag tag = (CompoundTag) readNBTTag(buf);
                     String displayName = null;
-                    List<String> loreOut = Lists.newArrayList();
+                    final List<String> loreOut;
                     if (protocolVersion >= MINECRAFT_1_13 && tag != null) {
                         final CompoundMap value = tag.getValue();
                         final IntTag damage = (IntTag) value.get("Damage");
@@ -209,6 +214,7 @@ public final class ItemStack implements Cloneable {
                     out.displayName = displayName;
                     out.lore = loreOut;
                     out.setNBTTag(tag);
+                    out.hideFlags = getHideFlags(tag);
                     out.setType(ItemType.getType(id, durability, protocolVersion, out));
                     return out;
                 }
@@ -217,6 +223,15 @@ public final class ItemStack implements Cloneable {
             ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Exception occurred when reading ItemStack from buffer. Protocol version = " + protocolVersion, e);
         }
         return null;
+    }
+
+    private static int getHideFlags(final CompoundTag tag) {
+        if(tag == null)
+            return 0;
+        if(tag.getValue().containsKey("HideFlags")) {
+            return ((IntTag)tag.getValue().get("HideFlags")).getValue();
+        }
+        return 0;
     }
 
     private static Tag readNBTTag(final ByteBuf buf) throws IOException {
@@ -262,6 +277,26 @@ public final class ItemStack implements Cloneable {
 
     public String getDisplayName() {
         return displayName;
+    }
+
+    public boolean isFlagSet(final ItemFlag flag) {
+        return (hideFlags & (1 << flag.getBitIndex())) == 1;
+    }
+
+    public void setFlag(final ItemFlag flag, final boolean active) {
+        if(active)
+            hideFlags |= (1 << flag.getBitIndex());
+        else
+            hideFlags &= ~(1 << flag.getBitIndex());
+    }
+
+    public Set<ItemFlag> getItemFlags() {
+        final Set<ItemFlag> flags = new HashSet<>();
+        for(final ItemFlag flag : ItemFlag.values()) {
+            if(isFlagSet(flag))
+                flags.add(flag);
+        }
+        return Collections.unmodifiableSet(flags);
     }
 
     private static String getDisplayNameTag(final CompoundTag nbtdata) {

@@ -21,12 +21,12 @@
 
     <distributionManagement>
         <repository>
-            <id>nerux</id>
-            <url>http://nexus.nerux.net/nexus/content/repositories/releases/</url>
+            <id>exceptionflug</id>
+            <url>http://unshown.net:8081/repository/exceptionflug/</url>
         </repository>
         <snapshotRepository>
-            <id>nerux</id>
-            <url>http://nexus.nerux.net/nexus/content/repositories/snapshots/</url>
+            <id>exceptionflug</id>
+            <url>http://unshown.net:8081/repository/exceptionflug/</url>
         </snapshotRepository>
     </distributionManagement>
 
