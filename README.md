@@ -83,7 +83,7 @@ public class MyPacketListener extends PacketAdapter<Chat> {
      final Chat packet = event.getPacket();  
      if(packet.getPosition() == 2) { // Position 2 means actionbar  
        packet.setPosition((byte) 0); // Set to normal chat  
-       event.markForRewrite(); // We need to mark the packet for rewriting after we changed fields in the packet class. This is only needed when receiving packets.  
+       event.markForRewrite(); // We need to mark the packet for rewriting after we changed fields in the packet class. This is only necessary when receiving packets.  
      }  
    }  
 }
