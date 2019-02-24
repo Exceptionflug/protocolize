@@ -17,6 +17,8 @@ public class CloseWindowAdapter extends PacketAdapter<CloseWindow> {
 
     @Override
     public void receive(final PacketReceiveEvent<CloseWindow> event) {
+        if(event.getPlayer() == null)
+            return;
         final Inventory inv = InventoryModule.getInventory(event.getPlayer().getUniqueId(), event.getPacket().getWindowId());
         if(inv == null)
             return;

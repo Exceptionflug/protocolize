@@ -29,6 +29,8 @@ public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
     @Override
     public void receive(final PacketReceiveEvent<ClickWindow> event) {
         final ClickWindow clickWindow = event.getPacket();
+        if(event.getPlayer() == null)
+            return;
         final Inventory inventory = InventoryModule.getInventory(event.getPlayer().getUniqueId(), clickWindow.getWindowId());
         if (inventory == null) {
             ProxyServer.getInstance().getLogger().warning("[Protocolize] " + event.getPlayer().getName() + " has no open inventory with id " + clickWindow.getWindowId());
