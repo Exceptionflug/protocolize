@@ -12,7 +12,7 @@ Add the following repository to your pom.xml:
 ```xml
 <repository>
   <id>exceptionflug</id>
-  <url>http://unshown.net:8081/repository/exceptionflug/</url>
+  <url>http://mvn.exceptionflug.de/repository/exceptionflug-public/</url>
 </repository>
 ```
 This is the full portfolio of protocolize dependencies:

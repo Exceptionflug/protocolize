@@ -22,11 +22,11 @@
     <distributionManagement>
         <repository>
             <id>exceptionflug</id>
-            <url>http://unshown.net:8081/repository/exceptionflug/</url>
+            <url>http://mvn.exceptionflug.de/repository/exceptionflug-public/</url>
         </repository>
         <snapshotRepository>
             <id>exceptionflug</id>
-            <url>http://unshown.net:8081/repository/exceptionflug/</url>
+            <url>http://mvn.exceptionflug.de/repository/exceptionflug-public/</url>
         </snapshotRepository>
     </distributionManagement>
 
