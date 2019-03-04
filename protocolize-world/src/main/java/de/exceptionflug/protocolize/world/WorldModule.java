@@ -5,6 +5,7 @@ import de.exceptionflug.protocolize.world.adapter.ChangeGameStateAdapter;
 import de.exceptionflug.protocolize.world.adapter.JoinGameAdapter;
 import de.exceptionflug.protocolize.world.packet.ChangeGameState;
 import net.md_5.bungee.protocol.Protocol;
+import net.md_5.bungee.protocol.ProtocolConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,7 @@ public class WorldModule {
 
     public static void initModule() {
         // TO_CLIENT
-        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME.TO_CLIENT, ChangeGameState.class, ChangeGameState.MAPPING);
+        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME, ProtocolConstants.Direction.TO_CLIENT, ChangeGameState.class, ChangeGameState.MAPPING);
 
         // Adapters
         ProtocolAPI.getEventManager().registerListener(new ChangeGameStateAdapter());

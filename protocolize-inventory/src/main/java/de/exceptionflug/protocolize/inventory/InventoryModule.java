@@ -15,6 +15,7 @@ import de.exceptionflug.protocolize.items.packet.WindowItems;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.protocol.Protocol;
+import net.md_5.bungee.protocol.ProtocolConstants;
 
 import java.util.Collections;
 import java.util.List;
@@ -37,15 +38,15 @@ public final class InventoryModule {
 
     public static void initModule() {
         // TO_CLIENT
-        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME.TO_CLIENT, OpenWindow.class, OpenWindow.MAPPING);
-        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME.TO_CLIENT, CloseWindow.class, CloseWindow.MAPPING_CLIENTBOUND);
-        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME.TO_CLIENT, ConfirmTransaction.class, ConfirmTransaction.MAPPING_CLIENTBOUND);
-        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME.TO_CLIENT, WindowProperty.class, WindowProperty.MAPPING);
+        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME, ProtocolConstants.Direction.TO_CLIENT, OpenWindow.class, OpenWindow.MAPPING);
+        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME, ProtocolConstants.Direction.TO_CLIENT, CloseWindow.class, CloseWindow.MAPPING_CLIENTBOUND);
+        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME, ProtocolConstants.Direction.TO_CLIENT, ConfirmTransaction.class, ConfirmTransaction.MAPPING_CLIENTBOUND);
+        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME, ProtocolConstants.Direction.TO_CLIENT, WindowProperty.class, WindowProperty.MAPPING);
 
         // TO_SERVER
-        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME.TO_SERVER, CloseWindow.class, CloseWindow.MAPPING_SERVERBOUND);
-        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME.TO_SERVER, ConfirmTransaction.class, ConfirmTransaction.MAPPING_SERVERBOUND);
-        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME.TO_SERVER, ClickWindow.class, ClickWindow.MAPPING);
+        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME, ProtocolConstants.Direction.TO_SERVER, CloseWindow.class, CloseWindow.MAPPING_SERVERBOUND);
+        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME, ProtocolConstants.Direction.TO_SERVER, ConfirmTransaction.class, ConfirmTransaction.MAPPING_SERVERBOUND);
+        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME, ProtocolConstants.Direction.TO_SERVER, ClickWindow.class, ClickWindow.MAPPING);
 
         // Adapters
         ProtocolAPI.getEventManager().registerListener(new OpenWindowAdapter());

@@ -15,7 +15,6 @@ import io.netty.handler.codec.MessageToMessageDecoder;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.Connection;
 import net.md_5.bungee.protocol.*;
-import net.md_5.bungee.protocol.Protocol.DirectionData;
 import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 
 import java.nio.channels.ClosedChannelException;
@@ -92,7 +91,7 @@ public class ProtocolizeDecoderChannelHandler extends MessageToMessageDecoder<Pa
                     try {
                         // Try packet rewrite
                         final ByteBuf buf = Unpooled.directBuffer();
-                        DefinedPacket.writeVarInt(ProtocolAPI.getPacketRegistration().getPacketID(getDirectionData(), protocolVersion, packet.getClass()), buf);
+                        DefinedPacket.writeVarInt(ProtocolAPI.getPacketRegistration().getPacketID(protocol, direction, protocolVersion, packet.getClass()), buf);
                         packet.write(buf, direction, protocolVersion);
                         msg.buf.resetReaderIndex();
                         buf.resetReaderIndex();
@@ -126,31 +125,6 @@ public class ProtocolizeDecoderChannelHandler extends MessageToMessageDecoder<Pa
         } else {
             super.exceptionCaught(ctx, cause); // We don't argue with foreign exceptions anymore.
         }
-    }
-
-    private DirectionData getDirectionData() {
-        if (direction == Direction.TO_SERVER) {
-            if (protocol == Protocol.GAME) {
-                return Protocol.GAME.TO_SERVER;
-            } else if (protocol == Protocol.LOGIN) {
-                return Protocol.LOGIN.TO_SERVER;
-            } else if (protocol == Protocol.STATUS) {
-                return Protocol.STATUS.TO_SERVER;
-            } else if (protocol == Protocol.HANDSHAKE) {
-                return Protocol.HANDSHAKE.TO_SERVER;
-            }
-        } else {
-            if (protocol == Protocol.GAME) {
-                return Protocol.GAME.TO_CLIENT;
-            } else if (protocol == Protocol.LOGIN) {
-                return Protocol.LOGIN.TO_CLIENT;
-            } else if (protocol == Protocol.STATUS) {
-                return Protocol.STATUS.TO_CLIENT;
-            } else if (protocol == Protocol.HANDSHAKE) {
-                return Protocol.HANDSHAKE.TO_CLIENT;
-            }
-        }
-        return null;
     }
 
 }

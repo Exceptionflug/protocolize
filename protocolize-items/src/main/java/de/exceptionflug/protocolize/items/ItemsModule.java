@@ -5,6 +5,7 @@ import de.exceptionflug.protocolize.api.protocol.Stream;
 import de.exceptionflug.protocolize.items.adapter.*;
 import de.exceptionflug.protocolize.items.packet.*;
 import net.md_5.bungee.protocol.Protocol;
+import net.md_5.bungee.protocol.ProtocolConstants;
 
 public class ItemsModule {
 
@@ -15,14 +16,14 @@ public class ItemsModule {
 
     public static void initModule() {
         // TO_CLIENT
-        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME.TO_CLIENT, SetSlot.class, SetSlot.MAPPING);
-        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME.TO_CLIENT, WindowItems.class, WindowItems.MAPPING);
-        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME.TO_CLIENT, HeldItemChange.class, HeldItemChange.MAPPING_CLIENTBOUND);
+        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME, ProtocolConstants.Direction.TO_CLIENT, SetSlot.class, SetSlot.MAPPING);
+        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME, ProtocolConstants.Direction.TO_CLIENT, WindowItems.class, WindowItems.MAPPING);
+        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME, ProtocolConstants.Direction.TO_CLIENT, HeldItemChange.class, HeldItemChange.MAPPING_CLIENTBOUND);
 
         // TO_SERVER
-        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME.TO_SERVER, UseItem.class, UseItem.MAPPING);
-        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME.TO_SERVER, BlockPlacement.class, BlockPlacement.MAPPING);
-        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME.TO_SERVER, HeldItemChange.class, HeldItemChange.MAPPING_SERVERBOUND);
+        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME, ProtocolConstants.Direction.TO_SERVER, UseItem.class, UseItem.MAPPING);
+        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME, ProtocolConstants.Direction.TO_SERVER, BlockPlacement.class, BlockPlacement.MAPPING);
+        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME, ProtocolConstants.Direction.TO_SERVER, HeldItemChange.class, HeldItemChange.MAPPING_SERVERBOUND);
 
         // ADAPTERS
         ProtocolAPI.getEventManager().registerListener(new WindowItemsAdapter());
