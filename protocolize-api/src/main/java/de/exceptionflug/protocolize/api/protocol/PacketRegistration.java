@@ -1,13 +1,14 @@
 package de.exceptionflug.protocolize.api.protocol;
 
 import com.google.common.base.Preconditions;
+import gnu.trove.map.TIntObjectMap;
+import gnu.trove.map.TObjectIntMap;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.protocol.DefinedPacket;
 import net.md_5.bungee.protocol.Protocol;
 import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 
 import java.lang.reflect.*;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -17,20 +18,25 @@ import java.util.logging.Level;
 public final class PacketRegistration {
 
     private Constructor protocolMappingConstructor;
-    private Method registerMethod, getIdMethod;
-    private Class<?> mappingClass, directionData;
-    private Field toServerField, toClientField;
+    private Method getIdMethod;
+    private Class<?> mappingClass, directionDataClass, protocolDataClass;
+    private Field toServerField, toClientField, protocolsField, protocolDataPacketMapField, protocolDataConstructorsField;
 
     {
         try {
             mappingClass = Class.forName("net.md_5.bungee.protocol.Protocol$ProtocolMapping");
-            directionData = Class.forName("net.md_5.bungee.protocol.Protocol$DirectionData");
+            directionDataClass = Class.forName("net.md_5.bungee.protocol.Protocol$DirectionData");
+            protocolDataClass = Class.forName("net.md_5.bungee.protocol.Protocol$ProtocolData");
             protocolMappingConstructor = mappingClass.getConstructor(int.class, int.class);
             protocolMappingConstructor.setAccessible(true);
-            registerMethod = directionData.getDeclaredMethod("registerPacket", Class.class, Array.newInstance(mappingClass, 0).getClass());
-            registerMethod.setAccessible(true);
-            getIdMethod = directionData.getDeclaredMethod("getId", Class.class, int.class);
+            protocolsField = directionDataClass.getDeclaredField("protocols");
+            protocolsField.setAccessible(true);
+            getIdMethod = directionDataClass.getDeclaredMethod("getId", Class.class, int.class);
             getIdMethod.setAccessible(true);
+            protocolDataPacketMapField = protocolDataClass.getDeclaredField("packetMap");
+            protocolDataPacketMapField.setAccessible(true);
+            protocolDataConstructorsField = protocolDataClass.getDeclaredField("packetConstructors");
+            protocolDataConstructorsField.setAccessible(true);
 
             toServerField = Protocol.class.getDeclaredField("TO_SERVER");
             toServerField.setAccessible(true);
@@ -76,11 +82,9 @@ public final class PacketRegistration {
         Preconditions.checkNotNull(direction, "The direction cannot be null!");
         Preconditions.checkNotNull(protocolIdMapping, "The protocolIdMapping cannot be null!");
         try {
+            final TIntObjectMap<Object> protocols = (TIntObjectMap<Object>) protocolsField.get(getDirectionData(protocol, direction));
             for(final Integer protocolVersion : protocolIdMapping.keySet()) {
-                final Object map = protocolMappingConstructor.newInstance(protocolVersion, protocolIdMapping.get(protocolVersion));
-                final Object mapArray = Array.newInstance(mappingClass, 1);
-                Array.set(mapArray, 0, map);
-                registerMethod.invoke(getDirectionData(protocol, direction), clazz, mapArray);
+                registerPacket(protocols, protocolVersion, protocolIdMapping.get(protocolVersion), clazz);
             }
             ProxyServer.getInstance().getLogger().info("[Protocolize] Injected custom packet: "+clazz.getName());
         } catch (final Exception e) {
@@ -123,10 +127,16 @@ public final class PacketRegistration {
                 return toServerField.get(protocol);
             else
                 return toClientField.get(protocol);
-        } catch (IllegalAccessException e) {
+        } catch (final IllegalAccessException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private void registerPacket(final TIntObjectMap<Object> protocols, final int protocolVersion, final int packetId, final Class<?> clazz) throws IllegalAccessException, NoSuchMethodException {
+        final Object protocolData = protocols.get(protocolVersion);
+        ((TObjectIntMap<Class<?>>)protocolDataPacketMapField.get(protocolData)).put(clazz, packetId);
+        ((Constructor[])protocolDataConstructorsField.get(protocolData))[packetId] = clazz.getDeclaredConstructor();
     }
 
 }
