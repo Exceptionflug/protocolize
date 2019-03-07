@@ -7,6 +7,7 @@ import net.md_5.bungee.protocol.Protocol;
 import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 
 import java.lang.reflect.*;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -75,14 +76,12 @@ public final class PacketRegistration {
         Preconditions.checkNotNull(direction, "The direction cannot be null!");
         Preconditions.checkNotNull(protocolIdMapping, "The protocolIdMapping cannot be null!");
         try {
-            final Object mapArray = Array.newInstance(mappingClass, protocolIdMapping.size());
-            int index = 0;
             for(final Integer protocolVersion : protocolIdMapping.keySet()) {
                 final Object map = protocolMappingConstructor.newInstance(protocolVersion, protocolIdMapping.get(protocolVersion));
-                Array.set(mapArray, index, map);
-                index ++;
+                final Object mapArray = Array.newInstance(mappingClass, 1);
+                Array.set(mapArray, 0, map);
+                registerMethod.invoke(getDirectionData(protocol, direction), clazz, mapArray);
             }
-            registerMethod.invoke(getDirectionData(protocol, direction), clazz, mapArray);
             ProxyServer.getInstance().getLogger().info("[Protocolize] Injected custom packet: "+clazz.getName());
         } catch (final Exception e) {
             ProxyServer.getInstance().getLogger().log(Level.SEVERE, "Exception occurred while registering packet: "+clazz.getName(), e);
