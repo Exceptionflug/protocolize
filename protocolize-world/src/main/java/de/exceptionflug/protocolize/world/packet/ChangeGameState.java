@@ -12,7 +12,7 @@ import static de.exceptionflug.protocolize.api.util.ProtocolVersions.*;
 
 public class ChangeGameState extends AbstractPacket {
 
-    public static Map<Integer, Integer> MAPPING = new HashMap<>();
+    public static final Map<Integer, Integer> MAPPING = new HashMap<>();
 
     static {
         MAPPING.put(MINECRAFT_1_8, 0x2B);

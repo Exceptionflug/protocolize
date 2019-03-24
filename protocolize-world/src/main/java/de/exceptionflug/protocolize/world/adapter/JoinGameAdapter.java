@@ -15,6 +15,6 @@ public class JoinGameAdapter extends PacketAdapter<Login> {
 
     @Override
     public void receive(final PacketReceiveEvent<Login> event) {
-        WorldModule.setInternalGamemode(event.getPlayer().getUniqueId(), Gamemode.getByID(event.getPacket().getGameMode()));
+        WorldModule.setGamemode(event.getPlayer().getUniqueId(), Gamemode.getByID(event.getPacket().getGameMode()));
     }
 }
