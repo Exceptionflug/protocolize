@@ -10,6 +10,7 @@ import net.md_5.bungee.protocol.ProtocolConstants;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Level;
 
 import static de.exceptionflug.protocolize.api.util.ProtocolVersions.*;
 
@@ -35,6 +36,7 @@ public class NamedSoundEffect extends AbstractPacket {
     }
 
     private String sound;
+    private Sound soundObject;
     private SoundCategory category;
     private double x, y, z;
     private float volume, pitch;
@@ -44,15 +46,15 @@ public class NamedSoundEffect extends AbstractPacket {
     }
 
     public Sound getSoundObject() {
-        return Sound.valueOf(sound.toUpperCase().replace(".", "_"));
-    }
-
-    public void setSound(final Sound sound) {
-        this.sound = sound.name().toLowerCase().replace("_", ".");
+        return soundObject;
     }
 
     public void setSound(final String sound) {
         this.sound = sound;
+    }
+
+    public void setSound(final Sound soundObject) {
+        this.soundObject = soundObject;
     }
 
     public SoundCategory getCategory() {
@@ -106,6 +108,7 @@ public class NamedSoundEffect extends AbstractPacket {
     @Override
     public void read(final ByteBuf buf, final ProtocolConstants.Direction direction, final int protocolVersion) {
         sound = readString(buf);
+        soundObject = Sound.getSound(sound, protocolVersion);
         if(protocolVersion > MINECRAFT_1_8)
             category = SoundCategory.values()[readVarInt(buf)];
         x = buf.readInt() / 8D;
@@ -121,7 +124,16 @@ public class NamedSoundEffect extends AbstractPacket {
 
     @Override
     public void write(final ByteBuf buf, final ProtocolConstants.Direction direction, final int protocolVersion) {
-        writeString(sound, buf);
+        if(soundObject != null) {
+            final String soundName = soundObject.getSoundName(protocolVersion);
+            if(soundName == null) {
+                ProxyServer.getInstance().getLogger().log(Level.WARNING, "[Protocolize] Cannot play sound "+soundObject.name()+" to client with protocol version "+protocolVersion);
+                return;
+            }
+            writeString(soundName, buf);
+        } else {
+            writeString(sound, buf);
+        }
         ProxyServer.getInstance().broadcast(sound);
         if(protocolVersion > MINECRAFT_1_8)
             writeVarInt(category.ordinal(), buf);

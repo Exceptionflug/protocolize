@@ -674,7 +674,16 @@ public enum Sound {
 		this.mappings = mappings;
 	}
 
-	public String getSoundName(final int protocolVersion) {
+	public static Sound getSound(final String sound, final int protocolVersion) {
+		for(final Sound s : values()) {
+			final String soundName = s.getSoundName(protocolVersion);
+			if(soundName != null && soundName.equals(sound))
+				return s;
+		}
+		return null;
+	}
+
+    public String getSoundName(final int protocolVersion) {
 		for(final SoundMapping mapping : mappings) {
 			if(mapping.getProtocolVersionRangeStart() <= protocolVersion && mapping.getProtocolVersionRangeEnd() >= protocolVersion) {
 				return mapping.getSoundName();
