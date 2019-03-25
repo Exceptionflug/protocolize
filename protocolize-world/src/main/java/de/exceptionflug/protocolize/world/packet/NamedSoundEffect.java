@@ -49,12 +49,13 @@ public class NamedSoundEffect extends AbstractPacket {
         return soundObject;
     }
 
-    public void setSound(final Sound sound) {
-        soundObject = sound;
-    }
 
     public void setSound(final String sound) {
         this.sound = sound;
+    }
+
+    public void setSound(final Sound soundObject) {
+        this.soundObject = soundObject;
     }
 
     public SoundCategory getCategory() {
