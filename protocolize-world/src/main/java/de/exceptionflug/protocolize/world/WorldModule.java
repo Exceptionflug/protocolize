@@ -50,7 +50,6 @@ public class WorldModule {
         soundEffect.setX(location.getX());
         soundEffect.setY(location.getY());
         soundEffect.setZ(location.getZ());
-        ProxyServer.getInstance().broadcast(location.toString());
         proxiedPlayer.unsafe().sendPacket(soundEffect);
     }
 

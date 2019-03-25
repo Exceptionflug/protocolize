@@ -473,16 +473,16 @@ public enum Sound {
 	ENTITY_SHEEP_HURT(new SoundMapping(MINECRAFT_1_8, MINECRAFT_1_8, "mob.sheep.say"), new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.sheep.hurt")),
 	ENTITY_SHEEP_SHEAR(new SoundMapping(MINECRAFT_1_8, MINECRAFT_1_8, "mob.sheep.shear"), new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.sheep.shear")),
 	ENTITY_SHEEP_STEP(new SoundMapping(MINECRAFT_1_8, MINECRAFT_1_8, "mob.sheep.step"), new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.sheep.step")),
-	ENTITY_SHULKER_AMBIENT(new SoundMapping(MINECRAFT_1_8, MINECRAFT_1_8, ""), new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.shulker.ambient")),
-	ENTITY_SHULKER_BULLET_HIT(new SoundMapping(MINECRAFT_1_8, MINECRAFT_1_8, ""), new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.shulker.bullet.hit")),
-	ENTITY_SHULKER_BULLET_HURT(new SoundMapping(MINECRAFT_1_8, MINECRAFT_1_8, ""), new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.shulker.bullet.hurt")),
-	ENTITY_SHULKER_CLOSE(new SoundMapping(MINECRAFT_1_8, MINECRAFT_1_8, ""), new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.shulker.close")),
-	ENTITY_SHULKER_DEATH(new SoundMapping(MINECRAFT_1_8, MINECRAFT_1_8, ""), new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.shulker.death")),
-	ENTITY_SHULKER_HURT(new SoundMapping(MINECRAFT_1_8, MINECRAFT_1_8, ""), new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.shulker.hurt")),
-	ENTITY_SHULKER_HURT_CLOSED(new SoundMapping(MINECRAFT_1_8, MINECRAFT_1_8, ""), new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.shulker.hurt_closed")),
-	ENTITY_SHULKER_OPEN(new SoundMapping(MINECRAFT_1_8, MINECRAFT_1_8, ""), new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.shulker.open")),
-	ENTITY_SHULKER_SHOOT(new SoundMapping(MINECRAFT_1_8, MINECRAFT_1_8, ""), new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.shulker.shoot")),
-	ENTITY_SHULKER_TELEPORT(new SoundMapping(MINECRAFT_1_8, MINECRAFT_1_8, ""), new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.shulker.teleport")),
+	ENTITY_SHULKER_AMBIENT(new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.shulker.ambient")),
+	ENTITY_SHULKER_BULLET_HIT(new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.shulker.bullet.hit")),
+	ENTITY_SHULKER_BULLET_HURT(new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.shulker.bullet.hurt")),
+	ENTITY_SHULKER_CLOSE(new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.shulker.close")),
+	ENTITY_SHULKER_DEATH(new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.shulker.death")),
+	ENTITY_SHULKER_HURT(new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.shulker.hurt")),
+	ENTITY_SHULKER_HURT_CLOSED(new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.shulker.hurt_closed")),
+	ENTITY_SHULKER_OPEN(new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.shulker.open")),
+	ENTITY_SHULKER_SHOOT(new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.shulker.shoot")),
+	ENTITY_SHULKER_TELEPORT(new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.shulker.teleport")),
 	ENTITY_SILVERFISH_AMBIENT(new SoundMapping(MINECRAFT_1_8, MINECRAFT_1_8, "mob.silverfish.say"), new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.silverfish.ambient")),
 	ENTITY_SILVERFISH_DEATH(new SoundMapping(MINECRAFT_1_8, MINECRAFT_1_8, "mob.silverfish.kill"), new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.silverfish.death")),
 	ENTITY_SILVERFISH_HURT(new SoundMapping(MINECRAFT_1_8, MINECRAFT_1_8, "mob.silverfish.hit"), new SoundMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "entity.silverfish.hurt")),
@@ -672,6 +672,22 @@ public enum Sound {
 
 	Sound(final SoundMapping... mappings) {
 		this.mappings = mappings;
+	}
+
+	public static Sound getSound(final String sound, final int protocolVersion) {
+		for(final Sound s : values()) {
+			final String soundName = s.getSoundName(protocolVersion);
+			if(soundName == null)
+				continue;
+			if(soundName.equals(sound)) {
+				for(final SoundMapping mapping : s.mappings) {
+					if(mapping.getProtocolVersionRangeStart() <= protocolVersion && mapping.getProtocolVersionRangeEnd() >= protocolVersion) {
+						return s;
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 	public String getSoundName(final int protocolVersion) {
