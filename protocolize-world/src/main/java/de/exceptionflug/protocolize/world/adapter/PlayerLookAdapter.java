@@ -15,6 +15,8 @@ public class PlayerLookAdapter extends PacketAdapter<PlayerLook> {
 
     @Override
     public void receive(final PacketReceiveEvent<PlayerLook> event) {
+        if(event.getPlayer() == null)
+            return;
         final PlayerLook playerLook = event.getPacket();
         final Location location = WorldModule.getLocation(event.getPlayer().getUniqueId());
         if(location == null) {
