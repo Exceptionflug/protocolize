@@ -8,8 +8,11 @@ import io.netty.handler.codec.MessageToMessageEncoder;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.protocol.AbstractPacketHandler;
 import net.md_5.bungee.protocol.DefinedPacket;
+import net.md_5.bungee.protocol.packet.KeepAlive;
+import net.md_5.bungee.protocol.packet.PingPacket;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 
 public class ProtocolizeEncoderChannelHandler extends MessageToMessageEncoder<DefinedPacket> {
@@ -25,6 +28,8 @@ public class ProtocolizeEncoderChannelHandler extends MessageToMessageEncoder<De
         msg = ProtocolAPI.getEventManager().handleOutboundPacket(msg, abstractPacketHandler);
         if(msg != null)
             out.add(msg);
+        else
+            out.add(new KeepAlive(ThreadLocalRandom.current().nextLong())); // We need to produce at least one message
     }
 
     @Override
