@@ -93,7 +93,7 @@ public final class InventoryModule {
             out.setHomebrew(false);
             return out;
         }
-        return WINDOW_MAP.computeIfAbsent(playerId, (id) -> Maps.newHashMap()).get(windowId);
+        return WINDOW_MAP.computeIfAbsent(playerId, (id) -> new ConcurrentHashMap<>()).get(windowId);
     }
 
     public static void uncache(final UUID playerId) {
