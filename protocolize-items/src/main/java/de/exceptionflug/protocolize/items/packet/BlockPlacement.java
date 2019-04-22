@@ -63,7 +63,7 @@ public class BlockPlacement extends AbstractPacket {
     @Override
     public void read(final ByteBuf buf, final Direction direction, final int protocolVersion) {
         if(protocolVersion < MINECRAFT_1_14) {
-            position = BlockPosition.read(buf);
+            position = BlockPosition.read(buf, protocolVersion);
             if(protocolVersion > MINECRAFT_1_8) {
                 face = BlockFace.getBlockFace(readVarInt(buf));
                 hand = Hand.getHandByID(readVarInt(buf));
@@ -86,7 +86,7 @@ public class BlockPlacement extends AbstractPacket {
             }
         } else {
             hand = Hand.getHandByID(readVarInt(buf));
-            position = BlockPosition.read(buf);
+            position = BlockPosition.read(buf, protocolVersion);
             face = BlockFace.getBlockFace(readVarInt(buf));
             hitVecX = buf.readFloat();
             hitVecY = buf.readFloat();
@@ -101,7 +101,7 @@ public class BlockPlacement extends AbstractPacket {
         Preconditions.checkNotNull(face, "The face cannot be null!");
         Preconditions.checkNotNull(hand, "The hand cannot be null!");
         if(protocolVersion < MINECRAFT_1_14) {
-            position.write(buf);
+            position.write(buf, protocolVersion);
             if(protocolVersion > MINECRAFT_1_8) {
                 writeVarInt(face.getProtocolId(), buf);
                 writeVarInt(hand.getProtocolId(), buf);
@@ -123,7 +123,7 @@ public class BlockPlacement extends AbstractPacket {
             }
         } else {
             writeVarInt(hand.getProtocolId(), buf);
-            position.write(buf);
+            position.write(buf, protocolVersion);
             writeVarInt(face.getProtocolId(), buf);
             buf.writeFloat(hitVecX);
             buf.writeFloat(hitVecY);
