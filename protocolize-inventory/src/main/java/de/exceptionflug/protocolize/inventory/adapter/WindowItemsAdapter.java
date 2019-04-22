@@ -3,6 +3,7 @@ package de.exceptionflug.protocolize.inventory.adapter;
 import de.exceptionflug.protocolize.api.event.PacketReceiveEvent;
 import de.exceptionflug.protocolize.api.handler.PacketAdapter;
 import de.exceptionflug.protocolize.api.protocol.Stream;
+import de.exceptionflug.protocolize.api.util.ReflectionUtil;
 import de.exceptionflug.protocolize.inventory.Inventory;
 import de.exceptionflug.protocolize.inventory.InventoryModule;
 import de.exceptionflug.protocolize.inventory.InventoryType;
@@ -32,10 +33,11 @@ public class WindowItemsAdapter extends PacketAdapter<WindowItems> {
             return;
         }
         final PlayerInventory playerInventory = InventoryManager.getCombinedSendInventory(event.getPlayer().getUniqueId(), event.getServerInfo().getName());
+        final int protocolVersion = ReflectionUtil.getProtocolVersion(event.getPlayer());
         for (int i = 0; i < packet.getItems().size(); i++) {
-            if(InventoryUtil.isLowerInventory(i, inventory)) {
+            if(InventoryUtil.isLowerInventory(i, inventory, protocolVersion)) {
                 // LOWER PLAYER INVENTORY
-                final int playerSlot = i - inventory.getSize() + 9;
+                final int playerSlot = i - inventory.getType().getTypicalSize(protocolVersion) + 9;
                 final ItemStack stack = packet.getItemStackAtSlot(i);
                 final ItemStack item = playerInventory.getItem(playerSlot);
                 if(stack == null || stack.getType() == ItemType.NO_DATA) {

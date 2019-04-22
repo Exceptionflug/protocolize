@@ -88,7 +88,7 @@ public final class InventoryModule {
             if(player.getServer() == null || player.getServer().getInfo() == null)
                 return null;
             final PlayerInventory inventory = InventoryManager.getCombinedSendInventory(playerId, player.getServer().getInfo().getName());
-            final Inventory out = new Inventory(InventoryType.PLAYER, 46);
+            final Inventory out = new Inventory(InventoryType.PLAYER);
             out.setItems(inventory.getItemsIndexed());
             out.setHomebrew(false);
             return out;
@@ -177,15 +177,9 @@ public final class InventoryModule {
         windowId = event.getWindowId();
         inventory = event.getInventory();
 
-        if (inventory.getType() == InventoryType.CRAFTING_TABLE)
-            inventory.setSize(0);
-
         if(!alreadyOpen)
-            p.unsafe().sendPacket(new OpenWindow(windowId, inventory.getSize(), inventory.getType(), inventory.getTitle()));
-        final List<ItemStack> items = Lists.newArrayList(inventory.getItemsIndexed());
-
-        if (inventory.getType() == InventoryType.BREWING_STAND && ReflectionUtil.getProtocolVersion(p) == MINECRAFT_1_8)
-            items.remove(4);
+            p.unsafe().sendPacket(new OpenWindow(windowId, inventory.getType(), inventory.getTitle()));
+        final List<ItemStack> items = Lists.newArrayList(inventory.getItemsIndexed(ReflectionUtil.getProtocolVersion(p)));
 
         if(ItemsModule.isSpigotInventoryTracking()) {
             final PlayerInventory playerInventory = InventoryManager.getInventory(p.getUniqueId());

@@ -21,9 +21,8 @@ public class OpenWindowAdapter extends PacketAdapter<OpenWindow> {
         final ProxiedPlayer p = event.getPlayer();
         final OpenWindow packet = event.getPacket();
 
-        Inventory inventory = new Inventory(packet.getInventoryType(), packet.getSize(), packet.getTitle());
+        Inventory inventory = new Inventory(packet.getInventoryType(), packet.getTitle());
         final Inventory original = inventory;
-        inventory.setEntityId(packet.getEntityId());
         inventory.setHomebrew(false);
         int windowId = packet.getWindowId();
 
@@ -38,9 +37,7 @@ public class OpenWindowAdapter extends PacketAdapter<OpenWindow> {
         if(!inventory.equals(original) || packet.getWindowId() != windowId) {
             event.markForRewrite();
             packet.setWindowId(windowId);
-            packet.setEntityId(inventory.getEntityId());
             packet.setInventoryType(inventory.getType());
-            packet.setSize(inventory.getSize());
             packet.setTitle(inventory.getTitle());
         }
 

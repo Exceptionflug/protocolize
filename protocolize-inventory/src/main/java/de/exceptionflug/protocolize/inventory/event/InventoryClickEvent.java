@@ -1,6 +1,7 @@
 package de.exceptionflug.protocolize.inventory.event;
 
 import de.exceptionflug.protocolize.api.ClickType;
+import de.exceptionflug.protocolize.api.util.ReflectionUtil;
 import de.exceptionflug.protocolize.inventory.Inventory;
 import de.exceptionflug.protocolize.inventory.InventoryType;
 import de.exceptionflug.protocolize.inventory.util.InventoryUtil;
@@ -70,14 +71,10 @@ public class InventoryClickEvent extends Event {
 
     public ItemStack getClickedItem() {
         final ItemStack item = inventory.getItem(slot);
-        if(InventoryUtil.isLowerInventory(slot, inventory) && (item == null || item.getType() == ItemType.NO_DATA)) {
+        final int protocolVersion = ReflectionUtil.getProtocolVersion(player);
+        if(InventoryUtil.isLowerInventory(slot, inventory, protocolVersion) && (item == null || item.getType() == ItemType.NO_DATA)) {
             final PlayerInventory playerInventory = InventoryManager.getInventory(player.getUniqueId());
-            final int pSlot;
-            if(inventory.getType() == InventoryType.CHEST || inventory.getType() == InventoryType.CONTAINER) {
-                pSlot = slot - inventory.getSize() + 9;
-            } else {
-                pSlot = slot - inventory.getType().getTypicalSize() + 9;
-            }
+            final int pSlot = inventory.getType().getTypicalSize(protocolVersion) + 9;
             return playerInventory.getItem(pSlot);
         }
         return item;

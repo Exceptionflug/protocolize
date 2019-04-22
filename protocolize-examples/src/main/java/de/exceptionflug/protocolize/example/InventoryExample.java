@@ -23,7 +23,7 @@ public class InventoryExample implements Listener {
 
     public void openInventory(final ProxiedPlayer player) {
         // Creates a new chest inventory with 4 rows
-        final Inventory inventory = new Inventory(36, new TextComponent("§9Inventory title"));
+        final Inventory inventory = new Inventory(InventoryType.GENERIC_9X4, new TextComponent("§9Inventory title"));
 
         // A simple item
         final ItemStack item = new ItemStack(ItemType.SIGN);
@@ -40,7 +40,7 @@ public class InventoryExample implements Listener {
 
     private void openBrewingStandInventory(final ProxiedPlayer player) {
         // Creates a new brewing stand gui
-        final Inventory brewingStand = new Inventory(InventoryType.BREWING_STAND, 1, new TextComponent("§5A brewing stand!"));
+        final Inventory brewingStand = new Inventory(InventoryType.BREWING_STAND, new TextComponent("§5A brewing stand!"));
 
         // A simple item
         final ItemStack item = new ItemStack(ItemType.SIGN);

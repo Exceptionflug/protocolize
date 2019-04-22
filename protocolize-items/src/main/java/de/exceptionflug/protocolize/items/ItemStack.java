@@ -4,7 +4,6 @@ import com.flowpowered.nbt.*;
 import com.flowpowered.nbt.stream.NBTInputStream;
 import com.flowpowered.nbt.stream.NBTOutputStream;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
@@ -23,7 +22,6 @@ import java.util.stream.Collectors;
 
 import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1_13;
 import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1_13_2;
-import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1_8;
 
 public final class ItemStack implements Cloneable {
 
@@ -92,7 +90,7 @@ public final class ItemStack implements Cloneable {
         Preconditions.checkNotNull(buf, "The buf cannot be null!");
         try {
             final int protocolID;
-            final IDMapping applicableMapping;
+            final ItemIDMapping applicableMapping;
             if (type == null) {
                 protocolID = -1;
                 applicableMapping = null;
@@ -138,8 +136,8 @@ public final class ItemStack implements Cloneable {
             }
             setLoreTag(lore);
             setHideFlags(hideFlags);
-            if (applicableMapping instanceof AbstractCustomMapping) {
-                ((AbstractCustomMapping) applicableMapping).apply(this, protocolVersion);
+            if (applicableMapping instanceof AbstractCustomItemIDMapping) {
+                ((AbstractCustomItemIDMapping) applicableMapping).apply(this, protocolVersion);
             }
             buf.markWriterIndex();
             try {

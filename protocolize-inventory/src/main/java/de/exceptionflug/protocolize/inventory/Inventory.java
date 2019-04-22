@@ -17,36 +17,13 @@ import java.util.Objects;
 public class Inventory {
 
     private final Map<Integer, ItemStack> items = Maps.newHashMap();
-    private int size, entityId;
     private InventoryType type;
     private BaseComponent[] title;
     private boolean homebrew = true;
 
-    public Inventory(final int size, final BaseComponent... title) {
-        this(InventoryType.CHEST, size, title);
-    }
-
-    public Inventory(final InventoryType type, final int size, final BaseComponent... title) {
-        this.size = size;
+    public Inventory(final InventoryType type, final BaseComponent... title) {
         this.type = type;
         this.title = title;
-    }
-
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(final int size) {
-        this.size = size;
-    }
-
-    public int getEntityId() {
-        return entityId;
-    }
-
-    public void setEntityId(final int entityId) {
-        this.entityId = entityId;
     }
 
     public InventoryType getType() {
@@ -69,8 +46,8 @@ public class Inventory {
         return items;
     }
 
-    public List<ItemStack> getItemsIndexed() {
-        final ItemStack[] outArray = new ItemStack[(type == InventoryType.CONTAINER || type == InventoryType.CHEST || type == InventoryType.HORSE) ? getSize() : type.getTypicalSize()];
+    public List<ItemStack> getItemsIndexed(final int protocolVersion) {
+        final ItemStack[] outArray = new ItemStack[type.getTypicalSize(protocolVersion)];
         for(final Integer id : items.keySet()) {
             outArray[id] = items.get(id);
         }
@@ -121,16 +98,14 @@ public class Inventory {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final Inventory inventory = (Inventory) o;
-        return size == inventory.size &&
-                entityId == inventory.entityId &&
-                Objects.equals(items, inventory.items) &&
+        return  Objects.equals(items, inventory.items) &&
                 type == inventory.type &&
                 Arrays.equals(title, inventory.title);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(items, size, entityId, type);
+        int result = Objects.hash(items, type);
         result = 31 * result + Arrays.hashCode(title);
         return result;
     }
@@ -139,8 +114,6 @@ public class Inventory {
     public String toString() {
         return "Inventory{" +
                 "items=" + items +
-                ", size=" + size +
-                ", entityId=" + entityId +
                 ", type=" + type +
                 ", title=" + Arrays.toString(title) +
                 '}';

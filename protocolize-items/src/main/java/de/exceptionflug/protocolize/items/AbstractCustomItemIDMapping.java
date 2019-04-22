@@ -1,8 +1,8 @@
 package de.exceptionflug.protocolize.items;
 
-public abstract class AbstractCustomMapping extends IDMapping {
+public abstract class AbstractCustomItemIDMapping extends ItemIDMapping {
 
-    public AbstractCustomMapping(final int protocolVersionRangeStart, final int protocolVersionRangeEnd, final int id) {
+    public AbstractCustomItemIDMapping(final int protocolVersionRangeStart, final int protocolVersionRangeEnd, final int id) {
         super(protocolVersionRangeStart, protocolVersionRangeEnd, id);
     }
 

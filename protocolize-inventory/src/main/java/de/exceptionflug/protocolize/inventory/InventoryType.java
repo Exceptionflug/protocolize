@@ -1,45 +1,92 @@
 package de.exceptionflug.protocolize.inventory;
 
+import static de.exceptionflug.protocolize.api.util.ProtocolVersions.*;
+
 public enum InventoryType {
 
-    CONTAINER("minecraft:container", -1),
-    CHEST("minecraft:chest", -1),
-    CRAFTING_TABLE("minecraft:crafting_table", 10),
-    FURNACE("minecraft:furnace", 3),
-    DISPENSER("minecraft:dispenser", 9),
-    ENCHANTMENT_TABLE("minecraft:enchanting_table", 2),
-    BREWING_STAND("minecraft:brewing_stand", 5),
-    VILLAGER("minecraft:villager", 3),
-    BEACON("minecraft:beacon", 1),
-    ANVIL("minecraft:anvil", 3),
-    HOPPER("minecraft:hopper", 5),
-    DROPPER("minecraft:dropper", 9),
-    SHULKER_BOX("minecraft:shulker_box", 27),
-    HORSE("EntityHorse", -1),
+    GENERIC_9X1(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 9), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 0, 9)),
+    GENERIC_9X2(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 18), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 1, 9)),
+    GENERIC_9X3(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 27), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 2, 9)),
+    GENERIC_9X4(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 36), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 3, 9)),
+    GENERIC_9X5(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 45), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 4, 9)),
+    GENERIC_9X6(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 54), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 5, 9)),
+    GENERIC_3X3(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:dropper", 9), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 6, 9)),
+    ANVIL(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:anvil", 3), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 7, 3)),
+    BEACON(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:beacon", 1), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 8, 1)),
+    BLAST_FURNACE(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 9, 2)),
+    BREWING_STAND(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_8, "minecraft:brewing_stand", 4), new InventoryIDMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "minecraft:brewing_stand", 5), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 10, 5)),
+    CRAFTING(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:crafting_table", 10), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 11, 10)),
+    ENCHANTMENT(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:enchanting_table", 2), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 12, 2)),
+    FURNACE(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:furnace", 3), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 13, 3)),
+    GRINDSTONE(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 14, 3)),
+    HOPPER(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:hopper", 5), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 15, 5)),
+    LECTERN(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 16, 0)),
+    LOOM(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 17, 4)),
+    MERCHANT(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:villager", 3), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 18, 3)),
+    SHULKER_BOX(new InventoryIDMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "minecraft:shulker_box", 27), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 19, 27)),
+    SMOKER(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 20, 3)),
+    CARTOGRAPHY(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 21, 3)),
+    STONECUTTER(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 22, 2)),
+    PLAYER(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_8, "Player", 45), new InventoryIDMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "Player", 46), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, -1, 46));
 
-    PLAYER("Player", 45);
+    private final InventoryIDMapping[] mappings;
 
-    private final String protocolId;
-    private final int typicalSize;
-
-    InventoryType(final String protocolId, final int typicalSize) {
-        this.protocolId = protocolId;
-        this.typicalSize = typicalSize;
+    InventoryType(final InventoryIDMapping... mappings) {
+        this.mappings = mappings;
     }
 
-    public String getProtocolId() {
-        return protocolId;
+    public InventoryIDMapping[] getMappings() {
+        return mappings;
     }
 
-    public static InventoryType getInventoryType(final String id) {
+    public static InventoryType getType(final String id, final int size, final int protocolVersion) {
         for(final InventoryType type : values()) {
-            if(type.protocolId.equals(id))
+            if(protocolVersion >= MINECRAFT_1_14) {
+                throw new UnsupportedOperationException("Please use InventoryType#getType(id: int, protocolVersion: int): InventoryType for 1.14 protocol version.");
+            }
+            final String typeId = type.getLegacyTypeId(protocolVersion);
+            if(typeId != null && typeId.equals(id) && type.getTypicalSize(protocolVersion) == size)
                 return type;
         }
         return null;
     }
 
-    public int getTypicalSize() {
-        return typicalSize;
+    public static InventoryType getType(final int id, final int protocolVersion) {
+        for(final InventoryType type : values()) {
+            if(protocolVersion < MINECRAFT_1_14) {
+                throw new UnsupportedOperationException("Please use InventoryType#getType(id: String, protocolVersion: int): InventoryType for legacy protocol versions.");
+            }
+            final int typeId = type.getTypeId(protocolVersion);
+            if(typeId != -1 && typeId == id)
+                return type;
+        }
+        return null;
+    }
+
+    public String getLegacyTypeId(final int protocolVersion) {
+        for(final InventoryIDMapping mapping : mappings) {
+            if(mapping.getProtocolVersionRangeStart() <= protocolVersion && mapping.getProtocolVersionRangeEnd() >= protocolVersion) {
+                return mapping.getLegacyId();
+            }
+        }
+        return null;
+    }
+
+    public int getTypeId(final int protocolVersion) {
+        for(final InventoryIDMapping mapping : mappings) {
+            if(mapping.getProtocolVersionRangeStart() <= protocolVersion && mapping.getProtocolVersionRangeEnd() >= protocolVersion) {
+                return mapping.getProtocolId();
+            }
+        }
+        return -1;
+    }
+
+    public int getTypicalSize(final int protocolVersion) {
+        for(final InventoryIDMapping mapping : mappings) {
+            if(mapping.getProtocolVersionRangeStart() <= protocolVersion && mapping.getProtocolVersionRangeEnd() >= protocolVersion) {
+                return mapping.getTypicalSize();
+            }
+        }
+        return -1;
     }
 }

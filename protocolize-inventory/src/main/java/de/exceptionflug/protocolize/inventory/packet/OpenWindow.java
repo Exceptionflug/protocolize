@@ -33,15 +33,15 @@ public class OpenWindow extends AbstractPacket {
         MAPPING.put(MINECRAFT_1_13, 0x14);
         MAPPING.put(MINECRAFT_1_13_1, 0x14);
         MAPPING.put(MINECRAFT_1_13_2, 0x14);
+        MAPPING.put(MINECRAFT_1_14, 0x2E);
     }
 
-    private int windowId, size, entityId;
+    private int windowId;
     private InventoryType inventoryType;
     private BaseComponent[] title;
 
-    public OpenWindow(final int windowId, final int size, final InventoryType inventoryType, final BaseComponent... title) {
+    public OpenWindow(final int windowId, final InventoryType inventoryType, final BaseComponent... title) {
         this.windowId = windowId;
-        this.size = size;
         this.inventoryType = inventoryType;
         this.title = title;
     }
@@ -50,22 +50,32 @@ public class OpenWindow extends AbstractPacket {
 
     @Override
     public void read(final ByteBuf buf, final Direction direction, final int protocolVersion) {
-        windowId = buf.readUnsignedByte();
-        inventoryType = InventoryType.getInventoryType(readString(buf));
-        title = ComponentSerializer.parse(readString(buf));
-        size = buf.readUnsignedByte();
-        if(inventoryType == InventoryType.HORSE)
-            entityId = buf.readInt();
+        if(protocolVersion < MINECRAFT_1_14) {
+            windowId = buf.readUnsignedByte();
+            final String legacyId = readString(buf);
+            title = ComponentSerializer.parse(readString(buf));
+            final int size = buf.readUnsignedByte();
+            inventoryType = InventoryType.getType(legacyId, size, protocolVersion);
+            buf.readBytes(buf.readableBytes()); // Skip optional entity id
+        } else {
+            windowId = readVarInt(buf);
+            inventoryType = InventoryType.getType(readVarInt(buf), protocolVersion);
+            title = ComponentSerializer.parse(readString(buf));
+        }
     }
 
     @Override
     public void write(final ByteBuf buf, final Direction direction, final int protocolVersion) {
-        buf.writeByte(windowId & 0xFF);
-        writeString(inventoryType.getProtocolId(), buf);
-        writeString(ComponentSerializer.toString(title), buf);
-        buf.writeByte(size & 0xFF);
-        if(inventoryType == InventoryType.HORSE)
-            buf.writeInt(entityId);
+        if(protocolVersion < MINECRAFT_1_14) {
+            buf.writeByte(windowId & 0xFF);
+            writeString(Objects.requireNonNull(inventoryType.getLegacyTypeId(protocolVersion)), buf);
+            writeString(ComponentSerializer.toString(title), buf);
+            buf.writeByte(inventoryType.getTypicalSize(protocolVersion) & 0xFF);
+        } else {
+            writeVarInt(windowId, buf);
+            writeVarInt(inventoryType.getTypeId(protocolVersion), buf);
+            writeString(ComponentSerializer.toString(title), buf);
+        }
     }
 
     public int getWindowId() {
@@ -74,22 +84,6 @@ public class OpenWindow extends AbstractPacket {
 
     public void setWindowId(final int windowId) {
         this.windowId = windowId;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(final int size) {
-        this.size = size;
-    }
-
-    public int getEntityId() {
-        return entityId;
-    }
-
-    public void setEntityId(final int entityId) {
-        this.entityId = entityId;
     }
 
     public InventoryType getInventoryType() {
@@ -114,15 +108,13 @@ public class OpenWindow extends AbstractPacket {
         if (o == null || getClass() != o.getClass()) return false;
         OpenWindow that = (OpenWindow) o;
         return windowId == that.windowId &&
-                size == that.size &&
-                entityId == that.entityId &&
                 inventoryType == that.inventoryType &&
                 Arrays.equals(title, that.title);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(windowId, size, entityId, inventoryType);
+        int result = Objects.hash(windowId, inventoryType);
         result = 31 * result + Arrays.hashCode(title);
         return result;
     }
@@ -131,8 +123,6 @@ public class OpenWindow extends AbstractPacket {
     public String toString() {
         return "OpenWindow{" +
                 "windowId=" + windowId +
-                ", size=" + size +
-                ", entityId=" + entityId +
                 ", inventoryType=" + inventoryType +
                 ", title=" + Arrays.toString(title) +
                 '}';

@@ -4,11 +4,11 @@ import com.flowpowered.nbt.CompoundMap;
 import com.flowpowered.nbt.CompoundTag;
 import com.flowpowered.nbt.StringTag;
 
-public class SpawnEggMapping extends AbstractCustomMapping {
+public class SpawnEggItemIDMapping extends AbstractCustomItemIDMapping {
 
     private final String entityType;
 
-    public SpawnEggMapping(final int protocolVersionRangeStart, final int protocolVersionRangeEnd, final String entityType) {
+    public SpawnEggItemIDMapping(final int protocolVersionRangeStart, final int protocolVersionRangeEnd, final String entityType) {
         super(protocolVersionRangeStart, protocolVersionRangeEnd, 383);
         this.entityType = entityType;
     }

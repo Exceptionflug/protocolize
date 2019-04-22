@@ -33,12 +33,14 @@ public class BlockPlacement extends AbstractPacket {
         MAPPING.put(MINECRAFT_1_13, 0x29);
         MAPPING.put(MINECRAFT_1_13_1, 0x29);
         MAPPING.put(MINECRAFT_1_13_2, 0x29);
+        MAPPING.put(MINECRAFT_1_14, 0x2D);
     }
 
     private BlockPosition position;
     private BlockFace face;
     private Hand hand;
     private float hitVecX, hitVecY, hitVecZ;
+    private boolean insideBlock;
 
     @Deprecated
     private ItemStack stack = ItemStack.NO_DATA;
@@ -60,26 +62,36 @@ public class BlockPlacement extends AbstractPacket {
 
     @Override
     public void read(final ByteBuf buf, final Direction direction, final int protocolVersion) {
-        position = BlockPosition.read(buf);
-        if(protocolVersion > MINECRAFT_1_8) {
-            face = BlockFace.getBlockFace(readVarInt(buf));
-            hand = Hand.getHandByID(readVarInt(buf));
-            if(protocolVersion < 300) {
+        if(protocolVersion < MINECRAFT_1_14) {
+            position = BlockPosition.read(buf);
+            if(protocolVersion > MINECRAFT_1_8) {
+                face = BlockFace.getBlockFace(readVarInt(buf));
+                hand = Hand.getHandByID(readVarInt(buf));
+                if(protocolVersion < MINECRAFT_1_11) {
+                    hitVecX = buf.readByte() / 15F;
+                    hitVecY = buf.readByte() / 15F;
+                    hitVecZ = buf.readByte() / 15F;
+                } else {
+                    hitVecX = buf.readFloat();
+                    hitVecY = buf.readFloat();
+                    hitVecZ = buf.readFloat();
+                }
+            } else {
+                face = BlockFace.getBlockFace(buf.readByte());
+                hand = Hand.MAIN_HAND;
+                stack = ItemStack.read(buf, protocolVersion);
                 hitVecX = buf.readByte() / 15F;
                 hitVecY = buf.readByte() / 15F;
                 hitVecZ = buf.readByte() / 15F;
-            } else {
-                hitVecX = buf.readFloat();
-                hitVecY = buf.readFloat();
-                hitVecZ = buf.readFloat();
             }
         } else {
-            face = BlockFace.getBlockFace(buf.readByte());
-            hand = Hand.MAIN_HAND;
-            stack = ItemStack.read(buf, protocolVersion);
-            hitVecX = buf.readByte() / 15F;
-            hitVecY = buf.readByte() / 15F;
-            hitVecZ = buf.readByte() / 15F;
+            hand = Hand.getHandByID(readVarInt(buf));
+            position = BlockPosition.read(buf);
+            face = BlockFace.getBlockFace(readVarInt(buf));
+            hitVecX = buf.readFloat();
+            hitVecY = buf.readFloat();
+            hitVecZ = buf.readFloat();
+            insideBlock = buf.readBoolean();
         }
     }
 
@@ -88,25 +100,35 @@ public class BlockPlacement extends AbstractPacket {
         Preconditions.checkNotNull(position, "The position cannot be null!");
         Preconditions.checkNotNull(face, "The face cannot be null!");
         Preconditions.checkNotNull(hand, "The hand cannot be null!");
-        position.write(buf);
-        if(protocolVersion > MINECRAFT_1_8) {
-            writeVarInt(face.getProtocolId(), buf);
-            writeVarInt(hand.getProtocolId(), buf);
-            if(protocolVersion < 300) {
+        if(protocolVersion < MINECRAFT_1_14) {
+            position.write(buf);
+            if(protocolVersion > MINECRAFT_1_8) {
+                writeVarInt(face.getProtocolId(), buf);
+                writeVarInt(hand.getProtocolId(), buf);
+                if(protocolVersion < MINECRAFT_1_11) {
+                    buf.writeByte((int) (hitVecX * 15));
+                    buf.writeByte((int) (hitVecY * 15));
+                    buf.writeByte((int) (hitVecZ * 15));
+                } else {
+                    buf.writeFloat(hitVecX);
+                    buf.writeFloat(hitVecY);
+                    buf.writeFloat(hitVecZ);
+                }
+            } else {
+                buf.writeByte(face.getProtocolId());
+                stack.write(buf, protocolVersion);
                 buf.writeByte((int) (hitVecX * 15));
                 buf.writeByte((int) (hitVecY * 15));
                 buf.writeByte((int) (hitVecZ * 15));
-            } else {
-                buf.writeFloat(hitVecX);
-                buf.writeFloat(hitVecY);
-                buf.writeFloat(hitVecZ);
             }
         } else {
-            buf.writeByte(face.getProtocolId());
-            stack.write(buf, protocolVersion);
-            buf.writeByte((int) (hitVecX * 15));
-            buf.writeByte((int) (hitVecY * 15));
-            buf.writeByte((int) (hitVecZ * 15));
+            writeVarInt(hand.getProtocolId(), buf);
+            position.write(buf);
+            writeVarInt(face.getProtocolId(), buf);
+            buf.writeFloat(hitVecX);
+            buf.writeFloat(hitVecY);
+            buf.writeFloat(hitVecZ);
+            buf.writeBoolean(insideBlock);
         }
     }
 
@@ -152,6 +174,14 @@ public class BlockPlacement extends AbstractPacket {
 
     public void setHitVecZ(final float hitVecZ) {
         this.hitVecZ = hitVecZ;
+    }
+
+    public boolean isInsideBlock() {
+        return insideBlock;
+    }
+
+    public void setInsideBlock(final boolean insideBlock) {
+        this.insideBlock = insideBlock;
     }
 
     @Deprecated

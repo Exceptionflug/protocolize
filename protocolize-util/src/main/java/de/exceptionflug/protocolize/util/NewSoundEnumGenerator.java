@@ -3,6 +3,7 @@ package de.exceptionflug.protocolize.util;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import de.exceptionflug.protocolize.world.Sound;
 
 import java.io.File;
 import java.io.FileReader;
@@ -10,25 +11,31 @@ import java.io.FileWriter;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class ItemEnumGenerator {
+public class NewSoundEnumGenerator {
 
     public static void main(final String[] args) throws Exception {
         final File file = new File("registries.json");
         final JsonObject root = (JsonObject) new JsonParser().parse(new FileReader(file));
-        final File out = new File("Item.java");
+        final File out = new File("Sound.java");
         out.createNewFile();
-        final StringBuilder sb = new StringBuilder("public enum Item {");
+        final StringBuilder sb = new StringBuilder("public enum Sound {");
         sb.append("\n\n");
         int i = 0;
-        final JsonObject itemEntries = root.getAsJsonObject("minecraft:item").getAsJsonObject("entries");
-        final Set<Entry<String, JsonElement>> entries = itemEntries.entrySet();
+        final JsonObject soundEntries = root.getAsJsonObject("minecraft:sound_event").getAsJsonObject("entries");
+        final Set<Entry<String, JsonElement>> entries = soundEntries.entrySet();
         for(final Entry<String, JsonElement> element : entries) {
+            final String enumConstant = element.getKey().substring(10).toUpperCase().replace(".", "_");
+            try {
+                Sound.valueOf(enumConstant);
+                continue;
+            } catch (final IllegalArgumentException e) {
+            }
             sb.append("\t");
-            sb.append(element.getKey().substring(10).toUpperCase());
+            sb.append(enumConstant);
             sb.append("(");
-            sb.append("new IDMapping(MINECRAFT_1_14, MINECRAFT_1_14, ");
-            sb.append(((JsonObject)element.getValue()).get("protocol_id").getAsInt());
-            sb.append(")");
+            sb.append("new SoundIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, \"");
+            sb.append(element.getKey().substring(10));
+            sb.append("\")");
             sb.append(")");
             if(i != entries.size()-1)
                 sb.append(",");
