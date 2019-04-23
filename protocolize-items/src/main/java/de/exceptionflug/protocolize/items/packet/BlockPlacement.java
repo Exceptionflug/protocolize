@@ -33,7 +33,7 @@ public class BlockPlacement extends AbstractPacket {
         MAPPING.put(MINECRAFT_1_13, 0x29);
         MAPPING.put(MINECRAFT_1_13_1, 0x29);
         MAPPING.put(MINECRAFT_1_13_2, 0x29);
-        MAPPING.put(MINECRAFT_1_14, 0x2D);
+        MAPPING.put(MINECRAFT_1_14, 0x2C);
     }
 
     private BlockPosition position;
