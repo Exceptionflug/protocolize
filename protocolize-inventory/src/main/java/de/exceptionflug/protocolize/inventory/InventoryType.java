@@ -5,11 +5,11 @@ import static de.exceptionflug.protocolize.api.util.ProtocolVersions.*;
 public enum InventoryType {
 
     GENERIC_9X1(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 9), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 0, 9)),
-    GENERIC_9X2(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 18), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 1, 9)),
-    GENERIC_9X3(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 27), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 2, 9)),
-    GENERIC_9X4(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 36), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 3, 9)),
-    GENERIC_9X5(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 45), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 4, 9)),
-    GENERIC_9X6(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 54), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 5, 9)),
+    GENERIC_9X2(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 18), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 1, 18)),
+    GENERIC_9X3(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 27), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 2, 27)),
+    GENERIC_9X4(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 36), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 3, 36)),
+    GENERIC_9X5(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 45), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 4, 45)),
+    GENERIC_9X6(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 54), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 5, 54)),
     GENERIC_3X3(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:dropper", 9), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 6, 9)),
     ANVIL(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:anvil", 3), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 7, 3)),
     BEACON(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:beacon", 1), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 8, 1)),
