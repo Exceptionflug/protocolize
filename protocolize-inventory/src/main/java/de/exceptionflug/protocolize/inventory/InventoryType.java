@@ -89,4 +89,17 @@ public enum InventoryType {
         }
         return -1;
     }
+
+    public static InventoryType getChestInventoryWithSize(final int size) {
+        if(size % 9 != 0) {
+            throw new IllegalArgumentException("Size must be dividable by 9");
+        }
+        final int rows = size / 9;
+        return getChestInventoryWithRows(rows);
+    }
+
+    public static InventoryType getChestInventoryWithRows(final int rows) {
+        return valueOf("GENERIC_9X"+rows);
+    }
+
 }
