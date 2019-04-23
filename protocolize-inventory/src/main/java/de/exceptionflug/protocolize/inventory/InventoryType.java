@@ -90,6 +90,12 @@ public enum InventoryType {
         return -1;
     }
 
+    public boolean isChest() {
+        if(this == GENERIC_3X3)
+            return false;
+        return this.name().startsWith("GENERIC");
+    }
+
     public static InventoryType getChestInventoryWithSize(final int size) {
         if(size % 9 != 0) {
             throw new IllegalArgumentException("Size must be dividable by 9");
