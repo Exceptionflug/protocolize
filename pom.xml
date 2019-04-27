@@ -17,6 +17,7 @@
         <module>protocolize-util</module>
         <module>protocolize-world</module>
         <module>protocolize-examples</module>
+        <module>protocolize-protogen</module>
     </modules>
 
     <distributionManagement>

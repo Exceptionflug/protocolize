@@ -12,7 +12,7 @@
 
     <groupId>de.exceptionflug</groupId>
     <artifactId>protocolize-examples</artifactId>
-    <version>${parent.version}</version>
+
 
     <dependencies>
         <dependency>
