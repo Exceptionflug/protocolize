@@ -81,6 +81,9 @@ public final class ItemStack implements Cloneable {
             display.getValue().put(tag);
             nbtdata.getValue().put(display);
         } else {
+            final ListTag<StringTag> tag = new ListTag<>("Lore", StringTag.class, lore.stream().map(i -> new StringTag(String.valueOf(ThreadLocalRandom.current().nextLong()), ComponentSerializer.toString(TextComponent.fromLegacyText(i)))).collect(Collectors.toList()));
+            display.getValue().put(tag);
+            nbtdata.getValue().put(display);
         }
     }
 
@@ -208,7 +211,7 @@ public final class ItemStack implements Cloneable {
                     } else {
                         displayName = getDisplayNameTag(tag);
                     }
-                    loreOut = getLoreTag(tag);
+                    loreOut = getLoreTag(tag, protocolVersion);
                     final ItemStack out = new ItemStack(null, amount, durability);
                     out.homebrew = false;
                     out.displayName = displayName;
@@ -313,7 +316,7 @@ public final class ItemStack implements Cloneable {
         return name.getValue();
     }
 
-    private static List<String> getLoreTag(final CompoundTag nbtdata) {
+    private static List<String> getLoreTag(final CompoundTag nbtdata, final int protocolVersion) {
         if (nbtdata == null)
             return null;
         final CompoundTag display = (CompoundTag) nbtdata.getValue().get("display");
@@ -324,7 +327,11 @@ public final class ItemStack implements Cloneable {
         if (lore == null) {
             return null;
         }
-        return lore.getValue().stream().map(StringTag::getValue).collect(Collectors.toList());
+        if(protocolVersion < MINECRAFT_1_14) {
+            return lore.getValue().stream().map(StringTag::getValue).collect(Collectors.toList());
+        } else {
+            return lore.getValue().stream().map(it -> new TextComponent(it.getValue()).toLegacyText()).collect(Collectors.toList());
+        }
     }
 
     public List<String> getLore() {
