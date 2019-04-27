@@ -20,8 +20,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1_13;
-import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1_13_2;
+import static de.exceptionflug.protocolize.api.util.ProtocolVersions.*;
 
 public final class ItemStack implements Cloneable {
 
@@ -70,16 +69,19 @@ public final class ItemStack implements Cloneable {
         nbtdata.getValue().put(display);
     }
 
-    private void setLoreTag(final List<String> lore) {
+    private void setLoreTag(final List<String> lore, final int protocolVersion) {
         if (lore == null)
             return;
         CompoundTag display = (CompoundTag) nbtdata.getValue().get("display");
         if (display == null) {
             display = new CompoundTag("display", new CompoundMap());
         }
-        final ListTag<StringTag> tag = new ListTag<>("Lore", StringTag.class, lore.stream().map(i -> new StringTag(String.valueOf(ThreadLocalRandom.current().nextLong()), i)).collect(Collectors.toList()));
-        display.getValue().put(tag);
-        nbtdata.getValue().put(display);
+        if(protocolVersion < MINECRAFT_1_14) {
+            final ListTag<StringTag> tag = new ListTag<>("Lore", StringTag.class, lore.stream().map(i -> new StringTag(String.valueOf(ThreadLocalRandom.current().nextLong()), i)).collect(Collectors.toList()));
+            display.getValue().put(tag);
+            nbtdata.getValue().put(display);
+        } else {
+        }
     }
 
     public void setNBTTag(final CompoundTag nbtdata) {
@@ -134,7 +136,7 @@ public final class ItemStack implements Cloneable {
             } else {
                 setDisplayNameTag(displayName);
             }
-            setLoreTag(lore);
+            setLoreTag(lore, protocolVersion);
             setHideFlags(hideFlags);
             if (applicableMapping instanceof AbstractCustomItemIDMapping) {
                 ((AbstractCustomItemIDMapping) applicableMapping).apply(this, protocolVersion);
