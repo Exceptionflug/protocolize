@@ -7,7 +7,6 @@ import de.exceptionflug.protocolize.api.BlockPosition;
 import de.exceptionflug.protocolize.api.Hand;
 import de.exceptionflug.protocolize.api.protocol.AbstractPacket;
 import de.exceptionflug.protocolize.items.ItemStack;
-import de.exceptionflug.protocolize.items.ItemType;
 import io.netty.buffer.ByteBuf;
 import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 
