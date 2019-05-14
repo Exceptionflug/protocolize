@@ -1,33 +1,35 @@
 package de.exceptionflug.protocolize.inventory;
 
+import net.md_5.bungee.api.ProxyServer;
+
 import static de.exceptionflug.protocolize.api.util.ProtocolVersions.*;
 
 public enum InventoryType {
 
-    GENERIC_9X1(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 9), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 0, 9)),
-    GENERIC_9X2(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 18), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 1, 18)),
-    GENERIC_9X3(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 27), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 2, 27)),
-    GENERIC_9X4(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 36), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 3, 36)),
-    GENERIC_9X5(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 45), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 4, 45)),
-    GENERIC_9X6(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 54), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 5, 54)),
-    GENERIC_3X3(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:dropper", 9), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 6, 9)),
-    ANVIL(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:anvil", 3), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 7, 3)),
-    BEACON(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:beacon", 1), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 8, 1)),
-    BLAST_FURNACE(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 9, 2)),
-    BREWING_STAND(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_8, "minecraft:brewing_stand", 4), new InventoryIDMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "minecraft:brewing_stand", 5), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 10, 5)),
-    CRAFTING(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:crafting_table", 10), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 11, 10)),
-    ENCHANTMENT(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:enchanting_table", 2), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 12, 2)),
-    FURNACE(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:furnace", 3), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 13, 3)),
-    GRINDSTONE(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 14, 3)),
-    HOPPER(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:hopper", 5), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 15, 5)),
-    LECTERN(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 16, 0)),
-    LOOM(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 17, 4)),
-    MERCHANT(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:villager", 3), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 18, 3)),
-    SHULKER_BOX(new InventoryIDMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "minecraft:shulker_box", 27), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 19, 27)),
-    SMOKER(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 20, 3)),
-    CARTOGRAPHY(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 21, 3)),
-    STONECUTTER(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, 22, 2)),
-    PLAYER(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_8, "Player", 45), new InventoryIDMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "Player", 46), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, -1, 46));
+    GENERIC_9X1(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 9), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 0, 9)),
+    GENERIC_9X2(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 18), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 1, 18)),
+    GENERIC_9X3(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 27), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 2, 27)),
+    GENERIC_9X4(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 36), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 3, 36)),
+    GENERIC_9X5(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 45), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 4, 45)),
+    GENERIC_9X6(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:container", 54), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 5, 54)),
+    GENERIC_3X3(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:dropper", 9), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 6, 9)),
+    ANVIL(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:anvil", 3), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 7, 3)),
+    BEACON(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:beacon", 1), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 8, 1)),
+    BLAST_FURNACE(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 9, 2)),
+    BREWING_STAND(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_8, "minecraft:brewing_stand", 4), new InventoryIDMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "minecraft:brewing_stand", 5), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 10, 5)),
+    CRAFTING(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:crafting_table", 10), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 11, 10)),
+    ENCHANTMENT(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:enchanting_table", 2), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 12, 2)),
+    FURNACE(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:furnace", 3), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 13, 3)),
+    GRINDSTONE(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 14, 3)),
+    HOPPER(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:hopper", 5), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 15, 5)),
+    LECTERN(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 16, 0)),
+    LOOM(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 17, 4)),
+    MERCHANT(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_13_2, "minecraft:villager", 3), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 18, 3)),
+    SHULKER_BOX(new InventoryIDMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "minecraft:shulker_box", 27), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 19, 27)),
+    SMOKER(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 20, 3)),
+    CARTOGRAPHY(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 21, 3)),
+    STONECUTTER(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, 22, 2)),
+    PLAYER(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_8, "Player", 45), new InventoryIDMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "Player", 46), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_1_14_1, -1, 46));
 
     private final InventoryIDMapping[] mappings;
 
@@ -87,6 +89,7 @@ public enum InventoryType {
                 return mapping.getTypicalSize();
             }
         }
+        ProxyServer.getInstance().getLogger().warning("[Protocolize] Unable to find typical inventory size of "+name()+" in version "+protocolVersion);
         return -1;
     }
 

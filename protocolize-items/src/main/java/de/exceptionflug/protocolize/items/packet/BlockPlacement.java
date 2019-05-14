@@ -7,7 +7,6 @@ import de.exceptionflug.protocolize.api.BlockPosition;
 import de.exceptionflug.protocolize.api.Hand;
 import de.exceptionflug.protocolize.api.protocol.AbstractPacket;
 import de.exceptionflug.protocolize.items.ItemStack;
-import de.exceptionflug.protocolize.items.ItemType;
 import io.netty.buffer.ByteBuf;
 import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 
@@ -34,6 +33,7 @@ public class BlockPlacement extends AbstractPacket {
         MAPPING.put(MINECRAFT_1_13_1, 0x29);
         MAPPING.put(MINECRAFT_1_13_2, 0x29);
         MAPPING.put(MINECRAFT_1_14, 0x2C);
+        MAPPING.put(MINECRAFT_1_14_1, 0x2C);
     }
 
     private BlockPosition position;

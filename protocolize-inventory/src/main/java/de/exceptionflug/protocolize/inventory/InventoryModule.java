@@ -179,7 +179,13 @@ public final class InventoryModule {
 
         if(!alreadyOpen)
             p.unsafe().sendPacket(new OpenWindow(windowId, inventory.getType(), inventory.getTitle()));
-        final List<ItemStack> items = Lists.newArrayList(inventory.getItemsIndexed(ReflectionUtil.getProtocolVersion(p)));
+        int protocolVersion;
+        try {
+            protocolVersion = ReflectionUtil.getProtocolVersion(p);
+        } catch (final Throwable t) {
+            protocolVersion = 47;
+        }
+        final List<ItemStack> items = Lists.newArrayList(inventory.getItemsIndexed(protocolVersion));
 
         if(ItemsModule.isSpigotInventoryTracking()) {
             final PlayerInventory playerInventory = InventoryManager.getInventory(p.getUniqueId());
