@@ -13,6 +13,8 @@ import net.md_5.bungee.protocol.MinecraftDecoder;
 import net.md_5.bungee.protocol.PacketWrapper;
 
 import java.lang.reflect.Field;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 public final class ReflectionUtil {
 
@@ -59,7 +61,7 @@ public final class ReflectionUtil {
             handlerBossHandlerField = handlerBossClass.getDeclaredField("handler");
             handlerBossHandlerField.setAccessible(true);
         } catch (final Exception e) {
-            e.printStackTrace();
+            Logger.getLogger("ReflectionUtil").severe("We have ugly bungeecord implementation right here ._.");
         }
     }
 

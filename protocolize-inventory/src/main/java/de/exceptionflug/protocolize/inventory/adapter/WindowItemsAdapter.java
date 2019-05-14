@@ -33,7 +33,12 @@ public class WindowItemsAdapter extends PacketAdapter<WindowItems> {
             return;
         }
         final PlayerInventory playerInventory = InventoryManager.getCombinedSendInventory(event.getPlayer().getUniqueId(), event.getServerInfo().getName());
-        final int protocolVersion = ReflectionUtil.getProtocolVersion(event.getPlayer());
+        int protocolVersion;
+        try {
+            protocolVersion = ReflectionUtil.getProtocolVersion(event.getPlayer());
+        } catch (final Exception e) {
+            protocolVersion = 47;
+        }
         for (int i = 0; i < packet.getItems().size(); i++) {
             if(InventoryUtil.isLowerInventory(i, inventory, protocolVersion)) {
                 // LOWER PLAYER INVENTORY
