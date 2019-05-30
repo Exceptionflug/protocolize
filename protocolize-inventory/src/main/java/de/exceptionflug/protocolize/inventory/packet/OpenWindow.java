@@ -35,6 +35,7 @@ public class OpenWindow extends AbstractPacket {
         MAPPING.put(MINECRAFT_1_13_2, 0x14);
         MAPPING.put(MINECRAFT_1_14, 0x2E);
         MAPPING.put(MINECRAFT_1_14_1, 0x2E);
+        MAPPING.put(MINECRAFT_1_14_2, 0x2E);
     }
 
     private int windowId;
