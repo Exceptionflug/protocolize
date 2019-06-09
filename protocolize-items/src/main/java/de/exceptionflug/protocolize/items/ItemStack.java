@@ -4,6 +4,7 @@ import com.flowpowered.nbt.*;
 import com.flowpowered.nbt.stream.NBTInputStream;
 import com.flowpowered.nbt.stream.NBTOutputStream;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
@@ -332,6 +333,46 @@ public final class ItemStack implements Cloneable {
         } else {
             return lore.getValue().stream().map(it -> new TextComponent(it.getValue()).toLegacyText()).collect(Collectors.toList());
         }
+    }
+
+    public boolean isPlayerSkull() {
+        return type == ItemType.PLAYER_HEAD;
+    }
+
+    public void setSkullTexture(final String textureHash) {
+        Preconditions.checkNotNull(textureHash, "The textureHash cannot be null!");
+        Preconditions.checkArgument(!textureHash.isEmpty(), "The textureHash cannot be empty!");
+        Preconditions.checkState(type != ItemType.PLAYER_HEAD, "The item type must be PLAYER_HEAD");
+        final CompoundTag skullOwner = (CompoundTag) ((CompoundTag)getNBTTag()).getValue().getOrDefault("SkullOwner", new CompoundTag("SkullOwner", new CompoundMap()));
+        skullOwner.getValue().put(new StringTag("Name", textureHash));
+        final CompoundTag properties = (CompoundTag) skullOwner.getValue().getOrDefault("Properties", new CompoundTag("Properties", new CompoundMap()));
+        final CompoundTag texture = new CompoundTag("value", new CompoundMap());
+        texture.getValue().put(new StringTag("Value", textureHash));
+        final ListTag<CompoundTag> textures = new ListTag<>("textures", CompoundTag.class, Lists.newArrayList(texture));
+        properties.getValue().put(textures);
+        skullOwner.getValue().put(properties);
+        ((CompoundTag)getNBTTag()).getValue().put(skullOwner);
+    }
+
+    public void setSkullOwner(final String skullOwner) {
+        Preconditions.checkState(type != ItemType.PLAYER_HEAD, "The item type must be PLAYER_HEAD");
+        ((CompoundTag)getNBTTag()).getValue().put(new StringTag("SkullOwner", skullOwner));
+    }
+
+    public String getSkullOwner() {
+        if(((CompoundTag)getNBTTag()).getValue().containsKey("SkullOwner")) {
+            final Tag t = ((CompoundTag)getNBTTag()).getValue().get("SkullOwner");
+            if(t instanceof StringTag) {
+                return ((StringTag) t).getValue();
+            } else if(t instanceof CompoundTag) {
+                final CompoundTag skullOwner = (CompoundTag) t;
+                final Tag t2 = skullOwner.getValue().get("Name");
+                if(t2 instanceof StringTag) {
+                    return ((StringTag) t2).getValue();
+                }
+            }
+        }
+        return null;
     }
 
     public List<String> getLore() {
