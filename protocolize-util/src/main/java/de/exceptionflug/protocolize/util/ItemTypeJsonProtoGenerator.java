@@ -22,7 +22,7 @@ import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1
 public class ItemTypeJsonProtoGenerator {
 
     public static void main(final String[] args) throws Exception {
-        if(args[0].equalsIgnoreCase("combine")) {
+        if (args[0].equalsIgnoreCase("combine")) {
             final File file = new File("registries.json");
             final File target = new File("ItemType.json");
             final Map<String, JsonObject> targetObjects = new ConcurrentHashMap<>();
@@ -35,16 +35,16 @@ public class ItemTypeJsonProtoGenerator {
             }
             target.createNewFile();
             final List<String> toDelLel = new ArrayList<>();
-            for(final String type : targetObjects.keySet()) {
+            for (final String type : targetObjects.keySet()) {
                 final JsonObject obj = targetObjects.get(type);
                 JsonArray mappings = obj.get("mappings").getAsJsonArray();
                 final List<ItemIDMapping> mappingList = new ArrayList<>();
-                for(final JsonElement e : mappings) {
+                for (final JsonElement e : mappings) {
                     final JsonObject mapping = e.getAsJsonObject();
                     final int rangeStart = mapping.get("protocolRangeStart").getAsInt();
                     final int rangeEnd = mapping.get("protocolRangeEnd").getAsInt();
-                    if(mapping.get("type").getAsString().equals(ItemIDMapping.class.getName())) {
-                        if(mapping.has("durability")) {
+                    if (mapping.get("type").getAsString().equals(ItemIDMapping.class.getName())) {
+                        if (mapping.has("durability")) {
                             mappingList.add(new ItemIDMapping(rangeStart, rangeEnd, mapping.get("id").getAsInt(), mapping.get("durability").getAsInt()));
                         } else {
                             mappingList.add(new ItemIDMapping(rangeStart, rangeEnd, mapping.get("id").getAsInt()));
@@ -56,7 +56,8 @@ public class ItemTypeJsonProtoGenerator {
                     found = false;
                     final List<ItemIDMapping> toDel = new ArrayList<>();
                     final List<ItemIDMapping> toAdd = new ArrayList<>();
-                    out: for (final ItemIDMapping mapping : mappingList) {
+                    out:
+                    for (final ItemIDMapping mapping : mappingList) {
                         for (final ItemIDMapping mapping2 : mappingList) {
                             if (mapping.getProtocolVersionRangeStart() == mapping2.getProtocolVersionRangeStart() && mapping.getProtocolVersionRangeEnd() == mapping2.getProtocolVersionRangeEnd())
                                 continue;
@@ -70,14 +71,14 @@ public class ItemTypeJsonProtoGenerator {
                             }
                         }
                     }
-                    for(final ItemIDMapping del : toDel) {
+                    for (final ItemIDMapping del : toDel) {
                         mappingList.remove(del);
                     }
                     mappingList.addAll(toAdd);
                 } while (found);
 
-                if(mappingList.size() == 1) {
-                    if(mappingList.get(0).getProtocolVersionRangeEnd() != MINECRAFT_1_14) {
+                if (mappingList.size() == 1) {
+                    if (mappingList.get(0).getProtocolVersionRangeEnd() != MINECRAFT_1_14) {
                         toDelLel.add(type);
                         continue;
                     }
@@ -91,7 +92,7 @@ public class ItemTypeJsonProtoGenerator {
                     mapping.addProperty("protocolRangeStart", it.getProtocolVersionRangeStart());
                     mapping.addProperty("protocolRangeEnd", it.getProtocolVersionRangeEnd());
                     mapping.addProperty("id", it.getId());
-                    if(it.getData() != 0) {
+                    if (it.getData() != 0) {
                         mapping.addProperty("durability", it.getData());
                     }
                     finalMappings.add(mapping);
@@ -101,7 +102,92 @@ public class ItemTypeJsonProtoGenerator {
             }
 
             toDelLel.forEach(it -> {
-                System.out.println("Remove legacy type "+it);
+                System.out.println("Remove legacy type " + it);
+                targetObjects.remove(it);
+            });
+
+            final JsonArray array = new JsonArray();
+            for (final JsonObject object : targetObjects.values()) {
+                array.add(object);
+            }
+
+            try (final FileWriter writer = new FileWriter(target)) {
+                new GsonBuilder().setPrettyPrinting().create().toJson(array, writer);
+            }
+            return;
+        } else if (args[0].equalsIgnoreCase("remove")) {
+            final int tstart = Integer.parseInt(args[1]);
+            final int tend = Integer.parseInt(args[2]);
+
+            final File file = new File("registries.json");
+            final File target = new File("ItemType.json");
+            final Map<String, JsonObject> targetObjects = new ConcurrentHashMap<>();
+            if (target.exists()) {
+                final JsonArray root = (JsonArray) new JsonParser().parse(new FileReader(target));
+                root.forEach(it -> {
+                    final JsonObject obj = it.getAsJsonObject();
+                    targetObjects.put(obj.get("name").getAsString(), obj);
+                });
+            }
+            target.createNewFile();
+            final List<String> toDelLel = new ArrayList<>();
+            for (final String type : targetObjects.keySet()) {
+                final JsonObject obj = targetObjects.get(type);
+                JsonArray mappings = obj.get("mappings").getAsJsonArray();
+                final List<ItemIDMapping> mappingList = new ArrayList<>();
+                for (final JsonElement e : mappings) {
+                    final JsonObject mapping = e.getAsJsonObject();
+                    final int rangeStart = mapping.get("protocolRangeStart").getAsInt();
+                    final int rangeEnd = mapping.get("protocolRangeEnd").getAsInt();
+                    if (mapping.get("type").getAsString().equals(ItemIDMapping.class.getName())) {
+                        if (mapping.has("durability")) {
+                            mappingList.add(new ItemIDMapping(rangeStart, rangeEnd, mapping.get("id").getAsInt(), mapping.get("durability").getAsInt()));
+                        } else {
+                            mappingList.add(new ItemIDMapping(rangeStart, rangeEnd, mapping.get("id").getAsInt()));
+                        }
+                    }
+                }
+                boolean found = false;
+                do {
+                    found = false;
+                    final List<ItemIDMapping> toDel = new ArrayList<>();
+                    for (final ItemIDMapping mapping : mappingList) {
+                        if (mapping.getProtocolVersionRangeStart() == tstart && mapping.getProtocolVersionRangeEnd() == tend) {
+                            System.out.println("Deleting " + type + "...");
+                            toDel.add(mapping);
+                            found = true;
+                        }
+                    }
+                    for (final ItemIDMapping del : toDel) {
+                        mappingList.remove(del);
+                    }
+                } while (found);
+
+                if (mappingList.size() == 1) {
+                    if (mappingList.get(0).getProtocolVersionRangeEnd() != MINECRAFT_1_14) {
+                        toDelLel.add(type);
+                        continue;
+                    }
+                }
+
+                mappings = new JsonArray();
+                final JsonArray finalMappings = mappings;
+                mappingList.forEach(it -> {
+                    final JsonObject mapping = new JsonObject();
+                    mapping.addProperty("type", ItemIDMapping.class.getName());
+                    mapping.addProperty("protocolRangeStart", it.getProtocolVersionRangeStart());
+                    mapping.addProperty("protocolRangeEnd", it.getProtocolVersionRangeEnd());
+                    mapping.addProperty("id", it.getId());
+                    if (it.getData() != 0) {
+                        mapping.addProperty("durability", it.getData());
+                    }
+                    finalMappings.add(mapping);
+                });
+                obj.add("mappings", mappings);
+                targetObjects.put(type, obj);
+            }
+            toDelLel.forEach(it -> {
+                System.out.println("Remove type " + it);
                 targetObjects.remove(it);
             });
 
