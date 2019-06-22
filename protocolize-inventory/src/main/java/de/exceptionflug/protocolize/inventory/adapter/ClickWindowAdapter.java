@@ -56,6 +56,10 @@ public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
                     InventoryManager.getInventory(event.getPlayer().getUniqueId()).update();
                 if(clickEvent.getClickType().name().startsWith("NUMBER_BUTTON")) {
                     event.getPlayer().unsafe().sendPacket(new ConfirmTransaction((byte)clickWindow.getWindowId(), (short) clickWindow.getActionNumber(), false));
+                    event.getPlayer().unsafe().sendPacket(new SetSlot((byte) 0, (short)(clickEvent.getClickType().getButton() + 36), new ItemStack(ItemType.NO_DATA)));
+                } else if(clickEvent.getClickType().name().startsWith("SHIFT_")) {
+                    event.getPlayer().unsafe().sendPacket(new ConfirmTransaction((byte)clickWindow.getWindowId(), (short) clickWindow.getActionNumber(), false));
+                    event.getPlayer().unsafe().sendPacket(new SetSlot((byte) 0, (short)44, new ItemStack(ItemType.NO_DATA)));
                 } else {
                     event.getPlayer().unsafe().sendPacket(new SetSlot((byte) -1, (short) -1, new ItemStack(ItemType.NO_DATA)));
                 }
