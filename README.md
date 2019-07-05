@@ -59,13 +59,13 @@ ProtocolAPI.getEventManager().registerListener(new MyPacketAdapter());
 Now you can override the following methods to access the packets.
 ```java
 @Override  
-public void receive(final PacketReceiveEvent<Chat> event) {  
+public void receive(PacketReceiveEvent<Chat> event) {  
   // Receive on UPSTREAM means receiving a packet from a player  
   // Receive on DOWNSTREAM means receiving a packet from a server a player is connected to
 }  
   
 @Override  
-public void send(final PacketSendEvent<Chat> event) {  
+public void send(PacketSendEvent<Chat> event) {  
   // Sending on UPSTREAM means sending a packet to a player  
   // Sending on DOWNSTREAM means sending a packet to a server a player is connected with
 }
@@ -79,8 +79,8 @@ public class MyPacketListener extends PacketAdapter<Chat> {
    }  
   
    @Override  
-   public void receive(final PacketReceiveEvent<Chat> event) {  
-     final Chat packet = event.getPacket();  
+   public void receive(PacketReceiveEvent<Chat> event) {  
+     Chat packet = event.getPacket();  
      if(packet.getPosition() == 2) { // Position 2 means actionbar  
        packet.setPosition((byte) 0); // Set to normal chat  
        event.markForRewrite(); // We need to mark the packet for rewriting after we changed fields in the packet class. This is only necessary when receiving packets.  
