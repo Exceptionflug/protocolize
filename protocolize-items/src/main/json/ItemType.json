@@ -16020,8 +16020,14 @@
   },
   {
     "name": "SIGN",
-    "maxStackSize": 64,
+    "maxStackSize": 16,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 323
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
