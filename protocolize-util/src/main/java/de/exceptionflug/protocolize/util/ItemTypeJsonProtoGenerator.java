@@ -42,7 +42,13 @@ public class ItemTypeJsonProtoGenerator {
                 for (final JsonElement e : mappings) {
                     final JsonObject mapping = e.getAsJsonObject();
                     final int rangeStart = mapping.get("protocolRangeStart").getAsInt();
-                    final int rangeEnd = mapping.get("protocolRangeEnd").getAsInt();
+                    final JsonPrimitive protocolRangeEnd = mapping.get("protocolRangeEnd").getAsJsonPrimitive();
+                    final int rangeEnd;
+                    if(protocolRangeEnd.isString()) {
+                        rangeEnd = ProtocolVersions.class.getField(protocolRangeEnd.getAsString()).getInt(null);
+                    } else {
+                        rangeEnd = protocolRangeEnd.getAsInt();
+                    }
                     if (mapping.get("type").getAsString().equals(ItemIDMapping.class.getName())) {
                         if (mapping.has("durability")) {
                             mappingList.add(new ItemIDMapping(rangeStart, rangeEnd, mapping.get("id").getAsInt(), mapping.get("durability").getAsInt()));
@@ -138,7 +144,13 @@ public class ItemTypeJsonProtoGenerator {
                 for (final JsonElement e : mappings) {
                     final JsonObject mapping = e.getAsJsonObject();
                     final int rangeStart = mapping.get("protocolRangeStart").getAsInt();
-                    final int rangeEnd = mapping.get("protocolRangeEnd").getAsInt();
+                    final JsonPrimitive protocolRangeEnd = mapping.get("protocolRangeEnd").getAsJsonPrimitive();
+                    final int rangeEnd;
+                    if(protocolRangeEnd.isString()) {
+                        rangeEnd = ProtocolVersions.class.getField(protocolRangeEnd.getAsString()).getInt(null);
+                    } else {
+                        rangeEnd = protocolRangeEnd.getAsInt();
+                    }
                     if (mapping.get("type").getAsString().equals(ItemIDMapping.class.getName())) {
                         if (mapping.has("durability")) {
                             mappingList.add(new ItemIDMapping(rangeStart, rangeEnd, mapping.get("id").getAsInt(), mapping.get("durability").getAsInt()));

@@ -1,9 +1,7 @@
 package de.exceptionflug.protocolize.protogen;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+import de.exceptionflug.protocolize.api.util.ProtocolVersions;
 import de.exceptionflug.protocolize.items.ItemIDMapping;
 import de.exceptionflug.protocolize.items.ItemStack;
 import de.exceptionflug.protocolize.items.ItemType;
@@ -85,7 +83,13 @@ public class ProtogenItemTypeCompiler {
                     try {
                         type = Class.forName(mapping.get("type").getAsString());
                         final int protocolStart = mapping.get("protocolRangeStart").getAsInt();
-                        final int protocolEnd = mapping.get("protocolRangeEnd").getAsInt();
+                        final JsonPrimitive protocolRangeEnd = mapping.get("protocolRangeEnd").getAsJsonPrimitive();
+                        final int protocolEnd;
+                        if(protocolRangeEnd.isString()) {
+                            protocolEnd = ProtocolVersions.class.getField(protocolRangeEnd.getAsString()).getInt(null);
+                        } else {
+                            protocolEnd = protocolRangeEnd.getAsInt();
+                        }
                         methodVisitor.visitIntInsn(BIPUSH, index);
                         methodVisitor.visitTypeInsn(NEW, type.getName().replace(".", "/"));
                         methodVisitor.visitInsn(DUP);
@@ -116,7 +120,7 @@ public class ProtogenItemTypeCompiler {
                         if(index != mappings.size()) {
                             methodVisitor.visitInsn(DUP);
                         }
-                    } catch (final ClassNotFoundException e) {
+                    } catch (final ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
                         System.out.println("Please check classpath: "+e.getMessage());
                         continue;
                     }
