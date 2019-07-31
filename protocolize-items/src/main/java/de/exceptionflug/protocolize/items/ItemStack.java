@@ -342,7 +342,7 @@ public final class ItemStack implements Cloneable {
     public void setSkullTexture(final String textureHash) {
         Preconditions.checkNotNull(textureHash, "The textureHash cannot be null!");
         Preconditions.checkArgument(!textureHash.isEmpty(), "The textureHash cannot be empty!");
-        Preconditions.checkState(type != ItemType.PLAYER_HEAD, "The item type must be PLAYER_HEAD");
+        Preconditions.checkState(type == ItemType.PLAYER_HEAD, "The item type must be PLAYER_HEAD");
         final CompoundTag skullOwner = (CompoundTag) ((CompoundTag)getNBTTag()).getValue().getOrDefault("SkullOwner", new CompoundTag("SkullOwner", new CompoundMap()));
         skullOwner.getValue().put(new StringTag("Name", textureHash));
         final CompoundTag properties = (CompoundTag) skullOwner.getValue().getOrDefault("Properties", new CompoundTag("Properties", new CompoundMap()));
@@ -355,7 +355,7 @@ public final class ItemStack implements Cloneable {
     }
 
     public void setSkullOwner(final String skullOwner) {
-        Preconditions.checkState(type != ItemType.PLAYER_HEAD, "The item type must be PLAYER_HEAD");
+        Preconditions.checkState(type == ItemType.PLAYER_HEAD, "The item type must be PLAYER_HEAD");
         ((CompoundTag)getNBTTag()).getValue().put(new StringTag("SkullOwner", skullOwner));
     }
 
