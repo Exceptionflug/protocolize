@@ -13960,6 +13960,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 1,
+        "data": 0
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 1
@@ -13970,6 +13977,13 @@
     "name": "GRANITE",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 1,
+        "data": 1
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -13984,6 +13998,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 1,
+        "data": 2
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 3
@@ -13994,6 +14015,13 @@
     "name": "DIORITE",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 1,
+        "data": 3
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -14008,6 +14036,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 1,
+        "data": 4
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 5
@@ -14020,6 +14055,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 1,
+        "data": 6
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 6
@@ -14030,6 +14072,13 @@
     "name": "POLISHED_ANDESITE",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 1,
+        "data": 7
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
