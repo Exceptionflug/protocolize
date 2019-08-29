@@ -24,7 +24,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPreLogin(final PreLoginEvent e) {
-        if(!plugin.isEnabled()) {
+        if(!plugin.isEnabled() || plugin.isOverwrittenInitializer()) {
             return;
         }
         plugin.getNettyPipelineInjector().injectBefore(e.getConnection(), "inbound-boss", "protocolize-decoder", new ProtocolizeDecoderChannelHandler((AbstractPacketHandler) e.getConnection(), Stream.UPSTREAM));

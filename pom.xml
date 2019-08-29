@@ -6,7 +6,7 @@
 
     <groupId>de.exceptionflug</groupId>
     <artifactId>protocolize</artifactId>
-    <version>1.4.6-SNAPSHOT</version>
+    <version>1.4.7-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -54,9 +54,8 @@
         </dependency>
         <dependency>
             <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-api</artifactId>
+            <artifactId>bungeecord-proxy</artifactId>
             <version>1.13-SNAPSHOT</version>
-            <type>javadoc</type>
             <scope>provided</scope>
         </dependency>
         <dependency>

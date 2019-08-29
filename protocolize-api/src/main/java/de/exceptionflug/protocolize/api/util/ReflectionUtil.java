@@ -2,13 +2,16 @@ package de.exceptionflug.protocolize.api.util;
 
 import com.google.common.base.Preconditions;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.Connection;
 import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.connection.Server;
+import net.md_5.bungee.netty.PipelineUtils;
 import net.md_5.bungee.protocol.AbstractPacketHandler;
+import net.md_5.bungee.protocol.KickStringWriter;
 import net.md_5.bungee.protocol.MinecraftDecoder;
 import net.md_5.bungee.protocol.PacketWrapper;
 
@@ -177,5 +180,11 @@ public final class ReflectionUtil {
             }
         }
         return null;
+    }
+
+    public static KickStringWriter getKickStringWriter() throws Exception {
+        Field field = PipelineUtils.class.getDeclaredField("legacyKicker");
+        field.setAccessible(true);
+        return (KickStringWriter) field.get(null);
     }
 }
