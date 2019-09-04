@@ -41,7 +41,6 @@ public class ProtocolizePlugin extends Plugin {
 
     private final NettyPipelineInjector nettyPipelineInjector = new NettyPipelineInjector();
     private boolean enabled = true;
-    private boolean overwrittenInitializer;
 
     @Override
     public void onEnable() {
@@ -78,48 +77,6 @@ public class ProtocolizePlugin extends Plugin {
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new ProxyInvCommand());
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new ProtocolizeCommand(this));
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new TrafficCommand());
-
-        // Try register modified channel initializer
-        try {
-            overwriteInitializer();
-            overwrittenInitializer = true;
-        } catch (Exception e) {
-            ProxyServer.getInstance().getLogger().warning("[Protocolize] Overwriting the channel initializer is not working. Falling back to default injection.");
-        }
-    }
-
-    private void overwriteInitializer() throws Exception {
-        ChannelInitializer<Channel> initializer = new ChannelInitializer<Channel>() {
-            @Override
-            protected void initChannel(Channel ch) throws Exception {
-                if (BungeeCord.getInstance().getConnectionThrottle() != null && BungeeCord.getInstance().getConnectionThrottle().throttle(((InetSocketAddress) ch.remoteAddress()).getAddress())) {
-                    ch.close();
-                    return;
-                }
-
-                ListenerInfo listener = ch.attr(PipelineUtils.LISTENER).get();
-
-                PipelineUtils.BASE.initChannel(ch);
-                InitialHandler handler = new InitialHandler(BungeeCord.getInstance(), listener);
-                ch.pipeline().addBefore("inbound-boss", "protocolize-decoder",  new ProtocolizeDecoderChannelHandler(handler, Stream.UPSTREAM));
-                ch.pipeline().addBefore(PipelineUtils.FRAME_DECODER, PipelineUtils.LEGACY_DECODER, new LegacyDecoder());
-                ch.pipeline().addAfter(PipelineUtils.FRAME_DECODER, PipelineUtils.PACKET_DECODER, new MinecraftDecoder(Protocol.HANDSHAKE, true, ProxyServer.getInstance().getProtocolVersion()));
-                ch.pipeline().addAfter(PipelineUtils.FRAME_PREPENDER, PipelineUtils.PACKET_ENCODER, new MinecraftEncoder(Protocol.HANDSHAKE, true, ProxyServer.getInstance().getProtocolVersion()));
-                ch.pipeline().addBefore(PipelineUtils.FRAME_PREPENDER, PipelineUtils.LEGACY_KICKER, ReflectionUtil.getKickStringWriter());
-                ch.pipeline().get(HandlerBoss.class).setHandler(handler);
-
-                if (listener.isProxyProtocol()) {
-                    ch.pipeline().addFirst(new HAProxyMessageDecoder());
-                }
-            }
-        };
-
-        Field initField = PipelineUtils.class.getField("SERVER_CHILD");
-        Field modifierField = Field.class.getDeclaredField("modifiers");
-        modifierField.setAccessible(true);
-        modifierField.set(initField, initField.getModifiers() & ~Modifier.FINAL);
-        initField.setAccessible(true);
-        initField.set(null, initializer);
     }
 
     public NettyPipelineInjector getNettyPipelineInjector() {
@@ -132,10 +89,6 @@ public class ProtocolizePlugin extends Plugin {
 
     public void setEnabled(final boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public boolean isOverwrittenInitializer() {
-        return overwrittenInitializer;
     }
 
     public static boolean isExceptionCausedByProtocolize(final Throwable e) {
