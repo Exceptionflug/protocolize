@@ -10,6 +10,7 @@ import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 
 import java.lang.reflect.*;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 
 /**
@@ -84,7 +85,11 @@ public final class PacketRegistration {
         try {
             final TIntObjectMap<Object> protocols = (TIntObjectMap<Object>) protocolsField.get(getDirectionData(protocol, direction));
             for(final Integer protocolVersion : protocolIdMapping.keySet()) {
-                registerPacket(protocols, protocolVersion, protocolIdMapping.get(protocolVersion), clazz);
+                if(isWaterfall()) {
+                    registerPacketWaterfall(protocols, protocolVersion, protocolIdMapping.get(protocolVersion), clazz);
+                } else {
+                    registerPacketBungeeCord(protocols, protocolVersion, protocolIdMapping.get(protocolVersion), clazz);
+                }
             }
             ProxyServer.getInstance().getLogger().info("[Protocolize] Injected custom packet: "+clazz.getName());
         } catch (final Exception e) {
@@ -133,10 +138,27 @@ public final class PacketRegistration {
         return null;
     }
 
-    private void registerPacket(final TIntObjectMap<Object> protocols, final int protocolVersion, final int packetId, final Class<?> clazz) throws IllegalAccessException, NoSuchMethodException {
+    public boolean isWaterfall() {
+        return protocolDataConstructorsField.getType().equals(Supplier[].class);
+    }
+
+    private void registerPacketBungeeCord(final TIntObjectMap<Object> protocols, final int protocolVersion, final int packetId, final Class<?> clazz) throws IllegalAccessException, NoSuchMethodException {
         final Object protocolData = protocols.get(protocolVersion);
         ((TObjectIntMap<Class<?>>)protocolDataPacketMapField.get(protocolData)).put(clazz, packetId);
         ((Constructor[])protocolDataConstructorsField.get(protocolData))[packetId] = clazz.getDeclaredConstructor();
+    }
+
+    private void registerPacketWaterfall(final TIntObjectMap<Object> protocols, final int protocolVersion, final int packetId, final Class<?> clazz) throws IllegalAccessException, NoSuchMethodException {
+        final Object protocolData = protocols.get(protocolVersion);
+        ((TObjectIntMap<Class<?>>)protocolDataPacketMapField.get(protocolData)).put(clazz, packetId);
+        ((Supplier[])protocolDataConstructorsField.get(protocolData))[packetId] = () -> {
+            try {
+                return clazz.getDeclaredConstructor().newInstance();
+            } catch (ReflectiveOperationException e) {
+                e.printStackTrace();
+            }
+            return null;
+        };
     }
 
 }

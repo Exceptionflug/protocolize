@@ -46,6 +46,9 @@ public class ProtocolizePlugin extends Plugin {
     public void onEnable() {
         ProxyServer.getInstance().getLogger().info("======= PROTOCOLIZE =======");
         ProxyServer.getInstance().getLogger().info("Version " + getDescription().getVersion() + " by " + getDescription().getAuthor());
+        if(ProtocolAPI.getPacketRegistration().isWaterfall()) {
+            ProxyServer.getInstance().getLogger().info("[Protocolize] Running on Waterfall. Please report bugs regarding protocolize under https://github.com/Exceptionflug/protocolize/issues");
+        }
         ProxyServer.getInstance().getPluginManager().registerListener(this, new PlayerListener(this));
 
         try {
