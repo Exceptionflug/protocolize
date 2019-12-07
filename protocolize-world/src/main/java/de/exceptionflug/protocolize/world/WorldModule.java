@@ -22,11 +22,13 @@ public class WorldModule {
         // TO_CLIENT
         ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME, ProtocolConstants.Direction.TO_CLIENT, ChangeGameState.class, ChangeGameState.MAPPING);
         ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME, ProtocolConstants.Direction.TO_CLIENT, NamedSoundEffect.class, NamedSoundEffect.MAPPING);
+        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME, ProtocolConstants.Direction.TO_CLIENT, SignUpdate.class, SignUpdate.MAPPING_CLIENTBOUND);
 
         // TO_SERVER
         ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME, ProtocolConstants.Direction.TO_SERVER, PlayerPosition.class, PlayerPosition.MAPPING);
         ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME, ProtocolConstants.Direction.TO_SERVER, PlayerLook.class, PlayerLook.MAPPING);
         ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME, ProtocolConstants.Direction.TO_SERVER, PlayerPositionLook.class, PlayerPositionLook.MAPPING);
+        ProtocolAPI.getPacketRegistration().registerPacket(Protocol.GAME, ProtocolConstants.Direction.TO_SERVER, SignUpdate.class, SignUpdate.MAPPING_SERVERBOUND);
 
         // Adapters
         ProtocolAPI.getEventManager().registerListener(new ChangeGameStateAdapter());
