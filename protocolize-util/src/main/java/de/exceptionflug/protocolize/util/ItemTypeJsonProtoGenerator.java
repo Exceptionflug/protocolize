@@ -16,8 +16,7 @@ import java.net.URLClassLoader;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1_14;
-import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1_9;
+import static de.exceptionflug.protocolize.api.util.ProtocolVersions.*;
 
 public class ItemTypeJsonProtoGenerator {
 
@@ -84,7 +83,7 @@ public class ItemTypeJsonProtoGenerator {
                 } while (found);
 
                 if (mappingList.size() == 1) {
-                    if (mappingList.get(0).getProtocolVersionRangeEnd() != MINECRAFT_1_14) {
+                    if (mappingList.get(0).getProtocolVersionRangeEnd() != MINECRAFT_LATEST) {
                         toDelLel.add(type);
                         continue;
                     }

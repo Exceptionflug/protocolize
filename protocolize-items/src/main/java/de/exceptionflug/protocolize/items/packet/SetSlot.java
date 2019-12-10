@@ -5,7 +5,6 @@ import com.google.common.collect.Maps;
 import de.exceptionflug.protocolize.api.protocol.AbstractPacket;
 import de.exceptionflug.protocolize.items.ItemStack;
 import io.netty.buffer.ByteBuf;
-import net.md_5.bungee.protocol.Protocol;
 import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 
 import java.util.Map;
@@ -37,6 +36,7 @@ public class SetSlot extends AbstractPacket {
         MAPPING.put(MINECRAFT_1_14_2, 0x16);
         MAPPING.put(MINECRAFT_1_14_3, 0x16);
         MAPPING.put(MINECRAFT_1_14_4, 0x16);
+        MAPPING.put(MINECRAFT_1_15, 0x17);
     }
 
     private byte windowId;

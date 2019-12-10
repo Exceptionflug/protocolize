@@ -144,12 +144,21 @@ public final class PacketRegistration {
 
     private void registerPacketBungeeCord(final TIntObjectMap<Object> protocols, final int protocolVersion, final int packetId, final Class<?> clazz) throws IllegalAccessException, NoSuchMethodException {
         final Object protocolData = protocols.get(protocolVersion);
-        ((TObjectIntMap<Class<?>>)protocolDataPacketMapField.get(protocolData)).put(clazz, packetId);
+        if(protocolData == null) {
+            ProxyServer.getInstance().getLogger().warning("[Protocolize] Protocol version "+protocolVersion+" is not supported on this bungeecord version. Skipping registration for that specific version.");
+            return;
+        }
+        TObjectIntMap<Class<?>> map = ((TObjectIntMap<Class<?>>)protocolDataPacketMapField.get(protocolData));
+        map.put(clazz, packetId);
         ((Constructor[])protocolDataConstructorsField.get(protocolData))[packetId] = clazz.getDeclaredConstructor();
     }
 
     private void registerPacketWaterfall(final TIntObjectMap<Object> protocols, final int protocolVersion, final int packetId, final Class<?> clazz) throws IllegalAccessException, NoSuchMethodException {
         final Object protocolData = protocols.get(protocolVersion);
+        if(protocolData == null) {
+            ProxyServer.getInstance().getLogger().warning("[Protocolize] Protocol version "+protocolVersion+" is not supported on this waterfall version. Skipping registration for that specific version.");
+            return;
+        }
         ((TObjectIntMap<Class<?>>)protocolDataPacketMapField.get(protocolData)).put(clazz, packetId);
         ((Supplier[])protocolDataConstructorsField.get(protocolData))[packetId] = () -> {
             try {
