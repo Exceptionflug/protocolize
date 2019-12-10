@@ -1,7 +1,6 @@
 package de.exceptionflug.protocolize.world.packet;
 
 import de.exceptionflug.protocolize.api.protocol.AbstractPacket;
-import de.exceptionflug.protocolize.api.util.ProtocolVersions;
 import io.netty.buffer.ByteBuf;
 import net.md_5.bungee.protocol.ProtocolConstants;
 
@@ -35,7 +34,7 @@ public class PlayerLook extends AbstractPacket {
         MAPPING.put(MINECRAFT_1_14_2, 0x13);
         MAPPING.put(MINECRAFT_1_14_3, 0x13);
         MAPPING.put(MINECRAFT_1_14_4, 0x13);
-        MAPPING.put(MINECRAFT_1_15_PRE6, 0x13);
+        MAPPING.put(MINECRAFT_1_15, 0x13);
     }
 
     private float yaw, pitch;

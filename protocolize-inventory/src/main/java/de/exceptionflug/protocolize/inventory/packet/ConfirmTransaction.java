@@ -3,7 +3,6 @@ package de.exceptionflug.protocolize.inventory.packet;
 import com.google.common.collect.Maps;
 import de.exceptionflug.protocolize.api.protocol.AbstractPacket;
 import io.netty.buffer.ByteBuf;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 
 import java.util.Map;
@@ -37,7 +36,7 @@ public class ConfirmTransaction extends AbstractPacket {
         MAPPING_CLIENTBOUND.put(MINECRAFT_1_14_2, 0x12);
         MAPPING_CLIENTBOUND.put(MINECRAFT_1_14_3, 0x12);
         MAPPING_CLIENTBOUND.put(MINECRAFT_1_14_4, 0x12);
-        MAPPING_CLIENTBOUND.put(MINECRAFT_1_15_PRE6, 0x13);
+        MAPPING_CLIENTBOUND.put(MINECRAFT_1_15, 0x13);
 
         MAPPING_SERVERBOUND.put(MINECRAFT_1_9, 0x05);
         MAPPING_SERVERBOUND.put(MINECRAFT_1_9_1, 0x05);
@@ -57,7 +56,7 @@ public class ConfirmTransaction extends AbstractPacket {
         MAPPING_SERVERBOUND.put(MINECRAFT_1_14_2, 0x07);
         MAPPING_SERVERBOUND.put(MINECRAFT_1_14_3, 0x07);
         MAPPING_SERVERBOUND.put(MINECRAFT_1_14_4, 0x07);
-        MAPPING_SERVERBOUND.put(MINECRAFT_1_15_PRE6, 0x07);
+        MAPPING_SERVERBOUND.put(MINECRAFT_1_15, 0x07);
     }
 
     private int windowId;
