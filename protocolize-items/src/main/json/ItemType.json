@@ -72,7 +72,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 335,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 285
       },
@@ -289,6 +289,12 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 5
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 573,
         "id": 50
@@ -326,6 +332,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 38,
+        "durability": 6
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 573,
         "id": 105
@@ -336,6 +349,13 @@
     "name": "BLUE_ORCHID",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 38,
+        "durability": 1
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -555,6 +575,13 @@
     "name": "CRACKED_STONE_BRICKS",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 98,
+        "durability": 2
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -1163,6 +1190,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 97,
+        "durability": 1
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 194
@@ -1330,6 +1364,13 @@
     "name": "DARK_OAK_WOOD",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 5,
+        "durability": 5
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -1955,6 +1996,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 38,
+        "durability": 2
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 573,
         "id": 101
@@ -2371,6 +2419,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 145,
+        "durability": 1
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 248
@@ -2389,7 +2444,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 335,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 18
       },
@@ -2823,6 +2878,13 @@
     "name": "WET_SPONGE",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 19,
+        "durability": 1
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -3658,6 +3720,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 168,
+        "durability": 1
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 344
@@ -3832,6 +3901,13 @@
     "name": "QUARTZ_PILLAR",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 155,
+        "durability": 2
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -4559,6 +4635,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 38,
+        "durability": 3
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 573,
         "id": 102
@@ -4699,6 +4782,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 263,
+        "durability": 1
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 480
@@ -4757,6 +4847,12 @@
     "name": "PISTON",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 33
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -5167,7 +5263,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 335,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 44
       },
@@ -5203,7 +5299,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 335,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 18,
         "durability": 2
@@ -6654,6 +6750,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 175,
+        "durability": 1
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 306
@@ -6748,6 +6851,13 @@
     "name": "DARK_PRISMARINE",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 168,
+        "durability": 2
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -7081,6 +7191,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 179,
+        "durability": 1
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 351
@@ -7097,6 +7214,13 @@
     "name": "JUNGLE_WOOD",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 5,
+        "durability": 3
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -7219,6 +7343,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 98,
+        "durability": 1
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 200
@@ -7277,6 +7408,13 @@
     "name": "SMOOTH_SANDSTONE",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 24,
+        "durability": 2
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -8269,6 +8407,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 5,
+        "durability": 1
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 573,
         "id": 51
@@ -8318,13 +8463,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 477,
-        "protocolRangeEnd": 498,
-        "id": 755
-      },
-      {
-        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 335,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 384
       },
@@ -8333,6 +8472,12 @@
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 690
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 477,
+        "protocolRangeEnd": 498,
+        "id": 755
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -8437,6 +8582,13 @@
     "name": "SALMON",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 349,
+        "durability": 1
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -9149,6 +9301,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 97,
+        "durability": 2
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 195
@@ -9322,6 +9481,13 @@
     "name": "PODZOL",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 3,
+        "durability": 2
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -9984,6 +10150,12 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 85
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 175
@@ -10399,6 +10571,13 @@
     "name": "ENCHANTED_GOLDEN_APPLE",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 322,
+        "durability": 1
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -10938,6 +11117,13 @@
     "name": "MUSHROOM_STEM",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 99,
+        "durability": 15
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -12046,6 +12232,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 175,
+        "durability": 5
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 308
@@ -12086,6 +12279,13 @@
     "name": "OXEYE_DAISY",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 38,
+        "durability": 8
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -12268,6 +12468,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 349,
+        "durability": 3
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 574
@@ -12309,6 +12516,12 @@
     "name": "SPLASH_POTION",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 47,
+        "id": 373
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 477,
@@ -12421,6 +12634,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 155,
+        "durability": 1
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 257
@@ -12461,6 +12681,12 @@
     "name": "IRON_BARS",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 101
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -12552,6 +12778,13 @@
     "name": "ROSE_BUSH",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 175,
+        "durability": 4
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -12698,6 +12931,13 @@
     "name": "INFESTED_MOSSY_STONE_BRICKS",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 97,
+        "durability": 3
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -12899,7 +13139,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 393,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 573,
         "id": 0
       }
@@ -13504,7 +13744,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 335,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 171
       },
@@ -13568,6 +13808,13 @@
     "name": "CHISELED_STONE_BRICKS",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 98,
+        "durability": 3
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -13816,6 +14063,13 @@
     "name": "LARGE_FERN",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 175,
+        "durability": 3
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -14138,6 +14392,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 139,
+        "durability": 1
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 240
@@ -14260,6 +14521,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 5,
+        "durability": 4
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 573,
         "id": 54
@@ -14325,6 +14593,13 @@
     "name": "TROPICAL_FISH",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 349,
+        "durability": 2
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -15160,6 +15435,12 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 76
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 167
@@ -15176,6 +15457,12 @@
     "name": "STICKY_PISTON",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 29
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -15529,6 +15816,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 97,
+        "durability": 5
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 198
@@ -15805,6 +16099,12 @@
     "name": "SUNFLOWER",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 175
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -16264,6 +16564,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 145,
+        "durability": 2
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 249
@@ -16378,7 +16685,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 335,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 18,
         "durability": 3
@@ -16395,6 +16702,13 @@
     "name": "RED_TULIP",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 38,
+        "durability": 4
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -16505,7 +16819,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 335,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 37
       },
@@ -17095,6 +17409,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 350,
+        "durability": 1
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 576
@@ -17177,6 +17498,13 @@
     "name": "SMOOTH_RED_SANDSTONE",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 179,
+        "durability": 2
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -17360,6 +17688,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 31,
+        "durability": 2
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 573,
         "id": 77
@@ -17402,6 +17737,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 38,
+        "durability": 7
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 573,
         "id": 106
@@ -17412,6 +17754,13 @@
     "name": "INFESTED_CRACKED_STONE_BRICKS",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 97,
+        "durability": 4
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -17763,7 +18112,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 335,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 333
       },
@@ -18069,6 +18418,12 @@
     "name": "REDSTONE_LAMP",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 123
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -18957,6 +19312,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 5,
+        "durability": 2
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 573,
         "id": 52
@@ -19005,7 +19367,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 335,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 18,
         "durability": 1
@@ -19022,6 +19384,13 @@
     "name": "ORANGE_TULIP",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 38,
+        "durability": 5
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
