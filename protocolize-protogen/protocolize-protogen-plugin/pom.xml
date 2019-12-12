@@ -7,12 +7,12 @@
     <parent>
         <groupId>de.exceptionflug</groupId>
         <artifactId>protocolize-protogen</artifactId>
-        <version>1.5.0-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
 
     <groupId>de.exceptionflug</groupId>
     <artifactId>protocolize-protogen-plugin</artifactId>
-    <version>1.5.0-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>maven-plugin</packaging>
 
     <build>
@@ -52,7 +52,7 @@
         <dependency>
             <groupId>de.exceptionflug</groupId>
             <artifactId>protocolize-protogen-compiler</artifactId>
-            <version>1.5.0-SNAPSHOT</version>
+            <version>${revision}</version>
         </dependency>
     </dependencies>
 

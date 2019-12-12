@@ -20,30 +20,30 @@
     <parent>
         <groupId>de.exceptionflug</groupId>
         <artifactId>protocolize</artifactId>
-        <version>1.5.0-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
 
     <groupId>de.exceptionflug</groupId>
     <artifactId>protocolize-inventory</artifactId>
-    <version>1.5.0-SNAPSHOT</version>
+    <version>${revision}</version>
 
     <dependencies>
         <dependency>
             <groupId>de.exceptionflug</groupId>
             <artifactId>protocolize-api</artifactId>
-            <version>1.5.0-SNAPSHOT</version>
+            <version>${revision}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>de.exceptionflug</groupId>
             <artifactId>protocolize-world</artifactId>
-            <version>${project.parent.version}</version>
+            <version>${revision}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>de.exceptionflug</groupId>
             <artifactId>protocolize-items</artifactId>
-            <version>${project.parent.version}</version>
+            <version>${revision}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
