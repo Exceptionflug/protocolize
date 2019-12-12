@@ -41,4 +41,5 @@ public class ItemsModule {
     public static boolean isSpigotInventoryTracking() {
         return spigotInventoryTracking;
     }
+
 }

@@ -33,7 +33,7 @@ public class NewSoundEnumGenerator {
             sb.append("\t");
             sb.append(enumConstant);
             sb.append("(");
-            sb.append("new SoundIDMapping(MINECRAFT_1_14, MINECRAFT_1_14, \"");
+            sb.append("new SoundIDMapping(MINECRAFT_1_15, MINECRAFT_LATEST, \"");
             sb.append(element.getKey().substring(10));
             sb.append("\")");
             sb.append(")");

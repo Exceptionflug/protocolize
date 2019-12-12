@@ -1453,6 +1453,12 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 210,
+        "protocolRangeEnd": 340,
+        "id": 445
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 765
@@ -2828,7 +2834,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 107,
+        "protocolRangeStart": 210,
         "protocolRangeEnd": 340,
         "id": 255
       },
@@ -4540,6 +4546,12 @@
     "name": "JUNGLE_BOAT",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 210,
+        "protocolRangeEnd": 340,
+        "id": 446
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -7270,7 +7282,8 @@
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
-        "id": 425
+        "id": 425,
+        "durability": 15
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -8070,6 +8083,12 @@
     "name": "DARK_OAK_BOAT",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 210,
+        "protocolRangeEnd": 340,
+        "id": 448
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -14034,7 +14053,8 @@
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
-        "id": 31
+        "id": 31,
+        "durability": 1
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -14554,6 +14574,12 @@
     "name": "SPRUCE_BOAT",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 210,
+        "protocolRangeEnd": 340,
+        "id": 444
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
@@ -18217,6 +18243,12 @@
     "name": "ACACIA_BOAT",
     "maxStackSize": 64,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 210,
+        "protocolRangeEnd": 340,
+        "id": 447
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
