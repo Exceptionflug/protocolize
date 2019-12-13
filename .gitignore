@@ -10,3 +10,8 @@ protocolize-plugin/dependency-reduced-pom.xml
 *.jar
 protocolize-examples/target/
 protocolize-inventory/target/
+/protocolize-world/target/
+/protocolize-util/dependency-reduced-pom.xml
+/protocolize-protogen/protocolize-protogen-plugin/target/
+/protocolize-protogen/protocolize-protogen-compiler/target/
+/protocolize-protogen/protocolize-protogen-compiler/dependency-reduced-pom.xml
