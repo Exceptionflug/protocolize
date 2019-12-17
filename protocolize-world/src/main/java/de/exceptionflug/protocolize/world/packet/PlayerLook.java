@@ -35,6 +35,7 @@ public class PlayerLook extends AbstractPacket {
         MAPPING.put(MINECRAFT_1_14_3, 0x13);
         MAPPING.put(MINECRAFT_1_14_4, 0x13);
         MAPPING.put(MINECRAFT_1_15, 0x13);
+        MAPPING.put(MINECRAFT_1_15_1, 0x13);
     }
 
     private float yaw, pitch;
