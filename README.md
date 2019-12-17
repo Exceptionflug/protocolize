@@ -1,3 +1,5 @@
+Nightly builds: [![Build Status](http://ci.exceptionflug.de/job/Protocolize/badge/icon)](http://ci.exceptionflug.de/job/Protocolize/)
+
 # Protocolize
 A lightweight BungeeCord protocol framework supporting items.
 ## Purpose
