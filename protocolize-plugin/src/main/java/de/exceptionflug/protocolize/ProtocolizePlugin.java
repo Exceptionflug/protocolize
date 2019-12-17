@@ -40,7 +40,7 @@ import java.util.logging.Level;
 public class ProtocolizePlugin extends Plugin {
 
     private final NettyPipelineInjector nettyPipelineInjector = new NettyPipelineInjector();
-    private boolean enabled = true;
+    private boolean enabled = false;
 
     @Override
     public void onEnable() {
@@ -80,6 +80,8 @@ public class ProtocolizePlugin extends Plugin {
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new ProxyInvCommand());
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new ProtocolizeCommand(this));
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new TrafficCommand());
+
+        enabled = true;
     }
 
     public NettyPipelineInjector getNettyPipelineInjector() {

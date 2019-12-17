@@ -1,73 +1,62 @@
 package de.exceptionflug.protocolize.plugin.tests;
 
+import com.google.common.base.Preconditions;
 import de.exceptionflug.bungeetestsuite.BungeeCordTestSuite;
 import de.exceptionflug.protocolize.ProtocolizePlugin;
-import de.exceptionflug.protocolize.api.protocol.ProtocolAPI;
-import de.exceptionflug.protocolize.inventory.packet.ClickWindow;
-import de.exceptionflug.protocolize.items.packet.HeldItemChange;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.plugin.Plugin;
-import net.md_5.bungee.protocol.Protocol;
-import net.md_5.bungee.protocol.ProtocolConstants;
-import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.util.Preconditions;
+import net.md_5.bungee.api.plugin.PluginDescription;
+import org.apache.commons.io.FileUtils;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.Proxy;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeoutException;
 
 public class BungeeCordLatestTest {
 
-    private static final Executor BUNGEE_EXECUTOR = Executors.newSingleThreadExecutor();
-    private static final BungeeCordTestSuite TEST_SUITE = new BungeeCordTestSuite();
+    private static BungeeCordTestSuite TEST_SUITE = new BungeeCordTestSuite();
 
     public BungeeCordLatestTest() throws IOException {
         launchBungee();
     }
 
-    public void launchBungee() throws MalformedURLException {
+    public void launchBungee() {
         try {
-            Class<?> bungeeCordLauncherClass = urlClassLoader.loadClass("net.md_5.bungee.BungeeCordLauncher");
-
-            BUNGEE_EXECUTOR.execute(() -> {
-                try {
-                    TEST_SUITE.launchBungeeCord(new String[0]);
-                } catch (Exception e) {
-                    System.out.println("BungeeCord bootstrap error");
-                    e.printStackTrace();
-                }
-            });
-            System.out.println("BungeeCord started");
-        } catch (ClassNotFoundException e) {
-            System.out.println("BungeeCord cannot be started");
+            TEST_SUITE.launchBungeeCord(new String[0]);
+        } catch (Exception e) {
+            System.out.println("BungeeCord bootstrap error");
             e.printStackTrace();
         }
     }
 
-    @Test
-    public void testEnabled() throws InterruptedException, TimeoutException {
-        ProtocolizePlugin plugin;
-        long timeout = 5;
-        while(ProxyServer.getInstance() == null) {
-            if(timeout == 0) {
-                throw new TimeoutException("BungeeCord did not start in time");
-            }
-            timeout -= 1;
-            Thread.sleep(1000);
-        }
-        Thread.sleep(1500);
+    @Before
+    public void tryEnable() throws ReflectiveOperationException {
+        PluginDescription description = new PluginDescription();
+        description.setFile(new File("src/main/resources/plugin.yml"));
+        description.setName("protocolize-plugin");
+        description.setAuthor("Exceptionflug");
+        description.setVersion("internal-test");
+        description.setMain("de.exceptionflug.protocolize.ProtocolizePlugin");
+        TEST_SUITE.enablePlugin(description);
+    }
 
-        System.out.println(" === PROTOCOLIZE TEST ENVIRONMENT ===");
-        System.out.println("Testing version: "+plugin.getDescription().getVersion());
-        System.out.println("Is enabled: "+plugin.isEnabled());
-        System.out.println("=====================================");
-        Preconditions.condition(plugin.isEnabled(), "Plugin was not enabled successfully");
+    @Test
+    public void testEnabled() {
+        ProtocolizePlugin plugin = (ProtocolizePlugin) ProxyServer.getInstance().getPluginManager().getPlugin("protocolize-plugin");
+        Preconditions.checkState(plugin.isEnabled(), "Plugin was not enabled successfully");
+    }
+
+    @After
+    public void cleanUp() throws IOException, InterruptedException {
+        System.out.println("Exit test suite...");
+        ProxyServer.getInstance().stop();
+        Thread.sleep(1000);
+        FileUtils.deleteDirectory(new File("plugins"));
+        FileUtils.deleteDirectory(new File("modules"));
+        FileUtils.deleteQuietly(new File("config.yml"));
+        FileUtils.forceDeleteOnExit(new File("proxy.log.0"));
+        FileUtils.forceDeleteOnExit(new File("proxy.log.0.lck"));
     }
 
 }
