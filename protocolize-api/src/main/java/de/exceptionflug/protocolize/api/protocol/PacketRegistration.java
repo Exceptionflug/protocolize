@@ -118,10 +118,8 @@ public final class PacketRegistration {
                 try {
                     return (int) getIdMethod.invoke(data, clazz, protocolVersion);
                 } catch (final IllegalAccessException | InvocationTargetException e1) {
-                    e1.printStackTrace();
                 }
             }
-            e.printStackTrace();
         }
         return -1;
     }
