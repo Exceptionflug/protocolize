@@ -30,19 +30,17 @@ public class BungeeCordLatestTest {
         }
     }
 
-    @Before
-    public void tryEnable() throws ReflectiveOperationException {
+    @Test
+    public void testEnabled() throws InterruptedException, ReflectiveOperationException {
         PluginDescription description = new PluginDescription();
         description.setFile(new File("src/main/resources/plugin.yml"));
         description.setName("protocolize-plugin");
         description.setAuthor("Exceptionflug");
         description.setVersion("internal-test");
         description.setMain("de.exceptionflug.protocolize.ProtocolizePlugin");
+        Thread.sleep(1500);
         TEST_SUITE.enablePlugin(description);
-    }
 
-    @Test
-    public void testEnabled() {
         ProtocolizePlugin plugin = (ProtocolizePlugin) ProxyServer.getInstance().getPluginManager().getPlugin("protocolize-plugin");
         Preconditions.checkState(plugin.isEnabled(), "Plugin was not enabled successfully");
     }
