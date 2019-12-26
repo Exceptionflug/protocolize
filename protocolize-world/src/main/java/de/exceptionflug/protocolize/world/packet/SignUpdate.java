@@ -62,19 +62,20 @@ public class SignUpdate extends AbstractPacket {
                 lines[2] = readString(buf);
                 lines[3] = readString(buf);
             } else {
-                lines = new String[4];
-                lines[0] = ComponentSerializer.parse(readString(buf))[0].toLegacyText();
-                lines[1] = ComponentSerializer.parse(readString(buf))[0].toLegacyText();
-                lines[2] = ComponentSerializer.parse(readString(buf))[0].toLegacyText();
-                lines[3] = ComponentSerializer.parse(readString(buf))[0].toLegacyText();
+                readLineStrings(buf);
             }
         } else {
             position = BlockPosition.read(buf, protocolVersion);
-            lines[0] = ComponentSerializer.parse(readString(buf))[0].toLegacyText();
-            lines[1] = ComponentSerializer.parse(readString(buf))[0].toLegacyText();
-            lines[2] = ComponentSerializer.parse(readString(buf))[0].toLegacyText();
-            lines[3] = ComponentSerializer.parse(readString(buf))[0].toLegacyText();
+            readLineStrings(buf);
         }
+    }
+
+    private void readLineStrings(ByteBuf buf) {
+        lines = new String[4];
+        lines[0] = ComponentSerializer.parse(readString(buf))[0].toLegacyText();
+        lines[1] = ComponentSerializer.parse(readString(buf))[0].toLegacyText();
+        lines[2] = ComponentSerializer.parse(readString(buf))[0].toLegacyText();
+        lines[3] = ComponentSerializer.parse(readString(buf))[0].toLegacyText();
     }
 
     @Override
