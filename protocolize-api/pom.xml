@@ -48,7 +48,7 @@
     <parent>
         <groupId>de.exceptionflug</groupId>
         <artifactId>protocolize</artifactId>
-        <version>${revision}</version>
+        <version>1.5.0-SNAPSHOT</version>
     </parent>
 
     <groupId>de.exceptionflug</groupId>
