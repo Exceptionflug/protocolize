@@ -38,6 +38,7 @@ public class SetSlot extends AbstractPacket {
         MAPPING.put(MINECRAFT_1_14_4, 0x16);
         MAPPING.put(MINECRAFT_1_15, 0x17);
         MAPPING.put(MINECRAFT_1_15_1, 0x17);
+        MAPPING.put(MINECRAFT_1_15_2, 0x17);
     }
 
     private byte windowId;
