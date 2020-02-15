@@ -13,7 +13,9 @@ import de.exceptionflug.protocolize.inventory.packet.*;
 import de.exceptionflug.protocolize.items.*;
 import de.exceptionflug.protocolize.items.packet.WindowItems;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.protocol.Protocol;
 import net.md_5.bungee.protocol.ProtocolConstants;
 
@@ -22,14 +24,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1_8;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 public final class InventoryModule {
 
     private static final Map<UUID, Map<Integer, Inventory>> WINDOW_MAP = new ConcurrentHashMap<>();
     private static final Map<UUID, Map<Integer, Map<Integer, InventoryAction>>> ACTION_MAP = new ConcurrentHashMap<>();
     private static final Map<UUID, Integer> WINDOW_ID_COUNTER_MAP = new ConcurrentHashMap<>();
+    private static final Plugin dummyPlugin = new Plugin();
 
     private static boolean spigotInventoryTracking = false;
 

@@ -3,6 +3,7 @@ package de.exceptionflug.protocolize.world.packet;
 import de.exceptionflug.protocolize.api.BlockPosition;
 import de.exceptionflug.protocolize.api.protocol.AbstractPacket;
 import io.netty.buffer.ByteBuf;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import net.md_5.bungee.protocol.ProtocolConstants;
@@ -73,10 +74,30 @@ public class SignUpdate extends AbstractPacket {
 
     private void readLineStrings(ByteBuf buf) {
         lines = new String[4];
-        lines[0] = ComponentSerializer.parse(readString(buf))[0].toLegacyText();
-        lines[1] = ComponentSerializer.parse(readString(buf))[0].toLegacyText();
-        lines[2] = ComponentSerializer.parse(readString(buf))[0].toLegacyText();
-        lines[3] = ComponentSerializer.parse(readString(buf))[0].toLegacyText();
+        String line1 = readString(buf);
+        if(line1.equals("null")) {
+            lines[0] = "";
+        } else {
+            lines[0] = ComponentSerializer.parse(line1)[0].toLegacyText();
+        }
+        String line2 = readString(buf);
+        if(line2.equals("null")) {
+            lines[1] = "";
+        } else {
+            lines[1] = ComponentSerializer.parse(line2)[0].toLegacyText();
+        }
+        String line3 = readString(buf);
+        if(line3.equals("null")) {
+            lines[2] = "";
+        } else {
+            lines[2] = ComponentSerializer.parse(line3)[0].toLegacyText();
+        }
+        String line4 = readString(buf);
+        if(line4.equals("null")) {
+            lines[3] = "";
+        } else {
+            lines[3] = ComponentSerializer.parse(line4)[0].toLegacyText();
+        }
     }
 
     @Override

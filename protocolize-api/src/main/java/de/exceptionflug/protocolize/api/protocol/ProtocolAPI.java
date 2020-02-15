@@ -2,6 +2,7 @@ package de.exceptionflug.protocolize.api.protocol;
 
 import de.exceptionflug.protocolize.api.event.EventManager;
 import de.exceptionflug.protocolize.api.traffic.TrafficManager;
+import net.md_5.bungee.api.plugin.Plugin;
 
 /**
  * This class contains all relevant methods to use Protocolize.
@@ -40,4 +41,5 @@ public final class ProtocolAPI {
     public static TrafficManager getTrafficManager() {
         return TRAFFIC_MANAGER;
     }
+
 }
