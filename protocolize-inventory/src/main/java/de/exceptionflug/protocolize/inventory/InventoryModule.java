@@ -74,11 +74,11 @@ public final class InventoryModule {
     public static void registerInventory(final UUID playerId, final int windowId, final Inventory inventory) {
         Preconditions.checkNotNull(playerId, "The playerId cannot be null!");
         if (inventory == null) {
-            WINDOW_MAP.computeIfAbsent(playerId, (id) -> Maps.newHashMap()).remove(windowId);
-            ACTION_MAP.computeIfAbsent(playerId, (id) -> Maps.newHashMap()).remove(windowId);
+            WINDOW_MAP.computeIfAbsent(playerId, (id) -> new ConcurrentHashMap<>()).remove(windowId);
+            ACTION_MAP.computeIfAbsent(playerId, (id) -> new ConcurrentHashMap<>()).remove(windowId);
             return;
         }
-        WINDOW_MAP.computeIfAbsent(playerId, (id) -> Maps.newHashMap()).put(windowId, inventory);
+        WINDOW_MAP.computeIfAbsent(playerId, (id) -> new ConcurrentHashMap<>()).put(windowId, inventory);
     }
 
     public static Map<Integer, Inventory> getInventories(final UUID playerId) {
