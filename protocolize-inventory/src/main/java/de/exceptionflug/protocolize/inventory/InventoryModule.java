@@ -32,7 +32,6 @@ public final class InventoryModule {
     private static final Map<UUID, Map<Integer, Inventory>> WINDOW_MAP = new ConcurrentHashMap<>();
     private static final Map<UUID, Map<Integer, Map<Integer, InventoryAction>>> ACTION_MAP = new ConcurrentHashMap<>();
     private static final Map<UUID, Integer> WINDOW_ID_COUNTER_MAP = new ConcurrentHashMap<>();
-    private static final Plugin dummyPlugin = new Plugin();
 
     private static boolean spigotInventoryTracking = false;
 
