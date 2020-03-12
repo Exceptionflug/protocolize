@@ -32,7 +32,8 @@ public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
         if(event.getPlayer() == null)
             return;
         final Inventory inventory = InventoryModule.getInventory(event.getPlayer().getUniqueId(), clickWindow.getWindowId());
-        if (inventory == null) return;
+        if (inventory == null)
+            return;
 
         short slot = clickWindow.getSlot();
         if (inventory.getType() == InventoryType.BREWING_STAND && ReflectionUtil.getProtocolVersion(event.getPlayer()) == MINECRAFT_1_8) {
