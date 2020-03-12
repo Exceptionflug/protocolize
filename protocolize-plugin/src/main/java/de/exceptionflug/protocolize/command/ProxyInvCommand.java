@@ -9,7 +9,7 @@ import net.md_5.bungee.api.plugin.Command;
 public class ProxyInvCommand extends Command {
 
     public ProxyInvCommand() {
-        super("proxyinv");
+        super("proxyinv", "protocolize.command.proxyinv");
     }
 
     @Override
