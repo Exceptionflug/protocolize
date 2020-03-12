@@ -3,6 +3,7 @@ package de.exceptionflug.protocolize.command;
 import de.exceptionflug.protocolize.api.protocol.ProtocolAPI;
 import de.exceptionflug.protocolize.api.traffic.TrafficData;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
@@ -13,12 +14,16 @@ import java.util.stream.Collectors;
 public class TrafficCommand extends Command {
 
     public TrafficCommand() {
-        super("traffic");
+        super("traffic", "protocolize.command.traffic");
     }
 
     @Override
     public void execute(final CommandSender commandSender, final String[] args) {
-        if(commandSender instanceof ProxiedPlayer && commandSender.hasPermission("protocolize.command.traffic")) {
+        if(commandSender instanceof ProxiedPlayer) {
+            if(!commandSender.hasPermission(this.getPermission())){
+                commandSender.sendMessage(new TextComponent("§cYou don't have permission to use this command"));
+                return;
+            }
             final ProxiedPlayer p = (ProxiedPlayer) commandSender;
             if(args.length == 0) {
                 showStatisticsFor(p, p.getName());
