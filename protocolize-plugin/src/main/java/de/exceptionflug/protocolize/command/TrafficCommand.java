@@ -13,12 +13,12 @@ import java.util.stream.Collectors;
 public class TrafficCommand extends Command {
 
     public TrafficCommand() {
-        super("traffic");
+        super("traffic", "protocolize.command.traffic");
     }
 
     @Override
     public void execute(final CommandSender commandSender, final String[] args) {
-        if(commandSender instanceof ProxiedPlayer && commandSender.hasPermission("protocolize.command.traffic")) {
+        if(commandSender instanceof ProxiedPlayer) {
             final ProxiedPlayer p = (ProxiedPlayer) commandSender;
             if(args.length == 0) {
                 showStatisticsFor(p, p.getName());
