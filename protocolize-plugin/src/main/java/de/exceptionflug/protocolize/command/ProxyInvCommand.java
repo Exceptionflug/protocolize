@@ -16,10 +16,6 @@ public class ProxyInvCommand extends Command {
     @Override
     public void execute(final CommandSender commandSender, final String[] strings) {
         if(commandSender instanceof ProxiedPlayer) {
-            if(!commandSender.hasPermission(this.getPermission())){
-                commandSender.sendMessage(new TextComponent("§cYou don't have permission to use this command"));
-                return;
-            }
             final ProxiedPlayer p = (ProxiedPlayer) commandSender;
             final PlayerInventory inventory = InventoryManager.getCombinedSendInventory(p.getUniqueId(), p.getServer().getInfo().getName());
             inventory.update();
