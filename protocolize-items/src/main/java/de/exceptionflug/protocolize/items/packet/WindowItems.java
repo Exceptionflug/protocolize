@@ -87,6 +87,8 @@ public class WindowItems extends AbstractPacket {
         final ItemStack curr = items.get(slot);
         if((curr == null || curr.getType() == ItemType.NO_DATA) && (stack == null || stack.getType() == ItemType.NO_DATA))
             return false;
+        if(curr == null)
+            return false;
         if(curr.equals(stack))
             return false;
         items.set(slot, stack);
