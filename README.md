@@ -1,4 +1,4 @@
-Nightly builds: [![Build Status](http://ci.exceptionflug.de/job/Protocolize/badge/icon)](http://ci.exceptionflug.de/job/Protocolize/)
+Nightly builds: [![Build Status](https://ci.exceptionflug.de/job/Protocolize/badge/icon)](https://ci.exceptionflug.de/job/Protocolize/)
 
 # Protocolize
 A lightweight BungeeCord protocol framework supporting items.
@@ -14,7 +14,7 @@ Add the following repository to your pom.xml:
 ```xml
 <repository>
   <id>exceptionflug</id>
-  <url>http://mvn.exceptionflug.de/repository/exceptionflug-public/</url>
+  <url>https://mvn.exceptionflug.de/repository/exceptionflug-public/</url>
 </repository>
 ```
 This is the full portfolio of protocolize dependencies:

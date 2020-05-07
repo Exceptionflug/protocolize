@@ -31,11 +31,11 @@
     <distributionManagement>
         <repository>
             <id>exceptionflug</id>
-            <url>http://mvn.exceptionflug.de/repository/exceptionflug-public/</url>
+            <url>https://mvn.exceptionflug.de/repository/exceptionflug-public/</url>
         </repository>
         <snapshotRepository>
             <id>exceptionflug</id>
-            <url>http://mvn.exceptionflug.de/repository/exceptionflug-public/</url>
+            <url>https://mvn.exceptionflug.de/repository/exceptionflug-public/</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -46,7 +46,7 @@
         </repository>
         <repository>
             <id>exceptionflug</id>
-            <url>http://mvn.exceptionflug.de/repository/exceptionflug-public/</url>
+            <url>https://mvn.exceptionflug.de/repository/exceptionflug-public/</url>
         </repository>
     </repositories>
 

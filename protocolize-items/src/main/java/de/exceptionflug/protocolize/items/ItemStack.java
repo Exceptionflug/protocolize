@@ -58,14 +58,19 @@ public final class ItemStack implements Cloneable {
         this.displayName = displayName;
     }
 
-    private void setDisplayNameTag(final String name) {
+    private void setDisplayNameTag(final String name, final int protocolVersion) {
         if (name == null)
             return;
         CompoundTag display = (CompoundTag) nbtdata.getValue().get("display");
         if (display == null) {
             display = new CompoundTag("display", new CompoundMap());
         }
-        final StringTag tag = new StringTag("Name", name);
+        final StringTag tag;
+        if(protocolVersion > MINECRAFT_1_12) {
+            tag = new StringTag("Name", ComponentSerializer.toString(TextComponent.fromLegacyText(name)));
+        } else {
+            tag = new StringTag("Name", name);
+        }
         display.getValue().put(tag);
         nbtdata.getValue().put(display);
     }
