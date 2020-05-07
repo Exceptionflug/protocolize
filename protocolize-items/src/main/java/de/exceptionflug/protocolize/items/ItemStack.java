@@ -58,19 +58,14 @@ public final class ItemStack implements Cloneable {
         this.displayName = displayName;
     }
 
-    private void setDisplayNameTag(final String name, final int protocolVersion) {
+    private void setDisplayNameTag(final String name) {
         if (name == null)
             return;
         CompoundTag display = (CompoundTag) nbtdata.getValue().get("display");
         if (display == null) {
             display = new CompoundTag("display", new CompoundMap());
         }
-        final StringTag tag;
-        if(protocolVersion > MINECRAFT_1_12) {
-            tag = new StringTag("Name", ComponentSerializer.toString(TextComponent.fromLegacyText(name)));
-        } else {
-            tag = new StringTag("Name", name);
-        }
+        final StringTag tag = new StringTag("Name", name);
         display.getValue().put(tag);
         nbtdata.getValue().put(display);
     }
@@ -82,12 +77,12 @@ public final class ItemStack implements Cloneable {
         if (display == null) {
             display = new CompoundTag("display", new CompoundMap());
         }
-        if(protocolVersion < MINECRAFT_1_14) {
+        if(protocolVersion < MINECRAFT_1_12) {
             final ListTag<StringTag> tag = new ListTag<>("Lore", StringTag.class, lore.stream().map(i -> new StringTag(String.valueOf(ThreadLocalRandom.current().nextLong()), i)).collect(Collectors.toList()));
             display.getValue().put(tag);
             nbtdata.getValue().put(display);
         } else {
-            final ListTag<StringTag> tag = new ListTag<>("Lore", StringTag.class, lore.stream().map(i -> new StringTag(String.valueOf(ThreadLocalRandom.current().nextLong()), ComponentSerializer.toString(TextComponent.fromLegacyText(i)))).collect(Collectors.toList()));
+            final ListTag<StringTag> tag = new ListTag<>("Lore", StringTag.class, lore.stream().map(i -> new StringTag(String.valueOf(ThreadLocalRandom.current().nextLong()), ComponentSerializer.toString(TextComponent.fromLegacyText("§r"+i)))).collect(Collectors.toList()));
             display.getValue().put(tag);
             nbtdata.getValue().put(display);
         }
@@ -141,9 +136,9 @@ public final class ItemStack implements Cloneable {
             }
             if (protocolVersion >= MINECRAFT_1_13) {
                 nbtdata.getValue().put(new IntTag("Damage", durability));
-                setDisplayNameTag(ComponentSerializer.toString(new TextComponent(displayName)), protocolVersion);
+                setDisplayNameTag(ComponentSerializer.toString(new TextComponent(displayName)));
             } else {
-                setDisplayNameTag(displayName, protocolVersion);
+                setDisplayNameTag(displayName);
             }
             setLoreTag(lore, protocolVersion);
             setHideFlags(hideFlags);
