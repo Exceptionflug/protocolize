@@ -82,7 +82,15 @@ public final class ItemStack implements Cloneable {
             display.getValue().put(tag);
             nbtdata.getValue().put(display);
         } else {
-            final ListTag<StringTag> tag = new ListTag<>("Lore", StringTag.class, lore.stream().map(i -> new StringTag(String.valueOf(ThreadLocalRandom.current().nextLong()), ComponentSerializer.toString(TextComponent.fromLegacyText("§r"+i)))).collect(Collectors.toList()));
+            final ListTag<StringTag> tag = new ListTag<>("Lore", StringTag.class, lore.stream().map(i -> {
+                BaseComponent[] components = TextComponent.fromLegacyText(i);
+                for(BaseComponent component : components) {
+                    if(!component.isItalic()) {
+                        component.setItalic(false);
+                    }
+                }
+                return new StringTag(String.valueOf(ThreadLocalRandom.current().nextLong()), ComponentSerializer.toString(components));
+            }).collect(Collectors.toList()));
             display.getValue().put(tag);
             nbtdata.getValue().put(display);
         }
