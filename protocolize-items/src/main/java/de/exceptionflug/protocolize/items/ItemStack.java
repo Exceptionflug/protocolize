@@ -77,7 +77,7 @@ public final class ItemStack implements Cloneable {
         if (display == null) {
             display = new CompoundTag("display", new CompoundMap());
         }
-        if(protocolVersion < MINECRAFT_1_12) {
+        if(protocolVersion < MINECRAFT_1_14) {
             final ListTag<StringTag> tag = new ListTag<>("Lore", StringTag.class, lore.stream().map(i -> new StringTag(String.valueOf(ThreadLocalRandom.current().nextLong()), i)).collect(Collectors.toList()));
             display.getValue().put(tag);
             nbtdata.getValue().put(display);
