@@ -141,9 +141,9 @@ public final class ItemStack implements Cloneable {
             }
             if (protocolVersion >= MINECRAFT_1_13) {
                 nbtdata.getValue().put(new IntTag("Damage", durability));
-                setDisplayNameTag(ComponentSerializer.toString(new TextComponent(displayName)));
+                setDisplayNameTag(ComponentSerializer.toString(new TextComponent(displayName)), protocolVersion);
             } else {
-                setDisplayNameTag(displayName);
+                setDisplayNameTag(displayName, protocolVersion);
             }
             setLoreTag(lore, protocolVersion);
             setHideFlags(hideFlags);
