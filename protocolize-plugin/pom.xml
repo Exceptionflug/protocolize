@@ -7,12 +7,12 @@
     <parent>
         <groupId>de.exceptionflug</groupId>
         <artifactId>protocolize</artifactId>
-        <version>1.5.4-SNAPSHOT</version>
+        <version>1.5.5-SNAPSHOT</version>
     </parent>
 
     <groupId>de.exceptionflug</groupId>
     <artifactId>protocolize-plugin</artifactId>
-    <version>1.5.4-SNAPSHOT</version>
+    <version>1.5.5-SNAPSHOT</version>
 
     <properties>
         <plugin.main>de.exceptionflug.protocolize.ProtocolizePlugin</plugin.main>
@@ -23,22 +23,22 @@
         <dependency>
             <groupId>de.exceptionflug</groupId>
             <artifactId>protocolize-api</artifactId>
-            <version>1.5.4-SNAPSHOT</version>
+            <version>1.5.5-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>de.exceptionflug</groupId>
             <artifactId>protocolize-items</artifactId>
-            <version>1.5.4-SNAPSHOT</version>
+            <version>1.5.5-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>de.exceptionflug</groupId>
             <artifactId>protocolize-world</artifactId>
-            <version>1.5.4-SNAPSHOT</version>
+            <version>1.5.5-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>de.exceptionflug</groupId>
             <artifactId>protocolize-inventory</artifactId>
-            <version>1.5.4-SNAPSHOT</version>
+            <version>1.5.5-SNAPSHOT</version>
         </dependency>
 
         <dependency>
