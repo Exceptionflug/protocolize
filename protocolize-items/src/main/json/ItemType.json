@@ -3296,7 +3296,7 @@
   },
   {
     "name": "DARK_OAK_SIGN",
-    "maxStackSize": 64,
+    "maxStackSize": 16,
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -5900,7 +5900,7 @@
   },
   {
     "name": "SPRUCE_SIGN",
-    "maxStackSize": 64,
+    "maxStackSize": 16,
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -10036,8 +10036,20 @@
   },
   {
     "name": "OAK_SIGN",
-    "maxStackSize": 64,
+    "maxStackSize": 16,
     "mappings": [
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 47,
+        "protocolRangeEnd": 340,
+        "id": 323
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 393,
+        "protocolRangeEnd": 404,
+        "id": 541
+      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 573,
@@ -12342,7 +12354,7 @@
   },
   {
     "name": "ACACIA_SIGN",
-    "maxStackSize": 64,
+    "maxStackSize": 16,
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -14065,24 +14077,6 @@
     ]
   },
   {
-    "name": "SIGN",
-    "maxStackSize": 16,
-    "mappings": [
-      {
-        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 47,
-        "protocolRangeEnd": 340,
-        "id": 323
-      },
-      {
-        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 393,
-        "protocolRangeEnd": 404,
-        "id": 541
-      }
-    ]
-  },
-  {
     "name": "LARGE_FERN",
     "maxStackSize": 64,
     "mappings": [
@@ -14479,7 +14473,7 @@
   },
   {
     "name": "JUNGLE_SIGN",
-    "maxStackSize": 64,
+    "maxStackSize": 16,
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -17733,7 +17727,7 @@
   },
   {
     "name": "BIRCH_SIGN",
-    "maxStackSize": 64,
+    "maxStackSize": 16,
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",

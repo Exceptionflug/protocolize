@@ -22,7 +22,7 @@ public class PlayerInventoryExample implements Listener {
         final PlayerInventory inventory = InventoryManager.getInventory(player.getUniqueId());
 
         // A simple item
-        final ItemStack item = new ItemStack(ItemType.SIGN);
+        final ItemStack item = new ItemStack(ItemType.OAK_SIGN);
         item.setDisplayName("§6Click me");
         inventory.setItem(44, item); // NOTICE: You have to use the minecraft slot indexes! See: https://wiki.vg/Inventory#Windows
 
@@ -59,7 +59,7 @@ public class PlayerInventoryExample implements Listener {
         final ItemStack itemStack = event.getCurrentItem();
         final ProxiedPlayer player = event.getPlayer();
         if(itemStack != null) {
-            if(itemStack.getType() == ItemType.SIGN) {
+            if(itemStack.getType() == ItemType.OAK_SIGN) {
                 player.sendMessage("§6You interacted with a sign!");
             }
         }

@@ -26,7 +26,7 @@ public class InventoryExample implements Listener {
         final Inventory inventory = new Inventory(InventoryType.GENERIC_9X4, new TextComponent("§9Inventory title"));
 
         // A simple item
-        final ItemStack item = new ItemStack(ItemType.SIGN);
+        final ItemStack item = new ItemStack(ItemType.OAK_SIGN);
         item.setDisplayName("§6Click me");
         inventory.setItem(0, item);
 
@@ -43,7 +43,7 @@ public class InventoryExample implements Listener {
         final Inventory brewingStand = new Inventory(InventoryType.BREWING_STAND, new TextComponent("§5A brewing stand!"));
 
         // A simple item
-        final ItemStack item = new ItemStack(ItemType.SIGN);
+        final ItemStack item = new ItemStack(ItemType.OAK_SIGN);
         item.setDisplayName("§6Click me");
         brewingStand.setItem(0, item);
 
@@ -60,13 +60,13 @@ public class InventoryExample implements Listener {
         if(baseComponents.length == 0)
             return;
         if(baseComponents[0].toString().equals(new TextComponent("§9Inventory title").toString())) {
-            if(clicked.getType() == ItemType.SIGN) {
+            if(clicked.getType() == ItemType.OAK_SIGN) {
                 player.sendMessage("§6Hihi, you clicked me!");
             } else if(clicked.getType() == ItemType.BLUE_WOOL) {
                 openBrewingStandInventory(player);
             }
         } else if(baseComponents[0].toString().equals(new TextComponent("§5A brewing stand!").toString())) {
-            if(clicked.getType() == ItemType.SIGN) {
+            if(clicked.getType() == ItemType.OAK_SIGN) {
                 InventoryModule.closeAllInventories(player); // Closes the current gui
                 player.sendMessage("§6You clicked me again :)");
             }

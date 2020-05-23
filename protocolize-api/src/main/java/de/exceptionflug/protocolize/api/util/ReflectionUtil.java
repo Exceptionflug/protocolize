@@ -163,7 +163,12 @@ public final class ReflectionUtil {
         try {
             final Object channelWrapper = getChannelWrapper(player);
             final Channel channel = (Channel) channelWrapperChannelField.get(channelWrapper);
-            return (int) protocolVersionField.get(channel.pipeline().get(MinecraftDecoder.class));
+            MinecraftDecoder minecraftDecoder = channel.pipeline().get(MinecraftDecoder.class);
+            if(minecraftDecoder == null) {
+                System.out.println("HUUURENSOOOHN");
+                return -1;
+            }
+            return (int) protocolVersionField.get(minecraftDecoder);
         } catch (final IllegalAccessException e) {
             e.printStackTrace();
         }
