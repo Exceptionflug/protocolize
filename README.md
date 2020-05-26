@@ -48,7 +48,7 @@ This is the full portfolio of protocolize dependencies:
 ### Listen for incoming and outgoing packets
 At first you need to create a new PacketListener (eg. when you want to interact with chat messages)
 ```java
-public class MyPacketListener extends PacketAdapter<Chat> {  
+public class MyPacketAdapter extends PacketAdapter<Chat> {  
   public MyPacketListener() {  
     super(Stream.UPSTREAM, Chat.class);  
   }
