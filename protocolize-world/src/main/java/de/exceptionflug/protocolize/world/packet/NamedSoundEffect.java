@@ -42,6 +42,7 @@ public class NamedSoundEffect extends AbstractPacket {
         MAPPING.put(MINECRAFT_1_15_1, 0x1A);
         MAPPING.put(MINECRAFT_1_15_2, 0x1A);
         MAPPING.put(MINECRAFT_1_16, 0x19);
+        MAPPING.put(MINECRAFT_1_16_1, 0x19);
     }
 
     private String sound;
