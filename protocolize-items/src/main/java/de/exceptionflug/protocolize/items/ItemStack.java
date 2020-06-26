@@ -27,8 +27,8 @@ public final class ItemStack implements Cloneable {
 
     public final static ItemStack NO_DATA = new ItemStack(ItemType.NO_DATA);
 
-    private String displayName;
-    private List<String> lore;
+    private BaseComponent[] displayName;
+    private List<BaseComponent[]> lore;
     private byte amount;
     private short durability;
     private ItemType type;
@@ -55,6 +55,10 @@ public final class ItemStack implements Cloneable {
     }
 
     public void setDisplayName(final String displayName) {
+        this.displayName = TextComponent.fromLegacyText(displayName);
+    }
+
+    public void setDisplayName(BaseComponent... displayName) {
         this.displayName = displayName;
     }
 
@@ -70,7 +74,7 @@ public final class ItemStack implements Cloneable {
         nbtdata.getValue().put(display);
     }
 
-    private void setLoreTag(final List<String> lore, final int protocolVersion) {
+    private void setLoreTag(final List<BaseComponent[]> lore, final int protocolVersion) {
         if (lore == null)
             return;
         CompoundTag display = (CompoundTag) nbtdata.getValue().get("display");
@@ -78,12 +82,11 @@ public final class ItemStack implements Cloneable {
             display = new CompoundTag("display", new CompoundMap());
         }
         if(protocolVersion < MINECRAFT_1_14) {
-            final ListTag<StringTag> tag = new ListTag<>("Lore", StringTag.class, lore.stream().map(i -> new StringTag(String.valueOf(ThreadLocalRandom.current().nextLong()), i)).collect(Collectors.toList()));
+            final ListTag<StringTag> tag = new ListTag<>("Lore", StringTag.class, lore.stream().map(i -> new StringTag(String.valueOf(ThreadLocalRandom.current().nextLong()), TextComponent.toLegacyText(i))).collect(Collectors.toList()));
             display.getValue().put(tag);
             nbtdata.getValue().put(display);
         } else {
-            final ListTag<StringTag> tag = new ListTag<>("Lore", StringTag.class, lore.stream().map(i -> {
-                BaseComponent[] components = TextComponent.fromLegacyText(i);
+            final ListTag<StringTag> tag = new ListTag<>("Lore", StringTag.class, lore.stream().map(components -> {
                 for(BaseComponent component : components) {
                     if(!component.isItalic()) {
                         component.setItalic(false);
@@ -144,9 +147,9 @@ public final class ItemStack implements Cloneable {
             }
             if (protocolVersion >= MINECRAFT_1_13) {
                 nbtdata.getValue().put(new IntTag("Damage", durability));
-                setDisplayNameTag(ComponentSerializer.toString(new TextComponent(displayName)));
+                setDisplayNameTag(ComponentSerializer.toString(displayName));
             } else {
-                setDisplayNameTag(displayName);
+                setDisplayNameTag(TextComponent.toLegacyText(displayName));
             }
             setLoreTag(lore, protocolVersion);
             setHideFlags(hideFlags);
@@ -205,8 +208,8 @@ public final class ItemStack implements Cloneable {
                     return out;
                 } else {
                     final CompoundTag tag = (CompoundTag) readNBTTag(buf);
-                    String displayName = null;
-                    final List<String> loreOut;
+                    BaseComponent[] displayName = null;
+                    final List<BaseComponent[]> loreOut;
                     if (protocolVersion >= MINECRAFT_1_13 && tag != null) {
                         final CompoundMap value = tag.getValue();
                         final IntTag damage = (IntTag) value.get("Damage");
@@ -214,11 +217,13 @@ public final class ItemStack implements Cloneable {
                             durability = damage.getValue().shortValue();
                         final String json = getDisplayNameTag(tag);
                         if (json != null) {
-                            final BaseComponent[] displayNameComponents = ComponentSerializer.parse(json);
-                            displayName = BaseComponent.toLegacyText(displayNameComponents);
+                            displayName = ComponentSerializer.parse(json);
                         }
                     } else {
-                        displayName = getDisplayNameTag(tag);
+                        String displayNameTag = getDisplayNameTag(tag);
+                        if(displayNameTag != null) {
+                            displayName = TextComponent.fromLegacyText(displayNameTag);
+                        }
                     }
                     loreOut = getLoreTag(tag, protocolVersion);
                     final ItemStack out = new ItemStack(null, amount, durability);
@@ -288,6 +293,10 @@ public final class ItemStack implements Cloneable {
     }
 
     public String getDisplayName() {
+        return BaseComponent.toLegacyText(displayName);
+    }
+
+    public BaseComponent[] getDisplayNameComponents() {
         return displayName;
     }
 
@@ -325,7 +334,7 @@ public final class ItemStack implements Cloneable {
         return name.getValue();
     }
 
-    private static List<String> getLoreTag(final CompoundTag nbtdata, final int protocolVersion) {
+    private static List<BaseComponent[]> getLoreTag(final CompoundTag nbtdata, final int protocolVersion) {
         if (nbtdata == null)
             return null;
         final CompoundTag display = (CompoundTag) nbtdata.getValue().get("display");
@@ -337,9 +346,9 @@ public final class ItemStack implements Cloneable {
             return null;
         }
         if(protocolVersion < MINECRAFT_1_14) {
-            return lore.getValue().stream().map(StringTag::getValue).collect(Collectors.toList());
+            return lore.getValue().stream().map(stringTag -> TextComponent.fromLegacyText(stringTag.getValue())).collect(Collectors.toList());
         } else {
-            return lore.getValue().stream().map(it -> new TextComponent(it.getValue()).toLegacyText()).collect(Collectors.toList());
+            return lore.getValue().stream().map(it -> ComponentSerializer.parse(it.getValue())).collect(Collectors.toList());
         }
     }
 
@@ -384,10 +393,18 @@ public final class ItemStack implements Cloneable {
     }
 
     public List<String> getLore() {
+        return lore.stream().map(TextComponent::toLegacyText).collect(Collectors.toList());
+    }
+
+    public List<BaseComponent[]> getLoreComponents() {
         return lore;
     }
 
     public void setLore(final List<String> lore) {
+        this.lore = lore.stream().map(TextComponent::fromLegacyText).collect(Collectors.toList());
+    }
+
+    public void setLoreComponents(List<BaseComponent[]> lore) {
         this.lore = lore;
     }
 
