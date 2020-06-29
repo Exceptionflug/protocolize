@@ -56,6 +56,11 @@ public final class ItemStack implements Cloneable {
 
     public void setDisplayName(final String displayName) {
         this.displayName = TextComponent.fromLegacyText(displayName);
+        for(BaseComponent component : this.displayName) {
+            if(!component.isItalic()) {
+                component.setItalic(false);
+            }
+        }
     }
 
     public void setDisplayName(BaseComponent... displayName) {
