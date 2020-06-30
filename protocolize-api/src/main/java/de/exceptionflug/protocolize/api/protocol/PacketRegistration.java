@@ -48,6 +48,13 @@ public final class PacketRegistration {
         }
     }
 
+    public boolean isSupportedPlatform() {
+        if(isWaterfall() || isBungeeCord() || isAegis()) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * This method registers a {@link AbstractPacket} for the PLAY / GAME protocol in direction to the client. This method is equal to
      * {@code registerPacket(Protocol.GAME.TO_CLIENT, clazz, protocolIdMapping);}
@@ -87,6 +94,8 @@ public final class PacketRegistration {
             for(final Integer protocolVersion : protocolIdMapping.keySet()) {
                 if(isWaterfall()) {
                     registerPacketWaterfall(protocols, protocolVersion, protocolIdMapping.get(protocolVersion), clazz);
+                } else if(isAegis()) {
+                    registerPacketAegis(protocols, protocolVersion, protocolIdMapping.get(protocolVersion), clazz);
                 } else {
                     registerPacketBungeeCord(protocols, protocolVersion, protocolIdMapping.get(protocolVersion), clazz);
                 }
@@ -140,6 +149,14 @@ public final class PacketRegistration {
         return protocolDataConstructorsField.getType().equals(Supplier[].class);
     }
 
+    public boolean isBungeeCord() {
+        return protocolDataConstructorsField.getType().equals(Constructor[].class);
+    }
+
+    public boolean isAegis() {
+        return protocolDataConstructorsField.getType().equals(com.google.common.base.Supplier[].class);
+    }
+
     private void registerPacketBungeeCord(final TIntObjectMap<Object> protocols, final int protocolVersion, final int packetId, final Class<?> clazz) throws IllegalAccessException, NoSuchMethodException {
         final Object protocolData = protocols.get(protocolVersion);
         if(protocolData == null) {
@@ -159,6 +176,23 @@ public final class PacketRegistration {
         }
         ((TObjectIntMap<Class<?>>)protocolDataPacketMapField.get(protocolData)).put(clazz, packetId);
         ((Supplier[])protocolDataConstructorsField.get(protocolData))[packetId] = () -> {
+            try {
+                return clazz.getDeclaredConstructor().newInstance();
+            } catch (ReflectiveOperationException e) {
+                e.printStackTrace();
+            }
+            return null;
+        };
+    }
+
+    private void registerPacketAegis(final TIntObjectMap<Object> protocols, final int protocolVersion, final int packetId, final Class<?> clazz) throws IllegalAccessException, NoSuchMethodException {
+        final Object protocolData = protocols.get(protocolVersion);
+        if(protocolData == null) {
+            ProxyServer.getInstance().getLogger().warning("[Protocolize] Protocol version "+protocolVersion+" is not supported on this waterfall version. Skipping registration for that specific version.");
+            return;
+        }
+        ((TObjectIntMap<Class<?>>)protocolDataPacketMapField.get(protocolData)).put(clazz, packetId);
+        ((com.google.common.base.Supplier[])protocolDataConstructorsField.get(protocolData))[packetId] = () -> {
             try {
                 return clazz.getDeclaredConstructor().newInstance();
             } catch (ReflectiveOperationException e) {

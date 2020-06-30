@@ -46,6 +46,17 @@ public class ProtocolizePlugin extends Plugin {
     public void onEnable() {
         ProxyServer.getInstance().getLogger().info("======= PROTOCOLIZE =======");
         ProxyServer.getInstance().getLogger().info("Version " + getDescription().getVersion() + " by " + getDescription().getAuthor());
+        if(!ProtocolAPI.getPacketRegistration().isSupportedPlatform()) {
+            ProxyServer.getInstance().getLogger().log(Level.SEVERE, "");
+            ProxyServer.getInstance().getLogger().log(Level.SEVERE, "!!! This is an unsupported platform !!!");
+            ProxyServer.getInstance().getLogger().log(Level.SEVERE, "Protocolize won't enable on this platform. Be sure to use one of the following platforms:");
+            ProxyServer.getInstance().getLogger().log(Level.SEVERE, " - BungeeCord");
+            ProxyServer.getInstance().getLogger().log(Level.SEVERE, " - Waterfall");
+            ProxyServer.getInstance().getLogger().log(Level.SEVERE, " - Aegis");
+            ProxyServer.getInstance().getLogger().log(Level.SEVERE, " - Any BungeeCord fork based on commit 9133a6f511b4cfaca5e6a6671b58a6c3b10821ab");
+            ProxyServer.getInstance().getLogger().log(Level.SEVERE, "");
+            return;
+        }
         if(ProtocolAPI.getPacketRegistration().isWaterfall()) {
             ProxyServer.getInstance().getLogger().info("[Protocolize] Running on Waterfall. Please report bugs regarding protocolize at https://github.com/Exceptionflug/protocolize/issues");
         }
