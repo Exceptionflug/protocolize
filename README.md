@@ -1,4 +1,5 @@
-Nightly builds: [![Build Status](https://ci.exceptionflug.de/job/Protocolize/badge/icon)](https://ci.exceptionflug.de/job/Protocolize/)
+[![Build Status](https://ci.exceptionflug.de/job/Protocolize/badge/icon)](https://ci.exceptionflug.de/job/Protocolize/) 
+[![GH Downloads](https://img.shields.io/github/downloads/Exceptionflug/Protocolize/total?color=GREEN&label=Downloads)](https://github.com/Exceptionflug/Protocolize/releases)
 
 # Protocolize
 A lightweight BungeeCord protocol framework supporting items.
