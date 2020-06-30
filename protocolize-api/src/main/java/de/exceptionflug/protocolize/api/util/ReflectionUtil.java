@@ -165,7 +165,6 @@ public final class ReflectionUtil {
             final Channel channel = (Channel) channelWrapperChannelField.get(channelWrapper);
             MinecraftDecoder minecraftDecoder = channel.pipeline().get(MinecraftDecoder.class);
             if(minecraftDecoder == null) {
-                System.out.println("HUUURENSOOOHN");
                 return -1;
             }
             return (int) protocolVersionField.get(minecraftDecoder);
