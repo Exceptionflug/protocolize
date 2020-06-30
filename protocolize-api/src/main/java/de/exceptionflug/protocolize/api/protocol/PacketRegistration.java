@@ -188,7 +188,7 @@ public final class PacketRegistration {
     private void registerPacketAegis(final TIntObjectMap<Object> protocols, final int protocolVersion, final int packetId, final Class<?> clazz) throws IllegalAccessException, NoSuchMethodException {
         final Object protocolData = protocols.get(protocolVersion);
         if(protocolData == null) {
-            ProxyServer.getInstance().getLogger().warning("[Protocolize] Protocol version "+protocolVersion+" is not supported on this waterfall version. Skipping registration for that specific version.");
+            ProxyServer.getInstance().getLogger().warning("[Protocolize] Protocol version "+protocolVersion+" is not supported on this aegis version. Skipping registration for that specific version.");
             return;
         }
         ((TObjectIntMap<Class<?>>)protocolDataPacketMapField.get(protocolData)).put(clazz, packetId);

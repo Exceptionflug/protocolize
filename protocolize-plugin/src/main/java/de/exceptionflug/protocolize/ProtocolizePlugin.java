@@ -60,6 +60,9 @@ public class ProtocolizePlugin extends Plugin {
         if(ProtocolAPI.getPacketRegistration().isWaterfall()) {
             ProxyServer.getInstance().getLogger().info("[Protocolize] Running on Waterfall. Please report bugs regarding protocolize at https://github.com/Exceptionflug/protocolize/issues");
         }
+        if(ProtocolAPI.getPacketRegistration().isAegis()) {
+            ProxyServer.getInstance().getLogger().info("[Protocolize] Running on Aegis. Please report bugs regarding protocolize at https://github.com/Exceptionflug/protocolize/issues");
+        }
         ProxyServer.getInstance().getPluginManager().registerListener(this, new PlayerListener(this));
 
         try {
