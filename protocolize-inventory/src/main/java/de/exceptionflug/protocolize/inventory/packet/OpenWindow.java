@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import de.exceptionflug.protocolize.api.protocol.AbstractPacket;
 import de.exceptionflug.protocolize.inventory.InventoryType;
 import io.netty.buffer.ByteBuf;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import net.md_5.bungee.protocol.ProtocolConstants.Direction;
@@ -69,7 +70,13 @@ public class OpenWindow extends AbstractPacket {
         } else {
             windowId = readVarInt(buf);
             inventoryType = InventoryType.getType(readVarInt(buf), protocolVersion);
-            title = ComponentSerializer.parse(readString(buf));
+            try {
+                title = ComponentSerializer.parse(readString(buf));
+            } catch (Exception e) {
+                ProxyServer.getInstance().getLogger()
+                        .warning("[Protocolize] Invalid message component in window title: windowId="
+                                +windowId+" type="+inventoryType.name()+" protocolVersion="+protocolVersion);
+            }
         }
     }
 
