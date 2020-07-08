@@ -257,7 +257,7 @@ public final class ItemStack implements Cloneable {
         if(tag == null)
             return 0;
         if(tag.containsKey("HideFlags")) {
-            return ((IntTag)tag.get("HideFlags")).asInt();
+            return ((NumberTag<?>)tag.get("HideFlags")).asInt();
         }
         return 0;
     }
