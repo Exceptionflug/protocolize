@@ -46,6 +46,9 @@ public class ProtocolizePlugin extends Plugin {
     public void onEnable() {
         ProxyServer.getInstance().getLogger().info("======= PROTOCOLIZE =======");
         ProxyServer.getInstance().getLogger().info("Version " + getDescription().getVersion() + " by " + getDescription().getAuthor());
+        if(getDescription().getVersion().endsWith(":unknown")) {
+            ProxyServer.getInstance().getLogger().warning("WARNING: YOU ARE RUNNING AN UNOFFICIAL BUILD OF PROTOCOLIZE. DON'T REPORT ANY BUGS REGARDING THIS VERSION.");
+        }
         if(!ProtocolAPI.getPacketRegistration().isSupportedPlatform()) {
             ProxyServer.getInstance().getLogger().log(Level.SEVERE, "");
             ProxyServer.getInstance().getLogger().log(Level.SEVERE, "!!! This is an unsupported platform !!!");
