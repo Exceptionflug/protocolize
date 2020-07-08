@@ -1,8 +1,7 @@
 package de.exceptionflug.protocolize.items;
 
-import com.flowpowered.nbt.CompoundMap;
-import com.flowpowered.nbt.CompoundTag;
-import com.flowpowered.nbt.StringTag;
+import net.querz.nbt.tag.CompoundTag;
+import net.querz.nbt.tag.StringTag;
 
 public class SpawnEggItemIDMapping extends AbstractCustomItemIDMapping {
 
@@ -17,10 +16,10 @@ public class SpawnEggItemIDMapping extends AbstractCustomItemIDMapping {
     public void apply(final ItemStack stack, final int protocolVersion) {
         final CompoundTag nbt = (CompoundTag) stack.getNBTTag();
         if(nbt != null) {
-            CompoundTag entityData = (CompoundTag) nbt.getValue().get("EntityTag");
+            CompoundTag entityData = (CompoundTag) nbt.get("EntityTag");
             if(entityData == null)
-                entityData = new CompoundTag("EntityTag", new CompoundMap());
-            entityData.getValue().put(new StringTag("id", entityType));
+                entityData = new CompoundTag();
+            entityData.put("id", new StringTag(entityType));
         }
     }
 
@@ -30,10 +29,10 @@ public class SpawnEggItemIDMapping extends AbstractCustomItemIDMapping {
             return false;
         final CompoundTag nbt = (CompoundTag) stack.getNBTTag();
         if(nbt != null) {
-            final CompoundTag entityData = (CompoundTag) nbt.getValue().get("EntityTag");
+            final CompoundTag entityData = (CompoundTag) nbt.get("EntityTag");
             if(entityData == null)
                 return false;
-            final StringTag tag = (StringTag) entityData.getValue().get("id");
+            final StringTag tag = (StringTag) entityData.get("id");
             if(tag == null)
                 return false;
             return tag.getValue().equals(entityType);
