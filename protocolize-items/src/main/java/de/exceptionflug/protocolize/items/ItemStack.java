@@ -1,9 +1,7 @@
 package de.exceptionflug.protocolize.items;
 
-import com.flowpowered.nbt.*;
-import com.flowpowered.nbt.stream.NBTInputStream;
-import com.flowpowered.nbt.stream.NBTOutputStream;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -14,10 +12,13 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import net.md_5.bungee.protocol.DefinedPacket;
+import net.querz.nbt.io.NBTInputStream;
+import net.querz.nbt.io.NBTOutputStream;
+import net.querz.nbt.io.NamedTag;
+import net.querz.nbt.tag.*;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,7 @@ public final class ItemStack implements Cloneable {
     private short durability;
     private ItemType type;
     private boolean homebrew = true;
-    private CompoundTag nbtdata = new CompoundTag("", new CompoundMap());
+    private CompoundTag nbtdata = new CompoundTag();
     private int hideFlags;
 
     public ItemStack(final ItemType type) {
@@ -70,37 +71,39 @@ public final class ItemStack implements Cloneable {
     private void setDisplayNameTag(final String name) {
         if (name == null)
             return;
-        CompoundTag display = (CompoundTag) nbtdata.getValue().get("display");
+        CompoundTag display = (CompoundTag) nbtdata.get("display");
         if (display == null) {
-            display = new CompoundTag("display", new CompoundMap());
+            display = new CompoundTag();
         }
-        final StringTag tag = new StringTag("Name", name);
-        display.getValue().put(tag);
-        nbtdata.getValue().put(display);
+        final StringTag tag = new StringTag(name);
+        display.put("Name", tag);
+        nbtdata.put("display", display);
     }
 
     private void setLoreTag(final List<BaseComponent[]> lore, final int protocolVersion) {
         if (lore == null)
             return;
-        CompoundTag display = (CompoundTag) nbtdata.getValue().get("display");
+        CompoundTag display = (CompoundTag) nbtdata.get("display");
         if (display == null) {
-            display = new CompoundTag("display", new CompoundMap());
+            display = new CompoundTag();
         }
         if(protocolVersion < MINECRAFT_1_14) {
-            final ListTag<StringTag> tag = new ListTag<>("Lore", StringTag.class, lore.stream().map(i -> new StringTag(String.valueOf(ThreadLocalRandom.current().nextLong()), TextComponent.toLegacyText(i))).collect(Collectors.toList()));
-            display.getValue().put(tag);
-            nbtdata.getValue().put(display);
+            final ListTag<StringTag> tag = new ListTag<>(StringTag.class);
+            tag.addAll(lore.stream().map(i -> new StringTag(TextComponent.toLegacyText(i))).collect(Collectors.toList()));
+            display.put("Lore", tag);
+            nbtdata.put("display", display);
         } else {
-            final ListTag<StringTag> tag = new ListTag<>("Lore", StringTag.class, lore.stream().map(components -> {
+            final ListTag<StringTag> tag = new ListTag<>(StringTag.class);
+            tag.addAll(lore.stream().map(components -> {
                 for(BaseComponent component : components) {
                     if(!component.isItalic()) {
                         component.setItalic(false);
                     }
                 }
-                return new StringTag(String.valueOf(ThreadLocalRandom.current().nextLong()), ComponentSerializer.toString(components));
+                return new StringTag(ComponentSerializer.toString(components));
             }).collect(Collectors.toList()));
-            display.getValue().put(tag);
-            nbtdata.getValue().put(display);
+            display.put("Lore", tag);
+            nbtdata.put("display", display);
         }
     }
 
@@ -148,10 +151,10 @@ public final class ItemStack implements Cloneable {
             if (protocolVersion < MINECRAFT_1_13)
                 buf.writeShort(durability);
             if (nbtdata == null) {
-                nbtdata = new CompoundTag("", new CompoundMap());
+                nbtdata = new CompoundTag();
             }
             if (protocolVersion >= MINECRAFT_1_13) {
-                nbtdata.getValue().put(new IntTag("Damage", durability));
+                nbtdata.put("Damage", new IntTag(durability));
                 setDisplayNameTag(ComponentSerializer.toString(displayName));
             } else {
                 setDisplayNameTag(TextComponent.toLegacyText(displayName));
@@ -167,7 +170,7 @@ public final class ItemStack implements Cloneable {
             } catch (final Exception e) {
                 ProxyServer.getInstance().getLogger().log(Level.WARNING, "[Protocolize] Error when writing NBT data to ItemStack:", e);
                 buf.resetWriterIndex();
-                writeNBTTag(new CompoundTag("", new CompoundMap()), buf);
+                writeNBTTag(new CompoundTag(), buf);
             }
         } catch (final Exception e) {
             ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Exception occurred when writing ItemStack to buffer. Protocol version = " + protocolVersion, e);
@@ -175,14 +178,14 @@ public final class ItemStack implements Cloneable {
     }
 
     private void setHideFlags(final int hideFlags) {
-        nbtdata.getValue().put(new IntTag("HideFlags", hideFlags));
+        nbtdata.put("HideFlags", new IntTag(hideFlags));
     }
 
     private void writeNBTTag(final Tag nbtdata, final ByteBuf buf) throws IOException {
         Preconditions.checkNotNull(nbtdata, "The nbtdata cannot be null!");
         Preconditions.checkNotNull(buf, "The buf cannot be null!");
-        try (final NBTOutputStream outputStream = new NBTOutputStream(new ByteBufOutputStream(buf), false)) {
-            outputStream.writeTag(nbtdata);
+        try (final NBTOutputStream outputStream = new NBTOutputStream(new ByteBufOutputStream(buf))) {
+            outputStream.writeTag(nbtdata, 32);
         }
     }
 
@@ -212,14 +215,17 @@ public final class ItemStack implements Cloneable {
                     out.homebrew = false;
                     return out;
                 } else {
-                    final CompoundTag tag = (CompoundTag) readNBTTag(buf);
+                    NamedTag namedTag = readNBTTag(buf);
+                    if(namedTag == null) {
+                        namedTag = new NamedTag("", new CompoundTag());
+                    }
+                    final CompoundTag tag = (CompoundTag) namedTag.getTag();
                     BaseComponent[] displayName = null;
                     final List<BaseComponent[]> loreOut;
                     if (protocolVersion >= MINECRAFT_1_13 && tag != null) {
-                        final CompoundMap value = tag.getValue();
-                        final IntTag damage = (IntTag) value.get("Damage");
+                        final IntTag damage = (IntTag) tag.get("Damage");
                         if (damage != null)
-                            durability = damage.getValue().shortValue();
+                            durability = damage.asShort();
                         final String json = getDisplayNameTag(tag);
                         if (json != null) {
                             displayName = ComponentSerializer.parse(json);
@@ -250,21 +256,21 @@ public final class ItemStack implements Cloneable {
     private static int getHideFlags(final CompoundTag tag) {
         if(tag == null)
             return 0;
-        if(tag.getValue().containsKey("HideFlags")) {
-            return ((IntTag)tag.getValue().get("HideFlags")).getValue();
+        if(tag.containsKey("HideFlags")) {
+            return ((NumberTag<?>)tag.get("HideFlags")).asInt();
         }
         return 0;
     }
 
-    private static Tag readNBTTag(final ByteBuf buf) throws IOException {
+    private static NamedTag readNBTTag(final ByteBuf buf) throws IOException {
         final int i = buf.readerIndex();
         final short b0 = buf.readUnsignedByte();
         if (b0 == 0) {
             return null;
         } else {
             buf.readerIndex(i);
-            try (final NBTInputStream inputStream = new NBTInputStream(new ByteBufInputStream(buf), false)) {
-                return inputStream.readTag();
+            try (final NBTInputStream inputStream = new NBTInputStream(new ByteBufInputStream(buf))) {
+                return inputStream.readTag(32);
             }
         }
     }
@@ -328,11 +334,11 @@ public final class ItemStack implements Cloneable {
     private static String getDisplayNameTag(final CompoundTag nbtdata) {
         if (nbtdata == null)
             return null;
-        final CompoundTag display = (CompoundTag) nbtdata.getValue().get("display");
+        final CompoundTag display = (CompoundTag) nbtdata.get("display");
         if (display == null) {
             return null;
         }
-        final StringTag name = (StringTag) display.getValue().get("Name");
+        final StringTag name = (StringTag) display.get("Name");
         if (name == null) {
             return null;
         }
@@ -342,18 +348,20 @@ public final class ItemStack implements Cloneable {
     private static List<BaseComponent[]> getLoreTag(final CompoundTag nbtdata, final int protocolVersion) {
         if (nbtdata == null)
             return null;
-        final CompoundTag display = (CompoundTag) nbtdata.getValue().get("display");
+        final CompoundTag display = (CompoundTag) nbtdata.get("display");
         if (display == null) {
             return null;
         }
-        final ListTag<StringTag> lore = (ListTag<StringTag>) display.getValue().get("Lore");
+        final ListTag<StringTag> lore = (ListTag<StringTag>) display.get("Lore");
         if (lore == null) {
             return null;
         }
+        List<StringTag> tags = new ArrayList<>();
+        Iterators.addAll(tags, lore.asStringTagList().iterator());
         if(protocolVersion < MINECRAFT_1_14) {
-            return lore.getValue().stream().map(stringTag -> TextComponent.fromLegacyText(stringTag.getValue())).collect(Collectors.toList());
+            return tags.stream().map(stringTag -> TextComponent.fromLegacyText(stringTag.getValue())).collect(Collectors.toList());
         } else {
-            return lore.getValue().stream().map(it -> ComponentSerializer.parse(it.getValue())).collect(Collectors.toList());
+            return tags.stream().map(it -> ComponentSerializer.parse(it.getValue())).collect(Collectors.toList());
         }
     }
 
@@ -365,30 +373,37 @@ public final class ItemStack implements Cloneable {
         Preconditions.checkNotNull(textureHash, "The textureHash cannot be null!");
         Preconditions.checkArgument(!textureHash.isEmpty(), "The textureHash cannot be empty!");
         Preconditions.checkState(type == ItemType.PLAYER_HEAD, "The item type must be PLAYER_HEAD");
-        final CompoundTag skullOwner = (CompoundTag) ((CompoundTag)getNBTTag()).getValue().getOrDefault("SkullOwner", new CompoundTag("SkullOwner", new CompoundMap()));
-        skullOwner.getValue().put(new StringTag("Name", textureHash));
-        final CompoundTag properties = (CompoundTag) skullOwner.getValue().getOrDefault("Properties", new CompoundTag("Properties", new CompoundMap()));
-        final CompoundTag texture = new CompoundTag("value", new CompoundMap());
-        texture.getValue().put(new StringTag("Value", textureHash));
-        final ListTag<CompoundTag> textures = new ListTag<>("textures", CompoundTag.class, Lists.newArrayList(texture));
-        properties.getValue().put(textures);
-        skullOwner.getValue().put(properties);
-        ((CompoundTag)getNBTTag()).getValue().put(skullOwner);
+        CompoundTag skullOwner = ((CompoundTag)getNBTTag()).getCompoundTag("SkullOwner");
+        if(skullOwner == null) {
+            skullOwner = new CompoundTag();
+        }
+        skullOwner.put("Name", new StringTag(textureHash));
+        CompoundTag properties = skullOwner.getCompoundTag("Properties");
+        if(properties == null) {
+            properties = new CompoundTag();
+        }
+        final CompoundTag texture = new CompoundTag();
+        texture.put("Value", new StringTag(textureHash));
+        final ListTag<CompoundTag> textures = new ListTag<>(CompoundTag.class);
+        textures.add(texture);
+        properties.put("textures", textures);
+        skullOwner.put("Properties", properties);
+        ((CompoundTag)getNBTTag()).put("SkullOwner", skullOwner);
     }
 
     public void setSkullOwner(final String skullOwner) {
         Preconditions.checkState(type == ItemType.PLAYER_HEAD, "The item type must be PLAYER_HEAD");
-        ((CompoundTag)getNBTTag()).getValue().put(new StringTag("SkullOwner", skullOwner));
+        ((CompoundTag)getNBTTag()).put("SkullOwner", new StringTag(skullOwner));
     }
 
     public String getSkullOwner() {
-        if(((CompoundTag)getNBTTag()).getValue().containsKey("SkullOwner")) {
-            final Tag t = ((CompoundTag)getNBTTag()).getValue().get("SkullOwner");
+        if(((CompoundTag)getNBTTag()).containsKey("SkullOwner")) {
+            final Tag t = ((CompoundTag)getNBTTag()).get("SkullOwner");
             if(t instanceof StringTag) {
                 return ((StringTag) t).getValue();
             } else if(t instanceof CompoundTag) {
                 final CompoundTag skullOwner = (CompoundTag) t;
-                final Tag t2 = skullOwner.getValue().get("Name");
+                final Tag t2 = skullOwner.get("Name");
                 if(t2 instanceof StringTag) {
                     return ((StringTag) t2).getValue();
                 }

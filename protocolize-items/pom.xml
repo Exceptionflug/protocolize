@@ -48,9 +48,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.flowpowered</groupId>
-            <artifactId>flow-nbt</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <groupId>com.github.Querz</groupId>
+            <artifactId>NBT</artifactId>
+            <version>LATEST</version>
         </dependency>
     </dependencies>
 
