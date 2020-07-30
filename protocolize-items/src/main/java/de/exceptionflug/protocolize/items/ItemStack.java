@@ -153,13 +153,17 @@ public final class ItemStack implements Cloneable {
             if (nbtdata == null) {
                 nbtdata = new CompoundTag();
             }
-            if (protocolVersion >= MINECRAFT_1_13) {
-                nbtdata.put("Damage", new IntTag(durability));
-                setDisplayNameTag(ComponentSerializer.toString(displayName));
-            } else {
-                setDisplayNameTag(TextComponent.toLegacyText(displayName));
+            if(displayName != null) {
+                if (protocolVersion >= MINECRAFT_1_13) {
+                    nbtdata.put("Damage", new IntTag(durability));
+                    setDisplayNameTag(ComponentSerializer.toString(displayName));
+                } else {
+                    setDisplayNameTag(TextComponent.toLegacyText(displayName));
+                }
             }
-            setLoreTag(lore, protocolVersion);
+            if(lore != null) {
+                setLoreTag(lore, protocolVersion);
+            }
             setHideFlags(hideFlags);
             if (applicableMapping instanceof AbstractCustomItemIDMapping) {
                 ((AbstractCustomItemIDMapping) applicableMapping).apply(this, protocolVersion);
