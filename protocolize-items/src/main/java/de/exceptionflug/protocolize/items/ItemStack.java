@@ -308,6 +308,9 @@ public final class ItemStack implements Cloneable {
     }
 
     public String getDisplayName() {
+        if(displayName == null) {
+            return null;
+        }
         return BaseComponent.toLegacyText(displayName);
     }
 
