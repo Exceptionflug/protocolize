@@ -1,19 +1,13 @@
 package de.exceptionflug.protocolize;
 
 import com.google.common.io.ByteStreams;
-import de.exceptionflug.protocolize.api.event.PacketReceiveEvent;
-import de.exceptionflug.protocolize.api.handler.PacketAdapter;
 import de.exceptionflug.protocolize.api.protocol.ProtocolAPI;
-import de.exceptionflug.protocolize.api.protocol.Stream;
 import de.exceptionflug.protocolize.command.ProtocolizeCommand;
 import de.exceptionflug.protocolize.command.ProxyInvCommand;
 import de.exceptionflug.protocolize.command.TrafficCommand;
 import de.exceptionflug.protocolize.injector.NettyPipelineInjector;
 import de.exceptionflug.protocolize.inventory.InventoryModule;
-import de.exceptionflug.protocolize.items.ItemStack;
-import de.exceptionflug.protocolize.items.ItemType;
 import de.exceptionflug.protocolize.items.ItemsModule;
-import de.exceptionflug.protocolize.items.packet.WindowItems;
 import de.exceptionflug.protocolize.listener.PlayerListener;
 import de.exceptionflug.protocolize.world.WorldModule;
 import java.io.*;
@@ -22,7 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
@@ -88,21 +81,6 @@ public class ProtocolizePlugin extends Plugin {
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new ProxyInvCommand());
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new ProtocolizeCommand(this));
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new TrafficCommand());
-
-        PacketAdapter<WindowItems> adapter = new PacketAdapter<WindowItems>(Stream.DOWNSTREAM, WindowItems.class, (byte) 64) {
-            public void receive(PacketReceiveEvent<WindowItems> event) {
-                ProxyServer.getInstance().broadcast("WindowItems");
-                for (ItemStack item : event.getPacket().getItems()) {
-//                         item.setDisplayName("display");
-                    if(item.getType() != ItemType.NO_DATA) {
-                        ProxyServer.getInstance().broadcast("Item: "+item);
-                    }
-                    item.setDisplayName(new TextComponent("display"));
-                }
-                event.markForRewrite();
-            }
-        };
-        ProtocolAPI.getEventManager().registerListener(adapter);
 
         enabled = true;
     }
