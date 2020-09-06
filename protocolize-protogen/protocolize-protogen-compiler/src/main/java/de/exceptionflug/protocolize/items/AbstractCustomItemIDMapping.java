@@ -6,5 +6,8 @@ public abstract class AbstractCustomItemIDMapping extends ItemIDMapping {
         super(protocolVersionRangeStart, protocolVersionRangeEnd, id);
     }
 
+    public boolean isApplicable(ItemStack stack, int protocolVersion, int id, short durability) {
+        return true;
+    }
 
 }

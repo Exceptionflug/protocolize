@@ -59,6 +59,15 @@ public class WindowProperty extends AbstractPacket {
         windowId = buf.readUnsignedByte();
         property = buf.readShort();
         value = buf.readShort();
+        if(buf.readableBytes() > 0) {
+            byte[] readable = new byte[buf.readableBytes()];
+            buf.readBytes(readable);
+            StringBuilder packetBuffer = new StringBuilder();
+            for(byte b : readable) {
+                packetBuffer.append(Integer.toHexString(b)).append(" ");
+            }
+            System.out.println("Resulting buffer after read = "+packetBuffer);
+        }
     }
 
     public int getWindowId() {

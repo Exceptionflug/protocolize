@@ -209,109 +209,273 @@ public class ProtogenItemTypeCompiler {
         params.put("protocolVersion", int.class);
         params.put("stack", ItemStack.class);
         return new Method("getType", ACC_PUBLIC + ACC_STATIC, params, ItemType.class, methodVisitor -> {
-            final Label l0 = new Label();
-            methodVisitor.visitLabel(l0);
-            methodVisitor.visitLineNumber(816, l0);
+            Label label0 = new Label();
+            methodVisitor.visitLabel(label0);
+            methodVisitor.visitLineNumber(36, label0);
             methodVisitor.visitVarInsn(ILOAD, 2);
             methodVisitor.visitIntInsn(SIPUSH, 393);
-            final Label l1 = new Label();
-            methodVisitor.visitJumpInsn(IF_ICMPLT, l1);
-            final Label l2 = new Label();
-            methodVisitor.visitLabel(l2);
-            methodVisitor.visitLineNumber(817, l2);
+            Label label1 = new Label();
+            methodVisitor.visitJumpInsn(IF_ICMPLT, label1);
+            Label label2 = new Label();
+            methodVisitor.visitLabel(label2);
+            methodVisitor.visitLineNumber(37, label2);
             methodVisitor.visitInsn(ICONST_0);
             methodVisitor.visitVarInsn(ISTORE, 1);
-            methodVisitor.visitLabel(l1);
-            methodVisitor.visitLineNumber(818, l1);
+            methodVisitor.visitLabel(label1);
+            methodVisitor.visitLineNumber(38, label1);
             methodVisitor.visitFrame(F_SAME, 0, null, 0, null);
-            methodVisitor.visitMethodInsn(INVOKESTATIC, "de/exceptionflug/protocolize/items/ItemType", "values", "()[Lde/exceptionflug/protocolize/items/ItemType;", false);
+            methodVisitor.visitMethodInsn(
+                INVOKESTATIC,
+                "de/exceptionflug/protocolize/items/ItemType",
+                "values",
+                "()[Lde/exceptionflug/protocolize/items/ItemType;",
+                false);
             methodVisitor.visitVarInsn(ASTORE, 4);
             methodVisitor.visitVarInsn(ALOAD, 4);
             methodVisitor.visitInsn(ARRAYLENGTH);
             methodVisitor.visitVarInsn(ISTORE, 5);
             methodVisitor.visitInsn(ICONST_0);
             methodVisitor.visitVarInsn(ISTORE, 6);
-            final Label l3 = new Label();
-            methodVisitor.visitLabel(l3);
-            methodVisitor.visitFrame(F_APPEND,3, new Object[] {"[Lde/exceptionflug/protocolize/items/ItemType;", INTEGER, INTEGER}, 0, null);
+            Label label3 = new Label();
+            methodVisitor.visitLabel(label3);
+            methodVisitor.visitFrame(
+                F_APPEND,
+                3,
+                new Object[]{
+                    "[Lde/exceptionflug/protocolize/items/ItemType;",
+                    INTEGER,
+                    INTEGER},
+                0,
+                null);
             methodVisitor.visitVarInsn(ILOAD, 6);
             methodVisitor.visitVarInsn(ILOAD, 5);
-            final Label l4 = new Label();
-            methodVisitor.visitJumpInsn(IF_ICMPGE, l4);
+            Label label4 = new Label();
+            methodVisitor.visitJumpInsn(IF_ICMPGE, label4);
             methodVisitor.visitVarInsn(ALOAD, 4);
             methodVisitor.visitVarInsn(ILOAD, 6);
             methodVisitor.visitInsn(AALOAD);
             methodVisitor.visitVarInsn(ASTORE, 7);
-            final Label l5 = new Label();
-            methodVisitor.visitLabel(l5);
-            methodVisitor.visitLineNumber(819, l5);
+            Label label5 = new Label();
+            methodVisitor.visitLabel(label5);
+            methodVisitor.visitLineNumber(39, label5);
             methodVisitor.visitVarInsn(ALOAD, 7);
             methodVisitor.visitVarInsn(ILOAD, 2);
-            methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "de/exceptionflug/protocolize/items/ItemType", "getApplicableMapping", "(I)Lde/exceptionflug/protocolize/items/ItemIDMapping;", false);
+            methodVisitor.visitMethodInsn(
+                INVOKEVIRTUAL,
+                "de/exceptionflug/protocolize/items/ItemType",
+                "getApplicableMapping",
+                "(I)Lde/exceptionflug/protocolize/items/ItemIDMapping;",
+                false);
             methodVisitor.visitVarInsn(ASTORE, 8);
-            final Label l6 = new Label();
-            methodVisitor.visitLabel(l6);
-            methodVisitor.visitLineNumber(820, l6);
+            Label label6 = new Label();
+            methodVisitor.visitLabel(label6);
+            methodVisitor.visitLineNumber(40, label6);
             methodVisitor.visitVarInsn(ALOAD, 8);
-            final Label l7 = new Label();
-            methodVisitor.visitJumpInsn(IFNULL, l7);
-            final Label l8 = new Label();
-            methodVisitor.visitLabel(l8);
-            methodVisitor.visitLineNumber(821, l8);
+            Label label7 = new Label();
+            methodVisitor.visitJumpInsn(IFNULL, label7);
+            Label label8 = new Label();
+            methodVisitor.visitLabel(label8);
+            methodVisitor.visitLineNumber(41, label8);
             methodVisitor.visitVarInsn(ALOAD, 8);
-            methodVisitor.visitTypeInsn(INSTANCEOF, "de/exceptionflug/protocolize/items/AbstractCustomItemIDMapping");
-            final Label l9 = new Label();
-            methodVisitor.visitJumpInsn(IFEQ, l9);
-            final Label l10 = new Label();
-            methodVisitor.visitLabel(l10);
-            methodVisitor.visitLineNumber(822, l10);
+            methodVisitor.visitTypeInsn(
+                INSTANCEOF,
+                "de/exceptionflug/protocolize/items/AbstractCustomItemIDMapping");
+            Label label9 = new Label();
+            methodVisitor.visitJumpInsn(IFEQ, label9);
+            Label label10 = new Label();
+            methodVisitor.visitLabel(label10);
+            methodVisitor.visitLineNumber(42, label10);
             methodVisitor.visitVarInsn(ALOAD, 8);
-            methodVisitor.visitTypeInsn(CHECKCAST, "de/exceptionflug/protocolize/items/AbstractCustomItemIDMapping");
+            methodVisitor.visitTypeInsn(
+                CHECKCAST,
+                "de/exceptionflug/protocolize/items/AbstractCustomItemIDMapping");
             methodVisitor.visitVarInsn(ALOAD, 3);
             methodVisitor.visitVarInsn(ILOAD, 2);
             methodVisitor.visitVarInsn(ILOAD, 0);
             methodVisitor.visitVarInsn(ILOAD, 1);
-            methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "de/exceptionflug/protocolize/items/AbstractCustomItemIDMapping", "isApplicable", "(Lde/exceptionflug/protocolize/items/ItemStack;III)Z", false);
-            methodVisitor.visitJumpInsn(IFEQ, l7);
-            final Label l11 = new Label();
-            methodVisitor.visitLabel(l11);
-            methodVisitor.visitLineNumber(823, l11);
+            methodVisitor.visitMethodInsn(
+                INVOKEVIRTUAL,
+                "de/exceptionflug/protocolize/items/AbstractCustomItemIDMapping",
+                "isApplicable",
+                "(Lde/exceptionflug/protocolize/items/ItemStack;IIS)Z",
+                false);
+            methodVisitor.visitJumpInsn(IFEQ, label7);
+            Label label11 = new Label();
+            methodVisitor.visitLabel(label11);
+            methodVisitor.visitLineNumber(47, label11);
             methodVisitor.visitVarInsn(ALOAD, 7);
             methodVisitor.visitInsn(ARETURN);
-            methodVisitor.visitLabel(l9);
-            methodVisitor.visitLineNumber(826, l9);
-            methodVisitor.visitFrame(F_APPEND,2, new Object[] {"de/exceptionflug/protocolize/items/ItemType", "de/exceptionflug/protocolize/items/ItemIDMapping"}, 0, null);
+            methodVisitor.visitLabel(label9);
+            methodVisitor.visitLineNumber(50, label9);
+            methodVisitor.visitFrame(
+                F_APPEND,
+                2,
+                new Object[]{
+                    "de/exceptionflug/protocolize/items/ItemType",
+                    "de/exceptionflug/protocolize/items/ItemIDMapping"},
+                0,
+                null);
             methodVisitor.visitVarInsn(ALOAD, 8);
-            methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "de/exceptionflug/protocolize/items/ItemIDMapping", "getId", "()I", false);
+            methodVisitor.visitMethodInsn(
+                INVOKEVIRTUAL,
+                "de/exceptionflug/protocolize/items/ItemIDMapping",
+                "getId",
+                "()I",
+                false);
             methodVisitor.visitVarInsn(ILOAD, 0);
-            methodVisitor.visitJumpInsn(IF_ICMPNE, l7);
+            methodVisitor.visitJumpInsn(IF_ICMPNE, label7);
             methodVisitor.visitVarInsn(ALOAD, 8);
-            methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "de/exceptionflug/protocolize/items/ItemIDMapping", "getData", "()I", false);
+            methodVisitor.visitMethodInsn(
+                INVOKEVIRTUAL,
+                "de/exceptionflug/protocolize/items/ItemIDMapping",
+                "getData",
+                "()I",
+                false);
             methodVisitor.visitVarInsn(ILOAD, 1);
-            methodVisitor.visitJumpInsn(IF_ICMPNE, l7);
-            final Label l12 = new Label();
-            methodVisitor.visitLabel(l12);
-            methodVisitor.visitLineNumber(827, l12);
+            methodVisitor.visitJumpInsn(IF_ICMPNE, label7);
+            Label label12 = new Label();
+            methodVisitor.visitLabel(label12);
+            methodVisitor.visitLineNumber(51, label12);
             methodVisitor.visitVarInsn(ALOAD, 7);
             methodVisitor.visitInsn(ARETURN);
-            methodVisitor.visitLabel(l7);
-            methodVisitor.visitLineNumber(818, l7);
-            methodVisitor.visitFrame(F_CHOP,2, null, 0, null);
+            methodVisitor.visitLabel(label7);
+            methodVisitor.visitLineNumber(38, label7);
+            methodVisitor.visitFrame(F_CHOP, 2, null, 0, null);
             methodVisitor.visitIincInsn(6, 1);
-            methodVisitor.visitJumpInsn(GOTO, l3);
-            methodVisitor.visitLabel(l4);
-            methodVisitor.visitLineNumber(832, l4);
-            methodVisitor.visitFrame(F_CHOP,3, null, 0, null);
+            methodVisitor.visitJumpInsn(GOTO, label3);
+            methodVisitor.visitLabel(label4);
+            methodVisitor.visitLineNumber(56, label4);
+            methodVisitor.visitFrame(F_CHOP, 3, null, 0, null);
+            methodVisitor.visitVarInsn(ILOAD, 1);
+            Label label13 = new Label();
+            methodVisitor.visitJumpInsn(IFEQ, label13);
+            Label label14 = new Label();
+            methodVisitor.visitLabel(label14);
+            methodVisitor.visitLineNumber(57, label14);
+            methodVisitor.visitVarInsn(ILOAD, 0);
+            methodVisitor.visitVarInsn(ILOAD, 2);
+            methodVisitor.visitVarInsn(ALOAD, 3);
+            methodVisitor.visitMethodInsn(
+                INVOKESTATIC,
+                "de/exceptionflug/protocolize/items/ItemType",
+                "getType",
+                "(IILde/exceptionflug/protocolize/items/ItemStack;)Lde/exceptionflug/protocolize/items/ItemType;",
+                false);
+            methodVisitor.visitInsn(ARETURN);
+            methodVisitor.visitLabel(label13);
+            methodVisitor.visitLineNumber(60, label13);
+            methodVisitor.visitFrame(F_SAME, 0, null, 0, null);
+            methodVisitor.visitMethodInsn(
+                INVOKESTATIC,
+                "net/md_5/bungee/api/ProxyServer",
+                "getInstance",
+                "()Lnet/md_5/bungee/api/ProxyServer;",
+                false);
+            Label label15 = new Label();
+            methodVisitor.visitLabel(label15);
+            methodVisitor.visitLineNumber(61, label15);
+            methodVisitor.visitMethodInsn(
+                INVOKEVIRTUAL,
+                "net/md_5/bungee/api/ProxyServer",
+                "getLogger",
+                "()Ljava/util/logging/Logger;",
+                false);
+            methodVisitor.visitTypeInsn(NEW, "java/lang/StringBuilder");
+            methodVisitor.visitInsn(DUP);
+            methodVisitor.visitMethodInsn(
+                INVOKESPECIAL,
+                "java/lang/StringBuilder",
+                "<init>",
+                "()V",
+                false);
+            methodVisitor.visitLdcInsn("[Protocolize] Don't know what item ");
+            methodVisitor.visitMethodInsn(
+                INVOKEVIRTUAL,
+                "java/lang/StringBuilder",
+                "append",
+                "(Ljava/lang/String;)Ljava/lang/StringBuilder;",
+                false);
+            methodVisitor.visitVarInsn(ILOAD, 0);
+            methodVisitor.visitMethodInsn(
+                INVOKEVIRTUAL,
+                "java/lang/StringBuilder",
+                "append",
+                "(I)Ljava/lang/StringBuilder;",
+                false);
+            methodVisitor.visitLdcInsn(":");
+            methodVisitor.visitMethodInsn(
+                INVOKEVIRTUAL,
+                "java/lang/StringBuilder",
+                "append",
+                "(Ljava/lang/String;)Ljava/lang/StringBuilder;",
+                false);
+            methodVisitor.visitVarInsn(ILOAD, 1);
+            methodVisitor.visitMethodInsn(
+                INVOKEVIRTUAL,
+                "java/lang/StringBuilder",
+                "append",
+                "(I)Ljava/lang/StringBuilder;",
+                false);
+            methodVisitor.visitLdcInsn(" is at version ");
+            methodVisitor.visitMethodInsn(
+                INVOKEVIRTUAL,
+                "java/lang/StringBuilder",
+                "append",
+                "(Ljava/lang/String;)Ljava/lang/StringBuilder;",
+                false);
+            methodVisitor.visitVarInsn(ILOAD, 2);
+            methodVisitor.visitMethodInsn(
+                INVOKEVIRTUAL,
+                "java/lang/StringBuilder",
+                "append",
+                "(I)Ljava/lang/StringBuilder;",
+                false);
+            methodVisitor.visitMethodInsn(
+                INVOKEVIRTUAL,
+                "java/lang/StringBuilder",
+                "toString",
+                "()Ljava/lang/String;",
+                false);
+            Label label16 = new Label();
+            methodVisitor.visitLabel(label16);
+            methodVisitor.visitLineNumber(62, label16);
+            methodVisitor.visitMethodInsn(
+                INVOKEVIRTUAL,
+                "java/util/logging/Logger",
+                "warning",
+                "(Ljava/lang/String;)V",
+                false);
+            Label label17 = new Label();
+            methodVisitor.visitLabel(label17);
+            methodVisitor.visitLineNumber(68, label17);
             methodVisitor.visitInsn(ACONST_NULL);
             methodVisitor.visitInsn(ARETURN);
-            final Label l13 = new Label();
-            methodVisitor.visitLabel(l13);
-            methodVisitor.visitLocalVariable("mapping", "Lde/exceptionflug/protocolize/items/ItemIDMapping;", null, l6, l7, 8);
-            methodVisitor.visitLocalVariable("type", "Lde/exceptionflug/protocolize/items/ItemType;", null, l5, l7, 7);
-            methodVisitor.visitLocalVariable("id", "I", null, l0, l13, 0);
-            methodVisitor.visitLocalVariable("durability", "S", null, l0, l13, 1);
-            methodVisitor.visitLocalVariable("protocolVersion", "I", null, l0, l13, 2);
-            methodVisitor.visitLocalVariable("stack", "Lde/exceptionflug/protocolize/items/ItemStack;", null, l0, l13, 3);
+            Label label18 = new Label();
+            methodVisitor.visitLabel(label18);
+            methodVisitor.visitLocalVariable(
+                "mapping",
+                "Lde/exceptionflug/protocolize/items/ItemIDMapping;",
+                null,
+                label6,
+                label7,
+                8);
+            methodVisitor.visitLocalVariable(
+                "type",
+                "Lde/exceptionflug/protocolize/items/ItemType;",
+                null,
+                label5,
+                label7,
+                7);
+            methodVisitor.visitLocalVariable("id", "I", null, label0, label18, 0);
+            methodVisitor.visitLocalVariable("durability", "S", null, label0, label18, 1);
+            methodVisitor.visitLocalVariable("protocolVersion", "I", null, label0, label18, 2);
+            methodVisitor.visitLocalVariable(
+                "stack",
+                "Lde/exceptionflug/protocolize/items/ItemStack;",
+                null,
+                label0,
+                label18,
+                3);
         });
     }
 

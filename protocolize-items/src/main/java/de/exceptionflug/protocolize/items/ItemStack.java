@@ -3,6 +3,7 @@ package de.exceptionflug.protocolize.items;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.google.gson.JsonSyntaxException;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
@@ -368,7 +369,14 @@ public final class ItemStack implements Cloneable {
         if(protocolVersion < MINECRAFT_1_14) {
             return tags.stream().map(stringTag -> TextComponent.fromLegacyText(stringTag.getValue())).collect(Collectors.toList());
         } else {
-            return tags.stream().map(it -> ComponentSerializer.parse(it.getValue())).collect(Collectors.toList());
+            return tags.stream().map(it -> {
+                try {
+                    return ComponentSerializer.parse(it.getValue());
+                } catch (JsonSyntaxException e) {
+                    ProxyServer.getInstance().getLogger().warning("[Protocolize] Unable to parse lore component: "+it.getValue());
+                }
+                return null;
+            }).filter(Objects::nonNull).collect(Collectors.toList());
         }
     }
 
