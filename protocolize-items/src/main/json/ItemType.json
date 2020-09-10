@@ -3045,6 +3045,12 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 340,
+        "id": 206
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 573,
         "protocolRangeEnd": 578,
         "id": 232
