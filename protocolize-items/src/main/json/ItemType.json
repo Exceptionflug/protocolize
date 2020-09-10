@@ -155,6 +155,18 @@
         "id": 750
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Wolf"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "wolf"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 47,
         "protocolRangeEnd": 47,
@@ -1786,6 +1798,18 @@
         "id": 715
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "EntityHorse"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "horse"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 47,
         "protocolRangeEnd": 47,
@@ -1833,6 +1857,12 @@
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 673
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "skeleton_horse"
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -3326,6 +3356,18 @@
         "id": 753
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "PigZombie"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "zombie_pigman"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 47,
         "protocolRangeEnd": 47,
@@ -3974,6 +4016,18 @@
         "id": 738
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Spider"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "spider"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 47,
         "protocolRangeEnd": 47,
@@ -4180,6 +4234,18 @@
         "protocolRangeEnd": 47,
         "id": 383,
         "durability": 65
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Bat"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "bat"
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -4685,6 +4751,18 @@
         "id": 729
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Rabbit"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "rabbit"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 47,
         "protocolRangeEnd": 47,
@@ -5179,6 +5257,18 @@
         "id": 735
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Skeleton"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "skeleton"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 47,
         "protocolRangeEnd": 47,
@@ -5654,6 +5744,18 @@
         "id": 732
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Sheep"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "sheep"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 47,
         "protocolRangeEnd": 47,
@@ -5809,6 +5911,18 @@
         "protocolRangeStart": 477,
         "protocolRangeEnd": 498,
         "id": 748
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Witch"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "witch"
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -6613,6 +6727,12 @@
         "id": 656
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "husk"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 573,
         "protocolRangeEnd": 578,
@@ -6659,6 +6779,18 @@
         "protocolRangeStart": 477,
         "protocolRangeEnd": 498,
         "id": 751
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Zombie"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "zombie"
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -7600,6 +7732,18 @@
         "id": 721
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Ozelot"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "ocelot"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 47,
         "protocolRangeEnd": 47,
@@ -8072,6 +8216,18 @@
         "id": 703
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Cow"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "cow"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 47,
         "protocolRangeEnd": 47,
@@ -8107,6 +8263,12 @@
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 649
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "elder_guardian"
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -8235,6 +8397,12 @@
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 689
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "zombie_villager"
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -8688,6 +8856,18 @@
         "protocolRangeStart": 477,
         "protocolRangeEnd": 498,
         "id": 725
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Pig"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "pig"
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -10436,6 +10616,12 @@
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 662
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": "parrot"
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -13043,6 +13229,18 @@
         "id": 718
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "LavaSlime"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "magma_cube"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 47,
         "protocolRangeEnd": 47,
@@ -14408,6 +14606,18 @@
         "id": 709
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Enderman"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "enderman"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 47,
         "protocolRangeEnd": 47,
@@ -14661,6 +14871,18 @@
         "id": 734
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Silverfish"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "silverfish"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 47,
         "protocolRangeEnd": 47,
@@ -14732,6 +14954,12 @@
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 687
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "zombie_horse"
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -14823,6 +15051,18 @@
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 670
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Shulker"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "shulker"
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -15919,6 +16159,12 @@
         "id": 684
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "wither_skeleton"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 573,
         "protocolRangeEnd": 578,
@@ -16280,6 +16526,18 @@
         "protocolRangeStart": 477,
         "protocolRangeEnd": 498,
         "id": 700
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "CaveSpider"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "cave_spider"
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -17009,6 +17267,18 @@
         "id": 737
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Slime"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "slime"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 47,
         "protocolRangeEnd": 47,
@@ -17591,6 +17861,18 @@
         "id": 701
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Chicken"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "chicken"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 47,
         "protocolRangeEnd": 47,
@@ -18069,6 +18351,18 @@
         "protocolRangeStart": 477,
         "protocolRangeEnd": 498,
         "id": 704
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Creeper"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "creeper"
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -19297,6 +19591,12 @@
         "id": 682
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "vindication_illager"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 573,
         "protocolRangeEnd": 578,
@@ -19514,6 +19814,12 @@
         "id": 652
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "evocation_illager"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 573,
         "protocolRangeEnd": 578,
@@ -19621,6 +19927,18 @@
         "protocolRangeStart": 477,
         "protocolRangeEnd": 498,
         "id": 745
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Villager"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "villager"
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -19946,6 +20264,12 @@
         "id": 660
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "mule"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 573,
         "protocolRangeEnd": 578,
@@ -20265,6 +20589,18 @@
         "protocolRangeStart": 477,
         "protocolRangeEnd": 498,
         "id": 714
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Guardian"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "guardian"
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -20704,6 +21040,12 @@
         "id": 677
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "stray"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 573,
         "protocolRangeEnd": 578,
@@ -20763,6 +21105,18 @@
         "protocolRangeStart": 477,
         "protocolRangeEnd": 498,
         "id": 719
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "MushroomCow"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "mooshroom"
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -22000,6 +22354,12 @@
         "id": 647
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "donkey"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 573,
         "protocolRangeEnd": 578,
@@ -22702,6 +23062,18 @@
         "id": 713
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Ghast"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "ghast"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 47,
         "protocolRangeEnd": 47,
@@ -22773,6 +23145,18 @@
         "protocolRangeStart": 477,
         "protocolRangeEnd": 498,
         "id": 739
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Squid"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "squid"
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -23360,6 +23744,12 @@
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 657
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "llama"
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -25606,6 +25996,18 @@
         "id": 698
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Blaze"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "blaze"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 47,
         "protocolRangeEnd": 47,
@@ -26149,6 +26551,12 @@
         "id": 680
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "vex"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 573,
         "protocolRangeEnd": 578,
@@ -26674,6 +27082,18 @@
         "id": 710
       },
       {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 107,
+        "protocolRangeEnd": 210,
+        "id": "Endermite"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "endermite"
+      },
+      {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 47,
         "protocolRangeEnd": 47,
@@ -26709,6 +27129,18 @@
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 665
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 210,
+        "protocolRangeEnd": 210,
+        "id": "PolarBear"
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.SpawnEggItemIDMapping",
+        "protocolRangeStart": 315,
+        "protocolRangeEnd": 340,
+        "id": "polar_bear"
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
