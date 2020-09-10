@@ -20,12 +20,12 @@
     <parent>
         <groupId>de.exceptionflug</groupId>
         <artifactId>protocolize</artifactId>
-        <version>1.6.3-SNAPSHOT</version>
+        <version>1.6.4-SNAPSHOT</version>
     </parent>
 
     <groupId>de.exceptionflug</groupId>
     <artifactId>protocolize-world</artifactId>
-    <version>1.6.3-SNAPSHOT</version>
+    <version>1.6.4-SNAPSHOT</version>
 
     <dependencies>
         <dependency>

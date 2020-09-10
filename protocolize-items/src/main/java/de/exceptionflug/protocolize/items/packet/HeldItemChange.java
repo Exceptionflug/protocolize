@@ -41,6 +41,7 @@ public class HeldItemChange extends AbstractPacket {
         MAPPING_CLIENTBOUND.put(MINECRAFT_1_16, 0x3F);
         MAPPING_CLIENTBOUND.put(MINECRAFT_1_16_1, 0x3F);
         MAPPING_CLIENTBOUND.put(MINECRAFT_1_16_2, 0x3F);
+        MAPPING_CLIENTBOUND.put(MINECRAFT_1_16_3, 0x3F);
 
         MAPPING_SERVERBOUND.put(MINECRAFT_1_8, 0x09);
         MAPPING_SERVERBOUND.put(MINECRAFT_1_9, 0x17);
@@ -67,6 +68,7 @@ public class HeldItemChange extends AbstractPacket {
         MAPPING_SERVERBOUND.put(MINECRAFT_1_16, 0x24);
         MAPPING_SERVERBOUND.put(MINECRAFT_1_16_1, 0x24);
         MAPPING_SERVERBOUND.put(MINECRAFT_1_16_2, 0x25);
+        MAPPING_SERVERBOUND.put(MINECRAFT_1_16_3, 0x25);
     }
 
     private short newSlot;
