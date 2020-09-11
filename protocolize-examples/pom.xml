@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>de.exceptionflug</groupId>
-        <artifactId>protocolize</artifactId>
-        <version>1.6.4-SNAPSHOT</version>
-    </parent>
-
+  <parent>
     <groupId>de.exceptionflug</groupId>
-    <artifactId>protocolize-examples</artifactId>
+    <artifactId>protocolize</artifactId>
+    <version>1.6.4-SNAPSHOT</version>
+  </parent>
+
+  <groupId>de.exceptionflug</groupId>
+  <artifactId>protocolize-examples</artifactId>
 
 
-    <dependencies>
-        <dependency>
-            <groupId>de.exceptionflug</groupId>
-            <artifactId>protocolize-api</artifactId>
-            <version>1.6.4-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.exceptionflug</groupId>
-            <artifactId>protocolize-items</artifactId>
-            <version>1.6.4-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.exceptionflug</groupId>
-            <artifactId>protocolize-inventory</artifactId>
-            <version>1.6.4-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+  <dependencies>
+    <dependency>
+      <groupId>de.exceptionflug</groupId>
+      <artifactId>protocolize-api</artifactId>
+      <version>1.6.4-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>de.exceptionflug</groupId>
+      <artifactId>protocolize-items</artifactId>
+      <version>1.6.4-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>de.exceptionflug</groupId>
+      <artifactId>protocolize-inventory</artifactId>
+      <version>1.6.4-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
 
 </project>
