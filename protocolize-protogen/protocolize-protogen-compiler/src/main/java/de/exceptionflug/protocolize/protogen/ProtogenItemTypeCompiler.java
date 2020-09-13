@@ -297,7 +297,7 @@ public class ProtogenItemTypeCompiler {
                 INVOKEVIRTUAL,
                 "de/exceptionflug/protocolize/items/AbstractCustomItemIDMapping",
                 "isApplicable",
-                "(Lde/exceptionflug/protocolize/items/ItemStack;IIS)Z",
+                "(Lde/exceptionflug/protocolize/items/ItemStack;III)Z",
                 false);
             methodVisitor.visitJumpInsn(IFEQ, label7);
             Label label11 = new Label();

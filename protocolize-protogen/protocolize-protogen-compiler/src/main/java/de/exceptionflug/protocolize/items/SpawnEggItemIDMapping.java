@@ -9,5 +9,13 @@ public class SpawnEggItemIDMapping extends AbstractCustomItemIDMapping {
         this.entityType = entityType;
     }
 
+    @Override
+    public void apply(ItemStack stack, int protocolVersion) {
 
+    }
+
+    @Override
+    public boolean isApplicable(ItemStack stack, int version, int id, int durability) {
+        return false;
+    }
 }
