@@ -5,6 +5,7 @@ import de.exceptionflug.protocolize.api.handler.PacketAdapter;
 import de.exceptionflug.protocolize.api.protocol.Stream;
 import de.exceptionflug.protocolize.items.InventoryManager;
 import de.exceptionflug.protocolize.items.ItemStack;
+import de.exceptionflug.protocolize.items.ItemType;
 import de.exceptionflug.protocolize.items.ItemsModule;
 import de.exceptionflug.protocolize.items.PlayerInventory;
 import de.exceptionflug.protocolize.items.packet.WindowItems;

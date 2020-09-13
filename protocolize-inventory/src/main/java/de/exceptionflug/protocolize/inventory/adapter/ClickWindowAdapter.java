@@ -13,6 +13,7 @@ import de.exceptionflug.protocolize.inventory.packet.ClickWindow;
 import de.exceptionflug.protocolize.inventory.packet.ConfirmTransaction;
 import de.exceptionflug.protocolize.items.InventoryAction;
 import de.exceptionflug.protocolize.items.InventoryManager;
+import de.exceptionflug.protocolize.items.ItemType;
 import de.exceptionflug.protocolize.items.ItemStack;
 import de.exceptionflug.protocolize.items.PlayerInventory;
 import de.exceptionflug.protocolize.items.packet.SetSlot;
