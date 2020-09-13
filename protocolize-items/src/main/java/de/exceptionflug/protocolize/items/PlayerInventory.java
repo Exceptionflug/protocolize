@@ -11,36 +11,36 @@ import java.util.*;
 
 public final class PlayerInventory {
 
-    private final Map<Integer, ItemStack> map = Maps.newHashMap();
-    private final Set<Integer> draggingSlots = new HashSet<>();
-    private ItemStack onCursor;
-    private short heldItem;
-    private final UUID uuid;
-    private boolean dragging;
+  private final Map<Integer, ItemStack> map = Maps.newHashMap();
+  private final Set<Integer> draggingSlots = new HashSet<>();
+  private final UUID uuid;
+  private ItemStack onCursor;
+  private short heldItem;
+  private boolean dragging;
 
-    public PlayerInventory(final UUID uuid) {
-        this.uuid = uuid;
+  public PlayerInventory(final UUID uuid) {
+    this.uuid = uuid;
+  }
+
+  public boolean setItem(final int slot, final ItemStack stack) {
+    if (getItem(slot) != null) {
+      if (getItem(slot).isHomebrew())
+        return false;
     }
+    map.put(slot, stack);
+    return true;
+  }
 
-    public boolean setItem(final int slot, final ItemStack stack) {
-        if(getItem(slot) != null) {
-            if(getItem(slot).isHomebrew())
-                return false;
-        }
-        map.put(slot, stack);
-        return true;
-    }
+  public boolean removeItem(final int slot) {
+    map.remove(slot);
+    return true;
+  }
 
-    public boolean removeItem(final int slot) {
-        map.remove(slot);
-        return true;
-    }
+  public ItemStack getItem(final int slot) {
+    return map.get(slot);
+  }
 
-    public ItemStack getItem(final int slot) {
-        return map.get(slot);
-    }
-
-    public void update() {
+  public void update() {
 //        final WindowItems items = new WindowItems((short) 0, Lists.newArrayList());
 //        for (int i = 0; i <= 44; i++) {
 //            ItemStack stack = getItem(i);
@@ -51,90 +51,90 @@ public final class PlayerInventory {
 //        }
 //        if(getPlayer() == null) return;
 //        getPlayer().unsafe().sendPacket(items);
-        for (int i = 0; i <= 44; i++) {
-            final ItemStack stack = getItem(i);
+    for (int i = 0; i <= 44; i++) {
+      final ItemStack stack = getItem(i);
 //            if(stack == null || stack.getType() == ItemType.NO_DATA) {
 //                getPlayer().unsafe().sendPacket(new SetSlot((byte) 0, (short) i, stack));
 //                continue;
 //            }
-            getPlayer().unsafe().sendPacket(new SetSlot((byte) 0, (short) i, stack == null ? ItemStack.NO_DATA : stack));
-        }
-
+      getPlayer().unsafe().sendPacket(new SetSlot((byte) 0, (short) i, stack == null ? ItemStack.NO_DATA : stack));
     }
 
-    public List<ItemStack> getItemsIndexed() {
-        final ItemStack[] outArray = new ItemStack[46];
-        for(final Integer id : map.keySet()) {
-            outArray[id] = map.get(id);
-        }
-        return Arrays.asList(outArray);
-    }
+  }
 
-    public List<ItemStack> getItemsIndexedContainer() {
-        final ItemStack[] outArray = new ItemStack[45-9];
-        for(final Integer id : map.keySet()) {
-            if(id < 9 || id == 45)
-                continue;
-            outArray[id-9] = map.get(id);
-        }
-        return Arrays.asList(outArray);
+  public List<ItemStack> getItemsIndexed() {
+    final ItemStack[] outArray = new ItemStack[46];
+    for (final Integer id : map.keySet()) {
+      outArray[id] = map.get(id);
     }
+    return Arrays.asList(outArray);
+  }
 
-    public void apply(final InventoryAction action) {
-        Preconditions.checkNotNull(action, "The action cannot be null!");
-        for(final int slot : action.getChanges().keySet()) {
-            final ItemStack stack = action.getChanges().get(slot);
-            if(stack == null) {
-                removeItem(slot);
-            } else {
-                setItem(slot, stack);
-            }
-        }
+  public List<ItemStack> getItemsIndexedContainer() {
+    final ItemStack[] outArray = new ItemStack[45 - 9];
+    for (final Integer id : map.keySet()) {
+      if (id < 9 || id == 45)
+        continue;
+      outArray[id - 9] = map.get(id);
     }
+    return Arrays.asList(outArray);
+  }
 
-    public ProxiedPlayer getPlayer() {
-        return ProxyServer.getInstance().getPlayer(uuid);
+  public void apply(final InventoryAction action) {
+    Preconditions.checkNotNull(action, "The action cannot be null!");
+    for (final int slot : action.getChanges().keySet()) {
+      final ItemStack stack = action.getChanges().get(slot);
+      if (stack == null) {
+        removeItem(slot);
+      } else {
+        setItem(slot, stack);
+      }
     }
+  }
 
-    public short getHeldItem() {
-        return heldItem;
-    }
+  public ProxiedPlayer getPlayer() {
+    return ProxyServer.getInstance().getPlayer(uuid);
+  }
 
-    public void setHeldItem(final short heldItem) {
-        this.heldItem = heldItem;
-    }
+  public short getHeldItem() {
+    return heldItem;
+  }
 
-    public void changeHeldItem(final short rawSlot) {
-        setHeldItem((short) (rawSlot+36));
-        if(getPlayer() == null) return;
-        getPlayer().unsafe().sendPacket(new HeldItemChange(rawSlot));
-        getPlayer().getServer().unsafe().sendPacket(new HeldItemChange(rawSlot));
-    }
+  public void setHeldItem(final short heldItem) {
+    this.heldItem = heldItem;
+  }
 
-    public void setOnCursor(final ItemStack onCursor) {
-        this.onCursor = onCursor;
-    }
+  public void changeHeldItem(final short rawSlot) {
+    setHeldItem((short) (rawSlot + 36));
+    if (getPlayer() == null) return;
+    getPlayer().unsafe().sendPacket(new HeldItemChange(rawSlot));
+    getPlayer().getServer().unsafe().sendPacket(new HeldItemChange(rawSlot));
+  }
 
-    public Set<Integer> getDraggingSlots() {
-        return draggingSlots;
-    }
+  public Set<Integer> getDraggingSlots() {
+    return draggingSlots;
+  }
 
-    public ItemStack getOnCursor() {
-        return onCursor;
-    }
+  public ItemStack getOnCursor() {
+    return onCursor;
+  }
 
-    public void clear() {
-        map.clear();
-    }
+  public void setOnCursor(final ItemStack onCursor) {
+    this.onCursor = onCursor;
+  }
 
-    public void setDragging(final boolean dragging) {
-        if(!dragging)
-            draggingSlots.clear();
-        this.dragging = dragging;
-    }
+  public void clear() {
+    map.clear();
+  }
 
-    public boolean isDragging() {
-        return dragging;
-    }
+  public boolean isDragging() {
+    return dragging;
+  }
+
+  public void setDragging(final boolean dragging) {
+    if (!dragging)
+      draggingSlots.clear();
+    this.dragging = dragging;
+  }
 
 }

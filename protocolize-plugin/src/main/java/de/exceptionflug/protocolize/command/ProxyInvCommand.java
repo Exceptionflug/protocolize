@@ -8,18 +8,18 @@ import net.md_5.bungee.api.plugin.Command;
 
 public class ProxyInvCommand extends Command {
 
-    public ProxyInvCommand() {
-        super("proxyinv", "protocolize.command.proxyinv");
-    }
+  public ProxyInvCommand() {
+    super("proxyinv", "protocolize.command.proxyinv");
+  }
 
-    @Override
-    public void execute(final CommandSender commandSender, final String[] strings) {
-        if(commandSender instanceof ProxiedPlayer) {
-            final ProxiedPlayer p = (ProxiedPlayer) commandSender;
-            final PlayerInventory inventory = InventoryManager.getCombinedSendInventory(p.getUniqueId(), p.getServer().getInfo().getName());
-            inventory.update();
-            p.sendMessage("§aInventory sent.");
-        }
+  @Override
+  public void execute(final CommandSender commandSender, final String[] strings) {
+    if (commandSender instanceof ProxiedPlayer) {
+      final ProxiedPlayer p = (ProxiedPlayer) commandSender;
+      final PlayerInventory inventory = InventoryManager.getCombinedSendInventory(p.getUniqueId(), p.getServer().getInfo().getName());
+      inventory.update();
+      p.sendMessage("§aInventory sent.");
     }
+  }
 
 }

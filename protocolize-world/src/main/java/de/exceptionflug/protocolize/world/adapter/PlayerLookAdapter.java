@@ -9,22 +9,22 @@ import de.exceptionflug.protocolize.world.packet.PlayerLook;
 
 public class PlayerLookAdapter extends PacketAdapter<PlayerLook> {
 
-    public PlayerLookAdapter() {
-        super(Stream.UPSTREAM, PlayerLook.class);
-    }
+  public PlayerLookAdapter() {
+    super(Stream.UPSTREAM, PlayerLook.class);
+  }
 
-    @Override
-    public void receive(final PacketReceiveEvent<PlayerLook> event) {
-        if(event.getPlayer() == null)
-            return;
-        final PlayerLook playerLook = event.getPacket();
-        final Location location = WorldModule.getLocation(event.getPlayer().getUniqueId());
-        if(location == null) {
-            WorldModule.setLocation(event.getPlayer().getUniqueId(), new Location(0,0,0, playerLook.getYaw(), playerLook.getPitch()));
-            return;
-        }
-        location.setYaw(playerLook.getYaw());
-        location.setPitch(playerLook.getPitch());
+  @Override
+  public void receive(final PacketReceiveEvent<PlayerLook> event) {
+    if (event.getPlayer() == null)
+      return;
+    final PlayerLook playerLook = event.getPacket();
+    final Location location = WorldModule.getLocation(event.getPlayer().getUniqueId());
+    if (location == null) {
+      WorldModule.setLocation(event.getPlayer().getUniqueId(), new Location(0, 0, 0, playerLook.getYaw(), playerLook.getPitch()));
+      return;
     }
+    location.setYaw(playerLook.getYaw());
+    location.setPitch(playerLook.getPitch());
+  }
 
 }

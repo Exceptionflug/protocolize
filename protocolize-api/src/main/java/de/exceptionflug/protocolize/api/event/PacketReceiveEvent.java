@@ -13,77 +13,77 @@ import net.md_5.bungee.protocol.DefinedPacket;
 
 public class PacketReceiveEvent<T extends DefinedPacket> extends Event {
 
-    private final Connection connection;
-    private final AbstractPacketHandler packetHandler;
-    private T packet;
-    private boolean cancelled, dirty;
-    private ServerInfo serverInfo;
+  private final Connection connection;
+  private final AbstractPacketHandler packetHandler;
+  private T packet;
+  private boolean cancelled, dirty;
+  private ServerInfo serverInfo;
 
-    public PacketReceiveEvent(final Connection connection, final AbstractPacketHandler packetHandler, final T packet) {
-        this.connection = connection;
-        this.packetHandler = packetHandler;
-        this.packet = packet;
-        if(isSentByPlayer()) {
-            if(getPlayer() == null)
-                return;
-            final Server server = getPlayer().getServer();
-            if(server == null)
-                return;
-            serverInfo = server.getInfo();
-        } else {
-            serverInfo = ReflectionUtil.getServerInfo(packetHandler);
-        }
+  public PacketReceiveEvent(final Connection connection, final AbstractPacketHandler packetHandler, final T packet) {
+    this.connection = connection;
+    this.packetHandler = packetHandler;
+    this.packet = packet;
+    if (isSentByPlayer()) {
+      if (getPlayer() == null)
+        return;
+      final Server server = getPlayer().getServer();
+      if (server == null)
+        return;
+      serverInfo = server.getInfo();
+    } else {
+      serverInfo = ReflectionUtil.getServerInfo(packetHandler);
     }
+  }
 
-    public Connection getConnection() {
-        return connection;
-    }
+  public Connection getConnection() {
+    return connection;
+  }
 
-    public boolean isSentByPlayer() {
-        return connection instanceof PendingConnection;
-    }
+  public boolean isSentByPlayer() {
+    return connection instanceof PendingConnection;
+  }
 
-    public boolean isSentByServer() {
-        return connection instanceof ProxiedPlayer;
-    }
+  public boolean isSentByServer() {
+    return connection instanceof ProxiedPlayer;
+  }
 
-    public T getPacket() {
-        return packet;
-    }
+  public T getPacket() {
+    return packet;
+  }
 
-    public void setCancelled(final boolean cancelled) {
-        this.cancelled = cancelled;
-    }
+  public void setPacket(final T packet) {
+    this.packet = packet;
+  }
 
-    public boolean isCancelled() {
-        return cancelled;
-    }
+  public boolean isCancelled() {
+    return cancelled;
+  }
 
-    public void setPacket(final T packet) {
-        this.packet = packet;
-    }
+  public void setCancelled(final boolean cancelled) {
+    this.cancelled = cancelled;
+  }
 
-    public ProxiedPlayer getPlayer() {
-        if(isSentByPlayer())
-            return ProxyServer.getInstance().getPlayer(((PendingConnection)connection).getUniqueId());
-        if(isSentByServer())
-            return (ProxiedPlayer) connection;
-        return null;
-    }
+  public ProxiedPlayer getPlayer() {
+    if (isSentByPlayer())
+      return ProxyServer.getInstance().getPlayer(((PendingConnection) connection).getUniqueId());
+    if (isSentByServer())
+      return (ProxiedPlayer) connection;
+    return null;
+  }
 
-    public ServerInfo getServerInfo() {
-        return serverInfo;
-    }
+  public ServerInfo getServerInfo() {
+    return serverInfo;
+  }
 
-    public AbstractPacketHandler getPacketHandler() {
-        return packetHandler;
-    }
+  public AbstractPacketHandler getPacketHandler() {
+    return packetHandler;
+  }
 
-    public void markForRewrite() {
-        dirty = true;
-    }
+  public void markForRewrite() {
+    dirty = true;
+  }
 
-    public boolean isDirty() {
-        return dirty;
-    }
+  public boolean isDirty() {
+    return dirty;
+  }
 }

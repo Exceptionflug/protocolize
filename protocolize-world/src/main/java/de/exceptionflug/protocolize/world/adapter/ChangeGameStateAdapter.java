@@ -10,14 +10,14 @@ import de.exceptionflug.protocolize.world.packet.ChangeGameState.Reason;
 
 public class ChangeGameStateAdapter extends PacketAdapter<ChangeGameState> {
 
-    public ChangeGameStateAdapter() {
-        super(Stream.DOWNSTREAM, ChangeGameState.class);
-    }
+  public ChangeGameStateAdapter() {
+    super(Stream.DOWNSTREAM, ChangeGameState.class);
+  }
 
-    @Override
-    public void receive(final PacketReceiveEvent<ChangeGameState> event) {
-        if(event.getPacket().getReason() == Reason.CHANGE_GAMEMODE) {
-            WorldModule.setGamemode(event.getPlayer().getUniqueId(), Gamemode.getByID((int) event.getPacket().getValue()));
-        }
+  @Override
+  public void receive(final PacketReceiveEvent<ChangeGameState> event) {
+    if (event.getPacket().getReason() == Reason.CHANGE_GAMEMODE) {
+      WorldModule.setGamemode(event.getPlayer().getUniqueId(), Gamemode.getByID((int) event.getPacket().getValue()));
     }
+  }
 }
