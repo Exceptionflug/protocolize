@@ -3,7 +3,7 @@
 [![Twitter](https://img.shields.io/twitter/follow/Exceptionflug?label=Twitter&style=social)](https://twitter.com/Exceptionflug)
 
 <p align="center">
-  <img src="https://img.exceptionflug.de/protocolize-banner.png" />
+  <img src="https://img.exceptionflug.de/protocolize-banner.png"/>
 </p>
 
 # Protocolize
