@@ -2,6 +2,10 @@
 [![GH Downloads](https://img.shields.io/github/downloads/Exceptionflug/Protocolize/total?color=GREEN&label=Downloads)](https://github.com/Exceptionflug/Protocolize/releases)
 [![Twitter](https://img.shields.io/twitter/follow/Exceptionflug?label=Twitter&style=social)](https://twitter.com/Exceptionflug)
 
+<p align="center">
+  <img src="https://img.exceptionflug.de/protocolize.png" />
+</p>
+
 # Protocolize
 A lightweight BungeeCord protocol framework supporting items.
 ## Purpose
