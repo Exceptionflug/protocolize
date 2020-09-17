@@ -68,7 +68,6 @@ public class WindowItems extends AbstractPacket {
         item = ItemStack.NO_DATA;
       item.write(buf, protocolVersion);
     }
-    BufferUtil.finishBuffer(this, buf, direction, protocolVersion);
   }
 
   @Override
@@ -79,6 +78,7 @@ public class WindowItems extends AbstractPacket {
       final ItemStack read = ItemStack.read(buf, protocolVersion);
       items.add(read);
     }
+    BufferUtil.finishBuffer(this, buf, direction, protocolVersion);
   }
 
   public List<ItemStack> getItems() {
