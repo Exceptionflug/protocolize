@@ -1,4 +1,3 @@
-[![Build Status](https://ci.exceptionflug.de/job/Protocolize/badge/icon)](https://ci.exceptionflug.de/job/Protocolize/) 
 [![GH Downloads](https://img.shields.io/github/downloads/Exceptionflug/Protocolize/total?color=GREEN&label=Downloads)](https://github.com/Exceptionflug/Protocolize/releases)
 [![Twitter](https://img.shields.io/twitter/follow/Exceptionflug?label=Twitter&style=social)](https://twitter.com/Exceptionflug)
 
@@ -6,7 +5,7 @@
   <img src="https://img.exceptionflug.de/protocolize-banner-small.png"/>
 </p>
 
-# Protocolize
+# Protocolize Regular
 A lightweight BungeeCord protocol framework supporting items.
 ## Purpose
 Protocolize had been developed to raise the amount of game changing possibilities on BungeeCord platforms. With Protocolize it is possible to create custom inventories or interact with the player inventory itself. Protocolize is also ready for future upscaling! It is easy to self-implement custom packets using the *de.exceptionflug.protocolize.AbstractPacket* class.
