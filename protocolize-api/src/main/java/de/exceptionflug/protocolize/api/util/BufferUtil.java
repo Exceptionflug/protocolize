@@ -47,14 +47,14 @@ public final class BufferUtil {
 
   private static void printBufferHex(ByteBuf buffer, DefinedPacket packet, ProtocolConstants.Direction direction,
                                      int version, int bytes) {
-    buffer.resetReaderIndex();
+    buffer.readerIndex(0);
     printWriter.println(DateFormat.getDateTimeInstance().format(new Date()) +
             " | Direction = " + direction.name() +
             " | Version = " + version +
             " | Packet = " + packet.getClass().getName() +
             " | Packet has " + bytes + " trailing bytes left");
     for (int i = 0; i < buffer.readableBytes(); i++) {
-      printWriter.print(Integer.toHexString(buffer.readByte()).toUpperCase() + " ");
+      printWriter.print(buffer.readByte() + " ");
     }
     printWriter.println();
   }
