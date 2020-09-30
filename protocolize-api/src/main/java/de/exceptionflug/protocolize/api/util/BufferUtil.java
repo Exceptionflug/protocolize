@@ -34,11 +34,12 @@ public final class BufferUtil {
 
   public static void finishBuffer(DefinedPacket packet, ByteBuf buffer, ProtocolConstants.Direction direction, int version) {
     try {
-      if (buffer.readableBytes() > 0) {
+      int readableBytes = buffer.readableBytes();
+      if (readableBytes > 0) {
         // Something is wrong
         ProxyServer.getInstance().getLogger().warning("[Protocolize] Packet " + packet.getClass().getName() +
                 " was not read successfully. Please look into protocolize.log for further details.");
-        printBufferHex(buffer, packet, direction, version, buffer.readableBytes());
+        printBufferHex(buffer, packet, direction, version, readableBytes);
       }
     } catch (Exception e) {
       ProxyServer.getInstance().getLogger().log(Level.WARNING, "[Protocolize] Unable to save debug information", e);
@@ -53,7 +54,7 @@ public final class BufferUtil {
             " | Version = " + version +
             " | Packet = " + packet.getClass().getName() +
             " | Packet has " + bytes + " trailing bytes left");
-    for (int i = 0; i < buffer.readableBytes(); i++) {
+    while (buffer.readableBytes() != 0) {
       printWriter.print(buffer.readByte() + " ");
     }
     printWriter.println();
