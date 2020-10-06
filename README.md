@@ -13,6 +13,7 @@ Protocolize had been developed to raise the amount of game changing possibilitie
 Protocolize has no currently known compatibility issues yet.
 ## How To Use
 Please take a look at the examples which I made: https://github.com/Exceptionflug/protocolize/tree/master/protocolize-examples/src/main/java/de/exceptionflug/protocolize/example
+We also have a [wiki](https://github.com/Exceptionflug/protocolize/wiki) to help you getting started with Protocolize
 
 ### Maven
 Add the following repository to your pom.xml:
