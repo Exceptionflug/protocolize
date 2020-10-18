@@ -27,6 +27,10 @@ public class PlayerListener implements Listener {
 
   @EventHandler
   public void onPreLogin(final PreLoginEvent e) {
+    if (e.isCancelled()) {
+      return;
+    }
+    
     if (!plugin.isEnabled()) {
       return;
     }
