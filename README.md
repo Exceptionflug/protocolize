@@ -1,6 +1,7 @@
 [![Build Status](http://ci.exceptionflug.de/buildStatus/icon?job=Protocolize)](http://ci.exceptionflug.de/job/Protocolize/)
 [![GH Downloads](https://img.shields.io/github/downloads/Exceptionflug/Protocolize/total?color=GREEN&label=Downloads)](https://github.com/Exceptionflug/Protocolize/releases)
 [![Discord](https://img.shields.io/discord/752533664696369204?label=Discord)](https://discord.simplixsoft.com/)
+![GitHub](https://img.shields.io/github/license/Exceptionflug/Protocolize)
 [![Twitter](https://img.shields.io/twitter/follow/Exceptionflug?label=Twitter&style=social)](https://twitter.com/Exceptionflug)
 
 <p align="center">
