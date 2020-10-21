@@ -7,7 +7,7 @@
   <img src="https://img.exceptionflug.de/protocolize-banner-small.png"/>
 </p>
 
-# Protocolize Regular
+# Protocolize
 A lightweight BungeeCord protocol framework supporting items.
 ## Purpose
 Protocolize had been developed to raise the amount of game changing possibilities on BungeeCord platforms. With Protocolize it is possible to create custom inventories or interact with the player inventory itself. Protocolize is also ready for future upscaling! It is easy to self-implement custom packets using the *de.exceptionflug.protocolize.AbstractPacket* class.
