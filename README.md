@@ -1,4 +1,5 @@
 [![GH Downloads](https://img.shields.io/github/downloads/Exceptionflug/Protocolize/total?color=GREEN&label=Downloads)](https://github.com/Exceptionflug/Protocolize/releases)
+[![Discord](https://img.shields.io/discord/752533664696369204?label=Discord)](https://discord.simplixsoft.com/)
 [![Twitter](https://img.shields.io/twitter/follow/Exceptionflug?label=Twitter&style=social)](https://twitter.com/Exceptionflug)
 
 <p align="center">
