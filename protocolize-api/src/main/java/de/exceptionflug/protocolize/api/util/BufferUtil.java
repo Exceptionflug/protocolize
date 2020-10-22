@@ -55,7 +55,7 @@ public final class BufferUtil {
             " | Packet = " + packet.getClass().getName() +
             " | Packet has " + bytes + " trailing bytes left");
     while (buffer.readableBytes() != 0) {
-      printWriter.print(buffer.readByte() + " ");
+      printWriter.print(String.format("%02x", buffer.readByte())+" ");
     }
     printWriter.println();
   }
