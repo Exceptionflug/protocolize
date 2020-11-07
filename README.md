@@ -31,25 +31,25 @@ This is the full portfolio of protocolize dependencies:
 <dependency>
   <groupId>de.exceptionflug</groupId>
   <artifactId>protocolize-api</artifactId>
-  <version>1.6.6-SNAPSHOT</version>
+  <version>1.6.7-SNAPSHOT</version>
   <scope>provided</scope>
 </dependency>
 <dependency>
   <groupId>de.exceptionflug</groupId>
   <artifactId>protocolize-items</artifactId>
-  <version>1.6.6-SNAPSHOT</version>
+  <version>1.6.7-SNAPSHOT</version>
   <scope>provided</scope>
 </dependency>
 <dependency>
   <groupId>de.exceptionflug</groupId>
   <artifactId>protocolize-inventory</artifactId>
-  <version>1.6.6-SNAPSHOT</version>
+  <version>1.6.7-SNAPSHOT</version>
   <scope>provided</scope>
 </dependency>
 <dependency>
   <groupId>de.exceptionflug</groupId>
   <artifactId>protocolize-world</artifactId>
-  <version>1.6.6-SNAPSHOT</version>
+  <version>1.6.7-SNAPSHOT</version>
   <scope>provided</scope>
 </dependency>
 ```
