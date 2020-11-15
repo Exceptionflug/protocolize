@@ -5,6 +5,14 @@ package de.exceptionflug.protocolize.api.util;
  */
 public final class ProtocolVersions {
 
+  public final static int MINECRAFT_1_7_2 = 4;
+  public final static int MINECRAFT_1_7_4 = MINECRAFT_1_7_2;
+  public final static int MINECRAFT_1_7_5 = MINECRAFT_1_7_4;
+  public final static int MINECRAFT_1_7_6 = 5;
+  public final static int MINECRAFT_1_7_7 = MINECRAFT_1_7_6;
+  public final static int MINECRAFT_1_7_8 = MINECRAFT_1_7_7;
+  public final static int MINECRAFT_1_7_9 = MINECRAFT_1_7_8;
+  public final static int MINECRAFT_1_7_10 = MINECRAFT_1_7_9;
   public final static int MINECRAFT_1_8 = 47;
   public final static int MINECRAFT_1_9 = 107;
   public final static int MINECRAFT_1_9_1 = 108;
