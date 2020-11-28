@@ -21,6 +21,9 @@ public class UseItemAdapter extends PacketAdapter<UseItem> {
   @Override
   public void receive(final PacketReceiveEvent<UseItem> event) {
     final ProxiedPlayer p = event.getPlayer();
+    if(event.getServerInfo() == null) {
+      return;
+    }
     final PlayerInventory playerInventory = InventoryManager.getCombinedSendInventory(p.getUniqueId(), event.getServerInfo().getName());
     final ItemStack inHand = playerInventory.getItem(playerInventory.getHeldItem() + 36);
     if (inHand == null || inHand.getType() == ItemType.NO_DATA)
