@@ -46,6 +46,7 @@ public class ConfirmTransaction extends AbstractPacket {
     MAPPING_CLIENTBOUND.put(MINECRAFT_1_16_2, 0x11);
     MAPPING_CLIENTBOUND.put(MINECRAFT_1_16_3, 0x11);
     MAPPING_CLIENTBOUND.put(MINECRAFT_1_16_4, 0x11);
+    MAPPING_CLIENTBOUND.put(MINECRAFT_1_16_5, 0x11);
 
     MAPPING_SERVERBOUND.put(MINECRAFT_1_7_2, 0x05);
     MAPPING_SERVERBOUND.put(MINECRAFT_1_7_6, 0x05);
@@ -75,6 +76,7 @@ public class ConfirmTransaction extends AbstractPacket {
     MAPPING_SERVERBOUND.put(MINECRAFT_1_16_2, 0x07);
     MAPPING_SERVERBOUND.put(MINECRAFT_1_16_3, 0x07);
     MAPPING_SERVERBOUND.put(MINECRAFT_1_16_4, 0x07);
+    MAPPING_SERVERBOUND.put(MINECRAFT_1_16_5, 0x07);
   }
 
   private int windowId;
