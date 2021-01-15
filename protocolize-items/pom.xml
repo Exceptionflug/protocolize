@@ -8,7 +8,7 @@
       <plugin>
         <groupId>de.exceptionflug</groupId>
         <artifactId>protocolize-protogen-plugin</artifactId>
-        <version>1.6.7-SNAPSHOT</version>
+        <version>1.6.8-SNAPSHOT</version>
         <executions>
           <execution>
             <phase>generate-sources</phase>
@@ -33,12 +33,12 @@
   <parent>
     <groupId>de.exceptionflug</groupId>
     <artifactId>protocolize</artifactId>
-    <version>1.6.7-SNAPSHOT</version>
+    <version>1.6.8-SNAPSHOT</version>
   </parent>
 
   <groupId>de.exceptionflug</groupId>
   <artifactId>protocolize-items</artifactId>
-  <version>1.6.7-SNAPSHOT</version>
+  <version>1.6.8-SNAPSHOT</version>
 
   <dependencies>
     <dependency>

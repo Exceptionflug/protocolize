@@ -43,6 +43,7 @@ public class ChangeGameState extends AbstractPacket {
     MAPPING.put(MINECRAFT_1_16_2, 0x1D);
     MAPPING.put(MINECRAFT_1_16_3, 0x1D);
     MAPPING.put(MINECRAFT_1_16_4, 0x1D);
+    MAPPING.put(MINECRAFT_1_16_5, 0x1D);
   }
 
   private Reason reason;
