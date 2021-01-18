@@ -361,7 +361,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 413
       },
@@ -502,7 +502,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 427
       },
@@ -1544,7 +1544,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 1,
         "durability": 6
@@ -1666,7 +1666,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 1,
         "durability": 3
@@ -2275,7 +2275,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 1,
         "durability": 1
@@ -3992,7 +3992,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 19,
         "durability": 1
@@ -4415,7 +4415,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 189
       },
@@ -4770,7 +4770,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 47,
         "id": 383,
         "durability": 101
@@ -5042,7 +5042,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 166
       },
@@ -5313,7 +5313,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 168,
         "durability": 1
@@ -6005,7 +6005,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 416
       },
@@ -6041,7 +6041,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 192
       },
@@ -6071,7 +6071,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 191
       },
@@ -6293,7 +6293,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 415
       },
@@ -7378,7 +7378,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 179
       },
@@ -8485,7 +8485,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 165
       },
@@ -8661,7 +8661,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 423
       },
@@ -9308,7 +9308,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 410
       },
@@ -9634,7 +9634,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 180
       },
@@ -9670,7 +9670,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 414
       },
@@ -9736,7 +9736,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 168,
         "durability": 2
@@ -9959,7 +9959,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 187
       },
@@ -10019,7 +10019,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 184
       },
@@ -10206,7 +10206,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 179,
         "durability": 1
@@ -10371,7 +10371,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 430
       },
@@ -10438,7 +10438,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 168
       },
@@ -10765,7 +10765,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 169
       },
@@ -11367,7 +11367,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 428
       },
@@ -12115,7 +12115,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 188
       },
@@ -13727,7 +13727,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 190
       },
@@ -14022,7 +14022,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 411
       },
@@ -14704,7 +14704,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 185
       },
@@ -15737,7 +15737,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 409
       },
@@ -16861,7 +16861,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 186
       },
@@ -20331,7 +20331,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 1,
         "durability": 4
@@ -20616,7 +20616,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 47,
         "id": 383,
         "durability": 68
@@ -22421,7 +22421,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 167
       },
@@ -24214,7 +24214,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 183
       },
@@ -24705,7 +24705,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 412
       },
@@ -24928,7 +24928,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 179,
         "durability": 2
@@ -25213,7 +25213,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 1,
         "durability": 2
@@ -25871,7 +25871,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 431
       },
@@ -26522,7 +26522,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 424
       },
@@ -27107,7 +27107,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 47,
         "id": 383,
         "durability": 67
@@ -27320,7 +27320,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 429
       },
@@ -27674,7 +27674,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
+        "protocolRangeStart": 47,
         "protocolRangeEnd": 340,
         "id": 1,
         "durability": 5
