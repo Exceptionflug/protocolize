@@ -3129,6 +3129,13 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 4,
+        "protocolRangeEnd": 47,
+        "id": 3,
+        "durability": 1
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 393,
         "protocolRangeEnd": 754,
         "id": 10
@@ -17684,12 +17691,6 @@
     "name": "OAK_LOG",
     "maxStackSize": 64,
     "mappings": [
-      {
-        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 4,
-        "protocolRangeEnd": 340,
-        "id": 17
-      },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 4,
