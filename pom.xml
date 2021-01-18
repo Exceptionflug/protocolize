@@ -6,7 +6,7 @@
 
   <groupId>de.exceptionflug</groupId>
   <artifactId>protocolize</artifactId>
-  <version>1.6.8-SNAPSHOT</version>
+  <version>1.6.7-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <properties>
