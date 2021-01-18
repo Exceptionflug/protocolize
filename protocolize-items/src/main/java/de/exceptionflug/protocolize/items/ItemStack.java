@@ -77,7 +77,7 @@ public final class ItemStack implements Cloneable {
           out.homebrew = false;
           return out;
         } else {
-          NamedTag namedTag = readNBTTag(buf);
+          NamedTag namedTag = readNBTTag(buf, protocolVersion);
           if (namedTag == null) {
             namedTag = new NamedTag("", new CompoundTag());
           }
@@ -124,10 +124,10 @@ public final class ItemStack implements Cloneable {
     return 0;
   }
 
-  private static NamedTag readNBTTag(final ByteBuf buf) throws IOException {
+  private static NamedTag readNBTTag(final ByteBuf buf, int protocolVersion) throws IOException {
     final int i = buf.readerIndex();
     final short b0 = buf.readUnsignedByte();
-    if (b0 == 0) {
+    if (b0 == 0 || (protocolVersion < MINECRAFT_1_8 && b0 == 255)) { // 1.7.x no nbt = 255
       return null;
     } else {
       buf.readerIndex(i);
