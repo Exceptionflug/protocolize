@@ -18,6 +18,8 @@ public class SetSlot extends AbstractPacket {
   public static final Map<Integer, Integer> MAPPING = Maps.newHashMap();
 
   static {
+    MAPPING.put(MINECRAFT_1_7_2, 0x2F);
+    MAPPING.put(MINECRAFT_1_7_6, 0x2F);
     MAPPING.put(MINECRAFT_1_8, 0x2F);
     MAPPING.put(MINECRAFT_1_9, 0x16);
     MAPPING.put(MINECRAFT_1_9_1, 0x16);

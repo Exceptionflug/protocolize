@@ -20,6 +20,8 @@ public class NamedSoundEffect extends AbstractPacket {
   public static final Map<Integer, Integer> MAPPING = new HashMap<>();
 
   static {
+    MAPPING.put(MINECRAFT_1_7_2, 0x29);
+    MAPPING.put(MINECRAFT_1_7_6, 0x29);
     MAPPING.put(MINECRAFT_1_8, 0x29);
     MAPPING.put(MINECRAFT_1_9, 0x19);
     MAPPING.put(MINECRAFT_1_9_1, 0x19);

@@ -20,6 +20,8 @@ public class WindowItems extends AbstractPacket {
   public static final HashMap<Integer, Integer> MAPPING = Maps.newHashMap();
 
   static {
+    MAPPING.put(MINECRAFT_1_7_2, 0x30);
+    MAPPING.put(MINECRAFT_1_7_6, 0x30);
     MAPPING.put(MINECRAFT_1_8, 0x30);
     MAPPING.put(MINECRAFT_1_9, 0x14);
     MAPPING.put(MINECRAFT_1_9_1, 0x14);
