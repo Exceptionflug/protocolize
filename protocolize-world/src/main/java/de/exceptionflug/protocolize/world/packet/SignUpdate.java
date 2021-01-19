@@ -73,40 +73,40 @@ public class SignUpdate extends AbstractPacket {
         lines[2] = readString(buf);
         lines[3] = readString(buf);
       } else {
-        readLineStrings(buf);
+        readLineStrings(buf, protocolVersion < MINECRAFT_1_8);
       }
     } else {
       position = BlockPosition.read(buf, protocolVersion);
-      readLineStrings(buf);
+      readLineStrings(buf, protocolVersion < MINECRAFT_1_8);
     }
     BufferUtil.finishBuffer(this, buf, direction, protocolVersion);
   }
 
-  private void readLineStrings(ByteBuf buf) {
+  private void readLineStrings(ByteBuf buf, boolean legacy) {
     lines = new String[4];
     String line1 = readString(buf);
     if (line1.isEmpty() || line1.equals("null")) {
       lines[0] = "";
     } else {
-      lines[0] = ComponentSerializer.parse(line1)[0].toLegacyText();
+      lines[0] = legacy ? line1 : ComponentSerializer.parse(line1)[0].toLegacyText();
     }
     String line2 = readString(buf);
     if (line2.isEmpty() || line2.equals("null")) {
       lines[1] = "";
     } else {
-      lines[1] = ComponentSerializer.parse(line2)[0].toLegacyText();
+      lines[1] = legacy ? line2 : ComponentSerializer.parse(line2)[0].toLegacyText();
     }
     String line3 = readString(buf);
     if (line3.isEmpty() || line3.equals("null")) {
       lines[2] = "";
     } else {
-      lines[2] = ComponentSerializer.parse(line3)[0].toLegacyText();
+      lines[2] = legacy ? line3 : ComponentSerializer.parse(line3)[0].toLegacyText();
     }
     String line4 = readString(buf);
     if (line4.isEmpty() || line4.equals("null")) {
       lines[3] = "";
     } else {
-      lines[3] = ComponentSerializer.parse(line4)[0].toLegacyText();
+      lines[3] = legacy ? line4 : ComponentSerializer.parse(line4)[0].toLegacyText();
     }
   }
 
