@@ -85,25 +85,25 @@ public class SignUpdate extends AbstractPacket {
   private void readLineStrings(ByteBuf buf) {
     lines = new String[4];
     String line1 = readString(buf);
-    if (line1.equals("null")) {
+    if (line1.isEmpty() || line1.equals("null")) {
       lines[0] = "";
     } else {
       lines[0] = ComponentSerializer.parse(line1)[0].toLegacyText();
     }
     String line2 = readString(buf);
-    if (line2.equals("null")) {
+    if (line2.isEmpty() || line2.equals("null")) {
       lines[1] = "";
     } else {
       lines[1] = ComponentSerializer.parse(line2)[0].toLegacyText();
     }
     String line3 = readString(buf);
-    if (line3.equals("null")) {
+    if (line3.isEmpty() || line3.equals("null")) {
       lines[2] = "";
     } else {
       lines[2] = ComponentSerializer.parse(line3)[0].toLegacyText();
     }
     String line4 = readString(buf);
-    if (line4.equals("null")) {
+    if (line4.isEmpty() || line4.equals("null")) {
       lines[3] = "";
     } else {
       lines[3] = ComponentSerializer.parse(line4)[0].toLegacyText();
