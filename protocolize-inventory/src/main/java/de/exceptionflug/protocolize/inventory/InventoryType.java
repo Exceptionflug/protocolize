@@ -29,7 +29,7 @@ public enum InventoryType {
   SMOKER(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_LATEST, 20, 3)),
   CARTOGRAPHY(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_LATEST, 21, 3)),
   STONECUTTER(new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_LATEST, 22, 2)),
-  PLAYER(new InventoryIDMapping(MINECRAFT_1_8, MINECRAFT_1_8, "Player", 45), new InventoryIDMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "Player", 46), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_LATEST, -1, 46));
+  PLAYER(new InventoryIDMapping(MINECRAFT_1_7_2, MINECRAFT_1_8, "Player", 45), new InventoryIDMapping(MINECRAFT_1_9, MINECRAFT_1_13_2, "Player", 46), new InventoryIDMapping(MINECRAFT_1_14, MINECRAFT_LATEST, -1, 46));
 
   private final InventoryIDMapping[] mappings;
 
