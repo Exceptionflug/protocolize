@@ -280,6 +280,13 @@ public final class ItemStack implements Cloneable {
       buf.writeByte(amount);
       if (protocolVersion < MINECRAFT_1_13)
         buf.writeShort(durability);
+
+      if (protocolVersion < MINECRAFT_1_8) {
+        // TODO support NBT on items for 1.7.x
+        buf.writeShort(-1);
+        return;
+      }
+
       if (nbtdata == null) {
         nbtdata = new CompoundTag();
       }
