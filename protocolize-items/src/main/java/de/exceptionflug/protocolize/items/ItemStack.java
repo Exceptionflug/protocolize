@@ -14,10 +14,10 @@ import net.md_5.bungee.chat.ComponentSerializer;
 import net.md_5.bungee.protocol.DefinedPacket;
 import net.querz.nbt.io.NBTInputStream;
 import net.querz.nbt.io.NBTOutputStream;
+import net.querz.nbt.io.NBTSerializer;
 import net.querz.nbt.io.NamedTag;
 import net.querz.nbt.tag.*;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
@@ -133,11 +133,10 @@ public final class ItemStack implements Cloneable {
       if (b0 == -1) {
         return null;
       } else {
-        // TODO 1.7.x throws EOFException on items with NBT data
+        // TODO Support reading NBT data for 1.7.x
         for (int i = 0; i < b0; i++) {
           buf.readByte();
         }
-
         return null;
       }
     } else {
@@ -280,13 +279,6 @@ public final class ItemStack implements Cloneable {
       buf.writeByte(amount);
       if (protocolVersion < MINECRAFT_1_13)
         buf.writeShort(durability);
-
-      if (protocolVersion < MINECRAFT_1_8) {
-        // TODO support NBT on items for 1.7.x
-        buf.writeShort(-1);
-        return;
-      }
-
       if (nbtdata == null) {
         nbtdata = new CompoundTag();
       }
@@ -305,13 +297,13 @@ public final class ItemStack implements Cloneable {
       if (applicableMapping instanceof AbstractCustomItemIDMapping) {
         ((AbstractCustomItemIDMapping) applicableMapping).apply(this, protocolVersion);
       }
-      buf.markWriterIndex();
       try {
-        writeNBTTag(nbtdata, buf);
+        buf.markWriterIndex();
+        writeNBTTag(nbtdata, buf, protocolVersion < MINECRAFT_1_8);
       } catch (final Exception e) {
         ProxyServer.getInstance().getLogger().log(Level.WARNING, "[Protocolize] Error when writing NBT data to ItemStack:", e);
         buf.resetWriterIndex();
-        writeNBTTag(new CompoundTag(), buf);
+        writeNBTTag(new CompoundTag(), buf, protocolVersion < MINECRAFT_1_8);
       }
     } catch (final Exception e) {
       ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Exception occurred when writing ItemStack to buffer. Protocol version = " + protocolVersion, e);
@@ -322,11 +314,23 @@ public final class ItemStack implements Cloneable {
     nbtdata.put("HideFlags", new IntTag(hideFlags));
   }
 
-  private void writeNBTTag(final Tag nbtdata, final ByteBuf buf) throws IOException {
+  private void writeNBTTag(final Tag nbtdata, final ByteBuf buf, boolean compress) throws IOException {
     Preconditions.checkNotNull(nbtdata, "The nbtdata cannot be null!");
     Preconditions.checkNotNull(buf, "The buf cannot be null!");
-    try (final NBTOutputStream outputStream = new NBTOutputStream(new ByteBufOutputStream(buf))) {
-      outputStream.writeTag(nbtdata, 32);
+    if (compress) {
+      NamedTag tag = new NamedTag("", nbtdata);
+      ByteBuf buffer = buf.alloc().buffer();
+      ByteBufOutputStream bytebufStream = new ByteBufOutputStream(buffer);
+      NBTOutputStream dataOutputStream = new NBTOutputStream(bytebufStream);
+      new NBTSerializer(true).toStream(tag, dataOutputStream);
+      dataOutputStream.close();
+      buf.writeShort(buffer.readableBytes()); // length
+      buf.writeBytes(buffer);
+      buffer.release();
+    } else {
+      try (final NBTOutputStream outputStream = new NBTOutputStream(new ByteBufOutputStream(buf))) {
+        outputStream.writeTag(nbtdata, 32);
+      }
     }
   }
 
