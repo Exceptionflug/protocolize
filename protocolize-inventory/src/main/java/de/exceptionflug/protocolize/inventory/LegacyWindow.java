@@ -2,7 +2,7 @@ package de.exceptionflug.protocolize.inventory;
 
 import net.md_5.bungee.api.ProxyServer;
 
-public enum LegacyWindowIDMapping {
+public enum LegacyWindow {
 
   CHEST(0, "minecraft:chest"),
   CRAFTING(1, "minecraft:crafting_table"),
@@ -20,13 +20,13 @@ public enum LegacyWindowIDMapping {
   private final int inventoryId;
   private final String legacyId;
 
-  LegacyWindowIDMapping(final int inventoryId, final String legacyId) {
+  LegacyWindow(final int inventoryId, final String legacyId) {
     this.inventoryId = inventoryId;
     this.legacyId = legacyId;
   }
 
   public static String getLegacyId(final int inventoryId) {
-    for (final LegacyWindowIDMapping window : values()) {
+    for (final LegacyWindow window : values()) {
       if (window.getInventoryId() == inventoryId)
         return window.getLegacyId();
     }

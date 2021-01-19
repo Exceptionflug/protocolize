@@ -14,6 +14,13 @@ public class InventoryIDMapping extends AbstractProtocolIDMapping {
     protocolId = -1;
   }
 
+  public InventoryIDMapping(final int protocolVersionRangeStart, final int protocolVersionRangeEnd, final LegacyWindow legacyWindow, final int typicalSize) {
+    super(protocolVersionRangeStart, protocolVersionRangeEnd);
+    this.protocolId = legacyWindow.getInventoryId();
+    this.typicalSize = typicalSize;
+    legacyId = null;
+  }
+
   public InventoryIDMapping(final int protocolVersionRangeStart, final int protocolVersionRangeEnd, final int protocolId, final int typicalSize) {
     super(protocolVersionRangeStart, protocolVersionRangeEnd);
     this.protocolId = protocolId;

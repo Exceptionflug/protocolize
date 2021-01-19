@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 import de.exceptionflug.protocolize.api.protocol.AbstractPacket;
 import de.exceptionflug.protocolize.api.util.BufferUtil;
 import de.exceptionflug.protocolize.inventory.InventoryType;
-import de.exceptionflug.protocolize.inventory.LegacyWindowIDMapping;
+import de.exceptionflug.protocolize.inventory.LegacyWindow;
 import io.netty.buffer.ByteBuf;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -13,7 +13,6 @@ import net.md_5.bungee.chat.ComponentSerializer;
 import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
@@ -73,7 +72,7 @@ public class OpenWindow extends AbstractPacket {
     if (protocolVersion < MINECRAFT_1_8) {
       windowId = buf.readUnsignedByte();
       int invType = buf.readUnsignedByte();
-      final String legacyId = LegacyWindowIDMapping.getLegacyId(invType);
+      final String legacyId = LegacyWindow.getLegacyId(invType);
       title = new BaseComponent[] { new TextComponent(readString(buf)) };
       final int size = buf.readUnsignedByte();
       inventoryType = InventoryType.getType(legacyId, size, protocolVersion);
@@ -102,7 +101,13 @@ public class OpenWindow extends AbstractPacket {
 
   @Override
   public void write(final ByteBuf buf, final Direction direction, final int protocolVersion) {
-    if (protocolVersion < MINECRAFT_1_14) {
+    if (protocolVersion < MINECRAFT_1_8) {
+      buf.writeByte(windowId & 0xFF);
+      buf.writeByte(inventoryType.getTypeId(protocolVersion) & 0xFF);
+      writeString(TextComponent.toLegacyText(title), buf);
+      buf.writeByte(inventoryType.getTypicalSize(protocolVersion) & 0xFF);
+      buf.writeBoolean(true); // use provided window title
+    } else if (protocolVersion < MINECRAFT_1_14) {
       buf.writeByte(windowId & 0xFF);
       writeString(Objects.requireNonNull(inventoryType.getLegacyTypeId(protocolVersion)), buf);
       writeString(ComponentSerializer.toString(title), buf);
