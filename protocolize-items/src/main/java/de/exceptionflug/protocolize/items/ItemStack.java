@@ -17,6 +17,7 @@ import net.querz.nbt.io.NBTOutputStream;
 import net.querz.nbt.io.NamedTag;
 import net.querz.nbt.tag.*;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
@@ -125,11 +126,26 @@ public final class ItemStack implements Cloneable {
   }
 
   private static NamedTag readNBTTag(final ByteBuf buf, int protocolVersion) throws IOException {
-    final int i = buf.readerIndex();
-    final short b0 = buf.readUnsignedByte();
-    if (b0 == 0 || (protocolVersion < MINECRAFT_1_8 && b0 == 255)) { // 1.7.x no nbt = 255
-      return null;
+    if (protocolVersion < MINECRAFT_1_8) {
+      // 1.7.x returns -1 if no nbt
+      // nbt follows this value (if applicable)
+      final short b0 = buf.readShort(); // length of nbt byte array
+      if (b0 == -1) {
+        return null;
+      } else {
+        // TODO 1.7.x throws EOFException on items with NBT data
+        for (int i = 0; i < b0; i++) {
+          buf.readByte();
+        }
+
+        return null;
+      }
     } else {
+      // 1.8+ returns 0 if no nbt
+      // value signifies the start of the nbt blob
+      final int i = buf.readerIndex();
+      final short b0 = buf.readUnsignedByte();
+      if (b0 == 0) return null;
       buf.readerIndex(i);
       try (final NBTInputStream inputStream = new NBTInputStream(new ByteBufInputStream(buf))) {
         return inputStream.readTag(32);
