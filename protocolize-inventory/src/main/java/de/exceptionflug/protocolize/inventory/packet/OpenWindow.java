@@ -4,13 +4,16 @@ import com.google.common.collect.Maps;
 import de.exceptionflug.protocolize.api.protocol.AbstractPacket;
 import de.exceptionflug.protocolize.api.util.BufferUtil;
 import de.exceptionflug.protocolize.inventory.InventoryType;
+import de.exceptionflug.protocolize.inventory.LegacyWindowIDMapping;
 import io.netty.buffer.ByteBuf;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
@@ -67,7 +70,16 @@ public class OpenWindow extends AbstractPacket {
 
   @Override
   public void read(final ByteBuf buf, final Direction direction, final int protocolVersion) {
-    if (protocolVersion < MINECRAFT_1_14) {
+    if (protocolVersion < MINECRAFT_1_8) {
+      windowId = buf.readUnsignedByte();
+      int invType = buf.readUnsignedByte();
+      final String legacyId = LegacyWindowIDMapping.getLegacyId(invType);
+      title = new BaseComponent[] { new TextComponent(readString(buf)) };
+      final int size = buf.readUnsignedByte();
+      inventoryType = InventoryType.getType(legacyId, size, protocolVersion);
+      buf.readBoolean(); // Skip use provided window title
+      buf.readBytes(buf.readableBytes()); // Skip optional entity id
+    } else if (protocolVersion < MINECRAFT_1_14) {
       windowId = buf.readUnsignedByte();
       final String legacyId = readString(buf);
       title = ComponentSerializer.parse(readString(buf));
