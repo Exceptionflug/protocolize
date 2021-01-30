@@ -4,10 +4,11 @@ import com.google.common.collect.Maps;
 
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class InventoryManager {
 
-  private final static Map<UUID, Map<String, PlayerInventory>> INVENTORY_MAP = Maps.newHashMap();
+  private final static Map<UUID, Map<String, PlayerInventory>> INVENTORY_MAP = new ConcurrentHashMap<>();
 
   private InventoryManager() {
   }
@@ -17,7 +18,7 @@ public final class InventoryManager {
   }
 
   public static PlayerInventory getInventory(final UUID uuid, final String server) {
-    return INVENTORY_MAP.computeIfAbsent(uuid, id -> Maps.newHashMap()).computeIfAbsent(server, mp -> new PlayerInventory(uuid));
+    return INVENTORY_MAP.computeIfAbsent(uuid, id -> new ConcurrentHashMap<>()).computeIfAbsent(server, mp -> new PlayerInventory(uuid));
   }
 
   public static PlayerInventory getCombinedSendInventory(final UUID uuid, final String server) {
