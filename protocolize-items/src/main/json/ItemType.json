@@ -32,6 +32,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 493
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 252,
+        "durability": 13
       }
     ]
   },
@@ -241,7 +248,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 573,
+        "protocolRangeStart": 477,
         "protocolRangeEnd": 578,
         "id": 169
       },
@@ -1408,6 +1415,12 @@
         "protocolRangeStart": 751,
         "protocolRangeEnd": 754,
         "id": 904
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 355,
+        "protocolRangeEnd": 340,
+        "id": 449
       }
     ]
   },
@@ -1742,6 +1755,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 467
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 251,
+        "durability": 3
       }
     ]
   },
@@ -1987,7 +2007,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 573,
+        "protocolRangeStart": 477,
         "protocolRangeEnd": 578,
         "id": 264
       },
@@ -2134,6 +2154,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 495
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 252,
+        "durability": 15
       }
     ]
   },
@@ -2179,7 +2206,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 573,
+        "protocolRangeStart": 477,
         "protocolRangeEnd": 578,
         "id": 171
       },
@@ -2846,6 +2873,12 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 477,
+        "protocolRangeEnd": 498,
+        "id": 856
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 573,
         "protocolRangeEnd": 578,
         "id": 857
@@ -3036,6 +3069,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 492
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 252,
+        "durability": 12
       }
     ]
   },
@@ -4822,6 +4862,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 491
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 252,
+        "durability": 11
       }
     ]
   },
@@ -7131,6 +7178,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 469
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 251,
+        "durability": 5
       }
     ]
   },
@@ -7258,6 +7312,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 490
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 252,
+        "durability": 10
       }
     ]
   },
@@ -7453,6 +7514,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 476
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 251,
+        "durability": 12
       }
     ]
   },
@@ -7788,7 +7856,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 573,
+        "protocolRangeStart": 477,
         "protocolRangeEnd": 578,
         "id": 170
       },
@@ -9419,6 +9487,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 488
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 252,
+        "durability": 8
       }
     ]
   },
@@ -9941,7 +10016,7 @@
     "mappings": [
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 573,
+        "protocolRangeStart": 477,
         "protocolRangeEnd": 578,
         "id": 247
       },
@@ -10094,6 +10169,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 472
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 251,
+        "durability": 8
       }
     ]
   },
@@ -10695,6 +10777,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 471
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 251,
+        "durability": 7
       }
     ]
   },
@@ -10846,6 +10935,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 477
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 251,
+        "durability": 13
       }
     ]
   },
@@ -11033,6 +11129,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 465
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 251,
+        "durability": 1
       }
     ]
   },
@@ -11129,6 +11232,12 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 427
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 215
       }
     ]
   },
@@ -11195,6 +11304,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 489
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 252,
+        "durability": 9
       }
     ]
   },
@@ -11358,6 +11474,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 494
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 252,
+        "durability": 14
       }
     ]
   },
@@ -12088,6 +12211,12 @@
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 787
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 477,
+        "protocolRangeEnd": 498,
+        "id": 853
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -13010,6 +13139,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 468
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 251,
+        "durability": 4
       }
     ]
   },
@@ -13826,6 +13962,12 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 480
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 252
       }
     ]
   },
@@ -13940,7 +14082,7 @@
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
         "protocolRangeStart": 573,
         "protocolRangeEnd": 578,
-        "id": 754
+        "id": 758
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -14249,6 +14391,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 478
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 251,
+        "durability": 14
       }
     ]
   },
@@ -14438,7 +14587,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 573,
+        "protocolRangeStart": 477,
         "protocolRangeEnd": 578,
         "id": 181
       },
@@ -14749,6 +14898,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 466
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 251,
+        "durability": 2
       }
     ]
   },
@@ -15042,7 +15198,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 573,
+        "protocolRangeStart": 477,
         "protocolRangeEnd": 578,
         "id": 588
       },
@@ -15305,6 +15461,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 485
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 252,
+        "durability": 5
       }
     ]
   },
@@ -15656,6 +15819,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 470
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 251,
+        "durability": 6
       }
     ]
   },
@@ -15809,7 +15979,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 573,
+        "protocolRangeStart": 477,
         "protocolRangeEnd": 578,
         "id": 262
       },
@@ -16897,7 +17067,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 573,
+        "protocolRangeStart": 477,
         "protocolRangeEnd": 578,
         "id": 167
       },
@@ -17015,6 +17185,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 486
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 252,
+        "durability": 6
       }
     ]
   },
@@ -17069,6 +17246,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 483
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 252,
+        "durability": 3
       }
     ]
   },
@@ -17439,7 +17623,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 573,
+        "protocolRangeStart": 477,
         "protocolRangeEnd": 578,
         "id": 326
       },
@@ -18090,6 +18274,12 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 464
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 251
       }
     ]
   },
@@ -18194,6 +18384,12 @@
         "protocolRangeStart": 393,
         "protocolRangeEnd": 404,
         "id": 307
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 477,
+        "protocolRangeEnd": 498,
+        "id": 326
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
@@ -18485,6 +18681,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 482
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 252,
+        "durability": 2
       }
     ]
   },
@@ -19918,7 +20121,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 573,
+        "protocolRangeStart": 477,
         "protocolRangeEnd": 578,
         "id": 168
       },
@@ -21802,6 +22005,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 474
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 251,
+        "durability": 10
       }
     ]
   },
@@ -22304,6 +22514,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 479
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 251,
+        "durability": 15
       }
     ]
   },
@@ -22731,7 +22948,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 573,
+        "protocolRangeStart": 477,
         "protocolRangeEnd": 578,
         "id": 263
       },
@@ -23026,7 +23243,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 573,
+        "protocolRangeStart": 477,
         "protocolRangeEnd": 578,
         "id": 260
       },
@@ -24100,6 +24317,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 484
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 252,
+        "durability": 4
       }
     ]
   },
@@ -24563,6 +24787,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 473
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 251,
+        "durability": 9
       }
     ]
   },
@@ -24826,7 +25057,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 573,
+        "protocolRangeStart": 477,
         "protocolRangeEnd": 578,
         "id": 630
       },
@@ -25581,6 +25812,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 481
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 252,
+        "durability": 1
       }
     ]
   },
@@ -25958,6 +26196,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 487
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 252,
+        "durability": 6
       }
     ]
   },
@@ -26169,6 +26414,13 @@
         "protocolRangeStart": 735,
         "protocolRangeEnd": 754,
         "id": 475
+      },
+      {
+        "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
+        "protocolRangeStart": 335,
+        "protocolRangeEnd": 340,
+        "id": 251,
+        "durability": 11
       }
     ]
   },
@@ -26305,7 +26557,7 @@
       },
       {
         "type": "de.exceptionflug.protocolize.items.ItemIDMapping",
-        "protocolRangeStart": 573,
+        "protocolRangeStart": 477,
         "protocolRangeEnd": 578,
         "id": 261
       },
