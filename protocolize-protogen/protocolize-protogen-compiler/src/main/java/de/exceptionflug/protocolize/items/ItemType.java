@@ -52,15 +52,17 @@ public enum ItemType {
     if (durability != 0) {
       return getType(id, protocolVersion, stack);
     }
-    ProxyServer
-            .getInstance()
-            .getLogger()
-            .warning("[Protocolize] Don't know what item "
-                    + id
-                    + ":"
-                    + durability
-                    + " is at version "
-                    + protocolVersion);
+    if (!ItemsModule.isDisableWarnOnUnknownItemMapping()) {
+      ProxyServer
+              .getInstance()
+              .getLogger()
+              .warning("[Protocolize] Don't know what item "
+                      + id
+                      + ":"
+                      + durability
+                      + " is at version "
+                      + protocolVersion);
+    }
     return null;
   }
 
