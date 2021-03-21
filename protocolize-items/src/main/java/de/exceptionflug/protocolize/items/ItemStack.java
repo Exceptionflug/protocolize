@@ -296,6 +296,9 @@ public final class ItemStack implements Cloneable {
   }
 
   private void setHideFlags(final int hideFlags) {
+    if (nbtdata.containsKey("HideFlags") && hideFlags == 0) {
+      return; // Don't overwrite existing HideFlags attribute
+    }
     nbtdata.put("HideFlags", new IntTag(hideFlags));
   }
 
