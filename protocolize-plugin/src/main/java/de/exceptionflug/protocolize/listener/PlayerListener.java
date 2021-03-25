@@ -15,50 +15,50 @@ import net.md_5.bungee.api.event.ServerConnectedEvent;
 import net.md_5.bungee.api.event.ServerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+import net.md_5.bungee.event.EventPriority;
 import net.md_5.bungee.protocol.AbstractPacketHandler;
 
 public class PlayerListener implements Listener {
 
-  private final ProtocolizePlugin plugin;
+    private final ProtocolizePlugin plugin;
 
-  public PlayerListener(final ProtocolizePlugin plugin) {
-    this.plugin = plugin;
-  }
-
-  @EventHandler
-  public void onPreLogin(final PreLoginEvent e) {
-    if (e.isCancelled()) {
-      return;
+    public PlayerListener(final ProtocolizePlugin plugin) {
+        this.plugin = plugin;
     }
-    
-    if (!plugin.isEnabled()) {
-      return;
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPreLogin(final PreLoginEvent e) {
+        if (e.isCancelled()) {
+            return;
+        }
+        if (!plugin.isEnabled()) {
+            return;
+        }
+        plugin.getNettyPipelineInjector().injectBefore(e.getConnection(), "inbound-boss", "protocolize-decoder", new ProtocolizeDecoderChannelHandler((AbstractPacketHandler) e.getConnection(), Stream.UPSTREAM));
+        plugin.getNettyPipelineInjector().injectAfter(e.getConnection(), "protocolize-decoder", "protocolize-encoder", new ProtocolizeEncoderChannelHandler((AbstractPacketHandler) e.getConnection()));
+        plugin.getNettyPipelineInjector().injectAfter(e.getConnection(), "frame-prepender", "protocolize-outbound-traffic-monitor", new ProtocolizeOutboundTrafficHandler((AbstractPacketHandler) e.getConnection(), Stream.UPSTREAM));
     }
-    plugin.getNettyPipelineInjector().injectBefore(e.getConnection(), "inbound-boss", "protocolize-decoder", new ProtocolizeDecoderChannelHandler((AbstractPacketHandler) e.getConnection(), Stream.UPSTREAM));
-    plugin.getNettyPipelineInjector().injectAfter(e.getConnection(), "protocolize-decoder", "protocolize-encoder", new ProtocolizeEncoderChannelHandler((AbstractPacketHandler) e.getConnection()));
-    plugin.getNettyPipelineInjector().injectAfter(e.getConnection(), "frame-prepender", "protocolize-outbound-traffic-monitor", new ProtocolizeOutboundTrafficHandler((AbstractPacketHandler) e.getConnection(), Stream.UPSTREAM));
-  }
 
-  @EventHandler
-  public void onServerDisconnect(final ServerDisconnectEvent e) {
-    InventoryManager.unmapServer(e.getPlayer().getUniqueId(), e.getTarget().getName());
-  }
-
-  @EventHandler
-  public void onServerSwitch(final ServerConnectedEvent e) {
-    if (!plugin.isEnabled()) {
-      return;
+    @EventHandler
+    public void onServerDisconnect(final ServerDisconnectEvent e) {
+        InventoryManager.unmapServer(e.getPlayer().getUniqueId(), e.getTarget().getName());
     }
-    plugin.getNettyPipelineInjector().injectBefore(e.getServer(), "inbound-boss", "protocolize-decoder", new ProtocolizeDecoderChannelHandler(ReflectionUtil.getDownstreamBridge(e.getServer()), Stream.DOWNSTREAM));
-    plugin.getNettyPipelineInjector().injectAfter(e.getServer(), "protocolize-decoder", "protocolize-encoder", new ProtocolizeEncoderChannelHandler(ReflectionUtil.getDownstreamBridge(e.getServer())));
-    plugin.getNettyPipelineInjector().injectAfter(e.getServer(), "frame-prepender", "protocolize-outbound-traffic-monitor", new ProtocolizeOutboundTrafficHandler(ReflectionUtil.getDownstreamBridge(e.getServer()), Stream.DOWNSTREAM));
-  }
 
-  @EventHandler
-  public void onQuit(final PlayerDisconnectEvent e) {
-    InventoryManager.unmap(e.getPlayer().getUniqueId());
-    ProtocolAPI.getTrafficManager().uncache(e.getPlayer().getName());
-    WorldModule.uncache(e.getPlayer().getUniqueId());
-  }
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onServerSwitch(final ServerConnectedEvent e) {
+        if (!plugin.isEnabled()) {
+            return;
+        }
+        plugin.getNettyPipelineInjector().injectBefore(e.getServer(), "inbound-boss", "protocolize-decoder", new ProtocolizeDecoderChannelHandler(ReflectionUtil.getDownstreamBridge(e.getServer()), Stream.DOWNSTREAM));
+        plugin.getNettyPipelineInjector().injectAfter(e.getServer(), "protocolize-decoder", "protocolize-encoder", new ProtocolizeEncoderChannelHandler(ReflectionUtil.getDownstreamBridge(e.getServer())));
+        plugin.getNettyPipelineInjector().injectAfter(e.getServer(), "frame-prepender", "protocolize-outbound-traffic-monitor", new ProtocolizeOutboundTrafficHandler(ReflectionUtil.getDownstreamBridge(e.getServer()), Stream.DOWNSTREAM));
+    }
+
+    @EventHandler
+    public void onQuit(final PlayerDisconnectEvent e) {
+        InventoryManager.unmap(e.getPlayer().getUniqueId());
+        ProtocolAPI.getTrafficManager().uncache(e.getPlayer().getName());
+        WorldModule.uncache(e.getPlayer().getUniqueId());
+    }
 
 }
