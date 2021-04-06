@@ -12,16 +12,17 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import net.md_5.bungee.protocol.DefinedPacket;
-import net.querz.nbt.io.NBTInputStream;
-import net.querz.nbt.io.NBTOutputStream;
-import net.querz.nbt.io.NBTSerializer;
-import net.querz.nbt.io.NamedTag;
+import net.querz.mca.CompressionType;
+import net.querz.nbt.io.*;
 import net.querz.nbt.tag.*;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import static de.exceptionflug.protocolize.api.util.ProtocolVersions.*;
 
@@ -128,20 +129,26 @@ public final class ItemStack implements Cloneable {
   private static NamedTag readNBTTag(final ByteBuf buf, int protocolVersion) throws IOException {
     if (protocolVersion < MINECRAFT_1_8) {
       // 1.7.x returns -1 if no nbt
-      // nbt follows this value (if applicable)
+      // otherwise, nbt follows this value
       final short b0 = buf.readShort(); // length of nbt byte array
       if (b0 == -1) {
         return null;
       } else {
-        // TODO Support reading NBT data for 1.7.x
+        // TODO support reading nbt
         for (int i = 0; i < b0; i++) {
           buf.readByte();
         }
+
+//        Failed attempt at reading compressed nbt data
+//        try (final NBTInputStream inputStream = new NBTInputStream(CompressionType.GZIP.decompress(new ByteBufInputStream(buf)))) {
+//          return inputStream.readTag(32);
+//        }
+
         return null;
       }
     } else {
       // 1.8+ returns 0 if no nbt
-      // value signifies the start of the nbt blob
+      // otherwise, value signifies the start of the nbt blob
       final int i = buf.readerIndex();
       final short b0 = buf.readUnsignedByte();
       if (b0 == 0) return null;
