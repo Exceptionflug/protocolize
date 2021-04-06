@@ -47,9 +47,9 @@ public class ConfirmTransaction extends AbstractPacket {
     MAPPING_CLIENTBOUND.put(MINECRAFT_1_16_3, 0x11);
     MAPPING_CLIENTBOUND.put(MINECRAFT_1_16_4, 0x11);
 
-    MAPPING_SERVERBOUND.put(MINECRAFT_1_7_2, 0x05);
-    MAPPING_SERVERBOUND.put(MINECRAFT_1_7_6, 0x05);
-    MAPPING_SERVERBOUND.put(MINECRAFT_1_8, 0x05);
+    MAPPING_SERVERBOUND.put(MINECRAFT_1_7_2, 0x0F);
+    MAPPING_SERVERBOUND.put(MINECRAFT_1_7_6, 0x0F);
+    MAPPING_SERVERBOUND.put(MINECRAFT_1_8, 0x0F);
     MAPPING_SERVERBOUND.put(MINECRAFT_1_9, 0x05);
     MAPPING_SERVERBOUND.put(MINECRAFT_1_9_1, 0x05);
     MAPPING_SERVERBOUND.put(MINECRAFT_1_9_2, 0x05);
@@ -117,7 +117,7 @@ public class ConfirmTransaction extends AbstractPacket {
 
   @Override
   public void read(final ByteBuf buf, final Direction direction, final int protocolVersion) {
-    if (protocolVersion >= MINECRAFT_1_12 && direction == Direction.TO_CLIENT)
+    if ((protocolVersion >= MINECRAFT_1_12 || protocolVersion < MINECRAFT_1_8) && direction == Direction.TO_CLIENT)
       windowId = buf.readUnsignedByte();
     else
       windowId = buf.readByte();
