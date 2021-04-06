@@ -19,11 +19,11 @@ public final class BufferUtil {
 
   static {
     try {
-      File file = new File("protocolize.log");
+      File file = new File("./plugins/protocolize-plugin/protocolize.log");
       if (!file.exists()) {
         file.createNewFile();
       }
-      printWriter = new PrintWriter(new FileOutputStream("protocolize.log", true), true);
+      printWriter = new PrintWriter(new FileOutputStream(file, true), true);
     } catch (IOException e) {
       ProxyServer.getInstance().getLogger().log(Level.WARNING, "[Protocolize] Cannot initialize logging", e);
     }
