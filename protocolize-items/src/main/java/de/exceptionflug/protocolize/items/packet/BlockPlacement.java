@@ -83,10 +83,11 @@ public class BlockPlacement extends AbstractPacket {
   @Override
   public void read(final ByteBuf buf, final Direction direction, final int protocolVersion) {
     if (protocolVersion < MINECRAFT_1_8) {
-      // TODO untested
       x = buf.readInt();
       y = buf.readUnsignedByte();
       z = buf.readInt();
+      buf.readByte(); // direction
+      stack = ItemStack.read(buf, protocolVersion);
       hand = Hand.MAIN_HAND;
       hitVecX = buf.readByte() / 15F;
       hitVecY = buf.readByte() / 15F;
