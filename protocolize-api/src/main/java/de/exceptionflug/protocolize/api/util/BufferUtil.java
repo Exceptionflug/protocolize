@@ -37,10 +37,8 @@ public final class BufferUtil {
       int readableBytes = buffer.readableBytes();
       if (readableBytes > 0) {
         // Something is wrong
-        if (version >= ProtocolVersions.MINECRAFT_1_8) { // ignore warnings for 1.7.x
-          ProxyServer.getInstance().getLogger().warning("[Protocolize] Packet " + packet.getClass().getName() +
-                  " was not read successfully. Please look into protocolize.log for further details.");
-        }
+        ProxyServer.getInstance().getLogger().warning("[Protocolize] Packet " + packet.getClass().getName() +
+                " was not read successfully. Please look into protocolize.log for further details.");
         printBufferHex(buffer, packet, direction, version, readableBytes);
       }
     } catch (Exception e) {
