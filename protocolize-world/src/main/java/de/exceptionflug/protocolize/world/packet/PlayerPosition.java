@@ -55,6 +55,8 @@ public class PlayerPosition extends AbstractPacket {
   public void read(final ByteBuf buf, final ProtocolConstants.Direction direction, final int protocolVersion) {
     final double x = buf.readDouble();
     final double y = buf.readDouble();
+    if (protocolVersion < MINECRAFT_1_8)
+      buf.readDouble(); // head Y
     final double z = buf.readDouble();
     onGround = buf.readBoolean();
 
