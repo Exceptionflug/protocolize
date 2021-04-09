@@ -4,10 +4,6 @@
 ![GitHub](https://img.shields.io/github/license/Exceptionflug/Protocolize)
 [![Twitter](https://img.shields.io/twitter/follow/Exceptionflug?label=Twitter&style=social)](https://twitter.com/Exceptionflug)
 
-<p align="center">
-  <img src="https://img.exceptionflug.de/protocolize-banner-small1.png"/>
-</p>
-
 # Protocolize
 A lightweight BungeeCord protocol framework supporting items.
 ## Purpose
