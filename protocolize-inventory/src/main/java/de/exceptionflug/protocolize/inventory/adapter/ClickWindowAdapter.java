@@ -51,6 +51,7 @@ public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
     ClickType clickType = clickEvent.getClickType();
     if (clickType == null) {
       clickType = ClickType.LEFT_CLICK;
+      clickEvent.setClickType(ClickType.LEFT_CLICK);
     }
     if (clickEvent.isCancelled() || inventory.isHomebrew()) {
       event.setCancelled(true);
