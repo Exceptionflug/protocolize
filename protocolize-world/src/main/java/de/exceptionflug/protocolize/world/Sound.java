@@ -1,5 +1,8 @@
 package de.exceptionflug.protocolize.world;
 
+import de.exceptionflug.protocolize.api.util.ReflectionUtil;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+
 import static de.exceptionflug.protocolize.api.util.ProtocolVersions.*;
 
 public enum Sound {
@@ -1016,12 +1019,25 @@ public enum Sound {
   }
 
   public String getSoundName(final int protocolVersion) {
+    SoundIDMapping mapping = getMapping(protocolVersion);
+    return mapping == null ? null : mapping.getSoundName();
+  }
+
+  private SoundIDMapping getMapping(final int protocolVersion) {
     for (final SoundIDMapping mapping : mappings) {
       if (mapping.getProtocolVersionRangeStart() <= protocolVersion && mapping.getProtocolVersionRangeEnd() >= protocolVersion) {
-        return mapping.getSoundName();
+        return mapping;
       }
     }
     return null;
+  }
+
+  public boolean isSupported(ProxiedPlayer player) {
+    return isSupported(ReflectionUtil.getProtocolVersion(player));
+  }
+
+  public boolean isSupported(final int protocolVersion) {
+    return getMapping(protocolVersion) != null;
   }
 
 }
