@@ -32,9 +32,19 @@ public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
   @Override
   public void receive(final PacketReceiveEvent<ClickWindow> event) {
     final ClickWindow clickWindow = event.getPacket();
+
     if (event.getPlayer() == null)
       return;
-    final Inventory inventory = InventoryModule.getInventory(event.getPlayer().getUniqueId(), clickWindow.getWindowId());
+
+    int windowId = clickWindow.getWindowId();
+    Inventory inventory = InventoryModule.getInventory(event.getPlayer().getUniqueId(), windowId);
+
+    // Fix 1.7 window ids
+    if (inventory == null) {
+      windowId &= 0xFF;
+      inventory = InventoryModule.getInventory(event.getPlayer().getUniqueId(), windowId);
+    }
+
     if (inventory == null)
       return;
 
