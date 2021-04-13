@@ -102,9 +102,16 @@ public class OpenWindow extends AbstractPacket {
   @Override
   public void write(final ByteBuf buf, final Direction direction, final int protocolVersion) {
     if (protocolVersion < MINECRAFT_1_8) {
+      String legacyTitle = TextComponent.toLegacyText(title);
+
+      if (legacyTitle.length() > 32) {
+        // truncate titles more than 32 characters to prevent crashing 1.7 clients
+        legacyTitle = legacyTitle.substring(0, 32);
+      }
+
       buf.writeByte(windowId & 0xFF);
       buf.writeByte(inventoryType.getTypeId(protocolVersion) & 0xFF);
-      writeString(TextComponent.toLegacyText(title), buf);
+      writeString(legacyTitle, buf);
       buf.writeByte(inventoryType.getTypicalSize(protocolVersion) & 0xFF);
       buf.writeBoolean(true); // use provided window title
     } else if (protocolVersion < MINECRAFT_1_14) {
