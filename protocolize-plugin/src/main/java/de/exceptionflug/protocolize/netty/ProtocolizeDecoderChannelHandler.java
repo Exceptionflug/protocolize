@@ -91,11 +91,16 @@ public class ProtocolizeDecoderChannelHandler extends MessageToMessageDecoder<Pa
           try {
             // Try packet rewrite
             final ByteBuf buf = Unpooled.directBuffer();
-            DefinedPacket.writeVarInt(ProtocolAPI.getPacketRegistration().getPacketID(protocol, direction, protocolVersion, packet.getClass()), buf);
-            packet.write(buf, direction, protocolVersion);
-            msg.buf.resetReaderIndex();
-            buf.resetReaderIndex();
-            ReflectionUtil.bufferField.set(msg, buf);
+            int packetID = ProtocolAPI
+                .getPacketRegistration()
+                .getPacketID(protocol, direction, protocolVersion, packet.getClass());
+            if(packetID != -1) {
+              DefinedPacket.writeVarInt(packetID, buf);
+              packet.write(buf, direction, protocolVersion);
+              msg.buf.resetReaderIndex();
+              buf.resetReaderIndex();
+              ReflectionUtil.bufferField.set(msg, buf);
+            }
           } catch (final UnsupportedOperationException ignored) {
           } // Packet cannot be written
         }
