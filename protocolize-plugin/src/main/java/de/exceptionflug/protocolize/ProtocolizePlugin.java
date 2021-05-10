@@ -30,7 +30,8 @@ public class ProtocolizePlugin extends Plugin {
   public static boolean isExceptionCausedByProtocolize(final Throwable e) {
     final List<StackTraceElement> all = getEverything(e, new ArrayList<>());
     for (final StackTraceElement element : all) {
-      if (element.getClassName().toLowerCase().contains("de.exceptionflug"))
+      if (element.getClassName().toLowerCase().contains("de.exceptionflug")
+              && !element.getClassName().contains("de.exceptionflug.protocolize.netty.ProtocolizeEncoderChannelHandler.exceptionCaught"))
         return true;
     }
     return false;
