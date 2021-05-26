@@ -56,7 +56,7 @@ public enum ItemType {
       ProxyServer
               .getInstance()
               .getLogger()
-              .warning("[Protocolize] Don't know what item "
+              .finest("[Protocolize] Don't know what item "
                       + id
                       + ":"
                       + durability
