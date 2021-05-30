@@ -2,6 +2,7 @@ package de.exceptionflug.protocolize.api.util;
 
 import com.google.common.base.Preconditions;
 import io.netty.channel.Channel;
+import net.md_5.bungee.ServerConnector;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.Connection;
@@ -75,7 +76,7 @@ public final class ReflectionUtil {
       if (abstractPacketHandler instanceof PendingConnection) {
         return (Connection) abstractPacketHandler;
       }
-      if (serverConnectorClass.equals(abstractPacketHandler.getClass())) {
+      if (abstractPacketHandler instanceof ServerConnector) {
         final ProxiedPlayer player = (ProxiedPlayer) serverConnectorUserConnectionField.get(abstractPacketHandler);
         final Object upstreamBridge = getUpstreamBridge(player);
         if (upstreamBridge == null)
@@ -175,7 +176,7 @@ public final class ReflectionUtil {
 
 
   public static ServerInfo getServerInfo(final AbstractPacketHandler packetHandler) {
-    if (packetHandler.getClass().equals(serverConnectorClass)) {
+    if (packetHandler instanceof ServerConnector) {
       try {
         return (ServerInfo) serverConnectorTargetField.get(packetHandler);
       } catch (final IllegalAccessException e) {
