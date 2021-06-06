@@ -8,6 +8,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import net.md_5.bungee.protocol.ProtocolConstants;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -151,5 +152,18 @@ public class SignUpdate extends AbstractPacket {
             "position=" + position +
             ", lines=" + Arrays.toString(lines) +
             '}';
+  }
+  public String[] getLines(){
+    return lines;
+  }
+  public void writeLines(String[] l){
+    lines = l;
+    if(l.length==4){
+      for(int i = 0; i <4; i++){
+        if(l[i].getBytes(StandardCharsets.UTF_8).length <= 384 ){
+          this.lines[i] = l[i];
+        }
+      }
+    }
   }
 }
