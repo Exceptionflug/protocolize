@@ -45,6 +45,7 @@ public class ClickWindow extends AbstractPacket {
     MAPPING.put(MINECRAFT_1_16_2, 0x09);
     MAPPING.put(MINECRAFT_1_16_3, 0x09);
     MAPPING.put(MINECRAFT_1_16_4, 0x09);
+    MAPPING.put(MINECRAFT_1_17, 0x09);
   }
 
   private int windowId, actionNumber;
