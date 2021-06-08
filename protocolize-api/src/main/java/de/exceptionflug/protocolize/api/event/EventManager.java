@@ -37,6 +37,20 @@ public class EventManager {
   }
 
   /**
+   * Unregisters a packet listener
+   * @param listener the listener instance
+   * @throws IllegalArgumentException If the listener is not found, we throw an IllegalArgumentException
+   */
+  public void unregisterListener(final PacketListener listener) throws IllegalArgumentException{
+    if(packetListeners.contains(listener)){
+      packetListeners.remove(listener);
+    }
+    else{
+      throw new IllegalArgumentException("Did not find " + listener.getPacketClass().getName()+ "as a registered listener");
+    }
+  }
+
+  /**
    * Called by the ProtocolizeDecoderChannelHandler when a packet arrives.
    *
    * @param packet                the incoming packet

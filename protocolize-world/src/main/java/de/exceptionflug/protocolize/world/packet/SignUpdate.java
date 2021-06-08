@@ -8,12 +8,14 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import net.md_5.bungee.protocol.ProtocolConstants;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 import static de.exceptionflug.protocolize.api.util.ProtocolVersions.*;
+import static java.nio.charset.StandardCharsets.*;
 
 public class SignUpdate extends AbstractPacket {
 
@@ -54,6 +56,8 @@ public class SignUpdate extends AbstractPacket {
     MAPPING_CLIENTBOUND.put(MINECRAFT_1_9_1, 0x46);
     MAPPING_CLIENTBOUND.put(MINECRAFT_1_9_2, 0x46);
   }
+
+
 
   private BlockPosition position;
   private String[] lines;
@@ -151,5 +155,56 @@ public class SignUpdate extends AbstractPacket {
             "position=" + position +
             ", lines=" + Arrays.toString(lines) +
             '}';
+  }
+
+  /**
+   * Gives the lines on the sign created sign.
+   * @return An array of Strings which contain the lines
+   */
+  public String[] getLines(){
+    return lines;
+  }
+
+  /**
+   * Allows to write to the sign packet.
+   * @param l The full array, with the new strings.
+   */
+  public void writeLines(String[] l)throws IllegalArgumentException{
+    lines = l;
+    if(l.length==4){
+      for(int i = 0; i <4; i++){
+        if(l[i].getBytes(UTF_8).length <= 384 ){
+          this.lines[i] = l[i];
+        }
+        else{
+          throw new IllegalArgumentException("Line " + i+ "is too long");
+        }
+      }
+    }
+  }
+
+  /**
+   * Allows to write to a certain line on the sign
+   * @param line The content to write
+   * @param where On which line this should be. Counting starts at zero
+   * @throws IllegalArgumentException If the line or the integer is not valid
+   */
+  public void writeLines(String line, int where) throws IllegalArgumentException{
+    if(where> 3) throw new IllegalArgumentException("A sign has 4 lines, cant therefore write to line" + where);
+    else if(line.getBytes(UTF_8).length<=384) throw new IllegalArgumentException("The string is to long");
+    else{
+      lines[where]=line;
+    }
+  }
+
+
+  /**
+   * Gives the Blockposition of the altered sign. (Note that changing the position does not seem to make any sense.
+   * Therefore there is no setter for BlockPosition
+   *
+   * @return The BlockPosition of the sign
+   */
+  public BlockPosition getPosition() {
+    return position;
   }
 }
