@@ -187,7 +187,7 @@ public class SignUpdate extends AbstractPacket {
    * Allows to write to a certain line on the sign
    * @param line The content to write
    * @param where On which line this should be. Counting starts at zero
-   * @throws IllegalArgumentException If the line or the int is not valid
+   * @throws IllegalArgumentException If the line or the integer is not valid
    */
   public void writeLines(String line, int where) throws IllegalArgumentException{
     if(where> 3) throw new IllegalArgumentException("A sign has 4 lines, cant therefore write to line" + where);
