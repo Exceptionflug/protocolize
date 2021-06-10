@@ -8,6 +8,7 @@ import de.exceptionflug.protocolize.items.ItemStack;
 import io.netty.buffer.ByteBuf;
 import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -48,6 +49,7 @@ public class ClickWindow extends AbstractPacket {
     MAPPING.put(MINECRAFT_1_17, 0x08);
   }
 
+  private Map<Short, ItemStack> slotData = new HashMap<Short, ItemStack>();
   private int windowId, actionNumber;
   private short slot;
   private ClickType clickType;
@@ -69,12 +71,20 @@ public class ClickWindow extends AbstractPacket {
     windowId = buf.readUnsignedByte();
     slot = buf.readShort();
     final byte button = buf.readByte();
-    actionNumber = buf.readShort();
+    if (protocolVersion < MINECRAFT_1_17) {
+      actionNumber = buf.readShort();
+    }
     final int mode;
     if (protocolVersion == MINECRAFT_1_8)
       mode = buf.readByte();
     else
       mode = readVarInt(buf);
+    if (protocolVersion >= MINECRAFT_1_17) {
+      int length = readVarInt(buf);
+      for (int i = 0; i < length; i++) {
+        slotData.put(buf.readShort(), ItemStack.read(buf, protocolVersion));
+      }
+    }
     clickType = ClickType.getType(mode, button);
     itemStack = ItemStack.read(buf, protocolVersion);
     BufferUtil.finishBuffer(this, buf, direction, protocolVersion);
@@ -85,11 +95,20 @@ public class ClickWindow extends AbstractPacket {
     buf.writeByte(windowId & 0xFF);
     buf.writeShort(slot);
     buf.writeByte(clickType.getButton());
-    buf.writeShort(actionNumber);
+    if (protocolVersion < MINECRAFT_1_17) {
+      buf.writeShort(actionNumber);
+    }
     if (protocolVersion == MINECRAFT_1_8)
       buf.writeByte(clickType.getMode());
     else
       writeVarInt(clickType.getMode(), buf);
+    if (protocolVersion >= MINECRAFT_1_17) {
+      writeVarInt(slotData.size(), buf);
+      for (short slot : slotData.keySet()) {
+        buf.writeShort(slot);
+        slotData.get(slot).write(buf, protocolVersion);
+      }
+    }
     if (itemStack == null)
       ItemStack.NO_DATA.write(buf, protocolVersion);
     else
@@ -134,6 +153,13 @@ public class ClickWindow extends AbstractPacket {
 
   public void setActionNumber(final int actionNumber) {
     this.actionNumber = actionNumber;
+  }
+
+  /**
+   * @since 1.7.0-SNAPSHOT; Protocol 755 MC 1.17
+   */
+  public Map<Short, ItemStack> getSlotData() {
+    return slotData;
   }
 
   @Override
