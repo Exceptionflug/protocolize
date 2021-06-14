@@ -192,7 +192,7 @@ public class SignUpdate extends AbstractPacket {
    */
   public void writeLines(String line, int where) throws IllegalArgumentException{
     if(where> 3) throw new IllegalArgumentException("A sign has 4 lines, cant therefore write to line" + where);
-    else if(line.getBytes(UTF_8).length<=384) throw new IllegalArgumentException("The string is to long");
+    else if(line.getBytes(UTF_8).length > 384) throw new IllegalArgumentException("The string is to long");
     else{
       lines[where]=line;
     }
