@@ -3,6 +3,7 @@ package de.exceptionflug.protocolize.util;
 import com.google.gson.*;
 import de.exceptionflug.protocolize.api.util.ProtocolVersions;
 import de.exceptionflug.protocolize.items.ItemIDMapping;
+import de.exceptionflug.protocolize.items.SpawnEggItemIDMapping;
 
 import java.io.File;
 import java.io.FileReader;
@@ -22,7 +23,6 @@ public class ItemTypeJsonProtoGenerator {
 
   public static void main(final String[] args) throws Exception {
     if (args[0].equalsIgnoreCase("combine")) {
-      final File file = new File("registries.json");
       final File target = new File("ItemType.json");
       final Map<String, JsonObject> targetObjects = new ConcurrentHashMap<>();
       if (target.exists()) {
@@ -54,6 +54,8 @@ public class ItemTypeJsonProtoGenerator {
             } else {
               mappingList.add(new ItemIDMapping(rangeStart, rangeEnd, mapping.get("id").getAsInt()));
             }
+          } else if (mapping.get("type").getAsString().equals(SpawnEggItemIDMapping.class.getName())) {
+            mappingList.add(new SpawnEggItemIDMapping(rangeStart, rangeEnd, mapping.get("id").getAsString()));
           }
         }
         boolean found = false;
@@ -64,8 +66,12 @@ public class ItemTypeJsonProtoGenerator {
           out:
           for (final ItemIDMapping mapping : mappingList) {
             for (final ItemIDMapping mapping2 : mappingList) {
-              if (mapping.getProtocolVersionRangeStart() == mapping2.getProtocolVersionRangeStart() && mapping.getProtocolVersionRangeEnd() == mapping2.getProtocolVersionRangeEnd())
+              if (mapping.getProtocolVersionRangeStart() == mapping2.getProtocolVersionRangeStart()
+                      && mapping.getProtocolVersionRangeEnd() == mapping2.getProtocolVersionRangeEnd())
                 continue;
+              if (mapping instanceof SpawnEggItemIDMapping || mapping2 instanceof SpawnEggItemIDMapping) {
+                continue;
+              }
               if (mapping.getId() == mapping2.getId() && mapping.getData() == mapping2.getData()) {
                 System.out.println("Optimizing " + type + "...");
                 toDel.add(mapping);
@@ -93,10 +99,14 @@ public class ItemTypeJsonProtoGenerator {
         final JsonArray finalMappings = mappings;
         mappingList.forEach(it -> {
           final JsonObject mapping = new JsonObject();
-          mapping.addProperty("type", ItemIDMapping.class.getName());
+          mapping.addProperty("type", it.getClass().getName());
           mapping.addProperty("protocolRangeStart", it.getProtocolVersionRangeStart());
           mapping.addProperty("protocolRangeEnd", it.getProtocolVersionRangeEnd());
-          mapping.addProperty("id", it.getId());
+          if (it instanceof SpawnEggItemIDMapping) {
+            mapping.addProperty("id", ((SpawnEggItemIDMapping) it).getEntityType());
+          } else {
+            mapping.addProperty("id", it.getId());
+          }
           if (it.getData() != 0) {
             mapping.addProperty("durability", it.getData());
           }
@@ -156,6 +166,8 @@ public class ItemTypeJsonProtoGenerator {
             } else {
               mappingList.add(new ItemIDMapping(rangeStart, rangeEnd, mapping.get("id").getAsInt()));
             }
+          } else if (mapping.get("type").getAsString().equals(SpawnEggItemIDMapping.class.getName())) {
+            mappingList.add(new SpawnEggItemIDMapping(rangeStart, rangeEnd, mapping.get("id").getAsString()));
           }
         }
         boolean found = false;

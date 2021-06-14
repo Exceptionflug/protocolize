@@ -40,5 +40,8 @@ public class SpawnEggItemIDMapping extends AbstractCustomItemIDMapping {
     return false;
   }
 
+  public String getEntityType() {
+    return entityType;
+  }
 
 }

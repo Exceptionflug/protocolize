@@ -44,6 +44,7 @@ public class PlayerPosition extends AbstractPacket {
     MAPPING.put(MINECRAFT_1_16_2, 0x12);
     MAPPING.put(MINECRAFT_1_16_3, 0x12);
     MAPPING.put(MINECRAFT_1_16_4, 0x12);
+    MAPPING.put(MINECRAFT_1_17, 0x11);
   }
 
   private Location location;
