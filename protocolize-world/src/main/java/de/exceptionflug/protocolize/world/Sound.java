@@ -7,7 +7,7 @@ import static de.exceptionflug.protocolize.api.util.ProtocolVersions.*;
 
 public enum Sound {
 
-  AMBIENT_CAVE(new SoundIDMapping(MINECRAFT_1_8, MINECRAFT_1_8, "ambient_cave"), new SoundIDMapping(MINECRAFT_1_9, MINECRAFT_LATEST, "ambient.cave")),
+  AMBIENT_CAVE(new SoundIDMapping(MINECRAFT_1_7_2, MINECRAFT_1_8, "ambient.cave.cave"), new SoundIDMapping(MINECRAFT_1_9, MINECRAFT_LATEST, "ambient.cave")),
   AMBIENT_UNDERWATER_ENTER(new SoundIDMapping(MINECRAFT_1_9, MINECRAFT_LATEST, "ambient.underwater.enter")),
   AMBIENT_UNDERWATER_EXIT(new SoundIDMapping(MINECRAFT_1_9, MINECRAFT_LATEST, "ambient.underwater.exit")),
   AMBIENT_UNDERWATER_LOOP(new SoundIDMapping(MINECRAFT_1_9, MINECRAFT_LATEST, "ambient.underwater.loop")),
@@ -275,7 +275,7 @@ public enum Sound {
   ENTITY_EVOKER_PREPARE_SUMMON(new SoundIDMapping(MINECRAFT_1_9, MINECRAFT_LATEST, "entity.evoker.prepare.summon")),
   ENTITY_EVOKER_PREPARE_WOLOLO(new SoundIDMapping(MINECRAFT_1_9, MINECRAFT_LATEST, "entity.evoker.prepare.wololo")),
   ENTITY_EXPERIENCE_BOTTLE_THROW(new SoundIDMapping(MINECRAFT_1_8, MINECRAFT_1_8, "random.bow"), new SoundIDMapping(MINECRAFT_1_9, MINECRAFT_LATEST, "entity.experience_bottle.throw")),
-  ENTITY_EXPERIENCE_ORB_PICKUP(new SoundIDMapping(MINECRAFT_1_8, MINECRAFT_1_8, "random.orb"), new SoundIDMapping(MINECRAFT_1_9, MINECRAFT_LATEST, "entity.experience_orb.pickup")),
+  ENTITY_EXPERIENCE_ORB_PICKUP(new SoundIDMapping(MINECRAFT_1_7_2, MINECRAFT_1_8, "random.orb"), new SoundIDMapping(MINECRAFT_1_9, MINECRAFT_LATEST, "entity.experience_orb.pickup")),
   ENTITY_FIREWORK_ROCKET_BLAST(new SoundIDMapping(MINECRAFT_1_9, MINECRAFT_LATEST, "entity.firework.rocket.blast")),
   ENTITY_FIREWORK_ROCKET_BLAST_FAR(new SoundIDMapping(MINECRAFT_1_9, MINECRAFT_LATEST, "entity.firework.rocket.blast.far")),
   ENTITY_FIREWORK_ROCKET_LARGE_BLAST(new SoundIDMapping(MINECRAFT_1_9, MINECRAFT_LATEST, "entity.firework.rocket.large.blast")),
@@ -354,7 +354,7 @@ public enum Sound {
   ENTITY_ITEM_FRAME_PLACE(new SoundIDMapping(MINECRAFT_1_9, MINECRAFT_LATEST, "entity.item.frame.place")),
   ENTITY_ITEM_FRAME_REMOVE_ITEM(new SoundIDMapping(MINECRAFT_1_9, MINECRAFT_LATEST, "entity.item.frame.remove.item")),
   ENTITY_ITEM_FRAME_ROTATE_ITEM(new SoundIDMapping(MINECRAFT_1_9, MINECRAFT_LATEST, "entity.item.frame.rotate.item")),
-  ENTITY_ITEM_PICKUP(new SoundIDMapping(MINECRAFT_1_8, MINECRAFT_1_8, "random.pop"), new SoundIDMapping(MINECRAFT_1_9, MINECRAFT_LATEST, "entity.item.pickup")),
+  ENTITY_ITEM_PICKUP(new SoundIDMapping(MINECRAFT_1_7_2, MINECRAFT_1_8, "random.pop"), new SoundIDMapping(MINECRAFT_1_9, MINECRAFT_LATEST, "entity.item.pickup")),
   ENTITY_LEASH_KNOT_BREAK(new SoundIDMapping(MINECRAFT_1_9, MINECRAFT_LATEST, "entity.leash.knot.break")),
   ENTITY_LEASH_KNOT_PLACE(new SoundIDMapping(MINECRAFT_1_9, MINECRAFT_LATEST, "entity.leash.knot.place")),
   ENTITY_LIGHTNING_BOLT_IMPACT(new SoundIDMapping(MINECRAFT_1_9, MINECRAFT_LATEST, "entity.lightning.bolt.impact")),
