@@ -12,15 +12,17 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import net.md_5.bungee.protocol.DefinedPacket;
-import net.querz.nbt.io.NBTInputStream;
-import net.querz.nbt.io.NBTOutputStream;
-import net.querz.nbt.io.NamedTag;
+import net.querz.mca.CompressionType;
+import net.querz.nbt.io.*;
 import net.querz.nbt.tag.*;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import static de.exceptionflug.protocolize.api.util.ProtocolVersions.*;
 
@@ -77,7 +79,7 @@ public final class ItemStack implements Cloneable {
           out.homebrew = false;
           return out;
         } else {
-          NamedTag namedTag = readNBTTag(buf);
+          NamedTag namedTag = readNBTTag(buf, protocolVersion);
           if (namedTag == null) {
             namedTag = new NamedTag("", new CompoundTag());
           }
@@ -124,12 +126,32 @@ public final class ItemStack implements Cloneable {
     return 0;
   }
 
-  private static NamedTag readNBTTag(final ByteBuf buf) throws IOException {
-    final int i = buf.readerIndex();
-    final short b0 = buf.readUnsignedByte();
-    if (b0 == 0) {
-      return null;
+  private static NamedTag readNBTTag(final ByteBuf buf, int protocolVersion) throws IOException {
+    if (protocolVersion < MINECRAFT_1_8) {
+      // 1.7.x returns -1 if no nbt
+      // otherwise, nbt follows this value
+      final short b0 = buf.readShort(); // length of nbt byte array
+      if (b0 == -1) {
+        return null;
+      } else {
+        // TODO support reading nbt
+        for (int i = 0; i < b0; i++) {
+          buf.readByte();
+        }
+
+//        Failed attempt at reading compressed nbt data
+//        try (final NBTInputStream inputStream = new NBTInputStream(CompressionType.GZIP.decompress(new ByteBufInputStream(buf)))) {
+//          return inputStream.readTag(32);
+//        }
+
+        return null;
+      }
     } else {
+      // 1.8+ returns 0 if no nbt
+      // otherwise, value signifies the start of the nbt blob
+      final int i = buf.readerIndex();
+      final short b0 = buf.readUnsignedByte();
+      if (b0 == 0) return null;
       buf.readerIndex(i);
       try (final NBTInputStream inputStream = new NBTInputStream(new ByteBufInputStream(buf))) {
         return inputStream.readTag(32);
@@ -282,13 +304,13 @@ public final class ItemStack implements Cloneable {
       if (applicableMapping instanceof AbstractCustomItemIDMapping) {
         ((AbstractCustomItemIDMapping) applicableMapping).apply(this, protocolVersion);
       }
-      buf.markWriterIndex();
       try {
-        writeNBTTag(nbtdata, buf);
+        buf.markWriterIndex();
+        writeNBTTag(nbtdata, buf, protocolVersion < MINECRAFT_1_8);
       } catch (final Exception e) {
         ProxyServer.getInstance().getLogger().log(Level.WARNING, "[Protocolize] Error when writing NBT data to ItemStack:", e);
         buf.resetWriterIndex();
-        writeNBTTag(new CompoundTag(), buf);
+        writeNBTTag(new CompoundTag(), buf, protocolVersion < MINECRAFT_1_8);
       }
     } catch (final Exception e) {
       ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Exception occurred when writing ItemStack to buffer. Protocol version = " + protocolVersion, e);
@@ -299,11 +321,23 @@ public final class ItemStack implements Cloneable {
     nbtdata.put("HideFlags", new IntTag(hideFlags));
   }
 
-  private void writeNBTTag(final Tag nbtdata, final ByteBuf buf) throws IOException {
+  private void writeNBTTag(final Tag nbtdata, final ByteBuf buf, boolean compress) throws IOException {
     Preconditions.checkNotNull(nbtdata, "The nbtdata cannot be null!");
     Preconditions.checkNotNull(buf, "The buf cannot be null!");
-    try (final NBTOutputStream outputStream = new NBTOutputStream(new ByteBufOutputStream(buf))) {
-      outputStream.writeTag(nbtdata, 32);
+    if (compress) {
+      NamedTag tag = new NamedTag("", nbtdata);
+      ByteBuf buffer = buf.alloc().buffer();
+      ByteBufOutputStream bytebufStream = new ByteBufOutputStream(buffer);
+      NBTOutputStream dataOutputStream = new NBTOutputStream(bytebufStream);
+      new NBTSerializer(true).toStream(tag, dataOutputStream);
+      dataOutputStream.close();
+      buf.writeShort(buffer.readableBytes()); // length
+      buf.writeBytes(buffer);
+      buffer.release();
+    } else {
+      try (final NBTOutputStream outputStream = new NBTOutputStream(new ByteBufOutputStream(buf))) {
+        outputStream.writeTag(nbtdata, 32);
+      }
     }
   }
 

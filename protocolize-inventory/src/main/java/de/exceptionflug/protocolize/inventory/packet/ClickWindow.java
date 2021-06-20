@@ -18,6 +18,8 @@ public class ClickWindow extends AbstractPacket {
   public static final Map<Integer, Integer> MAPPING = Maps.newHashMap();
 
   static {
+    MAPPING.put(MINECRAFT_1_7_2, 0x0E);
+    MAPPING.put(MINECRAFT_1_7_6, 0x0E);
     MAPPING.put(MINECRAFT_1_8, 0x0E);
     MAPPING.put(MINECRAFT_1_9, 0x07);
     MAPPING.put(MINECRAFT_1_9_1, 0x07);
@@ -65,7 +67,11 @@ public class ClickWindow extends AbstractPacket {
 
   @Override
   public void read(final ByteBuf buf, final Direction direction, final int protocolVersion) {
-    windowId = buf.readUnsignedByte();
+    if(protocolVersion < MINECRAFT_1_8) {
+      windowId = buf.readByte(); // 1.7.x
+    } else {
+      windowId = buf.readUnsignedByte(); // 1.8.x and later
+    }
     slot = buf.readShort();
     final byte button = buf.readByte();
     actionNumber = buf.readShort();
@@ -81,7 +87,11 @@ public class ClickWindow extends AbstractPacket {
 
   @Override
   public void write(final ByteBuf buf, final Direction direction, final int protocolVersion) {
-    buf.writeByte(windowId & 0xFF);
+    if(protocolVersion < MINECRAFT_1_8) {
+      buf.writeByte(windowId); // 1.7.x
+    } else {
+      buf.writeByte(windowId & 0xFF); // 1.8.x and later
+    }
     buf.writeShort(slot);
     buf.writeByte(clickType.getButton());
     buf.writeShort(actionNumber);

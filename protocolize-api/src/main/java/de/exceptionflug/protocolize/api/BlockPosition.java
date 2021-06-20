@@ -5,6 +5,7 @@ import io.netty.buffer.ByteBuf;
 import java.util.Objects;
 
 import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1_14;
+import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1_8;
 
 public class BlockPosition {
 
@@ -17,7 +18,12 @@ public class BlockPosition {
   }
 
   public static BlockPosition read(final ByteBuf byteBuf, final int protocolVersion) {
-    if (protocolVersion < MINECRAFT_1_14) {
+    if (protocolVersion < MINECRAFT_1_8) {
+      final int x = byteBuf.readInt();
+      final short y = byteBuf.readShort();
+      final int z = byteBuf.readInt();
+      return new BlockPosition(x, y, z);
+    } else if (protocolVersion < MINECRAFT_1_14) {
       final long val = byteBuf.readLong();
       final int x = (int) (val >> 38);
       final int y = (int) ((val >> 26) & 0xFFF);

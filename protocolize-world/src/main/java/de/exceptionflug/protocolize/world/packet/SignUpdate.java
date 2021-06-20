@@ -21,6 +21,8 @@ public class SignUpdate extends AbstractPacket {
   public static final Map<Integer, Integer> MAPPING_CLIENTBOUND = new HashMap<>();
 
   static {
+    MAPPING_SERVERBOUND.put(MINECRAFT_1_7_2, 0x12);
+    MAPPING_SERVERBOUND.put(MINECRAFT_1_7_6, 0x12);
     MAPPING_SERVERBOUND.put(MINECRAFT_1_8, 0x12);
     MAPPING_SERVERBOUND.put(MINECRAFT_1_9, 0x19);
     MAPPING_SERVERBOUND.put(MINECRAFT_1_9_1, 0x19);
@@ -49,6 +51,8 @@ public class SignUpdate extends AbstractPacket {
     MAPPING_SERVERBOUND.put(MINECRAFT_1_16_3, 0x2B);
     MAPPING_SERVERBOUND.put(MINECRAFT_1_16_4, 0x2B);
 
+    MAPPING_CLIENTBOUND.put(MINECRAFT_1_7_2, 0x33);
+    MAPPING_CLIENTBOUND.put(MINECRAFT_1_7_6, 0x33);
     MAPPING_CLIENTBOUND.put(MINECRAFT_1_8, 0x33);
     MAPPING_CLIENTBOUND.put(MINECRAFT_1_9, 0x46);
     MAPPING_CLIENTBOUND.put(MINECRAFT_1_9_1, 0x46);
@@ -69,40 +73,40 @@ public class SignUpdate extends AbstractPacket {
         lines[2] = readString(buf);
         lines[3] = readString(buf);
       } else {
-        readLineStrings(buf);
+        readLineStrings(buf, protocolVersion < MINECRAFT_1_8);
       }
     } else {
       position = BlockPosition.read(buf, protocolVersion);
-      readLineStrings(buf);
+      readLineStrings(buf, protocolVersion < MINECRAFT_1_8);
     }
     BufferUtil.finishBuffer(this, buf, direction, protocolVersion);
   }
 
-  private void readLineStrings(ByteBuf buf) {
+  private void readLineStrings(ByteBuf buf, boolean legacy) {
     lines = new String[4];
     String line1 = readString(buf);
-    if (line1.equals("null")) {
+    if (line1.isEmpty() || line1.equals("null")) {
       lines[0] = "";
     } else {
-      lines[0] = ComponentSerializer.parse(line1)[0].toLegacyText();
+      lines[0] = legacy ? line1 : ComponentSerializer.parse(line1)[0].toLegacyText();
     }
     String line2 = readString(buf);
-    if (line2.equals("null")) {
+    if (line2.isEmpty() || line2.equals("null")) {
       lines[1] = "";
     } else {
-      lines[1] = ComponentSerializer.parse(line2)[0].toLegacyText();
+      lines[1] = legacy ? line2 : ComponentSerializer.parse(line2)[0].toLegacyText();
     }
     String line3 = readString(buf);
-    if (line3.equals("null")) {
+    if (line3.isEmpty() || line3.equals("null")) {
       lines[2] = "";
     } else {
-      lines[2] = ComponentSerializer.parse(line3)[0].toLegacyText();
+      lines[2] = legacy ? line3 : ComponentSerializer.parse(line3)[0].toLegacyText();
     }
     String line4 = readString(buf);
-    if (line4.equals("null")) {
+    if (line4.isEmpty() || line4.equals("null")) {
       lines[3] = "";
     } else {
-      lines[3] = ComponentSerializer.parse(line4)[0].toLegacyText();
+      lines[3] = legacy ? line4 : ComponentSerializer.parse(line4)[0].toLegacyText();
     }
   }
 

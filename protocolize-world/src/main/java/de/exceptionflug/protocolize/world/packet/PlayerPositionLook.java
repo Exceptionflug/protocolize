@@ -17,6 +17,8 @@ public class PlayerPositionLook extends AbstractPacket {
   public static final Map<Integer, Integer> MAPPING = new HashMap<>();
 
   static {
+    MAPPING.put(MINECRAFT_1_7_2, 0x06);
+    MAPPING.put(MINECRAFT_1_7_6, 0x06);
     MAPPING.put(MINECRAFT_1_8, 0x06);
     MAPPING.put(MINECRAFT_1_9, 0x0D);
     MAPPING.put(MINECRAFT_1_9_1, 0x0D);
@@ -51,7 +53,16 @@ public class PlayerPositionLook extends AbstractPacket {
 
   @Override
   public void read(final ByteBuf buf, final ProtocolConstants.Direction direction, final int protocolVersion) {
-    location = new Location(buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readFloat(), buf.readFloat());
+    final double x = buf.readDouble();
+    final double y = buf.readDouble();
+    if (protocolVersion < MINECRAFT_1_8)
+      buf.readDouble(); // head Y
+    final double z = buf.readDouble();
+
+    final float yaw = buf.readFloat();
+    final float pitch = buf.readFloat();
+
+    location = new Location(x, y, z, yaw, pitch);
     onGround = buf.readBoolean();
     BufferUtil.finishBuffer(this, buf, direction, protocolVersion);
   }

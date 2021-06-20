@@ -3,6 +3,7 @@ package de.exceptionflug.protocolize.world;
 import de.exceptionflug.protocolize.api.protocol.ProtocolAPI;
 import de.exceptionflug.protocolize.world.adapter.*;
 import de.exceptionflug.protocolize.world.packet.*;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.protocol.Protocol;
 import net.md_5.bungee.protocol.ProtocolConstants;
@@ -10,6 +11,7 @@ import net.md_5.bungee.protocol.ProtocolConstants;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
 public class WorldModule {
 
@@ -41,12 +43,22 @@ public class WorldModule {
   }
 
   public static void playSound(final ProxiedPlayer proxiedPlayer, final Sound sound, final SoundCategory category, final float volume, final float pitch) {
+    if (!sound.isSupported(proxiedPlayer))
+      // prevents clients from crashing when sending them an unsupported sound
+      return;
+
     final NamedSoundEffect soundEffect = new NamedSoundEffect();
     soundEffect.setCategory(category);
     soundEffect.setPitch(pitch);
     soundEffect.setVolume(volume);
     soundEffect.setSound(sound);
+
     final Location location = getLocation(proxiedPlayer.getUniqueId());
+
+    if (location == null)
+      // haven't received any location packets yet
+      return;
+
     soundEffect.setX(location.getX());
     soundEffect.setY(location.getY());
     soundEffect.setZ(location.getZ());

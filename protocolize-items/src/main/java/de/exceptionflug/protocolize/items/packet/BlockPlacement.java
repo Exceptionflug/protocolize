@@ -21,6 +21,8 @@ public class BlockPlacement extends AbstractPacket {
   public static final Map<Integer, Integer> MAPPING = Maps.newHashMap();
 
   static {
+    MAPPING.put(MINECRAFT_1_7_2, 0x08);
+    MAPPING.put(MINECRAFT_1_7_6, 0x08);
     MAPPING.put(MINECRAFT_1_8, 0x08);
     MAPPING.put(MINECRAFT_1_9, 0x1C);
     MAPPING.put(MINECRAFT_1_9_1, 0x1C);
@@ -53,6 +55,7 @@ public class BlockPlacement extends AbstractPacket {
   private Hand hand;
   private float hitVecX, hitVecY, hitVecZ;
   private boolean insideBlock;
+  private int x, y, z; // 1.7.x
 
   @Deprecated
   private ItemStack stack = ItemStack.NO_DATA;
@@ -79,7 +82,17 @@ public class BlockPlacement extends AbstractPacket {
 
   @Override
   public void read(final ByteBuf buf, final Direction direction, final int protocolVersion) {
-    if (protocolVersion < MINECRAFT_1_14) {
+    if (protocolVersion < MINECRAFT_1_8) {
+      x = buf.readInt();
+      y = buf.readUnsignedByte();
+      z = buf.readInt();
+      buf.readByte(); // direction
+      stack = ItemStack.read(buf, protocolVersion);
+      hand = Hand.MAIN_HAND;
+      hitVecX = buf.readByte() / 15F;
+      hitVecY = buf.readByte() / 15F;
+      hitVecZ = buf.readByte() / 15F;
+    } else if (protocolVersion < MINECRAFT_1_14) {
       position = BlockPosition.read(buf, protocolVersion);
       if (protocolVersion > MINECRAFT_1_8) {
         face = BlockFace.getBlockFace(readVarInt(buf));

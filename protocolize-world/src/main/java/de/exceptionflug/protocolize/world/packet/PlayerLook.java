@@ -16,6 +16,8 @@ public class PlayerLook extends AbstractPacket {
   public static final Map<Integer, Integer> MAPPING = new HashMap<>();
 
   static {
+    MAPPING.put(MINECRAFT_1_7_2, 0x05);
+    MAPPING.put(MINECRAFT_1_7_6, 0x05);
     MAPPING.put(MINECRAFT_1_8, 0x05);
     MAPPING.put(MINECRAFT_1_9, 0x0E);
     MAPPING.put(MINECRAFT_1_9_1, 0x0E);

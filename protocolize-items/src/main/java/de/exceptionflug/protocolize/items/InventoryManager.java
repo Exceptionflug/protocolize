@@ -1,6 +1,7 @@
 package de.exceptionflug.protocolize.items;
 
 import com.google.common.collect.Maps;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.Map;
 import java.util.UUID;
@@ -10,6 +11,10 @@ public final class InventoryManager {
   private final static Map<UUID, Map<String, PlayerInventory>> INVENTORY_MAP = Maps.newHashMap();
 
   private InventoryManager() {
+  }
+
+  public static PlayerInventory getInventory(final ProxiedPlayer player) {
+    return getInventory(player.getUniqueId(), "::MASTER::");
   }
 
   public static PlayerInventory getInventory(final UUID uuid) {
