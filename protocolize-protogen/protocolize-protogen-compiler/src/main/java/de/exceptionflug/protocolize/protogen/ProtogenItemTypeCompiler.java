@@ -442,7 +442,7 @@ public class ProtogenItemTypeCompiler {
             methodVisitor.visitMethodInsn(
                 INVOKEVIRTUAL,
                 "java/util/logging/Logger",
-                "warning",
+                "finest",
                 "(Ljava/lang/String;)V",
                 false);
             Label label17 = new Label();

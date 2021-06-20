@@ -4,10 +4,6 @@
 ![GitHub](https://img.shields.io/github/license/Exceptionflug/Protocolize)
 [![Twitter](https://img.shields.io/twitter/follow/Exceptionflug?label=Twitter&style=social)](https://twitter.com/Exceptionflug)
 
-<p align="center">
-  <img src="https://img.exceptionflug.de/protocolize-banner-small.png"/>
-</p>
-
 # Protocolize
 A lightweight BungeeCord protocol framework supporting items.
 ## Purpose
@@ -31,25 +27,25 @@ This is the full portfolio of protocolize dependencies:
 <dependency>
   <groupId>de.exceptionflug</groupId>
   <artifactId>protocolize-api</artifactId>
-  <version>1.6.7-SNAPSHOT</version>
+  <version>1.7.0-SNAPSHOT</version>
   <scope>provided</scope>
 </dependency>
 <dependency>
   <groupId>de.exceptionflug</groupId>
   <artifactId>protocolize-items</artifactId>
-  <version>1.6.7-SNAPSHOT</version>
+  <version>1.7.0-SNAPSHOT</version>
   <scope>provided</scope>
 </dependency>
 <dependency>
   <groupId>de.exceptionflug</groupId>
   <artifactId>protocolize-inventory</artifactId>
-  <version>1.6.7-SNAPSHOT</version>
+  <version>1.7.0-SNAPSHOT</version>
   <scope>provided</scope>
 </dependency>
 <dependency>
   <groupId>de.exceptionflug</groupId>
   <artifactId>protocolize-world</artifactId>
-  <version>1.6.7-SNAPSHOT</version>
+  <version>1.7.0-SNAPSHOT</version>
   <scope>provided</scope>
 </dependency>
 ```

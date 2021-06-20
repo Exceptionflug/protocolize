@@ -12,8 +12,10 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.unix.Errors.NativeIoException;
 import io.netty.handler.codec.MessageToMessageDecoder;
+import net.md_5.bungee.ServerConnector;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.Connection;
+import net.md_5.bungee.connection.InitialHandler;
 import net.md_5.bungee.protocol.*;
 import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 
@@ -36,7 +38,7 @@ public class ProtocolizeDecoderChannelHandler extends MessageToMessageDecoder<Pa
     connection = ReflectionUtil.getConnection(abstractPacketHandler, ReflectionUtil.serverConnectorClass.isInstance(abstractPacketHandler));
     this.stream = stream;
     try {
-      if (abstractPacketHandler.getClass().getSimpleName().equals("ServerConnector")) {
+      if (abstractPacketHandler instanceof ServerConnector) {
         direction = Direction.TO_CLIENT;
         final Object ch = ReflectionUtil.serverConnectorChannelWrapperField.get(abstractPacketHandler);
         final Channel channel = (Channel) ReflectionUtil.channelWrapperChannelField.get(ch);
@@ -44,7 +46,7 @@ public class ProtocolizeDecoderChannelHandler extends MessageToMessageDecoder<Pa
         protocolVersion = (int) ReflectionUtil.protocolVersionField.get(minecraftDecoder);
         protocol = (Protocol) ReflectionUtil.protocolField.get(minecraftDecoder);
       } else {
-        if (abstractPacketHandler.getClass().getSimpleName().equals("InitialHandler")) {
+        if (abstractPacketHandler instanceof InitialHandler) {
           final Object ch = ReflectionUtil.initialHandlerChannelWrapperField.get(abstractPacketHandler);
           final Channel channel = (Channel) ReflectionUtil.channelWrapperChannelField.get(ch);
           final MinecraftDecoder minecraftDecoder = channel.pipeline().get(MinecraftDecoder.class);
@@ -91,11 +93,16 @@ public class ProtocolizeDecoderChannelHandler extends MessageToMessageDecoder<Pa
           try {
             // Try packet rewrite
             final ByteBuf buf = Unpooled.directBuffer();
-            DefinedPacket.writeVarInt(ProtocolAPI.getPacketRegistration().getPacketID(protocol, direction, protocolVersion, packet.getClass()), buf);
-            packet.write(buf, direction, protocolVersion);
-            msg.buf.resetReaderIndex();
-            buf.resetReaderIndex();
-            ReflectionUtil.bufferField.set(msg, buf);
+            int packetID = ProtocolAPI
+                .getPacketRegistration()
+                .getPacketID(protocol, direction, protocolVersion, packet.getClass());
+            if(packetID != -1) {
+              DefinedPacket.writeVarInt(packetID, buf);
+              packet.write(buf, direction, protocolVersion);
+              msg.buf.resetReaderIndex();
+              buf.resetReaderIndex();
+              ReflectionUtil.bufferField.set(msg, buf);
+            }
           } catch (final UnsupportedOperationException ignored) {
           } // Packet cannot be written
         }

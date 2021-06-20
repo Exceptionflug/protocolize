@@ -58,6 +58,11 @@ public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
     final InventoryClickEvent clickEvent = new InventoryClickEvent(event.getPlayer(), inventory, slot, clickWindow.getWindowId(), clickWindow.getClickType(), clickWindow.getActionNumber());
     ProxyServer.getInstance().getPluginManager().callEvent(clickEvent);
 
+    ClickType clickType = clickEvent.getClickType();
+    if (clickType == null) {
+      clickType = ClickType.LEFT_CLICK;
+      clickEvent.setClickType(ClickType.LEFT_CLICK);
+    }
     if (clickEvent.isCancelled() || inventory.isHomebrew()) {
       event.setCancelled(true);
       if (InventoryModule.getInventory(event.getPlayer().getUniqueId(), clickWindow.getWindowId()) != null) {
@@ -65,10 +70,10 @@ public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
           InventoryModule.sendInventory(event.getPlayer(), inventory);
         else
           InventoryManager.getInventory(event.getPlayer().getUniqueId()).update();
-        if (clickEvent.getClickType().name().startsWith("NUMBER_BUTTON")) {
+        if (clickType.name().startsWith("NUMBER_BUTTON")) {
           event.getPlayer().unsafe().sendPacket(new ConfirmTransaction((byte) clickWindow.getWindowId(), (short) clickWindow.getActionNumber(), false));
-          event.getPlayer().unsafe().sendPacket(new SetSlot((byte) 0, (short) (clickEvent.getClickType().getButton() + 36), new ItemStack(ItemType.NO_DATA)));
-        } else if (clickEvent.getClickType().name().startsWith("SHIFT_")) {
+          event.getPlayer().unsafe().sendPacket(new SetSlot((byte) 0, (short) (clickType.getButton() + 36), new ItemStack(ItemType.NO_DATA)));
+        } else if (clickType.name().startsWith("SHIFT_")) {
           event.getPlayer().unsafe().sendPacket(new ConfirmTransaction((byte) clickWindow.getWindowId(), (short) clickWindow.getActionNumber(), false));
           event.getPlayer().unsafe().sendPacket(new SetSlot((byte) 0, (short) 44, new ItemStack(ItemType.NO_DATA)));
         } else {
@@ -85,8 +90,8 @@ public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
       clickWindow.setWindowId(clickEvent.getWindowId());
       event.markForRewrite();
     }
-    if (clickWindow.getClickType() != clickEvent.getClickType()) {
-      clickWindow.setClickType(clickEvent.getClickType());
+    if (clickWindow.getClickType() != clickType) {
+      clickWindow.setClickType(clickType);
       event.markForRewrite();
     }
     if (slot != clickEvent.getSlot()) {

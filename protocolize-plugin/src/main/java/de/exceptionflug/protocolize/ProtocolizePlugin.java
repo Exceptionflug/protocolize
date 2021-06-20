@@ -30,7 +30,8 @@ public class ProtocolizePlugin extends Plugin {
   public static boolean isExceptionCausedByProtocolize(final Throwable e) {
     final List<StackTraceElement> all = getEverything(e, new ArrayList<>());
     for (final StackTraceElement element : all) {
-      if (element.getClassName().toLowerCase().contains("de.exceptionflug"))
+      if (element.getClassName().toLowerCase().contains("de.exceptionflug")
+              && !element.getClassName().contains("de.exceptionflug.protocolize.netty.ProtocolizeEncoderChannelHandler.exceptionCaught"))
         return true;
     }
     return false;
@@ -84,6 +85,7 @@ public class ProtocolizePlugin extends Plugin {
       final Configuration configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
       InventoryModule.setSpigotInventoryTracking(configuration.getBoolean("experimental.spigot-gui-inventory-tracking"));
       ItemsModule.setSpigotInventoryTracking(configuration.getBoolean("experimental.spigot-player-inventory-tracking"));
+      ItemsModule.setDisableWarnOnUnknownItemMapping(configuration.getBoolean("logging.disable-warn-unknown-mapping"));
       ProtocolAPI.getEventManager().setFireBungeeEvent(configuration.getBoolean("fireBungeeEvents"));
     } catch (final IOException e) {
       ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Failed to load config", e);
