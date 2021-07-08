@@ -446,9 +446,13 @@ public final class ItemStack implements Cloneable {
   }
 
   public ItemStack deepClone() {
+    return deepClone(MINECRAFT_LATEST);
+  }
+
+  public ItemStack deepClone(int protocolVersion) {
     final ByteBuf buf = Unpooled.buffer();
-    write(buf, MINECRAFT_1_13_2);
-    final ItemStack itemStack = read(buf, MINECRAFT_1_13_2);
+    write(buf, protocolVersion);
+    final ItemStack itemStack = read(buf, protocolVersion);
     itemStack.homebrew = homebrew;
     buf.release();
     return itemStack;

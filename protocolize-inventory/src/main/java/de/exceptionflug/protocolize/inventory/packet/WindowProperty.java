@@ -44,6 +44,7 @@ public class WindowProperty extends AbstractPacket {
     MAPPING.put(MINECRAFT_1_16_3, 0x14);
     MAPPING.put(MINECRAFT_1_16_4, 0x14);
     MAPPING.put(MINECRAFT_1_17, 0x15);
+    MAPPING.put(MINECRAFT_1_17_1, 0x15);
   }
 
   private int windowId;

@@ -47,6 +47,7 @@ public class ClickWindow extends AbstractPacket {
     MAPPING.put(MINECRAFT_1_16_3, 0x09);
     MAPPING.put(MINECRAFT_1_16_4, 0x09);
     MAPPING.put(MINECRAFT_1_17, 0x08);
+    MAPPING.put(MINECRAFT_1_17_1, 0x08);
   }
 
   private Map<Short, ItemStack> slotData = new HashMap<Short, ItemStack>();
