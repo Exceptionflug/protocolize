@@ -57,6 +57,11 @@ public class WindowItems extends AbstractPacket {
   /**
    * @since 1.7.1-SNAPSHOT protocol 756
    */
+  private ItemStack cursorItem;
+
+  /**
+   * @since 1.7.1-SNAPSHOT protocol 756
+   */
   private int stateId;
 
   public WindowItems(final short windowId, final List<ItemStack> items) {
@@ -81,6 +86,9 @@ public class WindowItems extends AbstractPacket {
         item = ItemStack.NO_DATA;
       item.write(buf, protocolVersion);
     }
+    if (protocolVersion >= MINECRAFT_1_17_1) {
+      cursorItem.write(buf, protocolVersion);
+    }
   }
 
   @Override
@@ -96,6 +104,9 @@ public class WindowItems extends AbstractPacket {
     for (int i = 0; i < count; i++) {
       final ItemStack read = ItemStack.read(buf, protocolVersion);
       items.add(read);
+    }
+    if (protocolVersion >= MINECRAFT_1_17_1) {
+      cursorItem = ItemStack.read(buf, protocolVersion);
     }
     BufferUtil.finishBuffer(this, buf, direction, protocolVersion);
   }
@@ -151,6 +162,7 @@ public class WindowItems extends AbstractPacket {
     return "WindowItems{" +
             "windowId=" + windowId +
             ", items=" + items +
+            ", stateId=" + stateId +
             '}';
   }
 }

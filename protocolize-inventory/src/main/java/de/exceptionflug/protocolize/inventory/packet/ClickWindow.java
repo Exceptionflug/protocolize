@@ -56,6 +56,11 @@ public class ClickWindow extends AbstractPacket {
   private ClickType clickType;
   private ItemStack itemStack;
 
+  /**
+   * @since 1.7.1-SNAPSHOT protocol 756
+   */
+  private int stateId;
+
   public ClickWindow() {
   }
 
@@ -70,6 +75,9 @@ public class ClickWindow extends AbstractPacket {
   @Override
   public void read(final ByteBuf buf, final Direction direction, final int protocolVersion) {
     windowId = buf.readUnsignedByte();
+    if (protocolVersion >= MINECRAFT_1_17_1) {
+      stateId = readVarInt(buf);
+    }
     slot = buf.readShort();
     final byte button = buf.readByte();
     if (protocolVersion < MINECRAFT_1_17) {
@@ -94,6 +102,9 @@ public class ClickWindow extends AbstractPacket {
   @Override
   public void write(final ByteBuf buf, final Direction direction, final int protocolVersion) {
     buf.writeByte(windowId & 0xFF);
+    if (protocolVersion >= MINECRAFT_1_17_1) {
+      writeVarInt(stateId, buf);
+    }
     buf.writeShort(slot);
     buf.writeByte(clickType.getButton());
     if (protocolVersion < MINECRAFT_1_17) {
