@@ -54,6 +54,11 @@ public class WindowItems extends AbstractPacket {
   private short windowId;
   private List<ItemStack> items = new ArrayList<>();
 
+  /**
+   * @since 1.7.1-SNAPSHOT protocol 756
+   */
+  private int stateId;
+
   public WindowItems(final short windowId, final List<ItemStack> items) {
     this.windowId = windowId;
     this.items = items;
@@ -65,7 +70,12 @@ public class WindowItems extends AbstractPacket {
   @Override
   public void write(final ByteBuf buf, final Direction direction, final int protocolVersion) {
     buf.writeByte(windowId & 0xFF);
-    buf.writeShort(items.size());
+    if (protocolVersion >= MINECRAFT_1_17_1) {
+      writeVarInt(stateId, buf);
+      writeVarInt(items.size(), buf);
+    } else {
+      buf.writeShort(items.size());
+    }
     for (ItemStack item : items) {
       if (item == null)
         item = ItemStack.NO_DATA;
@@ -76,7 +86,13 @@ public class WindowItems extends AbstractPacket {
   @Override
   public void read(final ByteBuf buf, final Direction direction, final int protocolVersion) {
     windowId = buf.readUnsignedByte();
-    final short count = buf.readShort();
+    final int count;
+    if (protocolVersion >= MINECRAFT_1_17_1) {
+      stateId = readVarInt(buf);
+      count = readVarInt(buf);
+    } else {
+      count = buf.readShort();
+    }
     for (int i = 0; i < count; i++) {
       final ItemStack read = ItemStack.read(buf, protocolVersion);
       items.add(read);

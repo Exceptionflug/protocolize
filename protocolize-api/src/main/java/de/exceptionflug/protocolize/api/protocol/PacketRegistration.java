@@ -52,7 +52,7 @@ public final class PacketRegistration {
   }
 
   public boolean isSupportedPlatform() {
-    if (isWaterfall() || isBungeeCord() || isAegis()) {
+    if (isCurrentBungeeCord() || isOutdatedBungeeCord() || isAegis()) {
       return true;
     }
     return false;
@@ -98,12 +98,12 @@ public final class PacketRegistration {
     try {
       final TIntObjectMap<Object> protocols = (TIntObjectMap<Object>) protocolsField.get(getDirectionData(protocol, direction));
       for (final Integer protocolVersion : protocolIdMapping.keySet()) {
-        if (isWaterfall()) {
-          registerPacketWaterfall(protocols, protocolVersion, protocolIdMapping.get(protocolVersion), clazz);
+        if (isCurrentBungeeCord()) {
+          registerPacketCurrent(protocols, protocolVersion, protocolIdMapping.get(protocolVersion), clazz);
         } else if (isAegis()) {
           registerPacketAegis(protocols, protocolVersion, protocolIdMapping.get(protocolVersion), clazz);
         } else {
-          registerPacketBungeeCord(protocols, protocolVersion, protocolIdMapping.get(protocolVersion), clazz);
+          registerPacketOutdated(protocols, protocolVersion, protocolIdMapping.get(protocolVersion), clazz);
         }
       }
       ProxyServer.getInstance().getLogger().info("[Protocolize] Injected custom packet: " + clazz.getName());
@@ -152,11 +152,11 @@ public final class PacketRegistration {
     return null;
   }
 
-  public boolean isWaterfall() {
+  public boolean isCurrentBungeeCord() {
     return protocolDataConstructorsField.getType().equals(Supplier[].class);
   }
 
-  public boolean isBungeeCord() {
+  public boolean isOutdatedBungeeCord() {
     return protocolDataConstructorsField.getType().equals(Constructor[].class);
   }
 
@@ -164,7 +164,7 @@ public final class PacketRegistration {
     return protocolDataConstructorsField.getType().equals(com.google.common.base.Supplier[].class);
   }
 
-  private void registerPacketBungeeCord(final TIntObjectMap<Object> protocols, final int protocolVersion, final int packetId, final Class<?> clazz) throws IllegalAccessException, NoSuchMethodException {
+  private void registerPacketOutdated(final TIntObjectMap<Object> protocols, final int protocolVersion, final int packetId, final Class<?> clazz) throws IllegalAccessException, NoSuchMethodException {
     final Object protocolData = protocols.get(protocolVersion);
     if (protocolData == null) {
       ProxyServer.getInstance().getLogger().warning("[Protocolize] Protocol version " + protocolVersion + " is not supported on this bungeecord version. Skipping registration for that specific version.");
@@ -175,7 +175,7 @@ public final class PacketRegistration {
     ((Constructor[]) protocolDataConstructorsField.get(protocolData))[packetId] = clazz.getDeclaredConstructor();
   }
 
-  private void registerPacketWaterfall(final TIntObjectMap<Object> protocols, final int protocolVersion, final int packetId, final Class<?> clazz) throws IllegalAccessException, NoSuchMethodException {
+  private void registerPacketCurrent(final TIntObjectMap<Object> protocols, final int protocolVersion, final int packetId, final Class<?> clazz) throws IllegalAccessException, NoSuchMethodException {
     final Object protocolData = protocols.get(protocolVersion);
     if (protocolData == null) {
       ProxyServer.getInstance().getLogger().warning("[Protocolize] Protocol version " + protocolVersion + " is not supported on this waterfall version. Skipping registration for that specific version.");

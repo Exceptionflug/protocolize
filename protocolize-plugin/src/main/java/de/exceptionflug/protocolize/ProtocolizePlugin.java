@@ -62,8 +62,8 @@ public class ProtocolizePlugin extends Plugin {
       ProxyServer.getInstance().getLogger().log(Level.SEVERE, "");
       return;
     }
-    if (ProtocolAPI.getPacketRegistration().isWaterfall()) {
-      ProxyServer.getInstance().getLogger().info("[Protocolize] Running on Waterfall. Please report bugs regarding protocolize at https://github.com/Exceptionflug/protocolize/issues");
+    if (ProtocolAPI.getPacketRegistration().isOutdatedBungeeCord()) {
+      ProxyServer.getInstance().getLogger().info("[Protocolize] Running on an old BungeeCord version. Please update your BungeeCord version in order to prevent bugs.");
     }
     if (ProtocolAPI.getPacketRegistration().isAegis()) {
       ProxyServer.getInstance().getLogger().info("[Protocolize] Running on Aegis. Please report bugs regarding protocolize at https://github.com/Exceptionflug/protocolize/issues");
