@@ -57,7 +57,7 @@ public class WindowItems extends AbstractPacket {
   /**
    * @since 1.7.1-SNAPSHOT protocol 756
    */
-  private ItemStack cursorItem;
+  private ItemStack cursorItem = ItemStack.NO_DATA;
 
   /**
    * @since 1.7.1-SNAPSHOT protocol 756
