@@ -1,5 +1,6 @@
 package de.exceptionflug.protocolize.world;
 
+@Deprecated
 public enum Dimension {
 
   NETHER(-1),

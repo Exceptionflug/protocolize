@@ -21,6 +21,7 @@ import de.exceptionflug.protocolize.world.Gamemode;
 import de.exceptionflug.protocolize.world.WorldModule;
 import net.md_5.bungee.api.ProxyServer;
 
+import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1_17;
 import static de.exceptionflug.protocolize.api.util.ProtocolVersions.MINECRAFT_1_8;
 
 public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
@@ -61,10 +62,14 @@ public class ClickWindowAdapter extends PacketAdapter<ClickWindow> {
         else
           InventoryManager.getInventory(event.getPlayer().getUniqueId()).update();
         if (clickType.name().startsWith("NUMBER_BUTTON")) {
-          event.getPlayer().unsafe().sendPacket(new ConfirmTransaction((byte) clickWindow.getWindowId(), (short) clickWindow.getActionNumber(), false));
+          if (ReflectionUtil.getProtocolVersion(event.getPlayer()) < MINECRAFT_1_17) {
+            event.getPlayer().unsafe().sendPacket(new ConfirmTransaction((byte) clickWindow.getWindowId(), (short) clickWindow.getActionNumber(), false));
+          }
           event.getPlayer().unsafe().sendPacket(new SetSlot((byte) 0, (short) (clickType.getButton() + 36), new ItemStack(ItemType.NO_DATA)));
         } else if (clickType.name().startsWith("SHIFT_")) {
-          event.getPlayer().unsafe().sendPacket(new ConfirmTransaction((byte) clickWindow.getWindowId(), (short) clickWindow.getActionNumber(), false));
+          if (ReflectionUtil.getProtocolVersion(event.getPlayer()) < MINECRAFT_1_17) {
+            event.getPlayer().unsafe().sendPacket(new ConfirmTransaction((byte) clickWindow.getWindowId(), (short) clickWindow.getActionNumber(), false));
+          }
           event.getPlayer().unsafe().sendPacket(new SetSlot((byte) 0, (short) 44, new ItemStack(ItemType.NO_DATA)));
         } else {
           event.getPlayer().unsafe().sendPacket(new SetSlot((byte) -1, (short) -1, new ItemStack(ItemType.NO_DATA)));
