@@ -1,0 +1,5 @@
+name: Protocolize
+version: '${project.version}:${build.number}'
+author: Exceptionflug
+
+main: dev.simplix.protocolize.bungee.ProtocolizePlugin
