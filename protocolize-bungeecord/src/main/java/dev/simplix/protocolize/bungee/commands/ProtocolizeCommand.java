@@ -16,7 +16,7 @@ public class ProtocolizeCommand extends Command {
     @Override
     public void execute(final CommandSender commandSender, final String[] args) {
         if (args.length == 0) {
-            commandSender.sendMessage("§eProtocolize version " + plugin.getDescription().getVersion() + " by " + plugin.getDescription().getAuthor());
+            commandSender.sendMessage("§bProtocolize version " + plugin.getDescription().getVersion() + " by " + plugin.getDescription().getAuthor());
         }
     }
 

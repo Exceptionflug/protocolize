@@ -148,7 +148,7 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
         });
         BungeeCordProtocolizePacket packet = (BungeeCordProtocolizePacket) enhancer.create();
         if (!packet.obtainProtocolizePacketClass().equals(c)) {
-            throw new IllegalStateException("Insanity check failed for dynamic enhanced class " + packet.getClass().getName());
+            throw new IllegalStateException("Sanity check failed for dynamic enhanced class " + packet.getClass().getName());
         }
         return packet.getClass();
     }

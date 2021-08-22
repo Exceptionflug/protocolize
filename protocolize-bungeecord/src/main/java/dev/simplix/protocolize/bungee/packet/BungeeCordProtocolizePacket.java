@@ -28,7 +28,7 @@ public class BungeeCordProtocolizePacket extends DefinedPacket {
             throw new RuntimeException("Unable to determine protocolize packet type.");
         }
         try {
-            wrapper = wrapperClass.newInstance();
+            wrapper = wrapperClass.getConstructor().newInstance();
         } catch (Exception exception) {
             throw new RuntimeException("Unable to construct instance of "+ wrapperClass.getName()+". Please ensure that the "
                 + "default constructor is existent and accessible.");
