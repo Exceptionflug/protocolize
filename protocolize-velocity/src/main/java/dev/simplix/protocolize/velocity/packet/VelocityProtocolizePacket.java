@@ -37,7 +37,7 @@ public class VelocityProtocolizePacket implements MinecraftPacket {
     }
 
     public Class<? extends AbstractPacket> obtainProtocolizePacketClass() {
-        return null; // Will be overridden by cglib
+        return null; // Will be overridden by ByteBuddy
     }
 
     @Override

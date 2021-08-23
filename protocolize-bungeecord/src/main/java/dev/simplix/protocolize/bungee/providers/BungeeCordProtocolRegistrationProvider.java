@@ -1,30 +1,30 @@
 package dev.simplix.protocolize.bungee.providers;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import dev.simplix.protocolize.api.PacketDirection;
 import dev.simplix.protocolize.api.Protocol;
 import dev.simplix.protocolize.api.Protocolize;
-import dev.simplix.protocolize.api.packet.AbstractPacket;
 import dev.simplix.protocolize.api.mapping.ProtocolIdMapping;
+import dev.simplix.protocolize.api.packet.AbstractPacket;
 import dev.simplix.protocolize.api.providers.MappingProvider;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.api.util.ReflectionUtil;
 import dev.simplix.protocolize.bungee.packet.BungeeCordProtocolizePacket;
 import dev.simplix.protocolize.bungee.strategy.PacketRegistrationStrategy;
-import dev.simplix.protocolize.bungee.util.ProtocolizeNamingPolicy;
 import gnu.trove.map.TIntObjectMap;
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.implementation.MethodDelegation;
+import net.bytebuddy.implementation.bind.annotation.RuntimeType;
+import net.bytebuddy.matcher.ElementMatchers;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.protocol.DefinedPacket;
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.List;
 import java.util.logging.Level;
 
 /**
@@ -75,7 +75,7 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
     }
 
     @Override
-    public void registerPacket(Collection<ProtocolIdMapping> mappings, Protocol protocol, PacketDirection direction, Class<? extends AbstractPacket> packetClass) {
+    public void registerPacket(List<ProtocolIdMapping> mappings, Protocol protocol, PacketDirection direction, Class<? extends AbstractPacket> packetClass) {
         Preconditions.checkNotNull(mappings, "Mapping cannot be null");
         Preconditions.checkNotNull(protocol, "Protocol cannot be null");
         Preconditions.checkNotNull(direction, "Direction cannot be null");
@@ -138,21 +138,14 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
     }
 
     private Class<? extends DefinedPacket> generateBungeePacket(Class<? extends AbstractPacket> c) {
-        Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(BungeeCordProtocolizePacket.class);
-        enhancer.setNamingPolicy(new ProtocolizeNamingPolicy(c));
-        enhancer.setCallback((MethodInterceptor) (obj, method, args, proxy) -> {
-            if (method.getDeclaringClass().equals(BungeeCordProtocolizePacket.class)
-                    && method.getName().equals("obtainProtocolizePacketClass")) {
-                return c;
-            }
-            return proxy.invokeSuper(obj, args);
-        });
-        BungeeCordProtocolizePacket packet = (BungeeCordProtocolizePacket) enhancer.create();
-        if (!packet.obtainProtocolizePacketClass().equals(c)) {
-            throw new IllegalStateException("Sanity check failed for dynamic enhanced class " + packet.getClass().getName());
-        }
-        return packet.getClass();
+        return new ByteBuddy()
+                .subclass(BungeeCordProtocolizePacket.class)
+                .method(ElementMatchers.named("obtainProtocolizePacketClass"))
+                .intercept(MethodDelegation.to(new ByteBuddyClassInjector(c)))
+                .name("dev.simplix.protocolize.bungee.packets.Generated" + c.getSimpleName() + "Wrapper")
+                .make()
+                .load(getClass().getClassLoader())
+                .getLoaded();
     }
 
     private Object getDirectionData(net.md_5.bungee.protocol.Protocol protocol, PacketDirection direction) {
@@ -170,4 +163,20 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
     public PacketRegistrationStrategy strategy() {
         return strategy;
     }
+
+    public static class ByteBuddyClassInjector {
+
+        private final Class<? extends AbstractPacket> packetClass;
+
+        public ByteBuddyClassInjector(Class<? extends AbstractPacket> packetClass) {
+            this.packetClass = packetClass;
+        }
+
+        @RuntimeType
+        public Class<? extends AbstractPacket> obtainProtocolizePacketClass() {
+            return packetClass;
+        }
+
+    }
+
 }

@@ -17,7 +17,7 @@ public abstract class AbstractProtocolMapping implements ProtocolMapping {
     private final int protocolRangeStart;
     private final int protocolRangeEnd;
 
-    public static ProtocolIdMapping createRangedIdMapping(int start, int end, int id) {
+    public static ProtocolIdMapping rangedIdMapping(int start, int end, int id) {
         return new RangeProtocolIdMapping(start, end, id);
     }
 

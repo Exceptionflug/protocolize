@@ -1,12 +1,14 @@
 package dev.simplix.protocolize.bungee;
 
-import dev.simplix.protocolize.api.Protocol;
+import dev.simplix.protocolize.api.PlatformInitializer;
 import dev.simplix.protocolize.api.Protocolize;
+import dev.simplix.protocolize.api.providers.ModuleProvider;
 import dev.simplix.protocolize.api.providers.PacketListenerProvider;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.bungee.commands.ProtocolizeCommand;
 import dev.simplix.protocolize.bungee.listener.PlayerListener;
 import dev.simplix.protocolize.bungee.netty.NettyPipelineInjector;
+import dev.simplix.protocolize.bungee.providers.BungeeCordModuleProvider;
 import dev.simplix.protocolize.bungee.providers.BungeeCordPacketListenerProvider;
 import dev.simplix.protocolize.bungee.providers.BungeeCordProtocolRegistrationProvider;
 import dev.simplix.protocolize.bungee.strategies.AegisPacketRegistrationStrategy;
@@ -31,6 +33,10 @@ public class ProtocolizePlugin extends Plugin {
     private BungeeCordProtocolRegistrationProvider registrationProvider;
     private boolean supported;
 
+    static {
+        PlatformInitializer.initBungeeCord();
+    }
+
     @Override
     public void onLoad() {
         List<PacketRegistrationStrategy> strategies = new ArrayList<>();
@@ -44,6 +50,7 @@ public class ProtocolizePlugin extends Plugin {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+        Protocolize.registerService(ModuleProvider.class, new BungeeCordModuleProvider());
         Protocolize.registerService(ProtocolRegistrationProvider.class, registrationProvider);
         Protocolize.registerService(PacketListenerProvider.class, new BungeeCordPacketListenerProvider());
     }
@@ -59,6 +66,8 @@ public class ProtocolizePlugin extends Plugin {
 
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new ProtocolizeCommand(this));
         ProxyServer.getInstance().getPluginManager().registerListener(this, new PlayerListener(this));
+
+        ((BungeeCordModuleProvider)Protocolize.getService(ModuleProvider.class)).enableAll();
     }
 
     public static boolean isExceptionCausedByProtocolize(Throwable cause) {

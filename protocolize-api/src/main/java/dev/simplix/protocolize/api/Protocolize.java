@@ -1,8 +1,11 @@
 package dev.simplix.protocolize.api;
 
 import dev.simplix.protocolize.api.providers.MappingProvider;
+import dev.simplix.protocolize.api.providers.ModuleProvider;
 import dev.simplix.protocolize.api.providers.PacketListenerProvider;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
+import dev.simplix.protocolize.data.DataModule;
+import dev.simplix.protocolize.data.ItemType;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class Protocolize {
 
     private static final Map<Class<?>, Object> SERVICES = new ConcurrentHashMap<>();
+    private static Platform platform = Platform.OTHER;
 
     static {
         registerService(MappingProvider.class, new SimpleMappingProvider());
@@ -43,6 +47,9 @@ public final class Protocolize {
      */
     public static <T> void registerService(Class<T> type, T instance) {
         SERVICES.put(type, instance);
+        if (instance instanceof ModuleProvider) {
+            ((ModuleProvider) instance).registerModule(new DataModule());
+        }
     }
 
     /**
@@ -72,6 +79,17 @@ public final class Protocolize {
      */
     public static MappingProvider mappingProvider() {
         return getService(MappingProvider.class);
+    }
+
+    /**
+     * @return The platform Protocolize is running on
+     */
+    public static Platform platform() {
+        return platform;
+    }
+
+    static void platform(Platform platform) {
+        Protocolize.platform = platform;
     }
 
 }

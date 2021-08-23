@@ -27,6 +27,7 @@ import java.util.logging.Level;
 
 public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDecoder<PacketWrapper> {
 
+    private static final String VERSION = ProxyServer.getInstance().getPluginManager().getPlugin("Protocolize").getDescription().getVersion();
     private static final BungeeCordPacketListenerProvider LISTENER_PROVIDER = (BungeeCordPacketListenerProvider) Protocolize.getService(PacketListenerProvider.class);
     private static final ProtocolRegistrationProvider REGISTRATION_PROVIDER = Protocolize.getService(ProtocolRegistrationProvider.class);
     private final AbstractPacketHandler abstractPacketHandler;
@@ -84,13 +85,7 @@ public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDeco
                     try {
                         // Try packet rewrite
                         final ByteBuf buf = Unpooled.directBuffer();
-                        Class<?> packetClass;
-                        if (packet instanceof BungeeCordProtocolizePacket) {
-                            packetClass = ((BungeeCordProtocolizePacket) packet).obtainProtocolizePacketClass();
-                        } else {
-                            packetClass = packet.getClass();
-                        }
-                        int packetID = REGISTRATION_PROVIDER.packetId(packetClass, protocolizeProtocol(),
+                        int packetID = REGISTRATION_PROVIDER.packetId(packet, protocolizeProtocol(),
                                 direction == Direction.TO_CLIENT ? PacketDirection.CLIENTBOUND : PacketDirection.SERVERBOUND,
                                 protocolVersion);
                         if (packetID != -1) {
@@ -136,6 +131,7 @@ public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDeco
         }
         if (ProtocolizePlugin.isExceptionCausedByProtocolize(cause)) {
             ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] === EXCEPTION CAUGHT IN DECODER ===");
+            ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Protocolize " + VERSION);
             ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Stream Direction: " + streamDirection.name());
             ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Connection: " + connection.toString());
             ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Protocol version: " + protocolVersion);

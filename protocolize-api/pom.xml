@@ -16,6 +16,13 @@
 
     <dependencies>
         <dependency>
+            <groupId>dev.simplix</groupId>
+            <artifactId>protocolize-data-bundle</artifactId>
+            <version>${data.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-buffer</artifactId>
             <version>4.1.65.Final</version>
@@ -25,7 +32,13 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>25.1-jre</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-codec</artifactId>
+            <version>4.1.65.Final</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

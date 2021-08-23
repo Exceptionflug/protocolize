@@ -38,9 +38,9 @@
         </dependency>
 
         <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-            <version>3.3.0</version>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>${bytebuddy.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -66,8 +66,8 @@
                         <configuration>
                             <relocations>
                                 <relocation>
-                                    <pattern>net.sf.cglib.proxy</pattern>
-                                    <shadedPattern>dev.simplix.protocolize.bungee.libs.cglib</shadedPattern>
+                                    <pattern>net.bytebuddy</pattern>
+                                    <shadedPattern>dev.simplix.protocolize.bungee.libs.bytebuddy</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -76,5 +76,5 @@
             </plugin>
         </plugins>
     </build>
-    
+
 </project>

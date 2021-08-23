@@ -5,7 +5,7 @@ import dev.simplix.protocolize.api.Protocol;
 import dev.simplix.protocolize.api.packet.AbstractPacket;
 import dev.simplix.protocolize.api.mapping.ProtocolIdMapping;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Date: 20.08.2021
@@ -14,7 +14,7 @@ import java.util.Collection;
  */
 public interface ProtocolRegistrationProvider {
 
-    void registerPacket(Collection<ProtocolIdMapping> mappings, Protocol protocol,
+    void registerPacket(List<ProtocolIdMapping> mappings, Protocol protocol,
                         PacketDirection direction, Class<? extends AbstractPacket> packetClass);
 
     int packetId(Object packet, Protocol protocol, PacketDirection direction, int protocolVersion);

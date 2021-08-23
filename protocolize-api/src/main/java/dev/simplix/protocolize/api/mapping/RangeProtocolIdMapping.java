@@ -20,4 +20,8 @@ public class RangeProtocolIdMapping extends AbstractProtocolMapping implements P
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "(" + protocolRangeStart() + "-" + protocolRangeEnd() + ": " + id + ")";
+    }
 }

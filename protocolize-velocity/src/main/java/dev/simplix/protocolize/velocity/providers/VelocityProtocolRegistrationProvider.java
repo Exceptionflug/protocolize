@@ -13,10 +13,11 @@ import dev.simplix.protocolize.api.packet.AbstractPacket;
 import dev.simplix.protocolize.api.mapping.ProtocolIdMapping;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.velocity.packet.VelocityProtocolizePacket;
-import dev.simplix.protocolize.velocity.util.ProtocolizeNamingPolicy;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.implementation.MethodDelegation;
+import net.bytebuddy.implementation.bind.annotation.RuntimeType;
+import net.bytebuddy.matcher.ElementMatchers;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -49,7 +50,7 @@ public class VelocityProtocolRegistrationProvider implements ProtocolRegistratio
     }
 
     @Override
-    public void registerPacket(Collection<ProtocolIdMapping> mappings, Protocol protocol,
+    public void registerPacket(List<ProtocolIdMapping> mappings, Protocol protocol,
                                PacketDirection direction, Class<? extends AbstractPacket> packetClass) {
         Preconditions.checkNotNull(mappings, "Mapping cannot be null");
         Preconditions.checkNotNull(protocol, "Protocol cannot be null");
@@ -64,16 +65,16 @@ public class VelocityProtocolRegistrationProvider implements ProtocolRegistratio
             if (stateRegistry == null) {
                 return;
             }
+            StateRegistry.PacketRegistry registry = direction == PacketDirection.SERVERBOUND ? stateRegistry.serverbound : stateRegistry.clientbound;
+            Class<? extends MinecraftPacket> velocityPacket = generateVelocityPacket(packetClass);
             List<StateRegistry.PacketMapping> velocityMappings = new ArrayList<>();
             for (ProtocolIdMapping mapping : mappings) {
                 packets.put(new AbstractMap.SimpleEntry<>(direction, packetClass), mapping);
-                velocityMappings.add(createVelocityMapping(mapping));
+                velocityMappings.add(createVelocityMapping(mapping.protocolRangeStart(), 0, mapping.id(), false));
             }
-            StateRegistry.PacketRegistry registry = direction == PacketDirection.SERVERBOUND ? stateRegistry.serverbound : stateRegistry.clientbound;
-            Class<? extends MinecraftPacket> velocityPacket = generateVelocityPacket(packetClass);
             doRegisterPacket(registry, velocityPacket, velocityMappings.toArray(new StateRegistry.PacketMapping[0]));
         } catch (Exception exception) {
-            log.error("Exception while registering packet "+packetClass.getName(), exception);
+            log.error("Exception while registering packet " + packetClass.getName(), exception);
         }
     }
 
@@ -83,16 +84,16 @@ public class VelocityProtocolRegistrationProvider implements ProtocolRegistratio
             try {
                 return velocityPacket.getConstructor().newInstance();
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                throw new RuntimeException("Unable to construct instance of "+velocityPacket.getName(), e);
+                throw new RuntimeException("Unable to construct instance of " + velocityPacket.getName(), e);
             }
         }, mappings);
     }
 
-    private StateRegistry.PacketMapping createVelocityMapping(ProtocolIdMapping mapping) throws InvocationTargetException, InstantiationException, IllegalAccessException {
-        return packetMappingConstructor.newInstance(mapping.id(),
-                ProtocolVersion.getProtocolVersion(mapping.protocolRangeStart()),
-                ProtocolVersion.getProtocolVersion(mapping.protocolRangeEnd()),
-                true);
+    private StateRegistry.PacketMapping createVelocityMapping(int start, int end, int id, boolean lastValid) throws InvocationTargetException, InstantiationException, IllegalAccessException {
+        return packetMappingConstructor.newInstance(id,
+                ProtocolVersion.getProtocolVersion(start),
+                lastValid ? ProtocolVersion.getProtocolVersion(end) : null,
+                false);
     }
 
     @Override
@@ -125,21 +126,14 @@ public class VelocityProtocolRegistrationProvider implements ProtocolRegistratio
     }
 
     private Class<? extends MinecraftPacket> generateVelocityPacket(Class<? extends AbstractPacket> c) {
-        Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(VelocityProtocolizePacket.class);
-        enhancer.setNamingPolicy(new ProtocolizeNamingPolicy(c));
-        enhancer.setCallback((MethodInterceptor) (obj, method, args, proxy) -> {
-            if (method.getDeclaringClass().equals(VelocityProtocolizePacket.class)
-                    && method.getName().equals("obtainProtocolizePacketClass")) {
-                return c;
-            }
-            return proxy.invokeSuper(obj, args);
-        });
-        VelocityProtocolizePacket packet = (VelocityProtocolizePacket) enhancer.create();
-        if (!packet.obtainProtocolizePacketClass().equals(c)) {
-            throw new IllegalStateException("Sanity check failed for dynamic enhanced class " + packet.getClass().getName());
-        }
-        return packet.getClass();
+        return new ByteBuddy()
+                .subclass(VelocityProtocolizePacket.class)
+                .method(ElementMatchers.named("obtainProtocolizePacketClass"))
+                .intercept(MethodDelegation.to(new ByteBuddyClassInjector(c)))
+                .name("dev.simplix.protocolize.velocity.packets.Generated" + c.getSimpleName() + "Wrapper")
+                .make()
+                .load(getClass().getClassLoader())
+                .getLoaded();
     }
 
     private ProtocolUtils.Direction velocityDirection(PacketDirection direction) {
@@ -164,6 +158,21 @@ public class VelocityProtocolRegistrationProvider implements ProtocolRegistratio
                 return StateRegistry.PLAY;
         }
         return null;
+    }
+
+    public static class ByteBuddyClassInjector {
+
+        private final Class<? extends AbstractPacket> packetClass;
+
+        public ByteBuddyClassInjector(Class<? extends AbstractPacket> packetClass) {
+            this.packetClass = packetClass;
+        }
+
+        @RuntimeType
+        public Class<? extends AbstractPacket> obtainProtocolizePacketClass() {
+            return packetClass;
+        }
+
     }
 
 }

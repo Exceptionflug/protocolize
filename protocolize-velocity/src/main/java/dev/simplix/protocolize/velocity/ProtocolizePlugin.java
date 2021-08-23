@@ -9,13 +9,16 @@ import com.velocitypowered.api.plugin.PluginDescription;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.proxy.VelocityServer;
 import com.velocitypowered.proxy.network.ConnectionManager;
+import dev.simplix.protocolize.api.PlatformInitializer;
 import dev.simplix.protocolize.api.Protocolize;
+import dev.simplix.protocolize.api.providers.ModuleProvider;
 import dev.simplix.protocolize.api.providers.PacketListenerProvider;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.velocity.commands.ProtocolizeCommand;
 import dev.simplix.protocolize.velocity.listener.PlayerListener;
 import dev.simplix.protocolize.velocity.netty.ProtocolizeBackendChannelInitializer;
 import dev.simplix.protocolize.velocity.netty.ProtocolizeServerChannelInitializer;
+import dev.simplix.protocolize.velocity.providers.VelocityModuleProvider;
 import dev.simplix.protocolize.velocity.providers.VelocityPacketListenerProvider;
 import dev.simplix.protocolize.velocity.providers.VelocityProtocolRegistrationProvider;
 import org.slf4j.Logger;
@@ -24,6 +27,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Date: 22.08.2021
@@ -35,8 +41,12 @@ public class ProtocolizePlugin {
 
     private final ProxyServer proxyServer;
     private final Logger logger;
-    private String version;
+    private static String version;
     private boolean supported;
+
+    static {
+        PlatformInitializer.initVelocity();
+    }
 
     @Inject
     public ProtocolizePlugin(ProxyServer proxyServer, Logger logger) {
@@ -47,6 +57,7 @@ public class ProtocolizePlugin {
     }
 
     private void initProviders() {
+        Protocolize.registerService(ModuleProvider.class, new VelocityModuleProvider());
         Protocolize.registerService(ProtocolRegistrationProvider.class, new VelocityProtocolRegistrationProvider());
         Protocolize.registerService(PacketListenerProvider.class, new VelocityPacketListenerProvider());
     }
@@ -74,7 +85,7 @@ public class ProtocolizePlugin {
         proxyServer.getCommandManager().register("protocolize", new ProtocolizeCommand(this));
         proxyServer.getEventManager().register(this, new PlayerListener());
 
-        Protocolize.listenerProvider().registerListener(new TestListener());
+        ((VelocityModuleProvider)Protocolize.getService(ModuleProvider.class)).enableAll();
     }
 
     private void swapChannelInitializers() throws ReflectiveOperationException {
@@ -85,12 +96,29 @@ public class ProtocolizePlugin {
         connectionManager.getServerChannelInitializer().set(new ProtocolizeServerChannelInitializer((VelocityServer) proxyServer));
     }
 
-    public String version() {
+    public static String version() {
         return version;
     }
 
     public PluginDescription description() {
         return proxyServer.getPluginManager().getPlugin("protocolize").get().getDescription();
+    }
+
+    public static boolean isExceptionCausedByProtocolize(Throwable cause) {
+        final List<StackTraceElement> all = getEverything(cause, new ArrayList<>());
+        for (final StackTraceElement element : all) {
+            if (element.getClassName().toLowerCase().contains("dev.simplix")
+                    && !element.getClassName().contains("dev.simplix.protocolize.bungee.netty.ProtocolizeEncoderChannelHandler.exceptionCaught"))
+                return true;
+        }
+        return false;
+    }
+
+    private static List<StackTraceElement> getEverything(final Throwable e, List<StackTraceElement> objects) {
+        if (e.getCause() != null)
+            objects = getEverything(e.getCause(), objects);
+        objects.addAll(Arrays.asList(e.getStackTrace()));
+        return objects;
     }
 
 }
