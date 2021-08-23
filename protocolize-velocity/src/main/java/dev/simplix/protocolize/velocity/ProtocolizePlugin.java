@@ -13,6 +13,7 @@ import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.providers.PacketListenerProvider;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.velocity.commands.ProtocolizeCommand;
+import dev.simplix.protocolize.velocity.listener.PlayerListener;
 import dev.simplix.protocolize.velocity.netty.ProtocolizeBackendChannelInitializer;
 import dev.simplix.protocolize.velocity.netty.ProtocolizeServerChannelInitializer;
 import dev.simplix.protocolize.velocity.providers.VelocityPacketListenerProvider;
@@ -46,8 +47,8 @@ public class ProtocolizePlugin {
     }
 
     private void initProviders() {
-        Protocolize.registerService(PacketListenerProvider.class, new VelocityPacketListenerProvider());
         Protocolize.registerService(ProtocolRegistrationProvider.class, new VelocityProtocolRegistrationProvider());
+        Protocolize.registerService(PacketListenerProvider.class, new VelocityPacketListenerProvider());
     }
 
     private String readVersion() {
@@ -71,6 +72,9 @@ public class ProtocolizePlugin {
         logger.info("Swapped channel initializers");
 
         proxyServer.getCommandManager().register("protocolize", new ProtocolizeCommand(this));
+        proxyServer.getEventManager().register(this, new PlayerListener());
+
+        Protocolize.listenerProvider().registerListener(new TestListener());
     }
 
     private void swapChannelInitializers() throws ReflectiveOperationException {

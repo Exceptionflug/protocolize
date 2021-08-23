@@ -5,8 +5,14 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import sun.misc.Unsafe;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +25,31 @@ public final class ReflectionUtil {
 
     private static final Map<Map.Entry<Class<?>, String>, Field> CACHED_FIELDS = new HashMap<>();
     private static final Map<String, Class<?>> CACHED_CLASSES = new HashMap<>();
+    private static final Map<String, Constructor<?>> CACHED_CONSTRUCTORS = new HashMap<>();
+
+    private static MethodHandle modifierSetterMethodHandle;
+
+    static {
+        MethodHandles.Lookup lookup = obtainLookup();
+        try {
+            modifierSetterMethodHandle = lookup.findSetter(Field.class, "modifiers", int.class);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            log.warn("Unable to find java 9+ modifier setter");
+        }
+    }
+
+    private static MethodHandles.Lookup obtainLookup() {
+        try {
+            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+            theUnsafe.setAccessible(true);
+            Unsafe unsafe = (Unsafe) theUnsafe.get(null);
+            Field trustedLookup = MethodHandles.Lookup.class.getDeclaredField("IMPL_LOOKUP");
+            return (MethodHandles.Lookup)unsafe.getObject(unsafe.staticFieldBase(trustedLookup), unsafe.staticFieldOffset(trustedLookup));
+        } catch (NoSuchFieldException | IllegalAccessException ex) {
+            log.warn("Using untrusted lookup");
+            return MethodHandles.lookup();
+        }
+    }
 
     public static Class<?> getClass(String classname) throws ClassNotFoundException {
         Class<?> out = CACHED_CLASSES.get(classname);
@@ -62,6 +93,20 @@ public final class ReflectionUtil {
             field.setAccessible(true);
         }
         return field.get(instance);
+    }
+
+    @SneakyThrows
+    public static void makeNonFinal(Field field) {
+        if (!Modifier.isFinal(field.getModifiers())) {
+            return;
+        }
+        if (modifierSetterMethodHandle == null) {
+            Field modifiers = field(Field.class, "modifiers");
+            modifiers.setAccessible(true);
+            modifiers.set(field, field.getModifiers() & Modifier.FINAL);
+        } else {
+            modifierSetterMethodHandle.invoke(field, field.getModifiers() & Modifier.FINAL);
+        }
     }
 
     public static <T> T fieldValue(@NonNull Field field, @NonNull Object obj) {
@@ -164,5 +209,15 @@ public final class ReflectionUtil {
         Field field = superclass.getDeclaredField(fieldName);
         field.setAccessible(true);
         return field.get(instance);
+    }
+
+    public static Object newInstance(Class<?> clazz) throws InvocationTargetException, InstantiationException, IllegalAccessException {
+        return CACHED_CONSTRUCTORS.computeIfAbsent(clazz.getName(), s -> {
+            try {
+                return clazz.getConstructor();
+            } catch (NoSuchMethodException e) {
+                throw new IllegalArgumentException("The class " + clazz.getName()+" has no accessible default constructor");
+            }
+        }).newInstance();
     }
 }

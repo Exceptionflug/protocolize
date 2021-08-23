@@ -23,7 +23,7 @@ public abstract class AbstractPacketListener<T> {
         this.priority = priority;
     }
 
-    public abstract void packetReceive(PacketReceiveEvent<T> packet);
+    public abstract void packetReceive(PacketReceiveEvent<T> event);
     public abstract void packetSend(PacketSendEvent<T> event);
 
 }

@@ -84,8 +84,13 @@ public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDeco
                     try {
                         // Try packet rewrite
                         final ByteBuf buf = Unpooled.directBuffer();
-                        int packetID = REGISTRATION_PROVIDER.packetId(((BungeeCordProtocolizePacket) packet).obtainProtocolizePacketClass(),
-                                protocolizeProtocol(),
+                        Class<?> packetClass;
+                        if (packet instanceof BungeeCordProtocolizePacket) {
+                            packetClass = ((BungeeCordProtocolizePacket) packet).obtainProtocolizePacketClass();
+                        } else {
+                            packetClass = packet.getClass();
+                        }
+                        int packetID = REGISTRATION_PROVIDER.packetId(packetClass, protocolizeProtocol(),
                                 direction == Direction.TO_CLIENT ? PacketDirection.CLIENTBOUND : PacketDirection.SERVERBOUND,
                                 protocolVersion);
                         if (packetID != -1) {

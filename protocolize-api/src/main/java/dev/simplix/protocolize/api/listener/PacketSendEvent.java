@@ -31,4 +31,8 @@ public class PacketSendEvent<T> {
         return (S) server;
     }
 
+    public boolean anonymous() {
+        return player == null && server == null;
+    }
+
 }

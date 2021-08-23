@@ -21,5 +21,6 @@ public class ProtocolizeServerChannelInitializer extends ServerChannelInitialize
     protected void initChannel(Channel ch) {
         super.initChannel(ch);
         ch.pipeline().addBefore(Connections.HANDLER, "protocolize2-decoder", new ProtocolizeDecoderChannelHandler(Direction.UPSTREAM));
+        ch.pipeline().addLast("protocolize2-encoder", new ProtocolizeEncoderChannelHandler(Direction.UPSTREAM));
     }
 }

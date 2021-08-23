@@ -2,6 +2,7 @@ package dev.simplix.protocolize.velocity.netty;
 
 import com.velocitypowered.proxy.VelocityServer;
 import com.velocitypowered.proxy.network.BackendChannelInitializer;
+import com.velocitypowered.proxy.network.Connections;
 import dev.simplix.protocolize.api.Direction;
 import io.netty.channel.Channel;
 
@@ -20,5 +21,6 @@ public class ProtocolizeBackendChannelInitializer extends BackendChannelInitiali
     protected void initChannel(Channel ch) throws Exception {
         super.initChannel(ch);
         ch.pipeline().addLast("protocolize2-decoder", new ProtocolizeDecoderChannelHandler(Direction.DOWNSTREAM));
+        ch.pipeline().addLast("protocolize2-encoder", new ProtocolizeEncoderChannelHandler(Direction.DOWNSTREAM));
     }
 }

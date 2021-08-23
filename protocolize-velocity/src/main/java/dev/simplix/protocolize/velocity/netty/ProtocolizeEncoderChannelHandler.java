@@ -10,34 +10,33 @@ import com.velocitypowered.proxy.connection.client.InitialInboundConnection;
 import com.velocitypowered.proxy.protocol.MinecraftPacket;
 import com.velocitypowered.proxy.protocol.ProtocolUtils;
 import com.velocitypowered.proxy.protocol.StateRegistry;
+import com.velocitypowered.proxy.protocol.packet.KeepAlive;
 import dev.simplix.protocolize.api.Direction;
 import dev.simplix.protocolize.api.PacketDirection;
 import dev.simplix.protocolize.api.Protocol;
 import dev.simplix.protocolize.api.Protocolize;
-import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.api.util.ReflectionUtil;
-import dev.simplix.protocolize.velocity.packet.VelocityProtocolizePacket;
 import dev.simplix.protocolize.velocity.providers.VelocityPacketListenerProvider;
 import dev.simplix.protocolize.velocity.util.ConversionUtils;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToMessageDecoder;
+import io.netty.handler.codec.MessageToMessageEncoder;
 import io.netty.util.ReferenceCountUtil;
-import lombok.Getter;
-import lombok.experimental.Accessors;
 
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
-@Getter
-@Accessors(fluent = true)
-public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDecoder<MinecraftPacket> {
+/**
+ * Date: 23.08.2021
+ *
+ * @author Exceptionflug
+ */
+public final class ProtocolizeEncoderChannelHandler extends MessageToMessageEncoder<MinecraftPacket> {
 
     private static final VelocityPacketListenerProvider LISTENER_PROVIDER = (VelocityPacketListenerProvider) Protocolize.listenerProvider();
-    private static final ProtocolRegistrationProvider REGISTRATION_PROVIDER = Protocolize.protocolRegistration();
     private static final Field CONNECTION_FIELD = ReflectionUtil.fieldOrNull(InitialInboundConnection.class, "connection", true);
+
     private final Direction streamDirection;
     private InboundConnection inboundConnection;
     private ServerConnection serverConnection;
@@ -45,7 +44,7 @@ public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDeco
     private Protocol protocol;
     private ProtocolVersion protocolVersion;
 
-    public ProtocolizeDecoderChannelHandler(Direction streamDirection) {
+    public ProtocolizeEncoderChannelHandler(Direction streamDirection) {
         this.streamDirection = streamDirection;
     }
 
@@ -75,20 +74,13 @@ public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDeco
     }
 
     @Override
-    protected void decode(ChannelHandlerContext channelHandlerContext, MinecraftPacket minecraftPacket, List<Object> list) throws Exception {
-        if (minecraftPacket != null) {
+    protected void encode(ChannelHandlerContext ctx, MinecraftPacket msg, List<Object> out) throws Exception {
+        if (msg != null) {
             try {
-                if (serverConnection == null && inboundConnection == null) {
-                    return;
-                }
-                Map.Entry<MinecraftPacket, Boolean> entry = LISTENER_PROVIDER.handleInboundPacket(minecraftPacket, serverConnection, inboundConnection);
-                if (entry.getKey() == null) {
-                    return;
-                }
-                minecraftPacket = entry.getKey();
+                msg = LISTENER_PROVIDER.handleOutboundPacket(msg, inboundConnection, serverConnection);
+                out.add(Objects.requireNonNullElseGet(msg, KeepAlive::new));
             } finally {
-                ReferenceCountUtil.retain(minecraftPacket);
-                list.add(minecraftPacket);
+                ReferenceCountUtil.retain(msg);
             }
         }
     }
