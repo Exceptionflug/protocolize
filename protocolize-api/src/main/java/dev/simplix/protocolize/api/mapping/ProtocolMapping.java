@@ -1,4 +1,4 @@
-package dev.simplix.protocolize.api.protocol;
+package dev.simplix.protocolize.api.mapping;
 
 /**
  * Date: 20.08.2021

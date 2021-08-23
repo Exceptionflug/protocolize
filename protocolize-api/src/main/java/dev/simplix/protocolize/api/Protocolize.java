@@ -1,5 +1,6 @@
 package dev.simplix.protocolize.api;
 
+import dev.simplix.protocolize.api.providers.MappingProvider;
 import dev.simplix.protocolize.api.providers.PacketListenerProvider;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 
@@ -17,6 +18,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class Protocolize {
 
     private static final Map<Class<?>, Object> SERVICES = new ConcurrentHashMap<>();
+
+    static {
+        registerService(MappingProvider.class, new SimpleMappingProvider());
+    }
 
     /**
      * This returns an instance of a registered service.
@@ -59,4 +64,14 @@ public final class Protocolize {
     public static PacketListenerProvider listenerProvider() {
         return getService(PacketListenerProvider.class);
     }
+
+    /**
+     * This will return the instance of {@link MappingProvider}. Calling this method is similar to
+     * {@code Protocolize.getService(MappingProvider.class);}
+     * @return The instance of {@link MappingProvider}
+     */
+    public static MappingProvider mappingProvider() {
+        return getService(MappingProvider.class);
+    }
+
 }
