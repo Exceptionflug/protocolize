@@ -11,13 +11,16 @@ import com.velocitypowered.proxy.VelocityServer;
 import com.velocitypowered.proxy.network.ConnectionManager;
 import dev.simplix.protocolize.api.PlatformInitializer;
 import dev.simplix.protocolize.api.Protocolize;
+import dev.simplix.protocolize.api.providers.ComponentConverterProvider;
 import dev.simplix.protocolize.api.providers.ModuleProvider;
 import dev.simplix.protocolize.api.providers.PacketListenerProvider;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
+import dev.simplix.protocolize.data.Sound;
 import dev.simplix.protocolize.velocity.commands.ProtocolizeCommand;
 import dev.simplix.protocolize.velocity.listener.PlayerListener;
 import dev.simplix.protocolize.velocity.netty.ProtocolizeBackendChannelInitializer;
 import dev.simplix.protocolize.velocity.netty.ProtocolizeServerChannelInitializer;
+import dev.simplix.protocolize.velocity.providers.VelocityComponentConverterProvider;
 import dev.simplix.protocolize.velocity.providers.VelocityModuleProvider;
 import dev.simplix.protocolize.velocity.providers.VelocityPacketListenerProvider;
 import dev.simplix.protocolize.velocity.providers.VelocityProtocolRegistrationProvider;
@@ -57,6 +60,7 @@ public class ProtocolizePlugin {
     }
 
     private void initProviders() {
+        Protocolize.registerService(ComponentConverterProvider.class, new VelocityComponentConverterProvider());
         Protocolize.registerService(ModuleProvider.class, new VelocityModuleProvider());
         Protocolize.registerService(ProtocolRegistrationProvider.class, new VelocityProtocolRegistrationProvider());
         Protocolize.registerService(PacketListenerProvider.class, new VelocityPacketListenerProvider());
