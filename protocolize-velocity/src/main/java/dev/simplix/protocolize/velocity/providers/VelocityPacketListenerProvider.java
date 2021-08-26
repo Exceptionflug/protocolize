@@ -34,7 +34,7 @@ import java.util.function.Supplier;
  * @author Exceptionflug
  */
 @Slf4j
-public class VelocityPacketListenerProvider implements PacketListenerProvider {
+public final class VelocityPacketListenerProvider implements PacketListenerProvider {
 
     private final ProtocolRegistrationProvider registrationProvider = Protocolize.protocolRegistration();
     private final List<AbstractPacketListener<?>> listeners = new ArrayList<>();

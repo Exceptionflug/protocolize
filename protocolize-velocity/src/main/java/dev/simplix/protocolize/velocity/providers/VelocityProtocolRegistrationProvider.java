@@ -31,7 +31,7 @@ import java.util.function.Supplier;
  * @author Exceptionflug
  */
 @Slf4j
-public class VelocityProtocolRegistrationProvider implements ProtocolRegistrationProvider {
+public final class VelocityProtocolRegistrationProvider implements ProtocolRegistrationProvider {
 
     private final Multimap<Map.Entry<PacketDirection, Class<? extends AbstractPacket>>, ProtocolIdMapping> packets = ArrayListMultimap.create();
 
@@ -123,6 +123,21 @@ public class VelocityProtocolRegistrationProvider implements ProtocolRegistratio
             return registry.getPacketId((MinecraftPacket) packet);
         }
         return -1;
+    }
+
+    @Override
+    public Object createPacket(Class<? extends AbstractPacket> clazz, Protocol protocol, PacketDirection direction, int protocolVersion) {
+        ProtocolUtils.Direction velocityDirection = velocityDirection(direction);
+        if (velocityDirection == null) {
+            return -1;
+        }
+        StateRegistry stateRegistry = velocityProtocol(protocol);
+        if (stateRegistry == null) {
+            return -1;
+        }
+        StateRegistry.PacketRegistry.ProtocolRegistry registry = velocityDirection.getProtocolRegistry(stateRegistry,
+                ProtocolVersion.getProtocolVersion(protocolVersion));
+        return registry.createPacket(protocolVersion);
     }
 
     private Class<? extends MinecraftPacket> generateVelocityPacket(Class<? extends AbstractPacket> c) {

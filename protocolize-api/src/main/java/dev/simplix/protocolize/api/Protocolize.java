@@ -1,9 +1,6 @@
 package dev.simplix.protocolize.api;
 
-import dev.simplix.protocolize.api.providers.MappingProvider;
-import dev.simplix.protocolize.api.providers.ModuleProvider;
-import dev.simplix.protocolize.api.providers.PacketListenerProvider;
-import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
+import dev.simplix.protocolize.api.providers.*;
 import dev.simplix.protocolize.data.DataModule;
 import dev.simplix.protocolize.data.ItemType;
 
@@ -79,6 +76,15 @@ public final class Protocolize {
      */
     public static MappingProvider mappingProvider() {
         return getService(MappingProvider.class);
+    }
+
+    /**
+     * This will return the instance of {@link ProtocolizePlayerProvider}. Calling this method is similar to
+     * {@code Protocolize.getService(ProtocolizePlayerProvider.class);}
+     * @return The instance of {@link ProtocolizePlayerProvider}
+     */
+    public static ProtocolizePlayerProvider playerProvider() {
+        return getService(ProtocolizePlayerProvider.class);
     }
 
     /**

@@ -19,4 +19,6 @@ public interface ProtocolRegistrationProvider {
 
     int packetId(Object packet, Protocol protocol, PacketDirection direction, int protocolVersion);
 
+    Object createPacket(Class<? extends AbstractPacket> clazz, Protocol protocol, PacketDirection direction, int protocolVersion);
+
 }

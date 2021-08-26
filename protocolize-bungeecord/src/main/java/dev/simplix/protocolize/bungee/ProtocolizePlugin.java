@@ -2,17 +2,11 @@ package dev.simplix.protocolize.bungee;
 
 import dev.simplix.protocolize.api.PlatformInitializer;
 import dev.simplix.protocolize.api.Protocolize;
-import dev.simplix.protocolize.api.providers.ComponentConverterProvider;
-import dev.simplix.protocolize.api.providers.ModuleProvider;
-import dev.simplix.protocolize.api.providers.PacketListenerProvider;
-import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
+import dev.simplix.protocolize.api.providers.*;
 import dev.simplix.protocolize.bungee.commands.ProtocolizeCommand;
 import dev.simplix.protocolize.bungee.listener.PlayerListener;
 import dev.simplix.protocolize.bungee.netty.NettyPipelineInjector;
-import dev.simplix.protocolize.bungee.providers.BungeeCordComponentConverterProvider;
-import dev.simplix.protocolize.bungee.providers.BungeeCordModuleProvider;
-import dev.simplix.protocolize.bungee.providers.BungeeCordPacketListenerProvider;
-import dev.simplix.protocolize.bungee.providers.BungeeCordProtocolRegistrationProvider;
+import dev.simplix.protocolize.bungee.providers.*;
 import dev.simplix.protocolize.bungee.strategies.AegisPacketRegistrationStrategy;
 import dev.simplix.protocolize.bungee.strategies.BungeeCordPacketRegistrationStrategy;
 import dev.simplix.protocolize.bungee.strategies.LegacyBungeeCordPacketRegistrationStrategy;
@@ -53,6 +47,7 @@ public class ProtocolizePlugin extends Plugin {
             exception.printStackTrace();
         }
         Protocolize.registerService(ComponentConverterProvider.class, new BungeeCordComponentConverterProvider());
+        Protocolize.registerService(ProtocolizePlayerProvider.class, new BungeeCordProtocolizePlayerProvider());
         Protocolize.registerService(ModuleProvider.class, new BungeeCordModuleProvider());
         Protocolize.registerService(ProtocolRegistrationProvider.class, registrationProvider);
         Protocolize.registerService(PacketListenerProvider.class, new BungeeCordPacketListenerProvider());

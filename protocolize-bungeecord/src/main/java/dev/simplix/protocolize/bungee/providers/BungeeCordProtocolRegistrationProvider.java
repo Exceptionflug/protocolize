@@ -12,6 +12,7 @@ import dev.simplix.protocolize.api.util.ReflectionUtil;
 import dev.simplix.protocolize.bungee.packet.BungeeCordProtocolizePacket;
 import dev.simplix.protocolize.bungee.strategy.PacketRegistrationStrategy;
 import gnu.trove.map.TIntObjectMap;
+import lombok.SneakyThrows;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.implementation.MethodDelegation;
 import net.bytebuddy.implementation.bind.annotation.RuntimeType;
@@ -37,7 +38,7 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
     private final MappingProvider mappingProvider = Protocolize.mappingProvider();
     private PacketRegistrationStrategy strategy = null;
 
-    private Method getIdMethod;
+    private Method getIdMethod, createPacketMethod;
     private Field toServerField, toClientField, protocolsField;
 
     {
@@ -51,6 +52,8 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
             protocolsField.setAccessible(true);
             getIdMethod = directionDataClass.getDeclaredMethod("getId", Class.class, int.class);
             getIdMethod.setAccessible(true);
+            createPacketMethod = directionDataClass.getDeclaredMethod("createPacket", int.class, int.class);
+            createPacketMethod.setAccessible(true);
 
             toServerField = net.md_5.bungee.protocol.Protocol.class.getDeclaredField("TO_SERVER");
             toServerField.setAccessible(true);
@@ -121,6 +124,16 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
             }
         }
         return -1;
+    }
+
+    @SneakyThrows
+    @Override
+    public Object createPacket(Class<? extends AbstractPacket> clazz, Protocol protocol, PacketDirection direction, int protocolVersion) {
+        Preconditions.checkNotNull(protocol, "Protocol cannot be null");
+        Preconditions.checkNotNull(direction, "Direction cannot be null");
+        Preconditions.checkNotNull(clazz, "Clazz cannot be null");
+        Object directionData = getDirectionData(bungeeCordProtocol(protocol), direction);
+        return createPacketMethod.invoke(directionData, getIdMethod.invoke(directionData, clazz, protocolVersion), protocolVersion);
     }
 
     private net.md_5.bungee.protocol.Protocol bungeeCordProtocol(Protocol protocol) {

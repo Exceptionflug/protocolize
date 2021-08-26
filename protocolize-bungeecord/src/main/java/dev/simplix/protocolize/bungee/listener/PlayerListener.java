@@ -1,9 +1,12 @@
 package dev.simplix.protocolize.bungee.listener;
 
 import dev.simplix.protocolize.api.Direction;
+import dev.simplix.protocolize.api.Protocolize;
+import dev.simplix.protocolize.api.providers.ProtocolizePlayerProvider;
 import dev.simplix.protocolize.bungee.ProtocolizePlugin;
 import dev.simplix.protocolize.bungee.netty.ProtocolizeDecoderChannelHandler;
 import dev.simplix.protocolize.bungee.netty.ProtocolizeEncoderChannelHandler;
+import dev.simplix.protocolize.bungee.providers.BungeeCordProtocolizePlayerProvider;
 import dev.simplix.protocolize.bungee.util.ReflectionUtil;
 import net.md_5.bungee.api.event.*;
 import net.md_5.bungee.api.plugin.Listener;
@@ -13,6 +16,7 @@ import net.md_5.bungee.protocol.AbstractPacketHandler;
 
 public class PlayerListener implements Listener {
 
+    private final BungeeCordProtocolizePlayerProvider playerProvider = (BungeeCordProtocolizePlayerProvider) Protocolize.playerProvider();
     private final ProtocolizePlugin plugin;
 
     public PlayerListener(final ProtocolizePlugin plugin) {
@@ -46,6 +50,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerDisconnectEvent e) {
+        playerProvider.playerDisconnect(e.getPlayer().getUniqueId());
     }
 
 }
