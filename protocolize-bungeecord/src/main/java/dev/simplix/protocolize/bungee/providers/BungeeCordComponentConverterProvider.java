@@ -36,7 +36,7 @@ public final class BungeeCordComponentConverterProvider implements ComponentConv
 
         @Override
         public BaseComponent[] fromLegacyText(String legacyText) {
-            return TextComponent.fromLegacyText(legacyText);
+            return TextComponent.fromLegacyText("§r" + legacyText);
         }
 
         @Override

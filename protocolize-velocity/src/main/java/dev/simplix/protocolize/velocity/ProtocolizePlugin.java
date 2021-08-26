@@ -12,7 +12,6 @@ import com.velocitypowered.proxy.network.ConnectionManager;
 import dev.simplix.protocolize.api.PlatformInitializer;
 import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.providers.*;
-import dev.simplix.protocolize.data.Sound;
 import dev.simplix.protocolize.velocity.commands.ProtocolizeCommand;
 import dev.simplix.protocolize.velocity.listener.PlayerListener;
 import dev.simplix.protocolize.velocity.netty.ProtocolizeBackendChannelInitializer;

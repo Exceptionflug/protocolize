@@ -129,15 +129,21 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
     public Object createPacket(Class<? extends AbstractPacket> clazz, Protocol protocol, PacketDirection direction, int protocolVersion) {
         ProtocolUtils.Direction velocityDirection = velocityDirection(direction);
         if (velocityDirection == null) {
-            return -1;
+            return null;
         }
         StateRegistry stateRegistry = velocityProtocol(protocol);
         if (stateRegistry == null) {
-            return -1;
+            return null;
         }
         StateRegistry.PacketRegistry.ProtocolRegistry registry = velocityDirection.getProtocolRegistry(stateRegistry,
                 ProtocolVersion.getProtocolVersion(protocolVersion));
-        return registry.createPacket(protocolVersion);
+        Collection<ProtocolIdMapping> protocolIdMappings = packets.get(new AbstractMap.SimpleEntry<>(direction, clazz));
+        for (ProtocolIdMapping mapping : protocolIdMappings) {
+            if (mapping.inRange(protocolVersion)) {
+                return registry.createPacket(mapping.id());
+            }
+        }
+        return null;
     }
 
     private Class<? extends MinecraftPacket> generateVelocityPacket(Class<? extends AbstractPacket> c) {

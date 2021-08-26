@@ -42,7 +42,7 @@ public final class VelocityComponentConverterProvider implements ComponentConver
 
         @Override
         public Component fromLegacyText(String legacyText) {
-            return legacyComponentSerializer.deserialize(legacyText);
+            return legacyComponentSerializer.deserialize("§r" + legacyText);
         }
 
         @Override

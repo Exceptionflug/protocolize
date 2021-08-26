@@ -79,10 +79,11 @@ public class PlayerInventory {
 
     public void update() {
         for (int i = 0; i <= 44; i++) {
-            final ItemStack stack = item(i);
-            player.sendPacket(new SetSlot((byte) 0, (short) i, stack == null ? ItemStack.NO_DATA : stack, 0));
+            ItemStack stack = item(i);
+            if (stack != null) {
+                player.sendPacket(new SetSlot((byte) 0, (short) i, stack, 0));
+            }
         }
-
     }
 
 }
