@@ -87,7 +87,9 @@ public class WindowItems extends AbstractPacket {
       item.write(buf, protocolVersion);
     }
     if (protocolVersion >= MINECRAFT_1_17_1) {
-      cursorItem.write(buf, protocolVersion);
+      if (cursorItem != null) {
+        cursorItem.write(buf, protocolVersion);
+      }
     }
   }
 
