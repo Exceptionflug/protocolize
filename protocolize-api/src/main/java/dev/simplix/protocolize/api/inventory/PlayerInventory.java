@@ -1,7 +1,7 @@
 package dev.simplix.protocolize.api.inventory;
 
+import dev.simplix.protocolize.api.item.ItemStack;
 import dev.simplix.protocolize.api.player.ProtocolizePlayer;
-import dev.simplix.protocolize.data.item.ItemStack;
 import dev.simplix.protocolize.data.packets.HeldItemChange;
 import dev.simplix.protocolize.data.packets.SetSlot;
 import lombok.Getter;

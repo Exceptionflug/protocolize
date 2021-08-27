@@ -1,8 +1,17 @@
 package dev.simplix.protocolize.api.player;
 
+import com.google.common.collect.Lists;
+import dev.simplix.protocolize.api.inventory.Inventory;
 import dev.simplix.protocolize.api.inventory.PlayerInventory;
+import dev.simplix.protocolize.api.item.ItemStack;
+import dev.simplix.protocolize.data.packets.CloseWindow;
+import dev.simplix.protocolize.data.packets.OpenWindow;
+import dev.simplix.protocolize.data.packets.WindowItems;
 
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Date: 26.08.2021
@@ -18,5 +27,66 @@ public interface ProtocolizePlayer {
     void sendPacket(Object packet);
 
     void sendPacketToServer(Object packet);
+
+    Map<Integer, Inventory> registeredInventories();
+
+    int generateWindowId();
+
+    int protocolVersion();
+
+    default void registerInventory(int windowId, Inventory inventory) {
+        if (inventory == null) {
+            registeredInventories().remove(windowId);
+        } else {
+            registeredInventories().put(windowId, inventory);
+        }
+    }
+
+    default void closeInventory() {
+        registeredInventories().forEach((id, it) -> {
+            sendPacket(new CloseWindow(id));
+        });
+        registeredInventories().clear();
+    }
+
+    default void openInventory(Inventory inventory) {
+        boolean alreadyOpen = false;
+        int windowId = -1;
+        for (Integer id : registeredInventories().keySet()) {
+            Inventory val = registeredInventories().get(id);
+            if (val == inventory) {
+                alreadyOpen = true;
+                break;
+            }
+        }
+
+        if (registeredInventories().containsValue(inventory)) {
+            for (Integer id : registeredInventories().keySet()) {
+                Inventory val = registeredInventories().get(id);
+                if (val == inventory) {
+                    windowId = id;
+                    break;
+                }
+            }
+            if (windowId == -1) {
+                windowId = generateWindowId();
+                registerInventory(windowId, inventory);
+            }
+        } else {
+            windowId = generateWindowId();
+            registerInventory(windowId, inventory);
+        }
+
+        if (!alreadyOpen)
+            sendPacket(new OpenWindow(windowId, inventory.type(), inventory.titleJson()));
+        int protocolVersion;
+        try {
+            protocolVersion = protocolVersion();
+        } catch (Throwable t) {
+            protocolVersion = 47;
+        }
+        List<ItemStack> items = Lists.newArrayList(inventory.itemsIndexed(protocolVersion));
+        sendPacket(new WindowItems((short) windowId, items, 0));
+    }
 
 }
