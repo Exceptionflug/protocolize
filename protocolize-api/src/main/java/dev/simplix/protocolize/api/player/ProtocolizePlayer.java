@@ -1,17 +1,21 @@
 package dev.simplix.protocolize.api.player;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import dev.simplix.protocolize.api.BlockPosition;
+import dev.simplix.protocolize.api.SoundCategory;
 import dev.simplix.protocolize.api.inventory.Inventory;
 import dev.simplix.protocolize.api.inventory.PlayerInventory;
 import dev.simplix.protocolize.api.item.ItemStack;
+import dev.simplix.protocolize.data.Sound;
 import dev.simplix.protocolize.data.packets.CloseWindow;
+import dev.simplix.protocolize.data.packets.NamedSoundEffect;
 import dev.simplix.protocolize.data.packets.OpenWindow;
 import dev.simplix.protocolize.data.packets.WindowItems;
 
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Date: 26.08.2021
@@ -20,9 +24,9 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public interface ProtocolizePlayer {
 
-    PlayerInventory proxyInventory();
-
     UUID uniqueId();
+
+    PlayerInventory proxyInventory();
 
     void sendPacket(Object packet);
 
@@ -33,6 +37,12 @@ public interface ProtocolizePlayer {
     int generateWindowId();
 
     int protocolVersion();
+
+    <T> T handle();
+
+    default void playSound(BlockPosition position, Sound sound, SoundCategory category, float volume, float pitch) {
+        sendPacket(new NamedSoundEffect(sound, category, position.x(), position.y(), position.z(), volume, pitch));
+    }
 
     default void registerInventory(int windowId, Inventory inventory) {
         if (inventory == null) {
@@ -58,6 +68,11 @@ public interface ProtocolizePlayer {
                 alreadyOpen = true;
                 break;
             }
+        }
+
+        // Close all inventories if not opened
+        if (!alreadyOpen) {
+            closeInventory();
         }
 
         if (registeredInventories().containsValue(inventory)) {

@@ -13,6 +13,7 @@ import dev.simplix.protocolize.api.PlatformInitializer;
 import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.providers.*;
 import dev.simplix.protocolize.velocity.commands.ProtocolizeCommand;
+import dev.simplix.protocolize.velocity.commands.TestCommand;
 import dev.simplix.protocolize.velocity.listener.PlayerListener;
 import dev.simplix.protocolize.velocity.netty.ProtocolizeBackendChannelInitializer;
 import dev.simplix.protocolize.velocity.netty.ProtocolizeServerChannelInitializer;
@@ -81,6 +82,7 @@ public class ProtocolizePlugin {
         logger.info("Swapped channel initializers");
 
         proxyServer.getCommandManager().register("protocolize", new ProtocolizeCommand(this));
+        proxyServer.getCommandManager().register("test", new TestCommand());
         proxyServer.getEventManager().register(this, new PlayerListener());
 
         ((VelocityModuleProvider)Protocolize.getService(ModuleProvider.class)).enableAll();

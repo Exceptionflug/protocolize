@@ -16,6 +16,7 @@ import dev.simplix.protocolize.api.listener.PacketSendEvent;
 import dev.simplix.protocolize.api.packet.AbstractPacket;
 import dev.simplix.protocolize.api.providers.PacketListenerProvider;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
+import dev.simplix.protocolize.api.providers.ProtocolizePlayerProvider;
 import dev.simplix.protocolize.api.util.ReflectionUtil;
 import dev.simplix.protocolize.velocity.packet.VelocityProtocolizePacket;
 import io.netty.util.collection.IntObjectMap;
@@ -36,6 +37,7 @@ import java.util.function.Supplier;
 @Slf4j
 public final class VelocityPacketListenerProvider implements PacketListenerProvider {
 
+    private static final ProtocolizePlayerProvider PLAYER_PROVIDER = Protocolize.playerProvider();
     private final ProtocolRegistrationProvider registrationProvider = Protocolize.protocolRegistration();
     private final List<AbstractPacketListener<?>> listeners = new ArrayList<>();
 
@@ -163,11 +165,12 @@ public final class VelocityPacketListenerProvider implements PacketListenerProvi
 
     private PacketReceiveEvent<?> createReceiveEvent(InboundConnection connection, ServerConnection serverConnection, Object packet) {
         if (serverConnection != null) {
-            return new PacketReceiveEvent<>(serverConnection.getPlayer(), serverConnection.getServerInfo(), packet, false, false);
+            Player player = serverConnection.getPlayer();
+            return new PacketReceiveEvent<>(player != null ? PLAYER_PROVIDER.player(player.getUniqueId()) : null, serverConnection.getServerInfo(), packet, false, false);
         } else {
             Player player = (Player) connection;
             ServerInfo info = player.getCurrentServer().isPresent() ? player.getCurrentServer().get().getServerInfo() : null;
-            return new PacketReceiveEvent<>(player, info, packet, false, false);
+            return new PacketReceiveEvent<>(PLAYER_PROVIDER.player(player.getUniqueId()), info, packet, false, false);
         }
     }
 
@@ -227,11 +230,12 @@ public final class VelocityPacketListenerProvider implements PacketListenerProvi
 
     private PacketSendEvent<?> createSendEvent(InboundConnection connection, ServerConnection serverConnection, Object apiPacket) {
         if (serverConnection != null) {
-            return new PacketSendEvent<>(serverConnection.getPlayer(), serverConnection.getServerInfo(), apiPacket, false);
+            Player player = serverConnection.getPlayer();
+            return new PacketSendEvent<>(player != null ? PLAYER_PROVIDER.player(player.getUniqueId()) : null, serverConnection.getServerInfo(), apiPacket, false);
         } else if (connection != null) {
             Player player = (Player) connection;
             ServerInfo info = player.getCurrentServer().isPresent() ? player.getCurrentServer().get().getServerInfo() : null;
-            return new PacketSendEvent<>(player, info, apiPacket, false);
+            return new PacketSendEvent<>(PLAYER_PROVIDER.player(player.getUniqueId()), info, apiPacket, false);
         } else {
             return new PacketSendEvent<>(null, null, apiPacket, false);
         }

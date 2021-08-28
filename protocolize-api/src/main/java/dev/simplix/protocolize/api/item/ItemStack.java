@@ -96,12 +96,14 @@ public class ItemStack {
         }
     }
 
-    public void displayName(String legacyName) {
+    public ItemStack displayName(String legacyName) {
         this.displayNameJson = CONVERTER.toJson(CONVERTER.fromLegacyText(legacyName));
+        return this;
     }
 
-    public void displayName(Object displayName) {
+    public ItemStack displayName(Object displayName) {
         this.displayNameJson = CONVERTER.toJson(displayName);
+        return this;
     }
 
     public <T> List<T> lore() {

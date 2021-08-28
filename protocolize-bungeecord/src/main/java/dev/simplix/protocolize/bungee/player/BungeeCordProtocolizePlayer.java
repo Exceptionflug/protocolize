@@ -46,7 +46,7 @@ public class BungeeCordProtocolizePlayer implements ProtocolizePlayer {
     public void sendPacket(Object packet) {
         if (packet instanceof AbstractPacket) {
             BungeeCordProtocolizePacket pack = (BungeeCordProtocolizePacket) REGISTRATION_PROVIDER.createPacket((Class<? extends AbstractPacket>) packet.getClass(),
-                    Protocol.PLAY, PacketDirection.CLIENTBOUND, ProtocolVersions.MINECRAFT_LATEST);
+                    Protocol.PLAY, PacketDirection.CLIENTBOUND, protocolVersion());
             pack.wrapper((AbstractPacket) packet);
             packet = pack;
         }
@@ -60,7 +60,7 @@ public class BungeeCordProtocolizePlayer implements ProtocolizePlayer {
     public void sendPacketToServer(Object packet) {
         if (packet instanceof AbstractPacket) {
             BungeeCordProtocolizePacket pack = (BungeeCordProtocolizePacket) REGISTRATION_PROVIDER.createPacket((Class<? extends AbstractPacket>) packet.getClass(),
-                    Protocol.PLAY, PacketDirection.SERVERBOUND, ProtocolVersions.MINECRAFT_LATEST);
+                    Protocol.PLAY, PacketDirection.SERVERBOUND, protocolVersion());
             pack.wrapper((AbstractPacket) packet);
             packet = pack;
         }
@@ -87,6 +87,11 @@ public class BungeeCordProtocolizePlayer implements ProtocolizePlayer {
     @Override
     public int protocolVersion() {
         return ReflectionUtil.getProtocolVersion(player());
+    }
+
+    @Override
+    public <T> T handle() {
+        return (T) player();
     }
 
     private ProxiedPlayer player() {

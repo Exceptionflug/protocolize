@@ -47,7 +47,7 @@ public class VelocityProtocolizePlayer implements ProtocolizePlayer {
     public void sendPacket(Object packet) {
         if (packet instanceof AbstractPacket) {
             VelocityProtocolizePacket pack = (VelocityProtocolizePacket) REGISTRATION_PROVIDER.createPacket((Class<? extends AbstractPacket>) packet.getClass(),
-                    Protocol.PLAY, PacketDirection.CLIENTBOUND, ProtocolVersions.MINECRAFT_LATEST);
+                    Protocol.PLAY, PacketDirection.CLIENTBOUND, protocolVersion());
             pack.wrapper((AbstractPacket) packet);
             packet = pack;
         }
@@ -61,7 +61,7 @@ public class VelocityProtocolizePlayer implements ProtocolizePlayer {
     public void sendPacketToServer(Object packet) {
         if (packet instanceof AbstractPacket) {
             VelocityProtocolizePacket pack = (VelocityProtocolizePacket) REGISTRATION_PROVIDER.createPacket((Class<? extends AbstractPacket>) packet.getClass(),
-                    Protocol.PLAY, PacketDirection.SERVERBOUND, ProtocolVersions.MINECRAFT_LATEST);
+                    Protocol.PLAY, PacketDirection.SERVERBOUND, protocolVersion());
             pack.wrapper((AbstractPacket) packet);
             packet = pack;
         }
@@ -88,6 +88,11 @@ public class VelocityProtocolizePlayer implements ProtocolizePlayer {
             return player.getProtocolVersion().getProtocol();
         }
         return 0;
+    }
+
+    @Override
+    public <T> T handle() {
+        return (T) proxyServer.getPlayer(uniqueId).orElse(null);
     }
 
 }

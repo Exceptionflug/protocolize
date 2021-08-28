@@ -81,7 +81,7 @@ public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDeco
                     return;
                 }
                 Map.Entry<MinecraftPacket, Boolean> entry = LISTENER_PROVIDER.handleInboundPacket(minecraftPacket, serverConnection, inboundConnection);
-                if (entry.getKey() == null) {
+                if (entry == null) {
                     return;
                 }
                 minecraftPacket = entry.getKey();

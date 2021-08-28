@@ -5,16 +5,17 @@ import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.item.ItemStack;
 import dev.simplix.protocolize.api.providers.ComponentConverterProvider;
 import dev.simplix.protocolize.data.inventory.InventoryType;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 /**
  * Date: 27.08.2021
@@ -31,8 +32,14 @@ public class Inventory {
             .platformConverter();
 
     private final Map<Integer, ItemStack> items = new ConcurrentHashMap<>();
+    private final List<Consumer<InventoryClick>> clickConsumers = new ArrayList<>();
+    private final List<Consumer<InventoryClose>> closeConsumers = new ArrayList<>();
     private InventoryType type;
     private String titleJson;
+
+    public Inventory(InventoryType type) {
+        this.type = type;
+    }
 
     public void items(List<ItemStack> itemsIndexed) {
         int slot = 0;
@@ -82,6 +89,14 @@ public class Inventory {
 
     public void title(Object titleComponent) {
         this.titleJson = CONVERTER.toJson(titleComponent);
+    }
+
+    public void onClick(Consumer<InventoryClick> consumer) {
+        clickConsumers.add(consumer);
+    }
+
+    public void onClose(Consumer<InventoryClose> consumer) {
+        closeConsumers.add(consumer);
     }
 
 

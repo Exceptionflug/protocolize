@@ -2,11 +2,13 @@ package dev.simplix.protocolize.bungee.providers;
 
 import com.google.common.base.Preconditions;
 import dev.simplix.protocolize.api.Direction;
+import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.listener.AbstractPacketListener;
 import dev.simplix.protocolize.api.listener.PacketReceiveEvent;
 import dev.simplix.protocolize.api.listener.PacketSendEvent;
 import dev.simplix.protocolize.api.packet.AbstractPacket;
 import dev.simplix.protocolize.api.providers.PacketListenerProvider;
+import dev.simplix.protocolize.api.providers.ProtocolizePlayerProvider;
 import dev.simplix.protocolize.bungee.packet.BungeeCordProtocolizePacket;
 import dev.simplix.protocolize.bungee.util.ReflectionUtil;
 import net.md_5.bungee.api.ProxyServer;
@@ -28,6 +30,7 @@ import java.util.logging.Level;
  */
 public final class BungeeCordPacketListenerProvider implements PacketListenerProvider {
 
+    private static final ProtocolizePlayerProvider PLAYER_PROVIDER = Protocolize.playerProvider();
     private final List<AbstractPacketListener<?>> listeners = new ArrayList<>();
 
     @Override
@@ -169,7 +172,7 @@ public final class BungeeCordPacketListenerProvider implements PacketListenerPro
         } else {
             serverInfo = ReflectionUtil.getServerInfo(abstractPacketHandler);
         }
-        return new PacketReceiveEvent<>(player, serverInfo, packet, false, false);
+        return new PacketReceiveEvent<>(player != null ? PLAYER_PROVIDER.player(player.getUniqueId()) : null, serverInfo, packet, false, false);
     }
 
     private PacketSendEvent<?> createSendEvent(Connection connection, AbstractPacketHandler abstractPacketHandler, Object packet) {
@@ -186,7 +189,7 @@ public final class BungeeCordPacketListenerProvider implements PacketListenerPro
         } else {
             serverInfo = ReflectionUtil.getServerInfo(abstractPacketHandler);
         }
-        return new PacketSendEvent<>(player, serverInfo, packet, false);
+        return new PacketSendEvent<>(player != null ? PLAYER_PROVIDER.player(player.getUniqueId()) : null, serverInfo, packet, false);
     }
 
     private ProxiedPlayer player(Connection connection) {

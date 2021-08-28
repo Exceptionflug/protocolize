@@ -1,5 +1,6 @@
 package dev.simplix.protocolize.api.listener;
 
+import dev.simplix.protocolize.api.player.ProtocolizePlayer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,19 +21,18 @@ import lombok.experimental.Accessors;
 @ToString
 public class PacketSendEvent<T> {
 
-    private final Object player;
+    private final ProtocolizePlayer player;
     private final Object server;
     private T packet;
     private boolean cancelled;
 
     /**
-     * The platform dependent player instance.
-     * @param <P> The type of the player
-     * @return The platform dependent player instance or null if Protocolize was unable to track down the player
+     * The protocolize player instance.
+     * @return The player instance or null if Protocolize was unable to track down the player
      * during early communication phases like HANDSHAKE or STATUS.
      */
-    public <P> P player() {
-        return (P) player;
+    public ProtocolizePlayer player() {
+        return player;
     }
 
     /**
