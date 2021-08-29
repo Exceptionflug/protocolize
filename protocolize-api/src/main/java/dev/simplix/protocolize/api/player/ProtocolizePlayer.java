@@ -3,6 +3,7 @@ package dev.simplix.protocolize.api.player;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import dev.simplix.protocolize.api.BlockPosition;
+import dev.simplix.protocolize.api.Location;
 import dev.simplix.protocolize.api.SoundCategory;
 import dev.simplix.protocolize.api.inventory.Inventory;
 import dev.simplix.protocolize.api.inventory.PlayerInventory;
@@ -40,8 +41,10 @@ public interface ProtocolizePlayer {
 
     <T> T handle();
 
-    default void playSound(BlockPosition position, Sound sound, SoundCategory category, float volume, float pitch) {
-        sendPacket(new NamedSoundEffect(sound, category, position.x(), position.y(), position.z(), volume, pitch));
+    Location location();
+
+    default void playSound(Location location, Sound sound, SoundCategory category, float volume, float pitch) {
+        sendPacket(new NamedSoundEffect(sound, category, location.x(), location.y(), location.z(), volume, pitch));
     }
 
     default void registerInventory(int windowId, Inventory inventory) {

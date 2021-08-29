@@ -4,6 +4,7 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.proxy.connection.backend.VelocityServerConnection;
 import com.velocitypowered.proxy.connection.client.ConnectedPlayer;
+import dev.simplix.protocolize.api.Location;
 import dev.simplix.protocolize.api.PacketDirection;
 import dev.simplix.protocolize.api.Protocol;
 import dev.simplix.protocolize.api.Protocolize;
@@ -37,6 +38,7 @@ public class VelocityProtocolizePlayer implements ProtocolizePlayer {
     private final PlayerInventory proxyInventory = new PlayerInventory(this);
     private final UUID uniqueId;
     private final ProxyServer proxyServer;
+    private final Location location = new Location(0, 0, 0, 0, 0);
 
     public VelocityProtocolizePlayer(ProxyServer proxyServer, UUID uniqueId) {
         this.uniqueId = uniqueId;

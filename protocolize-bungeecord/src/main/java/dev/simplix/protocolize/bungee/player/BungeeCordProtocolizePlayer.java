@@ -1,5 +1,6 @@
 package dev.simplix.protocolize.bungee.player;
 
+import dev.simplix.protocolize.api.Location;
 import dev.simplix.protocolize.api.PacketDirection;
 import dev.simplix.protocolize.api.Protocol;
 import dev.simplix.protocolize.api.Protocolize;
@@ -37,6 +38,7 @@ public class BungeeCordProtocolizePlayer implements ProtocolizePlayer {
     private final Map<Integer, Inventory> registeredInventories = new ConcurrentHashMap<>();
     private final PlayerInventory proxyInventory = new PlayerInventory(this);
     private final UUID uniqueId;
+    private final Location location = new Location(0, 0, 0, 0, 0);
 
     public BungeeCordProtocolizePlayer(UUID uniqueId) {
         this.uniqueId = uniqueId;
