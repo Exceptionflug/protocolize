@@ -25,6 +25,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.AbstractMap;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -133,7 +134,14 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
         Preconditions.checkNotNull(direction, "Direction cannot be null");
         Preconditions.checkNotNull(clazz, "Clazz cannot be null");
         Object directionData = getDirectionData(bungeeCordProtocol(protocol), direction);
-        return createPacketMethod.invoke(directionData, getIdMethod.invoke(directionData, clazz, protocolVersion), protocolVersion);
+        ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new AbstractMap.SimpleEntry<>(direction, clazz), protocolVersion);
+        int id;
+        if (protocolIdMapping != null) {
+            id = protocolIdMapping.id();
+        } else {
+            id = (int) getIdMethod.invoke(directionData, clazz, protocolVersion);
+        }
+        return createPacketMethod.invoke(directionData, id, protocolVersion);
     }
 
     private net.md_5.bungee.protocol.Protocol bungeeCordProtocol(Protocol protocol) {

@@ -9,8 +9,10 @@ import com.velocitypowered.proxy.protocol.ProtocolUtils;
 import com.velocitypowered.proxy.protocol.StateRegistry;
 import dev.simplix.protocolize.api.PacketDirection;
 import dev.simplix.protocolize.api.Protocol;
+import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.packet.AbstractPacket;
 import dev.simplix.protocolize.api.mapping.ProtocolIdMapping;
+import dev.simplix.protocolize.api.providers.MappingProvider;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.velocity.packet.VelocityProtocolizePacket;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +35,7 @@ import java.util.function.Supplier;
 @Slf4j
 public final class VelocityProtocolRegistrationProvider implements ProtocolRegistrationProvider {
 
-    private final Multimap<Map.Entry<PacketDirection, Class<? extends AbstractPacket>>, ProtocolIdMapping> packets = ArrayListMultimap.create();
-
+    private final MappingProvider mappingProvider = Protocolize.mappingProvider();
     private Constructor<StateRegistry.PacketMapping> packetMappingConstructor;
     private Method registerMethod;
 
@@ -69,10 +70,18 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
             Class<? extends MinecraftPacket> velocityPacket = generateVelocityPacket(packetClass);
             List<StateRegistry.PacketMapping> velocityMappings = new ArrayList<>();
             for (ProtocolIdMapping mapping : mappings) {
-                packets.put(new AbstractMap.SimpleEntry<>(direction, packetClass), mapping);
+                mappingProvider.registerMapping(new AbstractMap.SimpleEntry<>(direction, packetClass), mapping);
                 velocityMappings.add(createVelocityMapping(mapping.protocolRangeStart(), 0, mapping.id(), false));
             }
-            doRegisterPacket(registry, velocityPacket, velocityMappings.toArray(new StateRegistry.PacketMapping[0]));
+            try {
+                doRegisterPacket(registry, velocityPacket, velocityMappings.toArray(new StateRegistry.PacketMapping[0]));
+            } catch (InvocationTargetException e) {
+                if (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("already registered")) {
+                    log.debug(e.getCause().getMessage() + ". Skipping...");
+                } else {
+                    throw e;
+                }
+            }
         } catch (Exception exception) {
             log.error("Exception while registering packet " + packetClass.getName(), exception);
         }
@@ -102,12 +111,10 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
         Preconditions.checkNotNull(direction, "Direction cannot be null");
         Preconditions.checkNotNull(packet, "Packet cannot be null");
         if (packet instanceof VelocityProtocolizePacket) {
-            Collection<ProtocolIdMapping> protocolIdMappings = packets.get(new AbstractMap.SimpleEntry<>(direction,
-                    ((VelocityProtocolizePacket) packet).obtainProtocolizePacketClass()));
-            for (ProtocolIdMapping mapping : protocolIdMappings) {
-                if (mapping.inRange(protocolVersion)) {
-                    return mapping.id();
-                }
+            ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new AbstractMap.SimpleEntry<>(direction,
+                    ((VelocityProtocolizePacket) packet).obtainProtocolizePacketClass()), protocolVersion);
+            if (protocolIdMapping != null) {
+                return protocolIdMapping.id();
             }
         } else if (packet instanceof MinecraftPacket) {
             ProtocolUtils.Direction velocityDirection = velocityDirection(direction);
@@ -137,11 +144,9 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
         }
         StateRegistry.PacketRegistry.ProtocolRegistry registry = velocityDirection.getProtocolRegistry(stateRegistry,
                 ProtocolVersion.getProtocolVersion(protocolVersion));
-        Collection<ProtocolIdMapping> protocolIdMappings = packets.get(new AbstractMap.SimpleEntry<>(direction, clazz));
-        for (ProtocolIdMapping mapping : protocolIdMappings) {
-            if (mapping.inRange(protocolVersion)) {
-                return registry.createPacket(mapping.id());
-            }
+        ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new AbstractMap.SimpleEntry<>(direction, clazz), protocolVersion);
+        if (protocolIdMapping != null) {
+            return registry.createPacket(protocolIdMapping.id());
         }
         return null;
     }

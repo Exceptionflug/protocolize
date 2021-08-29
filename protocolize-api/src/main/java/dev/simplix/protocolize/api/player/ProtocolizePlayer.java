@@ -43,6 +43,10 @@ public interface ProtocolizePlayer {
 
     Location location();
 
+    default void playSound(Sound sound, SoundCategory category, float volume, float pitch) {
+        playSound(location(), sound, category, volume, pitch);
+    }
+
     default void playSound(Location location, Sound sound, SoundCategory category, float volume, float pitch) {
         sendPacket(new NamedSoundEffect(sound, category, location.x(), location.y(), location.z(), volume, pitch));
     }
