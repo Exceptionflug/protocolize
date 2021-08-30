@@ -60,6 +60,13 @@ public class Location {
   public void setPitch(final float pitch) {
     this.pitch = pitch;
   }
+  
+  public Location add(double x, double y, double z) {
+		this.x+=x;
+    this.y+=y;
+    this.z+=z;
+		return this;
+	}
 
   @Override
   public boolean equals(final Object o) {
