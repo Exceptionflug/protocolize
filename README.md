@@ -3,9 +3,9 @@
     <br/><br/>
     <p>Next generation protocol manipulation framework for proxy servers.</p>
     <a href="http://ci.exceptionflug.de/job/Protocolize2/"><img src="http://ci.exceptionflug.de/buildStatus/icon?job=Protocolize2"></a>
-    <a href="https://github.com/Simplix-Softworks/Protocolize/releases"><img src="https://img.shields.io/github/downloads/Simplix-Softworks/Protocolize/total?color=GREEN&label=Downloads"></a>
+    <a href="https://github.com/Exceptionflug/Protocolize/releases"><img src="https://img.shields.io/github/downloads/Exceptionflug/Protocolize/total?color=GREEN&label=Downloads"></a>
     <a href="https://discord.simplixsoft.com/"><img src="https://img.shields.io/discord/752533664696369204?label=Discord"></a>
-    <img src="https://img.shields.io/github/license/Simplix-Softworks/Protocolize"></a>
+    <img src="https://img.shields.io/github/license/Exceptionflug/Protocolize"></a>
     <a href="https://twitter.com/Exceptionflug"><img src="https://img.shields.io/twitter/follow/Exceptionflug?label=Twitter&style=social"></a>
 </div>
 
