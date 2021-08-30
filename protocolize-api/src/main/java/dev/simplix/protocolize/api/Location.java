@@ -20,4 +20,11 @@ public class Location {
     private float yaw;
     private float pitch;
 
+    public Location add(double x, double y, double z) {
+        this.x += x;
+        this.y += y;
+        this.z += z;
+        return this;
+    }
+
 }
