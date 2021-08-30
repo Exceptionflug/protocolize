@@ -1,5 +1,0 @@
-name: ${project.name}
-author: ${plugin.author}
-version: '${project.version}:${build.number}'
-
-main: ${plugin.main}
