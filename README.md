@@ -1,3 +1,4 @@
+
 <div align=center>
     <img src="./protocolize-logo.webp" width="512">
     <br/><br/>
@@ -36,6 +37,35 @@ We provide some documentation on how to migrate your existing plugin to use the 
 ```
 ### Install the plugin
 In order to use Protocolize, you have to install it onto your proxy server. Protocolize is supporting BungeeCord and Velocity proxy servers.
+
+## Compatibility
+Protocolize is shipped with it's default data module which adds support for the following versions:
+| Minecraft Version | Supported |
+|--|--|
+| 1.8.x - 1.12.2 | ❌ (Only with additional legacy module) |
+| 1.13 - 1.13.2 | ✔️ (Sounds only with additional legacy module) |
+| 1.14 - 1.17.1 | ✔️ |
+
+Implemented packets by default:
+
+| Packet | Class |
+|--|--|
+| Player block placement | dev.simplix.protocolize.data.packets.BlockPlacement |
+| Inventory click | dev.simplix.protocolize.data.packets.ClickWindow |
+| Close inventory | dev.simplix.protocolize.data.packets.CloseWindow |
+| Confirm transaction | dev.simplix.protocolize.data.packets.ConfirmTransaction |
+| Held item change | dev.simplix.protocolize.data.packets.HeldItemChange |
+| Named sound effect | dev.simplix.protocolize.data.packets.NamedSoundEffect |
+| Open inventory | dev.simplix.protocolize.data.packets.OpenWindow |
+| Player look update | dev.simplix.protocolize.data.packets.PlayerLook |
+| Player position update | dev.simplix.protocolize.data.packets.PlayerPosition |
+| Player position and look update | dev.simplix.protocolize.data.packets.PlayerPositionLook |
+| Player slot update | dev.simplix.protocolize.data.packets.SetSlot |
+| Player item interaction | dev.simplix.protocolize.data.packets.UseItem |
+| Inventory items | dev.simplix.protocolize.data.packets.WindowItems |
+| Inventory properties | dev.simplix.protocolize.data.packets.WindowProperty |
+
+You can easily add support for new packets and versions by installing modules.
 
 ## Get some help
 For documentation take a look at the wiki pages.
