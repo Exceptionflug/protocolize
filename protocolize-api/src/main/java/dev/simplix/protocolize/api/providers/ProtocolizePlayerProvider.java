@@ -14,6 +14,8 @@ public interface ProtocolizePlayerProvider {
 
     ProtocolizePlayer player(UUID uniqueId);
 
-    void registerOnDisconnect(Consumer<ProtocolizePlayer> consumer);
+    void onDisconnect(Consumer<ProtocolizePlayer> consumer);
+
+    void onConstruct(Consumer<ProtocolizePlayer> consumer);
 
 }

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import dev.simplix.protocolize.api.BlockPosition;
 import dev.simplix.protocolize.api.Location;
+import dev.simplix.protocolize.api.PlayerInteract;
 import dev.simplix.protocolize.api.SoundCategory;
 import dev.simplix.protocolize.api.inventory.Inventory;
 import dev.simplix.protocolize.api.inventory.PlayerInventory;
@@ -17,6 +18,7 @@ import dev.simplix.protocolize.data.packets.WindowItems;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * Date: 26.08.2021
@@ -42,6 +44,10 @@ public interface ProtocolizePlayer {
     <T> T handle();
 
     Location location();
+
+    void onInteract(Consumer<PlayerInteract> interactConsumer);
+
+    void handleInteract(PlayerInteract interact);
 
     default void playSound(Sound sound, SoundCategory category, float volume, float pitch) {
         playSound(location(), sound, category, volume, pitch);

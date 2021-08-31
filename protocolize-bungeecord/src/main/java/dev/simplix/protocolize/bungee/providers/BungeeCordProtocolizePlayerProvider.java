@@ -19,7 +19,8 @@ import java.util.function.Consumer;
  */
 public final class BungeeCordProtocolizePlayerProvider implements ProtocolizePlayerProvider {
 
-    private final List<Consumer<ProtocolizePlayer>> consumers = new ArrayList<>();
+    private final List<Consumer<ProtocolizePlayer>> disconnectConsumers = new ArrayList<>();
+    private final List<Consumer<ProtocolizePlayer>> constructConsumers = new ArrayList<>();
     private final Map<UUID, ProtocolizePlayer> playerMap = new ConcurrentHashMap<>();
 
     @Override
@@ -27,18 +28,27 @@ public final class BungeeCordProtocolizePlayerProvider implements ProtocolizePla
         if (ProxyServer.getInstance().getPlayer(uniqueId) == null) {
             return null;
         }
-        return playerMap.computeIfAbsent(uniqueId, uuid -> new BungeeCordProtocolizePlayer(uniqueId));
+        return playerMap.computeIfAbsent(uniqueId, uuid -> {
+            BungeeCordProtocolizePlayer protocolizePlayer = new BungeeCordProtocolizePlayer(uniqueId);
+            constructConsumers.forEach(consumer -> consumer.accept(protocolizePlayer));
+            return protocolizePlayer;
+        });
     }
 
     @Override
-    public void registerOnDisconnect(Consumer<ProtocolizePlayer> consumer) {
-        consumers.add(consumer);
+    public void onDisconnect(Consumer<ProtocolizePlayer> consumer) {
+        disconnectConsumers.add(consumer);
+    }
+
+    @Override
+    public void onConstruct(Consumer<ProtocolizePlayer> consumer) {
+        constructConsumers.add(consumer);
     }
 
     public void playerDisconnect(UUID uuid) {
         ProtocolizePlayer remove = playerMap.remove(uuid);
         if (remove != null) {
-            consumers.forEach(consumer -> consumer.accept(remove));
+            disconnectConsumers.forEach(consumer -> consumer.accept(remove));
         }
     }
 

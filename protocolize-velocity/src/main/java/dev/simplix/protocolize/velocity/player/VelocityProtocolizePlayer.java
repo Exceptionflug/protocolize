@@ -4,10 +4,7 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.proxy.connection.backend.VelocityServerConnection;
 import com.velocitypowered.proxy.connection.client.ConnectedPlayer;
-import dev.simplix.protocolize.api.Location;
-import dev.simplix.protocolize.api.PacketDirection;
-import dev.simplix.protocolize.api.Protocol;
-import dev.simplix.protocolize.api.Protocolize;
+import dev.simplix.protocolize.api.*;
 import dev.simplix.protocolize.api.inventory.Inventory;
 import dev.simplix.protocolize.api.inventory.PlayerInventory;
 import dev.simplix.protocolize.api.packet.AbstractPacket;
@@ -18,10 +15,13 @@ import dev.simplix.protocolize.velocity.packet.VelocityProtocolizePacket;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 /**
  * Date: 26.08.2021
@@ -33,6 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class VelocityProtocolizePlayer implements ProtocolizePlayer {
 
     private static final ProtocolRegistrationProvider REGISTRATION_PROVIDER = Protocolize.protocolRegistration();
+    private final List<Consumer<PlayerInteract>> interactConsumers = new ArrayList<>();
     private final AtomicInteger windowId = new AtomicInteger(101);
     private final Map<Integer, Inventory> registeredInventories = new ConcurrentHashMap<>();
     private final PlayerInventory proxyInventory = new PlayerInventory(this);
@@ -101,6 +102,16 @@ public class VelocityProtocolizePlayer implements ProtocolizePlayer {
     @Override
     public <T> T handle() {
         return (T) proxyServer.getPlayer(uniqueId).orElse(null);
+    }
+
+    @Override
+    public void onInteract(Consumer<PlayerInteract> interactConsumer) {
+        interactConsumers.add(interactConsumer);
+    }
+
+    @Override
+    public void handleInteract(PlayerInteract interact) {
+        interactConsumers.forEach(interactConsumer -> interactConsumer.accept(interact));
     }
 
 }
