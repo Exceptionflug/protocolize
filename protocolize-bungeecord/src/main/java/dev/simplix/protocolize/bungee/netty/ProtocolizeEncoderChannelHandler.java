@@ -34,7 +34,8 @@ public final class ProtocolizeEncoderChannelHandler extends MessageToMessageEnco
             out.add(new KeepAlive(ThreadLocalRandom.current().nextLong())); // We need to produce at least one message
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) throws Exception {
         if (cause.getClass().equals(CancelSendSignal.INSTANCE.getClass()))
             throw ((Error) cause);
