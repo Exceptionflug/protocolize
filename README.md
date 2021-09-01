@@ -17,7 +17,7 @@ This is the official repository for the next generation proxy server protocol ma
 Protocolize v1 was already a successful approach on how to interact with the Minecraft protocol. The downsides were severe: An outdated code base that was hard to maintain and only supported BungeeCord. All those reasons resulted in the making of an whole new fresh code base that supports Velocity and that also takes a new approach on how to provide mappings for all supported protocol mappings.
 
 ### Migration
-We provide some documentation on how to migrate your existing plugin to use the new Protocolize v2 API. Click here.
+We provide some documentation on how to migrate your existing plugin to use the new Protocolize v2 API. [Click here](https://github.com/Exceptionflug/protocolize/wiki/Migrating-from-Protocolize-v1).
 
 ## Getting started
 ### Maven dependency and repository
