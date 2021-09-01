@@ -24,7 +24,7 @@ public final class VelocityComponentConverterProvider implements ComponentConver
 
         private final LegacyComponentSerializer legacyComponentSerializer = LegacyComponentSerializer.legacySection();
         private final GsonComponentSerializer gsonComponentSerializer = System.getProperty(
-                "protocolize.velocity.adventure.serializer.downsample", "true"
+            "protocolize.velocity.adventure.serializer.downsample", "true"
         ).equals("false") ? GsonComponentSerializer.colorDownsamplingGson() : GsonComponentSerializer.gson();
 
         private AdventureComponentConverter() {

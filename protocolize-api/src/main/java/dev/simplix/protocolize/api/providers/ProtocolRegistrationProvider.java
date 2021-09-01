@@ -2,8 +2,8 @@ package dev.simplix.protocolize.api.providers;
 
 import dev.simplix.protocolize.api.PacketDirection;
 import dev.simplix.protocolize.api.Protocol;
-import dev.simplix.protocolize.api.packet.AbstractPacket;
 import dev.simplix.protocolize.api.mapping.ProtocolIdMapping;
+import dev.simplix.protocolize.api.packet.AbstractPacket;
 
 import java.util.List;
 

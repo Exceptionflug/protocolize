@@ -10,6 +10,7 @@ import dev.simplix.protocolize.api.listener.AbstractPacketListener;
 public interface PacketListenerProvider {
 
     void registerListener(AbstractPacketListener<?> listener);
+
     void unregisterListener(AbstractPacketListener<?> listener) throws IllegalArgumentException;
 
 }

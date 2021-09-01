@@ -8,8 +8,6 @@ import com.velocitypowered.proxy.connection.backend.VelocityServerConnection;
 import com.velocitypowered.proxy.connection.client.ConnectedPlayer;
 import com.velocitypowered.proxy.connection.client.InitialInboundConnection;
 import com.velocitypowered.proxy.protocol.MinecraftPacket;
-import com.velocitypowered.proxy.protocol.ProtocolUtils;
-import com.velocitypowered.proxy.protocol.StateRegistry;
 import com.velocitypowered.proxy.protocol.packet.KeepAlive;
 import dev.simplix.protocolize.api.Direction;
 import dev.simplix.protocolize.api.PacketDirection;
@@ -25,7 +23,6 @@ import io.netty.util.ReferenceCountUtil;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Date: 23.08.2021
@@ -56,9 +53,9 @@ public final class ProtocolizeEncoderChannelHandler extends MessageToMessageEnco
             protocol = ConversionUtils.protocolizeProtocol(((ConnectedPlayer) connection).getConnection().getState());
         } else if (connection instanceof InitialInboundConnection) {
             packetDirection = PacketDirection.SERVERBOUND;
-            protocol = ConversionUtils.protocolizeProtocol(((MinecraftConnection)CONNECTION_FIELD.get(connection)).getState());
+            protocol = ConversionUtils.protocolizeProtocol(((MinecraftConnection) CONNECTION_FIELD.get(connection)).getState());
         } else {
-            throw new IllegalArgumentException("Unsupported InboundConnection instance: "+connection.getClass().getName());
+            throw new IllegalArgumentException("Unsupported InboundConnection instance: " + connection.getClass().getName());
         }
     }
 
@@ -67,9 +64,9 @@ public final class ProtocolizeEncoderChannelHandler extends MessageToMessageEnco
         protocolVersion = connection.getPlayer().getProtocolVersion();
         if (connection instanceof VelocityServerConnection) {
             packetDirection = PacketDirection.CLIENTBOUND;
-            protocol = ConversionUtils.protocolizeProtocol(((VelocityServerConnection)connection).getConnection().getState());
+            protocol = ConversionUtils.protocolizeProtocol(((VelocityServerConnection) connection).getConnection().getState());
         } else {
-            throw new IllegalArgumentException("Unsupported ServerConnection instance: "+connection.getClass().getName());
+            throw new IllegalArgumentException("Unsupported ServerConnection instance: " + connection.getClass().getName());
         }
     }
 

@@ -44,7 +44,7 @@ public final class ReflectionUtil {
             theUnsafe.setAccessible(true);
             Unsafe unsafe = (Unsafe) theUnsafe.get(null);
             Field trustedLookup = MethodHandles.Lookup.class.getDeclaredField("IMPL_LOOKUP");
-            return (MethodHandles.Lookup)unsafe.getObject(unsafe.staticFieldBase(trustedLookup), unsafe.staticFieldOffset(trustedLookup));
+            return (MethodHandles.Lookup) unsafe.getObject(unsafe.staticFieldBase(trustedLookup), unsafe.staticFieldOffset(trustedLookup));
         } catch (NoSuchFieldException | IllegalAccessException ex) {
             log.warn("Using untrusted lookup");
             return MethodHandles.lookup();
@@ -74,10 +74,10 @@ public final class ReflectionUtil {
     }
 
     public static Object fieldValue(@NonNull Object instance, @NonNull String fieldName)
-            throws IllegalAccessException {
+        throws IllegalAccessException {
         final Map.Entry<Class<?>, String> key = new AbstractMap.SimpleEntry<>(
-                instance.getClass(),
-                fieldName);
+            instance.getClass(),
+            fieldName);
         final Field field = CACHED_FIELDS.computeIfAbsent(key, i -> {
             try {
                 return instance.getClass().getDeclaredField(fieldName);
@@ -119,7 +119,7 @@ public final class ReflectionUtil {
     }
 
     public static Field field(@NonNull Class<?> clazz, @NonNull String fieldName)
-            throws NoSuchFieldException {
+        throws NoSuchFieldException {
         Field field = clazz.getDeclaredField(fieldName);
         field.setAccessible(true);
         return field;
@@ -156,10 +156,10 @@ public final class ReflectionUtil {
     }
 
     public static void value(
-            @NonNull Class<?> clazz,
-            @NonNull Object instance,
-            @NonNull String field,
-            @NonNull Object value) {
+        @NonNull Class<?> clazz,
+        @NonNull Object instance,
+        @NonNull String field,
+        @NonNull Object value) {
         try {
             Field declaredField = clazz.getDeclaredField(field);
             declaredField.setAccessible(true);
@@ -170,10 +170,10 @@ public final class ReflectionUtil {
     }
 
     public static void valueSubclass(
-            @NonNull Class<?> clazz,
-            @NonNull Object instance,
-            @NonNull String field,
-            @NonNull Object value) {
+        @NonNull Class<?> clazz,
+        @NonNull Object instance,
+        @NonNull String field,
+        @NonNull Object value) {
         try {
             Field declaredField = clazz.getDeclaredField(field);
             declaredField.setAccessible(true);
@@ -185,11 +185,11 @@ public final class ReflectionUtil {
 
     public static void listFields(@NonNull Object object) {
         log.info(object.getClass().getName() + " contains " + object
-                .getClass()
-                .getDeclaredFields().length + " declared fields.");
+            .getClass()
+            .getDeclaredFields().length + " declared fields.");
         log.info(object.getClass().getName() + " contains " + object
-                .getClass()
-                .getDeclaredClasses().length + " declared classes.");
+            .getClass()
+            .getDeclaredClasses().length + " declared classes.");
         Field[] declaredFields = object.getClass().getDeclaredFields();
         for (Field field : declaredFields) {
             field.setAccessible(true);
@@ -202,10 +202,10 @@ public final class ReflectionUtil {
     }
 
     public static Object fieldValue(
-            @NonNull Class<?> superclass,
-            @NonNull Object instance,
-            @NonNull String fieldName)
-            throws IllegalAccessException, NoSuchFieldException {
+        @NonNull Class<?> superclass,
+        @NonNull Object instance,
+        @NonNull String fieldName)
+        throws IllegalAccessException, NoSuchFieldException {
         Field field = superclass.getDeclaredField(fieldName);
         field.setAccessible(true);
         return field.get(instance);
@@ -216,7 +216,7 @@ public final class ReflectionUtil {
             try {
                 return clazz.getConstructor();
             } catch (NoSuchMethodException e) {
-                throw new IllegalArgumentException("The class " + clazz.getName()+" has no accessible default constructor");
+                throw new IllegalArgumentException("The class " + clazz.getName() + " has no accessible default constructor");
             }
         }).newInstance();
     }

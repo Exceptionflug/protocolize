@@ -8,6 +8,7 @@ package dev.simplix.protocolize.api.mapping;
 public interface ProtocolMapping {
 
     int protocolRangeStart();
+
     int protocolRangeEnd();
 
     default boolean inRange(int version) {

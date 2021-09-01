@@ -14,6 +14,7 @@ import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 public interface ProtocolizeModule {
 
     void registerMappings(MappingProvider mappingProvider);
+
     void registerPackets(ProtocolRegistrationProvider registrationProvider);
 
     default Platform[] supportedPlatforms() {

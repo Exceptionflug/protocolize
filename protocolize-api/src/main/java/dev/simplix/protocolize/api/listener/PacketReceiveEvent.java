@@ -29,6 +29,7 @@ public class PacketReceiveEvent<T> {
 
     /**
      * The platform {@link ProtocolizePlayer} instance.
+     *
      * @return The player instance or null if Protocolize was unable to track down the player
      * during early communication phases like HANDSHAKE or STATUS.
      */
@@ -38,6 +39,7 @@ public class PacketReceiveEvent<T> {
 
     /**
      * The platform dependent server info instance.
+     *
      * @param <S> The type of the server info
      * @return The platform dependent server info instance or null if Protocolize was unable to track down the server
      * during early communication phases like HANDSHAKE or STATUS.

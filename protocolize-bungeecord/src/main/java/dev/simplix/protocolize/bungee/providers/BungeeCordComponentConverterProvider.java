@@ -22,7 +22,8 @@ public final class BungeeCordComponentConverterProvider implements ComponentConv
 
         static BungeeCordComponentConverter INSTANCE = new BungeeCordComponentConverter();
 
-        private BungeeCordComponentConverter() {}
+        private BungeeCordComponentConverter() {
+        }
 
         @Override
         public String toLegacyText(BaseComponent[] components) {

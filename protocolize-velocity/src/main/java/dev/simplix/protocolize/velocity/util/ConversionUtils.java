@@ -12,7 +12,8 @@ import dev.simplix.protocolize.api.Protocol;
  */
 public final class ConversionUtils {
 
-    private ConversionUtils() {}
+    private ConversionUtils() {
+    }
 
     private static ProtocolUtils.Direction velocityDirection(PacketDirection direction) {
         switch (direction) {

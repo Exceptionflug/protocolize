@@ -2,7 +2,6 @@ package dev.simplix.protocolize.velocity.netty;
 
 import com.velocitypowered.proxy.VelocityServer;
 import com.velocitypowered.proxy.network.BackendChannelInitializer;
-import com.velocitypowered.proxy.network.Connections;
 import dev.simplix.protocolize.api.Direction;
 import io.netty.channel.Channel;
 

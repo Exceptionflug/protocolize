@@ -22,9 +22,10 @@ public abstract class AbstractPacketListener<T> {
 
     /**
      * Creates an instance of your listener.
-     * @param type The concrete class of the packet to listen to
+     *
+     * @param type      The concrete class of the packet to listen to
      * @param direction The stream direction
-     * @param priority The priority of the listener. Lower priority listeners will be executed first.
+     * @param priority  The priority of the listener. Lower priority listeners will be executed first.
      */
     protected AbstractPacketListener(Class<T> type, Direction direction, int priority) {
         this.type = type;

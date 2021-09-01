@@ -1,14 +1,10 @@
 package dev.simplix.protocolize.api;
 
+import dev.simplix.protocolize.api.providers.*;
+import dev.simplix.protocolize.data.DataModule;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import dev.simplix.protocolize.api.providers.MappingProvider;
-import dev.simplix.protocolize.api.providers.ModuleProvider;
-import dev.simplix.protocolize.api.providers.PacketListenerProvider;
-import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
-import dev.simplix.protocolize.api.providers.ProtocolizePlayerProvider;
-import dev.simplix.protocolize.data.DataModule;
 
 /**
  * This class provides access to the necessary API components. Please be sure
@@ -30,10 +26,10 @@ public final class Protocolize {
     /**
      * This returns an instance of a registered service.
      *
-     * @see Protocolize#registerService(Class, Object)
      * @param type The registration type of the desired service
-     * @param <T> The type of the service
+     * @param <T>  The type of the service
      * @return The instance of T or null if there is no service with this registration type
+     * @see Protocolize#registerService(Class, Object)
      */
     public static <T> T getService(Class<T> type) {
         return (T) SERVICES.get(type);
@@ -41,9 +37,10 @@ public final class Protocolize {
 
     /**
      * This will map a given service instance to a given registration type.
-     * @param type The registration type of the desired service
+     *
+     * @param type     The registration type of the desired service
      * @param instance An instance of the registration type
-     * @param <T> The registration type
+     * @param <T>      The registration type
      */
     public static <T> void registerService(Class<T> type, T instance) {
         SERVICES.put(type, instance);
@@ -66,6 +63,7 @@ public final class Protocolize {
      * This will return the instance of {@link PacketListenerProvider} with which you can register your packet
      * listeners. Calling this method is similar to
      * {@code Protocolize.getService(PacketListenerProvider.class);}
+     *
      * @return The instance of {@link PacketListenerProvider}
      */
     public static PacketListenerProvider listenerProvider() {
@@ -75,6 +73,7 @@ public final class Protocolize {
     /**
      * This will return the instance of {@link MappingProvider}. Calling this method is similar to
      * {@code Protocolize.getService(MappingProvider.class);}
+     *
      * @return The instance of {@link MappingProvider}
      */
     public static MappingProvider mappingProvider() {
@@ -84,6 +83,7 @@ public final class Protocolize {
     /**
      * This will return the instance of {@link ProtocolizePlayerProvider}. Calling this method is similar to
      * {@code Protocolize.getService(ProtocolizePlayerProvider.class);}
+     *
      * @return The instance of {@link ProtocolizePlayerProvider}
      */
     public static ProtocolizePlayerProvider playerProvider() {

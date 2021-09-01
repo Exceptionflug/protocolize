@@ -56,9 +56,9 @@ public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDeco
             protocol = ConversionUtils.protocolizeProtocol(((ConnectedPlayer) connection).getConnection().getState());
         } else if (connection instanceof InitialInboundConnection) {
             packetDirection = PacketDirection.SERVERBOUND;
-            protocol = ConversionUtils.protocolizeProtocol(((MinecraftConnection)CONNECTION_FIELD.get(connection)).getState());
+            protocol = ConversionUtils.protocolizeProtocol(((MinecraftConnection) CONNECTION_FIELD.get(connection)).getState());
         } else {
-            throw new IllegalArgumentException("Unsupported InboundConnection instance: "+connection.getClass().getName());
+            throw new IllegalArgumentException("Unsupported InboundConnection instance: " + connection.getClass().getName());
         }
     }
 
@@ -67,9 +67,9 @@ public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDeco
         protocolVersion = connection.getPlayer().getProtocolVersion();
         if (connection instanceof VelocityServerConnection) {
             packetDirection = PacketDirection.CLIENTBOUND;
-            protocol = ConversionUtils.protocolizeProtocol(((VelocityServerConnection)connection).getConnection().getState());
+            protocol = ConversionUtils.protocolizeProtocol(((VelocityServerConnection) connection).getConnection().getState());
         } else {
-            throw new IllegalArgumentException("Unsupported ServerConnection instance: "+connection.getClass().getName());
+            throw new IllegalArgumentException("Unsupported ServerConnection instance: " + connection.getClass().getName());
         }
     }
 

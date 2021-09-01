@@ -24,16 +24,33 @@ import java.util.List;
  */
 public class ProtocolizePlugin extends Plugin {
 
-	private final NettyPipelineInjector pipelineInjector = new NettyPipelineInjector();
-	private BungeeCordProtocolRegistrationProvider registrationProvider;
-	private boolean supported;
+    static {
+        PlatformInitializer.initBungeeCord();
+    }
 
-	static {
-		PlatformInitializer.initBungeeCord();
-	}
+    private final NettyPipelineInjector pipelineInjector = new NettyPipelineInjector();
+    private BungeeCordProtocolRegistrationProvider registrationProvider;
+    private boolean supported;
 
-	@SuppressWarnings("deprecation")
-	@Override
+    public static boolean isExceptionCausedByProtocolize(Throwable cause) {
+        final List<StackTraceElement> all = getEverything(cause, new ArrayList<>());
+        for (final StackTraceElement element : all) {
+            if (element.getClassName().toLowerCase().contains("dev.simplix") && !element.getClassName()
+                .contains("dev.simplix.protocolize.bungee.netty.ProtocolizeEncoderChannelHandler.exceptionCaught"))
+                return true;
+        }
+        return false;
+    }
+
+    private static List<StackTraceElement> getEverything(final Throwable e, List<StackTraceElement> objects) {
+        if (e.getCause() != null)
+            objects = getEverything(e.getCause(), objects);
+        objects.addAll(Arrays.asList(e.getStackTrace()));
+        return objects;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
     public void onLoad() {
         List<PacketRegistrationStrategy> strategies = new ArrayList<>();
         strategies.add(new BungeeCordPacketRegistrationStrategy());
@@ -52,42 +69,25 @@ public class ProtocolizePlugin extends Plugin {
         Protocolize.registerService(PacketListenerProvider.class, new BungeeCordPacketListenerProvider());
     }
 
-	@Override
-	public void onEnable() {
-		ProxyServer.getInstance().getLogger().info("======= PROTOCOLIZE =======");
-		ProxyServer.getInstance().getLogger()
-				.info("Version " + getDescription().getVersion() + " by " + getDescription().getAuthor());
-		ProxyServer.getInstance().getLogger().info("Supported: "
-				+ (supported ? "Yes (" + registrationProvider.strategy().getClass().getSimpleName() + ")" : "No"));
-		if (getDescription().getVersion().endsWith(":unknown")) {
-			ProxyServer.getInstance().getLogger().warning(
-					"WARNING: YOU ARE RUNNING AN UNOFFICIAL BUILD OF PROTOCOLIZE. DON'T REPORT ANY BUGS REGARDING THIS VERSION.");
-		}
+    @Override
+    public void onEnable() {
+        ProxyServer.getInstance().getLogger().info("======= PROTOCOLIZE =======");
+        ProxyServer.getInstance().getLogger()
+            .info("Version " + getDescription().getVersion() + " by " + getDescription().getAuthor());
+        ProxyServer.getInstance().getLogger().info("Supported: "
+            + (supported ? "Yes (" + registrationProvider.strategy().getClass().getSimpleName() + ")" : "No"));
+        if (getDescription().getVersion().endsWith(":unknown")) {
+            ProxyServer.getInstance().getLogger().warning(
+                "WARNING: YOU ARE RUNNING AN UNOFFICIAL BUILD OF PROTOCOLIZE. DON'T REPORT ANY BUGS REGARDING THIS VERSION.");
+        }
 
-		ProxyServer.getInstance().getPluginManager().registerCommand(this, new ProtocolizeCommand(this));
-		ProxyServer.getInstance().getPluginManager().registerListener(this, new PlayerListener(this));
+        ProxyServer.getInstance().getPluginManager().registerCommand(this, new ProtocolizeCommand(this));
+        ProxyServer.getInstance().getPluginManager().registerListener(this, new PlayerListener(this));
 
-		((BungeeCordModuleProvider) Protocolize.getService(ModuleProvider.class)).enableAll();
-	}
+        ((BungeeCordModuleProvider) Protocolize.getService(ModuleProvider.class)).enableAll();
+    }
 
-	public static boolean isExceptionCausedByProtocolize(Throwable cause) {
-		final List<StackTraceElement> all = getEverything(cause, new ArrayList<>());
-		for (final StackTraceElement element : all) {
-			if (element.getClassName().toLowerCase().contains("dev.simplix") && !element.getClassName()
-					.contains("dev.simplix.protocolize.bungee.netty.ProtocolizeEncoderChannelHandler.exceptionCaught"))
-				return true;
-		}
-		return false;
-	}
-
-	private static List<StackTraceElement> getEverything(final Throwable e, List<StackTraceElement> objects) {
-		if (e.getCause() != null)
-			objects = getEverything(e.getCause(), objects);
-		objects.addAll(Arrays.asList(e.getStackTrace()));
-		return objects;
-	}
-
-	public NettyPipelineInjector nettyPipelineInjector() {
-		return pipelineInjector;
-	}
+    public NettyPipelineInjector nettyPipelineInjector() {
+        return pipelineInjector;
+    }
 }

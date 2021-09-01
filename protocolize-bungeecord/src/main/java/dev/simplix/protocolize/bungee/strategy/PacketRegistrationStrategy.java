@@ -10,6 +10,7 @@ import gnu.trove.map.TIntObjectMap;
 public interface PacketRegistrationStrategy {
 
     void registerPacket(TIntObjectMap<Object> protocols, int protocolVersion, int packetId, Class<?> clazz) throws IllegalAccessException;
+
     boolean compatible();
 
 }

@@ -104,11 +104,11 @@ public final class ProtocolUtil {
             buf.writeMedium(w);
         } else if ((value & (0xFFFFFFFF << 28)) == 0) {
             int w = (value & 0x7F | 0x80) << 24 | (((value >>> 7) & 0x7F | 0x80) << 16)
-                    | ((value >>> 14) & 0x7F | 0x80) << 8 | (value >>> 21);
+                | ((value >>> 14) & 0x7F | 0x80) << 8 | (value >>> 21);
             buf.writeInt(w);
         } else {
             int w = (value & 0x7F | 0x80) << 24 | ((value >>> 7) & 0x7F | 0x80) << 16
-                    | ((value >>> 14) & 0x7F | 0x80) << 8 | ((value >>> 21) & 0x7F | 0x80);
+                | ((value >>> 14) & 0x7F | 0x80) << 8 | ((value >>> 21) & 0x7F | 0x80);
             buf.writeInt(w);
             buf.writeByte(value >>> 28);
         }
@@ -151,12 +151,12 @@ public final class ProtocolUtil {
         // sanity check and then check again to make sure our optimistic guess was good.
         NettyPreconditions.checkFrame(length <= cap * 4, "Bad string size (got %s, maximum is %s)", length, cap);
         NettyPreconditions.checkFrame(buf.isReadable(length),
-                "Trying to read a string that is too long (wanted %s, only have %s)", length,
-                buf.readableBytes());
+            "Trying to read a string that is too long (wanted %s, only have %s)", length,
+            buf.readableBytes());
         String str = buf.toString(buf.readerIndex(), length, StandardCharsets.UTF_8);
         buf.skipBytes(length);
         NettyPreconditions.checkFrame(str.length() <= cap, "Got a too-long string (got %s, max %s)",
-                str.length(), cap);
+            str.length(), cap);
         return str;
     }
 
@@ -189,8 +189,8 @@ public final class ProtocolUtil {
         NettyPreconditions.checkFrame(length >= 0, "Got a negative-length array (%s)", length);
         NettyPreconditions.checkFrame(length <= cap, "Bad array size (got %s, maximum is %s)", length, cap);
         NettyPreconditions.checkFrame(buf.isReadable(length),
-                "Trying to read an array that is too long (wanted %s, only have %s)", length,
-                buf.readableBytes());
+            "Trying to read an array that is too long (wanted %s, only have %s)", length,
+            buf.readableBytes());
         byte[] array = new byte[length];
         buf.readBytes(array);
         return array;

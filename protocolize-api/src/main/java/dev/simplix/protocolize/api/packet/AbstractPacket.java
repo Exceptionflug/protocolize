@@ -14,6 +14,7 @@ import io.netty.buffer.ByteBuf;
 public abstract class AbstractPacket {
 
     public abstract void read(ByteBuf buf, PacketDirection direction, int protocolVersion);
+
     public abstract void write(ByteBuf buf, PacketDirection direction, int protocolVersion);
 
 }

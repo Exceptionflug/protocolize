@@ -10,7 +10,6 @@ import dev.simplix.protocolize.api.inventory.PlayerInventory;
 import dev.simplix.protocolize.api.packet.AbstractPacket;
 import dev.simplix.protocolize.api.player.ProtocolizePlayer;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
-import dev.simplix.protocolize.api.util.ProtocolVersions;
 import dev.simplix.protocolize.velocity.packet.VelocityProtocolizePacket;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -50,7 +49,7 @@ public class VelocityProtocolizePlayer implements ProtocolizePlayer {
     public void sendPacket(Object packet) {
         if (packet instanceof AbstractPacket) {
             VelocityProtocolizePacket pack = (VelocityProtocolizePacket) REGISTRATION_PROVIDER.createPacket((Class<? extends AbstractPacket>) packet.getClass(),
-                    Protocol.PLAY, PacketDirection.CLIENTBOUND, protocolVersion());
+                Protocol.PLAY, PacketDirection.CLIENTBOUND, protocolVersion());
             if (pack == null) {
                 throw new IllegalStateException("Cannot send " + packet.getClass().getName() + " to players with protocol version " + protocolVersion());
             }
@@ -59,7 +58,7 @@ public class VelocityProtocolizePlayer implements ProtocolizePlayer {
         }
         Object finalPacket = packet;
         proxyServer.getPlayer(uniqueId).ifPresent(player -> {
-            ((ConnectedPlayer)player).getConnection().write(finalPacket);
+            ((ConnectedPlayer) player).getConnection().write(finalPacket);
         });
     }
 
@@ -67,7 +66,7 @@ public class VelocityProtocolizePlayer implements ProtocolizePlayer {
     public void sendPacketToServer(Object packet) {
         if (packet instanceof AbstractPacket) {
             VelocityProtocolizePacket pack = (VelocityProtocolizePacket) REGISTRATION_PROVIDER.createPacket((Class<? extends AbstractPacket>) packet.getClass(),
-                    Protocol.PLAY, PacketDirection.SERVERBOUND, protocolVersion());
+                Protocol.PLAY, PacketDirection.SERVERBOUND, protocolVersion());
             if (pack == null) {
                 throw new IllegalStateException("Cannot send " + packet.getClass().getName() + " to players with protocol version " + protocolVersion());
             }
@@ -76,7 +75,7 @@ public class VelocityProtocolizePlayer implements ProtocolizePlayer {
         }
         Object finalPacket = packet;
         proxyServer.getPlayer(uniqueId).flatMap(Player::getCurrentServer).ifPresent(serverConnection -> {
-            ((VelocityServerConnection)serverConnection).getConnection().write(finalPacket);
+            ((VelocityServerConnection) serverConnection).getConnection().write(finalPacket);
         });
     }
 

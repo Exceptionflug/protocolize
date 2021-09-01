@@ -15,7 +15,7 @@ public final class ProtocolizeCommand implements SimpleCommand {
     @Override
     public void execute(Invocation invocation) {
         MessageUtil.sendLegacyMessage(invocation.source(), "§bProtocolize version " + plugin.version()
-                + " by " + plugin.description().getAuthors().toString().replace("[", "").replace("]", ""));
+            + " by " + plugin.description().getAuthors().toString().replace("[", "").replace("]", ""));
     }
 
 }

@@ -29,7 +29,7 @@ import java.util.function.Consumer;
 public class Inventory {
 
     private static final ComponentConverter CONVERTER = Protocolize.getService(ComponentConverterProvider.class)
-            .platformConverter();
+        .platformConverter();
 
     private final Map<Integer, ItemStack> items = new ConcurrentHashMap<>();
     private final List<Consumer<InventoryClick>> clickConsumers = new ArrayList<>();

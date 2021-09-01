@@ -7,6 +7,6 @@ package dev.simplix.protocolize.api;
  */
 public enum Direction {
 
-  DOWNSTREAM, UPSTREAM
+    DOWNSTREAM, UPSTREAM
 
 }

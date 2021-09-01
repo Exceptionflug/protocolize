@@ -1,10 +1,5 @@
 package dev.simplix.protocolize.bungee.netty;
 
-import java.nio.channels.ClosedChannelException;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.logging.Level;
-
 import dev.simplix.protocolize.api.PacketDirection;
 import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.providers.PacketListenerProvider;
@@ -21,12 +16,13 @@ import io.netty.channel.unix.Errors.NativeIoException;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.Connection;
-import net.md_5.bungee.protocol.AbstractPacketHandler;
-import net.md_5.bungee.protocol.DefinedPacket;
-import net.md_5.bungee.protocol.MinecraftDecoder;
-import net.md_5.bungee.protocol.PacketWrapper;
-import net.md_5.bungee.protocol.Protocol;
+import net.md_5.bungee.protocol.*;
 import net.md_5.bungee.protocol.ProtocolConstants.Direction;
+
+import java.nio.channels.ClosedChannelException;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.logging.Level;
 
 public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDecoder<PacketWrapper> {
 
@@ -89,8 +85,8 @@ public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDeco
                         // Try packet rewrite
                         final ByteBuf buf = Unpooled.directBuffer();
                         int packetID = REGISTRATION_PROVIDER.packetId(packet, protocolizeProtocol(),
-                                direction == Direction.TO_CLIENT ? PacketDirection.CLIENTBOUND : PacketDirection.SERVERBOUND,
-                                protocolVersion);
+                            direction == Direction.TO_CLIENT ? PacketDirection.CLIENTBOUND : PacketDirection.SERVERBOUND,
+                            protocolVersion);
                         if (packetID != -1) {
                             DefinedPacket.writeVarInt(packetID, buf);
                             packet.write(buf, direction, protocolVersion);

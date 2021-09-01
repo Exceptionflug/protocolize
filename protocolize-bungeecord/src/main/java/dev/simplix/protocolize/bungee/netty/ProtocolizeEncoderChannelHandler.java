@@ -35,7 +35,7 @@ public final class ProtocolizeEncoderChannelHandler extends MessageToMessageEnco
     }
 
     @SuppressWarnings("deprecation")
-	@Override
+    @Override
     public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) throws Exception {
         if (cause.getClass().equals(CancelSendSignal.INSTANCE.getClass()))
             throw ((Error) cause);

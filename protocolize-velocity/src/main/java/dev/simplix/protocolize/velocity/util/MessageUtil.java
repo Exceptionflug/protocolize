@@ -12,7 +12,8 @@ public final class MessageUtil {
 
     private static final LegacyComponentSerializer COMPONENT_SERIALIZER = LegacyComponentSerializer.builder().build();
 
-    private MessageUtil() {}
+    private MessageUtil() {
+    }
 
     public static void sendLegacyMessage(CommandSource commandSource, String message) {
         commandSource.sendMessage(COMPONENT_SERIALIZER.deserialize(message));

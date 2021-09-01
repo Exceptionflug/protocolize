@@ -1,12 +1,6 @@
 package dev.simplix.protocolize.api.player;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.function.Consumer;
-
 import com.google.common.collect.Lists;
-
 import dev.simplix.protocolize.api.Location;
 import dev.simplix.protocolize.api.PlayerInteract;
 import dev.simplix.protocolize.api.SoundCategory;
@@ -18,6 +12,11 @@ import dev.simplix.protocolize.data.packets.CloseWindow;
 import dev.simplix.protocolize.data.packets.NamedSoundEffect;
 import dev.simplix.protocolize.data.packets.OpenWindow;
 import dev.simplix.protocolize.data.packets.WindowItems;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * Date: 26.08.2021

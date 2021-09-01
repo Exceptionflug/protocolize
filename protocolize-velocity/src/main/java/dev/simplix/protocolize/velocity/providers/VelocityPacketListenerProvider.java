@@ -24,7 +24,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.function.Supplier;
@@ -103,11 +102,11 @@ public final class VelocityPacketListenerProvider implements PacketListenerProvi
             return;
         }
         map.put(id, () -> {
-           try {
-               return (MinecraftPacket) ReflectionUtil.newInstance(clazz);
-           } catch (Exception e) {
-               throw new RuntimeException("Unable to dynamically construct packet "+clazz.getName(), e);
-           }
+            try {
+                return (MinecraftPacket) ReflectionUtil.newInstance(clazz);
+            } catch (Exception e) {
+                throw new RuntimeException("Unable to dynamically construct packet " + clazz.getName(), e);
+            }
         });
     }
 

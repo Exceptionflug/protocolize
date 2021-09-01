@@ -72,7 +72,7 @@ public class PlayerListener {
         } else if (connection instanceof ConnectedPlayer) {
             pipeline = ((ConnectedPlayer) connection).getConnection().getChannel().pipeline();
         } else {
-            throw new IllegalArgumentException("Unsupported InboundConnection instance: "+connection.getClass().getName());
+            throw new IllegalArgumentException("Unsupported InboundConnection instance: " + connection.getClass().getName());
         }
         pipeline.get(ProtocolizeDecoderChannelHandler.class).connection(connection);
         pipeline.get(ProtocolizeEncoderChannelHandler.class).connection(connection);
@@ -83,7 +83,7 @@ public class PlayerListener {
         if (connection instanceof VelocityServerConnection) {
             pipeline = ((VelocityServerConnection) connection).getConnection().getChannel().pipeline();
         } else {
-            throw new IllegalArgumentException("Unsupported InboundConnection instance: "+connection.getClass().getName());
+            throw new IllegalArgumentException("Unsupported InboundConnection instance: " + connection.getClass().getName());
         }
         pipeline.get(ProtocolizeDecoderChannelHandler.class).connection(connection);
         pipeline.get(ProtocolizeEncoderChannelHandler.class).connection(connection);

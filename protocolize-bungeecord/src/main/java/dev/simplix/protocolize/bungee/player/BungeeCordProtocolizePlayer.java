@@ -1,18 +1,6 @@
 package dev.simplix.protocolize.bungee.player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
-
-import dev.simplix.protocolize.api.Location;
-import dev.simplix.protocolize.api.PacketDirection;
-import dev.simplix.protocolize.api.PlayerInteract;
-import dev.simplix.protocolize.api.Protocol;
-import dev.simplix.protocolize.api.Protocolize;
+import dev.simplix.protocolize.api.*;
 import dev.simplix.protocolize.api.inventory.Inventory;
 import dev.simplix.protocolize.api.inventory.PlayerInventory;
 import dev.simplix.protocolize.api.packet.AbstractPacket;
@@ -26,6 +14,14 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.connection.Server;
 import net.md_5.bungee.protocol.DefinedPacket;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 /**
  * Date: 26.08.2021
@@ -52,7 +48,7 @@ public class BungeeCordProtocolizePlayer implements ProtocolizePlayer {
     public void sendPacket(Object packet) {
         if (packet instanceof AbstractPacket) {
             BungeeCordProtocolizePacket pack = (BungeeCordProtocolizePacket) REGISTRATION_PROVIDER.createPacket((Class<? extends AbstractPacket>) packet.getClass(),
-                    Protocol.PLAY, PacketDirection.CLIENTBOUND, protocolVersion());
+                Protocol.PLAY, PacketDirection.CLIENTBOUND, protocolVersion());
             pack.wrapper((AbstractPacket) packet);
             packet = pack;
         }
@@ -66,7 +62,7 @@ public class BungeeCordProtocolizePlayer implements ProtocolizePlayer {
     public void sendPacketToServer(Object packet) {
         if (packet instanceof AbstractPacket) {
             BungeeCordProtocolizePacket pack = (BungeeCordProtocolizePacket) REGISTRATION_PROVIDER.createPacket((Class<? extends AbstractPacket>) packet.getClass(),
-                    Protocol.PLAY, PacketDirection.SERVERBOUND, protocolVersion());
+                Protocol.PLAY, PacketDirection.SERVERBOUND, protocolVersion());
             pack.wrapper((AbstractPacket) packet);
             packet = pack;
         }

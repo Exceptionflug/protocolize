@@ -1,8 +1,6 @@
 package dev.simplix.protocolize.velocity.providers;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import com.velocitypowered.api.network.ProtocolVersion;
 import com.velocitypowered.proxy.protocol.MinecraftPacket;
 import com.velocitypowered.proxy.protocol.ProtocolUtils;
@@ -10,8 +8,8 @@ import com.velocitypowered.proxy.protocol.StateRegistry;
 import dev.simplix.protocolize.api.PacketDirection;
 import dev.simplix.protocolize.api.Protocol;
 import dev.simplix.protocolize.api.Protocolize;
-import dev.simplix.protocolize.api.packet.AbstractPacket;
 import dev.simplix.protocolize.api.mapping.ProtocolIdMapping;
+import dev.simplix.protocolize.api.packet.AbstractPacket;
 import dev.simplix.protocolize.api.providers.MappingProvider;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.velocity.packet.VelocityProtocolizePacket;
@@ -24,7 +22,9 @@ import net.bytebuddy.matcher.ElementMatchers;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 /**
@@ -100,9 +100,9 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
 
     private StateRegistry.PacketMapping createVelocityMapping(int start, int end, int id, boolean lastValid) throws InvocationTargetException, InstantiationException, IllegalAccessException {
         return packetMappingConstructor.newInstance(id,
-                ProtocolVersion.getProtocolVersion(start),
-                lastValid ? ProtocolVersion.getProtocolVersion(end) : null,
-                false);
+            ProtocolVersion.getProtocolVersion(start),
+            lastValid ? ProtocolVersion.getProtocolVersion(end) : null,
+            false);
     }
 
     @Override
@@ -112,7 +112,7 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
         Preconditions.checkNotNull(packet, "Packet cannot be null");
         if (packet instanceof VelocityProtocolizePacket) {
             ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new AbstractMap.SimpleEntry<>(direction,
-                    ((VelocityProtocolizePacket) packet).obtainProtocolizePacketClass()), protocolVersion);
+                ((VelocityProtocolizePacket) packet).obtainProtocolizePacketClass()), protocolVersion);
             if (protocolIdMapping != null) {
                 return protocolIdMapping.id();
             }
@@ -126,7 +126,7 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
                 return -1;
             }
             StateRegistry.PacketRegistry.ProtocolRegistry registry = velocityDirection.getProtocolRegistry(stateRegistry,
-                    ProtocolVersion.getProtocolVersion(protocolVersion));
+                ProtocolVersion.getProtocolVersion(protocolVersion));
             return registry.getPacketId((MinecraftPacket) packet);
         }
         return -1;
@@ -143,7 +143,7 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
             return null;
         }
         StateRegistry.PacketRegistry.ProtocolRegistry registry = velocityDirection.getProtocolRegistry(stateRegistry,
-                ProtocolVersion.getProtocolVersion(protocolVersion));
+            ProtocolVersion.getProtocolVersion(protocolVersion));
         ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new AbstractMap.SimpleEntry<>(direction, clazz), protocolVersion);
         if (protocolIdMapping != null) {
             return registry.createPacket(protocolIdMapping.id());
@@ -153,13 +153,13 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
 
     private Class<? extends MinecraftPacket> generateVelocityPacket(Class<? extends AbstractPacket> c) {
         return new ByteBuddy()
-                .subclass(VelocityProtocolizePacket.class)
-                .method(ElementMatchers.named("obtainProtocolizePacketClass"))
-                .intercept(MethodDelegation.to(new ByteBuddyClassInjector(c)))
-                .name("dev.simplix.protocolize.velocity.packets.Generated" + c.getSimpleName() + "Wrapper")
-                .make()
-                .load(getClass().getClassLoader())
-                .getLoaded();
+            .subclass(VelocityProtocolizePacket.class)
+            .method(ElementMatchers.named("obtainProtocolizePacketClass"))
+            .intercept(MethodDelegation.to(new ByteBuddyClassInjector(c)))
+            .name("dev.simplix.protocolize.velocity.packets.Generated" + c.getSimpleName() + "Wrapper")
+            .make()
+            .load(getClass().getClassLoader())
+            .getLoaded();
     }
 
     private ProtocolUtils.Direction velocityDirection(PacketDirection direction) {

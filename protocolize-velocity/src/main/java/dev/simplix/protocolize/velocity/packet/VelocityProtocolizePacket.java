@@ -31,8 +31,8 @@ public class VelocityProtocolizePacket implements MinecraftPacket {
         try {
             wrapper = wrapperClass.getConstructor().newInstance();
         } catch (Exception exception) {
-            throw new RuntimeException("Unable to construct instance of "+ wrapperClass.getName()+". Please ensure that the "
-                    + "default constructor is existent and accessible.");
+            throw new RuntimeException("Unable to construct instance of " + wrapperClass.getName() + ". Please ensure that the "
+                + "default constructor is existent and accessible.");
         }
     }
 
@@ -43,15 +43,15 @@ public class VelocityProtocolizePacket implements MinecraftPacket {
     @Override
     public void decode(ByteBuf byteBuf, ProtocolUtils.Direction direction, ProtocolVersion protocolVersion) {
         wrapper.read(byteBuf,
-                direction == ProtocolUtils.Direction.CLIENTBOUND ? PacketDirection.CLIENTBOUND : PacketDirection.SERVERBOUND,
-                protocolVersion.getProtocol());
+            direction == ProtocolUtils.Direction.CLIENTBOUND ? PacketDirection.CLIENTBOUND : PacketDirection.SERVERBOUND,
+            protocolVersion.getProtocol());
     }
 
     @Override
     public void encode(ByteBuf byteBuf, ProtocolUtils.Direction direction, ProtocolVersion protocolVersion) {
         wrapper.write(byteBuf,
-                direction == ProtocolUtils.Direction.CLIENTBOUND ? PacketDirection.CLIENTBOUND : PacketDirection.SERVERBOUND,
-                protocolVersion.getProtocol());
+            direction == ProtocolUtils.Direction.CLIENTBOUND ? PacketDirection.CLIENTBOUND : PacketDirection.SERVERBOUND,
+            protocolVersion.getProtocol());
     }
 
     @Override

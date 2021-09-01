@@ -35,14 +35,15 @@ import java.util.List;
 @Plugin(name = "Protocolize", authors = "Exceptionflug", version = "v2", id = "protocolize")
 public class ProtocolizePlugin {
 
-    private final ProxyServer proxyServer;
-    private final Logger logger;
     private static String version;
-    private boolean supported;
 
     static {
         PlatformInitializer.initVelocity();
     }
+
+    private final ProxyServer proxyServer;
+    private final Logger logger;
+    private boolean supported;
 
     @Inject
     public ProtocolizePlugin(ProxyServer proxyServer, Logger logger) {
@@ -50,6 +51,27 @@ public class ProtocolizePlugin {
         this.logger = logger;
         version = readVersion();
         initProviders();
+    }
+
+    public static String version() {
+        return version;
+    }
+
+    public static boolean isExceptionCausedByProtocolize(Throwable cause) {
+        final List<StackTraceElement> all = getEverything(cause, new ArrayList<>());
+        for (final StackTraceElement element : all) {
+            if (element.getClassName().toLowerCase().contains("dev.simplix")
+                && !element.getClassName().contains("dev.simplix.protocolize.bungee.netty.ProtocolizeEncoderChannelHandler.exceptionCaught"))
+                return true;
+        }
+        return false;
+    }
+
+    private static List<StackTraceElement> getEverything(final Throwable e, List<StackTraceElement> objects) {
+        if (e.getCause() != null)
+            objects = getEverything(e.getCause(), objects);
+        objects.addAll(Arrays.asList(e.getStackTrace()));
+        return objects;
     }
 
     private void initProviders() {
@@ -83,7 +105,7 @@ public class ProtocolizePlugin {
         proxyServer.getCommandManager().register("protocolize", new ProtocolizeCommand(this));
         proxyServer.getEventManager().register(this, new PlayerListener());
 
-        ((VelocityModuleProvider)Protocolize.getService(ModuleProvider.class)).enableAll();
+        ((VelocityModuleProvider) Protocolize.getService(ModuleProvider.class)).enableAll();
     }
 
     private void swapChannelInitializers() throws ReflectiveOperationException {
@@ -94,29 +116,8 @@ public class ProtocolizePlugin {
         connectionManager.getServerChannelInitializer().set(new ProtocolizeServerChannelInitializer((VelocityServer) proxyServer));
     }
 
-    public static String version() {
-        return version;
-    }
-
     public PluginDescription description() {
         return proxyServer.getPluginManager().getPlugin("protocolize").get().getDescription();
-    }
-
-    public static boolean isExceptionCausedByProtocolize(Throwable cause) {
-        final List<StackTraceElement> all = getEverything(cause, new ArrayList<>());
-        for (final StackTraceElement element : all) {
-            if (element.getClassName().toLowerCase().contains("dev.simplix")
-                    && !element.getClassName().contains("dev.simplix.protocolize.bungee.netty.ProtocolizeEncoderChannelHandler.exceptionCaught"))
-                return true;
-        }
-        return false;
-    }
-
-    private static List<StackTraceElement> getEverything(final Throwable e, List<StackTraceElement> objects) {
-        if (e.getCause() != null)
-            objects = getEverything(e.getCause(), objects);
-        objects.addAll(Arrays.asList(e.getStackTrace()));
-        return objects;
     }
 
 }

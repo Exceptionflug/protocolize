@@ -30,7 +30,7 @@ public class BungeeCordProtocolizePacket extends DefinedPacket {
         try {
             wrapper = wrapperClass.getConstructor().newInstance();
         } catch (Exception exception) {
-            throw new RuntimeException("Unable to construct instance of "+ wrapperClass.getName()+". Please ensure that the "
+            throw new RuntimeException("Unable to construct instance of " + wrapperClass.getName() + ". Please ensure that the "
                 + "default constructor is existent and accessible.");
         }
     }
@@ -42,13 +42,13 @@ public class BungeeCordProtocolizePacket extends DefinedPacket {
     @Override
     public void read(ByteBuf buf, ProtocolConstants.Direction direction, int protocolVersion) {
         wrapper.read(buf, direction == ProtocolConstants.Direction.TO_CLIENT ? PacketDirection.CLIENTBOUND : PacketDirection.SERVERBOUND,
-                protocolVersion);
+            protocolVersion);
     }
 
     @Override
     public void write(ByteBuf buf, ProtocolConstants.Direction direction, int protocolVersion) {
         wrapper.write(buf, direction == ProtocolConstants.Direction.TO_CLIENT ? PacketDirection.CLIENTBOUND : PacketDirection.SERVERBOUND,
-                protocolVersion);
+            protocolVersion);
     }
 
     @Override
