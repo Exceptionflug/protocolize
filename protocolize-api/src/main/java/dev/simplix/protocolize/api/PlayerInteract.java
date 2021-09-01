@@ -3,8 +3,6 @@ package dev.simplix.protocolize.api;
 import dev.simplix.protocolize.api.item.ItemStack;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.experimental.Accessors;
 
 /**

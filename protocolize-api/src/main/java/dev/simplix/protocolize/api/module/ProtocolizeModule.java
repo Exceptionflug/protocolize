@@ -4,8 +4,6 @@ import dev.simplix.protocolize.api.Platform;
 import dev.simplix.protocolize.api.providers.MappingProvider;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 
-import java.util.function.Consumer;
-
 /**
  * Modules are providing additional features like custom implemented packets or mappings.
  * <br><br>

@@ -1,11 +1,14 @@
 package dev.simplix.protocolize.api;
 
-import dev.simplix.protocolize.api.providers.*;
-import dev.simplix.protocolize.data.DataModule;
-import dev.simplix.protocolize.data.ItemType;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import dev.simplix.protocolize.api.providers.MappingProvider;
+import dev.simplix.protocolize.api.providers.ModuleProvider;
+import dev.simplix.protocolize.api.providers.PacketListenerProvider;
+import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
+import dev.simplix.protocolize.api.providers.ProtocolizePlayerProvider;
+import dev.simplix.protocolize.data.DataModule;
 
 /**
  * This class provides access to the necessary API components. Please be sure
