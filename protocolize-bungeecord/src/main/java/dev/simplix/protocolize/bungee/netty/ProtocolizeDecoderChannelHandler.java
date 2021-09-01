@@ -1,11 +1,15 @@
 package dev.simplix.protocolize.bungee.netty;
 
+import java.nio.channels.ClosedChannelException;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.logging.Level;
+
 import dev.simplix.protocolize.api.PacketDirection;
 import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.providers.PacketListenerProvider;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.bungee.ProtocolizePlugin;
-import dev.simplix.protocolize.bungee.packet.BungeeCordProtocolizePacket;
 import dev.simplix.protocolize.bungee.providers.BungeeCordPacketListenerProvider;
 import dev.simplix.protocolize.bungee.util.CancelSendSignal;
 import dev.simplix.protocolize.bungee.util.ReflectionUtil;
@@ -17,13 +21,12 @@ import io.netty.channel.unix.Errors.NativeIoException;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.Connection;
-import net.md_5.bungee.protocol.*;
+import net.md_5.bungee.protocol.AbstractPacketHandler;
+import net.md_5.bungee.protocol.DefinedPacket;
+import net.md_5.bungee.protocol.MinecraftDecoder;
+import net.md_5.bungee.protocol.PacketWrapper;
+import net.md_5.bungee.protocol.Protocol;
 import net.md_5.bungee.protocol.ProtocolConstants.Direction;
-
-import java.nio.channels.ClosedChannelException;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.logging.Level;
 
 public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDecoder<PacketWrapper> {
 
