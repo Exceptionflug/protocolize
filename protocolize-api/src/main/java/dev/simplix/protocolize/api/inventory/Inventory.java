@@ -67,8 +67,9 @@ public class Inventory {
         return items.get(slot);
     }
 
-    public ItemStack item(int slot, ItemStack stack) {
-        return items.put(slot, stack);
+    public Inventory item(int slot, ItemStack stack) {
+        items.put(slot, stack);
+        return this;
     }
 
     public <T> T title() {
@@ -83,20 +84,24 @@ public class Inventory {
         }
     }
 
-    public void title(String legacyName) {
+    public Inventory title(String legacyName) {
         this.titleJson = CONVERTER.toJson(CONVERTER.fromLegacyText(legacyName));
+        return this;
     }
 
-    public void title(Object titleComponent) {
+    public Inventory title(Object titleComponent) {
         this.titleJson = CONVERTER.toJson(titleComponent);
+        return this;
     }
 
-    public void onClick(Consumer<InventoryClick> consumer) {
+    public Inventory onClick(Consumer<InventoryClick> consumer) {
         clickConsumers.add(consumer);
+        return this;
     }
 
-    public void onClose(Consumer<InventoryClose> consumer) {
+    public Inventory onClose(Consumer<InventoryClose> consumer) {
         closeConsumers.add(consumer);
+        return this;
     }
 
 
