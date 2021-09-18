@@ -122,7 +122,7 @@ public class ItemStack {
         return out;
     }
 
-    public void lore(List<Object> list, boolean legacyString) {
+    public void lore(List<?> list, boolean legacyString) {
         List<String> out = new ArrayList<>();
         for (Object line : list) {
             if (legacyString) {
