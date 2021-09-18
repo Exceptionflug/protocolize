@@ -25,7 +25,7 @@ public class AegisPacketRegistrationStrategy implements PacketRegistrationStrate
     public void registerPacket(TIntObjectMap<Object> protocols, int protocolVersion, int packetId, Class<?> clazz) throws IllegalAccessException {
         final Object protocolData = protocols.get(protocolVersion);
         if (protocolData == null) {
-            ProxyServer.getInstance().getLogger().warning("[Protocolize] Protocol version " + protocolVersion + " is not supported on this aegis version. Skipping registration for that specific version.");
+            ProxyServer.getInstance().getLogger().finest("[Protocolize | DEBUG] Protocol version " + protocolVersion + " is not supported on this aegis version. Skipping registration for that specific version.");
             return;
         }
         ((TObjectIntMap<Class<?>>) protocolDataPacketMapField.get(protocolData)).put(clazz, packetId);
