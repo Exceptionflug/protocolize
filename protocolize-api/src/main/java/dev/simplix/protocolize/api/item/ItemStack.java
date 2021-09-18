@@ -122,6 +122,18 @@ public class ItemStack {
         return out;
     }
 
+    public void lore(List<Object> list, boolean legacyString) {
+        List<String> out = new ArrayList<>();
+        for (Object line : list) {
+            if (legacyString) {
+                out.add(CONVERTER.toJson(CONVERTER.fromLegacyText((String) line)));
+            } else {
+                out.add(CONVERTER.toJson(line));
+            }
+        }
+        this.loreJson = out;
+    }
+
     public void lore(int index, String legacyText) {
         loreJson.set(index, CONVERTER.toJson(CONVERTER.fromLegacyText(legacyText)));
     }
