@@ -89,6 +89,9 @@ public class ItemStack {
     }
 
     public <T> T displayName(boolean legacyString) {
+        if (displayNameJson == null) {
+            return null;
+        }
         if (legacyString) {
             return (T) CONVERTER.toLegacyText(CONVERTER.fromJson(displayNameJson));
         } else {

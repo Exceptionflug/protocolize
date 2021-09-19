@@ -103,8 +103,9 @@ public interface ProtocolizePlayer {
             registerInventory(windowId, inventory);
         }
 
-        if (!alreadyOpen)
+        if (!alreadyOpen) {
             sendPacket(new OpenWindow(windowId, inventory.type(), inventory.titleJson()));
+        }
         int protocolVersion;
         try {
             protocolVersion = protocolVersion();
