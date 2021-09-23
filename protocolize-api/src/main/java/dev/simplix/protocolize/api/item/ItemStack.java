@@ -38,7 +38,7 @@ public class ItemStack {
 
     @Getter(AccessLevel.PACKAGE)
     @Setter(AccessLevel.PACKAGE)
-    private List<String> loreJson;
+    private List<String> loreJson = new ArrayList<>();
 
     private ItemType itemType;
     private CompoundTag nbtData = new CompoundTag();

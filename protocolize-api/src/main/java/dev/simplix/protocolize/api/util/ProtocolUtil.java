@@ -1,10 +1,13 @@
 package dev.simplix.protocolize.api.util;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
+import io.netty.handler.codec.CorruptedFrameException;
 import io.netty.handler.codec.DecoderException;
 
+import java.net.ProtocolException;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
@@ -145,19 +148,20 @@ public final class ProtocolUtil {
     }
 
     private static String readString(ByteBuf buf, int cap, int length) {
-        NettyPreconditions.checkFrame(length >= 0, "Got a negative-length string (%s)", length);
-        // `cap` is interpreted as a UTF-8 character length. To cover the full Unicode plane, we must
-        // consider the length of a UTF-8 character, which can be up to 4 bytes. We do an initial
-        // sanity check and then check again to make sure our optimistic guess was good.
-        NettyPreconditions.checkFrame(length <= cap * 4, "Bad string size (got %s, maximum is %s)", length, cap);
-        NettyPreconditions.checkFrame(buf.isReadable(length),
-            "Trying to read a string that is too long (wanted %s, only have %s)", length,
-            buf.readableBytes());
-        String str = buf.toString(buf.readerIndex(), length, StandardCharsets.UTF_8);
-        buf.skipBytes(length);
-        NettyPreconditions.checkFrame(str.length() <= cap, "Got a too-long string (got %s, max %s)",
-            str.length(), cap);
-        return str;
+        int len = readVarInt(buf);
+        if (len > length * 4) {
+            throw new CorruptedFrameException("Cannot receive string longer than " + length * 4 + " (got " + len + " bytes)");
+        }
+
+        byte[] b = new byte[len];
+        buf.readBytes(b);
+
+        String s = new String(b, Charsets.UTF_8);
+        if (s.length() > length) {
+            throw new CorruptedFrameException("Cannot receive string longer than " + length + " (got " + s.length() + " characters)");
+        }
+
+        return s;
     }
 
     /**
@@ -166,10 +170,10 @@ public final class ProtocolUtil {
      * @param buf the buffer to write to
      * @param str the string to write
      */
-    public static void writeString(ByteBuf buf, CharSequence str) {
-        int size = ByteBufUtil.utf8Bytes(str);
-        writeVarInt(buf, size);
-        buf.writeCharSequence(str, StandardCharsets.UTF_8);
+    public static void writeString(ByteBuf buf, String str) {
+        byte[] b = str.getBytes(Charsets.UTF_8);
+        writeVarInt(buf, b.length);
+        buf.writeBytes(b);
     }
 
     public static byte[] readByteArray(ByteBuf buf) {
