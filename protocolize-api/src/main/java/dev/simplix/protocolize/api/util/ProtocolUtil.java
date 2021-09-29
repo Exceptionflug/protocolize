@@ -134,31 +134,18 @@ public final class ProtocolUtil {
         return readString(buf, DEFAULT_MAX_STRING_SIZE);
     }
 
-    /**
-     * Reads a VarInt length-prefixed UTF-8 string from the {@code buf}, making sure to not go over
-     * {@code cap} size.
-     *
-     * @param buf the buffer to read from
-     * @param cap the maximum size of the string, in UTF-8 character length
-     * @return the decoded string
-     */
-    public static String readString(ByteBuf buf, int cap) {
-        int length = readVarInt(buf);
-        return readString(buf, cap, length);
-    }
-
-    private static String readString(ByteBuf buf, int cap, int length) {
+    private static String readString(ByteBuf buf, int maxLength) {
         int len = readVarInt(buf);
-        if (len > length * 4) {
-            throw new CorruptedFrameException("Cannot receive string longer than " + length * 4 + " (got " + len + " bytes)");
+        if (len > maxLength * 4) {
+            throw new CorruptedFrameException("Cannot receive string longer than " + maxLength * 4 + " (got " + len + " bytes)");
         }
 
         byte[] b = new byte[len];
         buf.readBytes(b);
 
         String s = new String(b, Charsets.UTF_8);
-        if (s.length() > length) {
-            throw new CorruptedFrameException("Cannot receive string longer than " + length + " (got " + s.length() + " characters)");
+        if (s.length() > maxLength) {
+            throw new CorruptedFrameException("Cannot receive string longer than " + maxLength + " (got " + s.length() + " characters)");
         }
 
         return s;
