@@ -2,11 +2,13 @@ package dev.simplix.protocolize.bungee.packet;
 
 import dev.simplix.protocolize.api.PacketDirection;
 import dev.simplix.protocolize.api.packet.AbstractPacket;
+import dev.simplix.protocolize.api.util.DebugUtil;
 import io.netty.buffer.ByteBuf;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.md_5.bungee.protocol.AbstractPacketHandler;
+import net.md_5.bungee.protocol.BadPacketException;
 import net.md_5.bungee.protocol.DefinedPacket;
 import net.md_5.bungee.protocol.ProtocolConstants;
 
@@ -41,8 +43,15 @@ public class BungeeCordProtocolizePacket extends DefinedPacket {
 
     @Override
     public void read(ByteBuf buf, ProtocolConstants.Direction direction, int protocolVersion) {
-        wrapper.read(buf, direction == ProtocolConstants.Direction.TO_CLIENT ? PacketDirection.CLIENTBOUND : PacketDirection.SERVERBOUND,
-            protocolVersion);
+        try {
+            wrapper.read(buf, direction == ProtocolConstants.Direction.TO_CLIENT ? PacketDirection.CLIENTBOUND : PacketDirection.SERVERBOUND,
+                protocolVersion);
+        } catch (Throwable throwable) {
+            BadPacketException badPacketException = new BadPacketException("Protocolize is unable to read packet " + obtainProtocolizePacketClass().getName()
+                + " at protocol version " + protocolVersion + " in direction " + direction.name(), throwable);
+            DebugUtil.writeDump(buf, badPacketException);
+            throw badPacketException;
+        }
     }
 
     @Override

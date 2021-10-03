@@ -6,10 +6,13 @@ import com.velocitypowered.proxy.protocol.MinecraftPacket;
 import com.velocitypowered.proxy.protocol.ProtocolUtils;
 import dev.simplix.protocolize.api.PacketDirection;
 import dev.simplix.protocolize.api.packet.AbstractPacket;
+import dev.simplix.protocolize.api.util.DebugUtil;
 import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.CorruptedFrameException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.checkerframework.checker.units.qual.C;
 
 /**
  * Date: 22.08.2021
@@ -42,9 +45,16 @@ public class VelocityProtocolizePacket implements MinecraftPacket {
 
     @Override
     public void decode(ByteBuf byteBuf, ProtocolUtils.Direction direction, ProtocolVersion protocolVersion) {
-        wrapper.read(byteBuf,
-            direction == ProtocolUtils.Direction.CLIENTBOUND ? PacketDirection.CLIENTBOUND : PacketDirection.SERVERBOUND,
-            protocolVersion.getProtocol());
+        try {
+            wrapper.read(byteBuf,
+                direction == ProtocolUtils.Direction.CLIENTBOUND ? PacketDirection.CLIENTBOUND : PacketDirection.SERVERBOUND,
+                protocolVersion.getProtocol());
+        } catch (Throwable throwable) {
+            CorruptedFrameException corruptedFrameException = new CorruptedFrameException("Protocolize is unable to read packet " + obtainProtocolizePacketClass().getName()
+                + " at protocol version " + protocolVersion + " in direction " + direction.name(), throwable);
+            DebugUtil.writeDump(byteBuf, corruptedFrameException);
+            throw corruptedFrameException;
+        }
     }
 
     @Override
