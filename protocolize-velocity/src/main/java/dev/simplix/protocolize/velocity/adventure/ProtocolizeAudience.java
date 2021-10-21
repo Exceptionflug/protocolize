@@ -15,7 +15,6 @@ import dev.simplix.protocolize.api.providers.ProtocolizePlayerProvider;
 import dev.simplix.protocolize.data.Sound;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.ForwardingAudience;
-import net.kyori.adventure.identity.Identity;
 
 /**
  * Date: 19.10.2021
@@ -51,8 +50,7 @@ public class ProtocolizeAudience {
             this.TYPE = AudienceType.COLLECTION;
             for(Audience singleAudience : ((ForwardingAudience)audience).audiences()){
                 if(singleAudience instanceof Player){
-                    this.PLAYERS.add(PLAYER_PROVIDER.player(singleAudience.get(Identity.UUID)
-                        .orElse(((Player)singleAudience).getUniqueId())));
+                    this.PLAYERS.add(getPlayer(singleAudience));
                 } else if(singleAudience instanceof RegisteredServer){
                     ((RegisteredServer)singleAudience).getPlayersConnected().stream()
                         .map(player -> PLAYER_PROVIDER.player(player.getUniqueId()))
@@ -60,8 +58,7 @@ public class ProtocolizeAudience {
                 } else if(singleAudience instanceof ForwardingAudience) {
                     for(Audience miniAudience : ((ForwardingAudience)singleAudience).audiences()){
                         if(miniAudience instanceof Player){
-                            this.PLAYERS.add(PLAYER_PROVIDER.player(miniAudience.get(Identity.UUID)
-                                .orElse(((Player)singleAudience).getUniqueId())));
+                            this.PLAYERS.add(getPlayer(singleAudience));
                         } else if(miniAudience instanceof RegisteredServer){
                             ((RegisteredServer)miniAudience).getPlayersConnected().stream()
                                 .map(player -> PLAYER_PROVIDER.player(player.getUniqueId()))
