@@ -4,6 +4,7 @@ import dev.simplix.protocolize.api.PacketDirection;
 import dev.simplix.protocolize.api.packet.AbstractPacket;
 import dev.simplix.protocolize.api.util.DebugUtil;
 import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.CorruptedFrameException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -46,6 +47,10 @@ public class BungeeCordProtocolizePacket extends DefinedPacket {
         try {
             wrapper.read(buf, direction == ProtocolConstants.Direction.TO_CLIENT ? PacketDirection.CLIENTBOUND : PacketDirection.SERVERBOUND,
                 protocolVersion);
+            if (buf.isReadable() && DebugUtil.enabled) {
+                DebugUtil.writeDump(buf, new CorruptedFrameException("Protocolize is unable to read packet " + obtainProtocolizePacketClass().getName()
+                    + " at protocol version " + protocolVersion + " in direction " + direction.name()));
+            }
         } catch (Throwable throwable) {
             BadPacketException badPacketException = new BadPacketException("Protocolize is unable to read packet " + obtainProtocolizePacketClass().getName()
                 + " at protocol version " + protocolVersion + " in direction " + direction.name(), throwable);

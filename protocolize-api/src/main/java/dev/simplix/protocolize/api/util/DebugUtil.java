@@ -24,7 +24,7 @@ public final class DebugUtil {
 
     private static final File FOLDER = new File("protocolize-logs");
 
-    private static final boolean enabled = System.getProperties().contains("dev.simplix.protocolize.debug");
+    public static final boolean enabled = System.getProperties().contains("dev.simplix.protocolize.debug");
 
     public static void writeDump(ByteBuf buf, Throwable throwable) {
         File file = new File(FOLDER, new Date().toString().replace(" ", "-") + ".zip");

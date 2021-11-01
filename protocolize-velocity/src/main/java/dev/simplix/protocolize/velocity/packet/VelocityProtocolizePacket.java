@@ -49,6 +49,10 @@ public class VelocityProtocolizePacket implements MinecraftPacket {
             wrapper.read(byteBuf,
                 direction == ProtocolUtils.Direction.CLIENTBOUND ? PacketDirection.CLIENTBOUND : PacketDirection.SERVERBOUND,
                 protocolVersion.getProtocol());
+            if (byteBuf.isReadable() && DebugUtil.enabled) {
+                DebugUtil.writeDump(byteBuf, new CorruptedFrameException("Protocolize is unable to read packet " + obtainProtocolizePacketClass().getName()
+                    + " at protocol version " + protocolVersion + " in direction " + direction.name()));
+            }
         } catch (Throwable throwable) {
             CorruptedFrameException corruptedFrameException = new CorruptedFrameException("Protocolize is unable to read packet " + obtainProtocolizePacketClass().getName()
                 + " at protocol version " + protocolVersion + " in direction " + direction.name(), throwable);
