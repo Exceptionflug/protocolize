@@ -112,8 +112,10 @@ public class ProtocolizePlugin {
         Field cm = VelocityServer.class.getDeclaredField("cm");
         cm.setAccessible(true);
         ConnectionManager connectionManager = (ConnectionManager) cm.get(proxyServer);
-        connectionManager.getBackendChannelInitializer().set(new ProtocolizeBackendChannelInitializer((VelocityServer) proxyServer));
-        connectionManager.getServerChannelInitializer().set(new ProtocolizeServerChannelInitializer((VelocityServer) proxyServer));
+        connectionManager.getBackendChannelInitializer().set(new ProtocolizeBackendChannelInitializer((VelocityServer) proxyServer,
+            connectionManager.getBackendChannelInitializer().get()));
+        connectionManager.getServerChannelInitializer().set(new ProtocolizeServerChannelInitializer((VelocityServer) proxyServer,
+            connectionManager.getServerChannelInitializer().get()));
     }
 
     public PluginDescription description() {
