@@ -71,6 +71,8 @@ public class PlayerListener {
             pipeline = ((MinecraftConnection) MINECRAFT_CONNECTION_FIELD.get(connection)).getChannel().pipeline();
         } else if (connection instanceof ConnectedPlayer) {
             pipeline = ((ConnectedPlayer) connection).getConnection().getChannel().pipeline();
+        } else if (connection.getClass().getName().equals("com.velocitypowered.proxy.connection.client.HandshakeSessionHandler$LegacyInboundConnection")) {
+            return; // Allow it but we can't give support for that
         } else {
             throw new IllegalArgumentException("Unsupported InboundConnection instance: " + connection.getClass().getName());
         }
