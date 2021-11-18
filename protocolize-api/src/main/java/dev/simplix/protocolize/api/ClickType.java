@@ -15,6 +15,7 @@ public enum ClickType {
     NUMBER_BUTTON_7(2, 6),
     NUMBER_BUTTON_8(2, 7),
     NUMBER_BUTTON_9(2, 8),
+    OFFHAND_SWAP(2, 40),
     CREATIVE_MIDDLE_CLICK(3, 2),
     DROP(4, 0),
     DROP_ALL(4, 1),
