@@ -18,6 +18,7 @@ import dev.simplix.protocolize.velocity.netty.ProtocolizeBackendChannelInitializ
 import dev.simplix.protocolize.velocity.netty.ProtocolizeServerChannelInitializer;
 import dev.simplix.protocolize.velocity.providers.*;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,10 +36,10 @@ import java.util.List;
 @Plugin(name = "Protocolize", authors = "Exceptionflug", version = "v2", id = "protocolize")
 public class ProtocolizePlugin {
 
-    private static String version;
+    private static String version = readVersion();
 
     static {
-        PlatformInitializer.initVelocity();
+        PlatformInitializer.initVelocity(version());
     }
 
     private final ProxyServer proxyServer;
@@ -49,7 +50,6 @@ public class ProtocolizePlugin {
     public ProtocolizePlugin(ProxyServer proxyServer, Logger logger) {
         this.proxyServer = proxyServer;
         this.logger = logger;
-        version = readVersion();
         initProviders();
     }
 
@@ -82,11 +82,11 @@ public class ProtocolizePlugin {
         Protocolize.registerService(PacketListenerProvider.class, new VelocityPacketListenerProvider());
     }
 
-    private String readVersion() {
+    private static String readVersion() {
         try (InputStream inputStream = ProtocolizePlugin.class.getResourceAsStream("/version.txt")) {
             return new String(ByteStreams.toByteArray(inputStream), StandardCharsets.UTF_8);
         } catch (IOException e) {
-            logger.warn("Unable to read version", e);
+            LoggerFactory.getLogger("Protocolize").warn("Unable to read version", e);
         }
         return "2.?.?:unknown";
     }

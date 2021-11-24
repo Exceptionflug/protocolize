@@ -22,6 +22,6 @@ public class RangeProtocolIdMapping extends AbstractProtocolMapping implements P
 
     @Override
     public String toString() {
-        return "(" + protocolRangeStart() + "-" + protocolRangeEnd() + ": " + id + ")";
+        return "(" + protocolRangeStart() + "-" + protocolRangeEnd() + ": " + id + " 0x" + Integer.toHexString(id) + ")";
     }
 }

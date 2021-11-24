@@ -52,6 +52,7 @@ public class ProtocolizePlugin extends Plugin {
     @SuppressWarnings("deprecation")
     @Override
     public void onLoad() {
+        PlatformInitializer.initVersion(getDescription().getVersion());
         List<PacketRegistrationStrategy> strategies = new ArrayList<>();
         strategies.add(new BungeeCordPacketRegistrationStrategy());
         strategies.add(new LegacyBungeeCordPacketRegistrationStrategy());

@@ -10,9 +10,11 @@ import dev.simplix.protocolize.api.Protocol;
 import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.mapping.ProtocolIdMapping;
 import dev.simplix.protocolize.api.packet.AbstractPacket;
+import dev.simplix.protocolize.api.packet.RegisteredPacket;
 import dev.simplix.protocolize.api.providers.MappingProvider;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.velocity.packet.VelocityProtocolizePacket;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.implementation.MethodDelegation;
@@ -20,11 +22,13 @@ import net.bytebuddy.implementation.bind.annotation.RuntimeType;
 import net.bytebuddy.matcher.ElementMatchers;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 /**
@@ -37,6 +41,8 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
 
     private final MappingProvider mappingProvider = Protocolize.mappingProvider();
     private Constructor<StateRegistry.PacketMapping> packetMappingConstructor;
+    private Field versionsField;
+    private Field packetClassToIdField;
     private Method registerMethod;
 
     {
@@ -45,6 +51,10 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
             packetMappingConstructor.setAccessible(true);
             registerMethod = StateRegistry.PacketRegistry.class.getDeclaredMethod("register", Class.class, Supplier.class, StateRegistry.PacketMapping[].class);
             registerMethod.setAccessible(true);
+            versionsField = StateRegistry.PacketRegistry.class.getDeclaredField("versions");
+            versionsField.setAccessible(true);
+            packetClassToIdField = StateRegistry.PacketRegistry.ProtocolRegistry.class.getDeclaredField("packetClassToId");
+            packetClassToIdField.setAccessible(true);
         } catch (Exception exception) {
             log.error("Exception occurred while initializing VelocityProtocolRegistrationProvider:", exception);
         }
@@ -70,7 +80,7 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
             Class<? extends MinecraftPacket> velocityPacket = generateVelocityPacket(packetClass);
             List<StateRegistry.PacketMapping> velocityMappings = new ArrayList<>();
             for (ProtocolIdMapping mapping : mappings) {
-                mappingProvider.registerMapping(new AbstractMap.SimpleEntry<>(direction, packetClass), mapping);
+                mappingProvider.registerMapping(new RegisteredPacket(direction, packetClass), mapping);
                 velocityMappings.add(createVelocityMapping(mapping.protocolRangeStart(), 0, mapping.id(), false));
             }
             try {
@@ -111,10 +121,13 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
         Preconditions.checkNotNull(direction, "Direction cannot be null");
         Preconditions.checkNotNull(packet, "Packet cannot be null");
         if (packet instanceof VelocityProtocolizePacket) {
-            ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new AbstractMap.SimpleEntry<>(direction,
-                ((VelocityProtocolizePacket) packet).obtainProtocolizePacketClass()), protocolVersion);
+            Class<? extends AbstractPacket> packetClass = ((VelocityProtocolizePacket) packet).obtainProtocolizePacketClass();
+            ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new RegisteredPacket(direction,
+                packetClass), protocolVersion);
             if (protocolIdMapping != null) {
                 return protocolIdMapping.id();
+            } else {
+                log.debug("Unable to obtain id for " + direction.name() + " " + packetClass.getName() + " at protocol " + protocolVersion);
             }
         } else if (packet instanceof MinecraftPacket) {
             ProtocolUtils.Direction velocityDirection = velocityDirection(direction);
@@ -149,6 +162,31 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
             return registry.createPacket(protocolIdMapping.id());
         }
         return null;
+    }
+
+    @Override
+    public String debugInformation() {
+        StringBuilder builder = new StringBuilder("Generated export of " + getClass().getName() + ":\n\n");
+        builder.append(examineDirection(ProtocolUtils.Direction.CLIENTBOUND)).append("\n");
+        builder.append(examineDirection(ProtocolUtils.Direction.SERVERBOUND)).append("\n");
+        return builder.toString();
+    }
+
+    @SneakyThrows
+    private String examineDirection(ProtocolUtils.Direction direction) {
+        StringBuilder builder = new StringBuilder(direction.name() + ":\n");
+        for (StateRegistry stateRegistry : StateRegistry.values()) {
+            builder.append("  - ").append(stateRegistry.name()).append(":\n");
+            for (ProtocolVersion version : ProtocolVersion.SUPPORTED_VERSIONS) {
+                builder.append("    - ").append("Minecraft ").append(version.getVersionsSupportedBy()).append(":\n");
+                StateRegistry.PacketRegistry.ProtocolRegistry registry = direction.getProtocolRegistry(stateRegistry, version);
+                Map<Class<? extends MinecraftPacket>, Integer> packetMap = (Map<Class<? extends MinecraftPacket>, Integer>) packetClassToIdField.get(registry);
+                for (Class<? extends MinecraftPacket> clazz : packetMap.keySet()) {
+                    builder.append("      - ").append(clazz.getName()).append(" id = 0x").append(Integer.toHexString(packetMap.get(clazz))).append("\n");
+                }
+            }
+        }
+        return builder.toString();
     }
 
     private Class<? extends MinecraftPacket> generateVelocityPacket(Class<? extends AbstractPacket> c) {

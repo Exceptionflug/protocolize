@@ -11,4 +11,8 @@ public final class PlatformInitializer {
         Protocolize.platform(Platform.BUNGEECORD);
     }
 
+    public static void initVersion(String version) {
+        Protocolize.version(version);
+    }
+
 }

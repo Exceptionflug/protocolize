@@ -7,8 +7,9 @@ package dev.simplix.protocolize.api;
  */
 public final class PlatformInitializer {
 
-    public static void initVelocity() {
+    public static void initVelocity(String version) {
         Protocolize.platform(Platform.VELOCITY);
+        Protocolize.version(version);
     }
 
 }

@@ -6,6 +6,7 @@ import dev.simplix.protocolize.api.Protocol;
 import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.mapping.ProtocolIdMapping;
 import dev.simplix.protocolize.api.packet.AbstractPacket;
+import dev.simplix.protocolize.api.packet.RegisteredPacket;
 import dev.simplix.protocolize.api.providers.MappingProvider;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.api.util.ReflectionUtil;
@@ -92,7 +93,7 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
             TIntObjectMap<Object> protocols = (TIntObjectMap<Object>) protocolsField
                 .get(getDirectionData(bungeeCordProtocol(protocol), direction));
             for (ProtocolIdMapping mapping : mappings) {
-                mappingProvider.registerMapping(new AbstractMap.SimpleEntry<>(direction, packetClass), mapping);
+                mappingProvider.registerMapping(new RegisteredPacket(direction, packetClass), mapping);
                 for (int i = mapping.protocolRangeStart(); i <= mapping.protocolRangeEnd(); i++) {
                     strategy.registerPacket(protocols, i, mapping.id(), definedPacketClass);
                 }
@@ -109,7 +110,7 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
         Preconditions.checkNotNull(direction, "Direction cannot be null");
         Preconditions.checkNotNull(packet, "Packet cannot be null");
         if (packet instanceof BungeeCordProtocolizePacket) {
-            List<ProtocolIdMapping> protocolIdMappings = mappingProvider.mappings(new AbstractMap.SimpleEntry<>(
+            List<ProtocolIdMapping> protocolIdMappings = mappingProvider.mappings(new RegisteredPacket(
                 direction, ((BungeeCordProtocolizePacket) packet).obtainProtocolizePacketClass()));
             for (ProtocolIdMapping mapping : protocolIdMappings) {
                 if (mapping.inRange(protocolVersion)) {
@@ -140,7 +141,7 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
         Preconditions.checkNotNull(direction, "Direction cannot be null");
         Preconditions.checkNotNull(clazz, "Clazz cannot be null");
         Object directionData = getDirectionData(bungeeCordProtocol(protocol), direction);
-        ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new AbstractMap.SimpleEntry<>(direction, clazz),
+        ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new RegisteredPacket(direction, clazz),
             protocolVersion);
         int id;
         if (protocolIdMapping != null) {
@@ -149,6 +150,11 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
             id = (int) getIdMethod.invoke(directionData, clazz, protocolVersion);
         }
         return createPacketMethod.invoke(directionData, id, protocolVersion);
+    }
+
+    @Override
+    public String debugInformation() {
+        return "Strategy = " + strategy.getClass().getName() + "\nPacket listing not supported on this platform";
     }
 
     private net.md_5.bungee.protocol.Protocol bungeeCordProtocol(Protocol protocol) {

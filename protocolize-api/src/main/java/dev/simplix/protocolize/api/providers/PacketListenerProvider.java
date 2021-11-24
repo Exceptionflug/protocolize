@@ -13,4 +13,5 @@ public interface PacketListenerProvider {
 
     void unregisterListener(AbstractPacketListener<?> listener) throws IllegalArgumentException;
 
+    String debugInformation();
 }

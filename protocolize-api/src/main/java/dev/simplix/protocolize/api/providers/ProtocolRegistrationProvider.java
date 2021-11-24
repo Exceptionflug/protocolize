@@ -21,4 +21,6 @@ public interface ProtocolRegistrationProvider {
 
     Object createPacket(Class<? extends AbstractPacket> clazz, Protocol protocol, PacketDirection direction, int protocolVersion);
 
+    String debugInformation();
+
 }

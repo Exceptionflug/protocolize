@@ -119,6 +119,17 @@ public final class VelocityPacketListenerProvider implements PacketListenerProvi
         }
     }
 
+    @Override
+    public String debugInformation() {
+        StringBuilder builder = new StringBuilder("Generated export of " + getClass().getName() + ":\n\n");
+        for (AbstractPacketListener<?> listener : listeners) {
+            builder.append(" - ").append(listener.getClass().getName()).append(" listening for ")
+                .append(listener.type().getName()).append(" on ").append(listener.direction().name())
+                .append(" with priority ").append(listener.priority()).append("\n");
+        }
+        return builder.toString();
+    }
+
     public Map.Entry<MinecraftPacket, Boolean> handleInboundPacket(MinecraftPacket packet, ServerConnection serverConnection, InboundConnection connection) {
         Preconditions.checkNotNull(packet, "Packet cannot be null");
         boolean sentByServer = serverConnection != null;

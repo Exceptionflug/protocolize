@@ -52,4 +52,9 @@ public interface MappingProvider {
      */
     <O, T extends ProtocolMapping> Multimap<O, T> mappings(Class<O> type, int protocolVersion);
 
+    /**
+     * @return this returns information about this provider
+     */
+    String debugInformation();
+
 }

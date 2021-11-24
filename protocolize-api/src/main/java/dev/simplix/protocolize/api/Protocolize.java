@@ -18,6 +18,7 @@ public final class Protocolize {
 
     private static final Map<Class<?>, Object> SERVICES = new ConcurrentHashMap<>();
     private static Platform platform = Platform.OTHER;
+    private static String version;
 
     static {
         registerService(MappingProvider.class, new SimpleMappingProvider());
@@ -99,6 +100,17 @@ public final class Protocolize {
 
     static void platform(Platform platform) {
         Protocolize.platform = platform;
+    }
+
+    /**
+     * @return the installed version of Protocolize
+     */
+    public static String version() {
+        return version;
+    }
+
+    static void version(String version) {
+        Protocolize.version = version;
     }
 
 }

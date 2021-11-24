@@ -15,4 +15,6 @@ public interface ProtocolMapping {
         return version >= protocolRangeStart() && version <= protocolRangeEnd();
     }
 
+    String toString();
+
 }

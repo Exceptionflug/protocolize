@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -31,6 +32,11 @@ public final class BungeeCordModuleProvider implements ModuleProvider {
         if (enabled) {
             enableModule(module);
         }
+    }
+
+    @Override
+    public Collection<ProtocolizeModule> modules() {
+        return modules;
     }
 
     private boolean supportedPlatform(Platform[] supportedPlatforms) {
