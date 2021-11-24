@@ -17,6 +17,8 @@ import dev.simplix.protocolize.velocity.listener.PlayerListener;
 import dev.simplix.protocolize.velocity.netty.ProtocolizeBackendChannelInitializer;
 import dev.simplix.protocolize.velocity.netty.ProtocolizeServerChannelInitializer;
 import dev.simplix.protocolize.velocity.providers.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -103,7 +105,7 @@ public class ProtocolizePlugin {
         logger.info("Swapped channel initializers");
 
         proxyServer.getCommandManager().register("protocolize", new ProtocolizeCommand(this));
-        proxyServer.getEventManager().register(this, new PlayerListener());
+        proxyServer.getEventManager().register(this, new PlayerListener(this));
 
         ((VelocityModuleProvider) Protocolize.getService(ModuleProvider.class)).enableAll();
     }
@@ -116,6 +118,13 @@ public class ProtocolizePlugin {
             connectionManager.getBackendChannelInitializer().get()));
         connectionManager.getServerChannelInitializer().set(new ProtocolizeServerChannelInitializer((VelocityServer) proxyServer,
             connectionManager.getServerChannelInitializer().get()));
+    }
+
+    public ChannelInitializer<Channel> currentBackendChannelInitializer() throws ReflectiveOperationException {
+        Field cm = VelocityServer.class.getDeclaredField("cm");
+        cm.setAccessible(true);
+        ConnectionManager connectionManager = (ConnectionManager) cm.get(proxyServer);
+        return connectionManager.getBackendChannelInitializer().get();
     }
 
     public PluginDescription description() {
