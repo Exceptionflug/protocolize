@@ -1,6 +1,5 @@
 package dev.simplix.protocolize.velocity.netty;
 
-import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.proxy.VelocityServer;
 import com.velocitypowered.proxy.network.BackendChannelInitializer;
 import dev.simplix.protocolize.api.Direction;
@@ -35,13 +34,18 @@ public class ProtocolizeBackendChannelInitializer extends BackendChannelInitiali
 
     @Override
     protected void initChannel(Channel ch) throws Exception {
-        if (wrapped != null && initMethod != null) {
-            initMethod.invoke(wrapped, ch);
+        try {
+            if (wrapped != null && initMethod != null) {
+                initMethod.invoke(wrapped, ch);
+            }
+        } catch (Exception e) {
+            log.error("There was a problem while calling the underlying channel initializer", e);
+        } finally {
+            if (!ch.pipeline().toMap().containsKey("frame-decoder")) {
+                super.initChannel(ch);
+            }
+            ch.pipeline().addLast("protocolize2-decoder", new ProtocolizeDecoderChannelHandler(Direction.DOWNSTREAM));
+            ch.pipeline().addLast("protocolize2-encoder", new ProtocolizeEncoderChannelHandler(Direction.DOWNSTREAM));
         }
-        if (!ch.pipeline().toMap().containsKey("frame-decoder")) {
-            super.initChannel(ch);
-        }
-        ch.pipeline().addLast("protocolize2-decoder", new ProtocolizeDecoderChannelHandler(Direction.DOWNSTREAM));
-        ch.pipeline().addLast("protocolize2-encoder", new ProtocolizeEncoderChannelHandler(Direction.DOWNSTREAM));
     }
 }

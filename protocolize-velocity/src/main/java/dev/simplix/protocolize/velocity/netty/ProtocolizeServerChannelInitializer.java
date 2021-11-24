@@ -9,6 +9,7 @@ import io.netty.channel.ChannelInitializer;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -34,16 +35,20 @@ public class ProtocolizeServerChannelInitializer extends ServerChannelInitialize
         }
     }
 
-    @SneakyThrows
     @Override
     protected void initChannel(Channel ch) {
-        if (wrapped != null && initMethod != null) {
-            initMethod.invoke(wrapped, ch);
+        try {
+            if (wrapped != null && initMethod != null) {
+                initMethod.invoke(wrapped, ch);
+            }
+        } catch (Exception e) {
+            log.error("There was a problem while calling the underlying channel initializer", e);
+        } finally {
+            if (!ch.pipeline().toMap().containsKey("frame-decoder")) {
+                super.initChannel(ch);
+            }
+            ch.pipeline().addBefore(Connections.HANDLER, "protocolize2-decoder", new ProtocolizeDecoderChannelHandler(Direction.UPSTREAM));
+            ch.pipeline().addLast("protocolize2-encoder", new ProtocolizeEncoderChannelHandler(Direction.UPSTREAM));
         }
-        if (!ch.pipeline().toMap().containsKey("frame-decoder")) {
-            super.initChannel(ch);
-        }
-        ch.pipeline().addBefore(Connections.HANDLER, "protocolize2-decoder", new ProtocolizeDecoderChannelHandler(Direction.UPSTREAM));
-        ch.pipeline().addLast("protocolize2-encoder", new ProtocolizeEncoderChannelHandler(Direction.UPSTREAM));
     }
 }

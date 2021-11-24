@@ -11,6 +11,8 @@ import com.velocitypowered.proxy.connection.MinecraftConnection;
 import com.velocitypowered.proxy.connection.backend.VelocityServerConnection;
 import com.velocitypowered.proxy.connection.client.ConnectedPlayer;
 import com.velocitypowered.proxy.connection.client.InitialInboundConnection;
+import com.velocitypowered.proxy.network.Connections;
+import dev.simplix.protocolize.api.Direction;
 import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.util.ReflectionUtil;
 import dev.simplix.protocolize.velocity.ProtocolizePlugin;
@@ -83,6 +85,8 @@ public class PlayerListener {
             pipeline = ((ConnectedPlayer) connection).getConnection().getChannel().pipeline();
         } else if (connection.getClass().getName().equals("com.velocitypowered.proxy.connection.client.HandshakeSessionHandler$LegacyInboundConnection")) {
             return; // Allow it but we can't give support for that
+        } else if (connection.getClass().getName().equals("org.geysermc.platform.velocity.GeyserVelocityPingPassthrough$GeyserInboundConnection")) {
+            return; // Allow it but we can't give support for that
         } else {
             throw new IllegalArgumentException("Unsupported InboundConnection instance: " + connection.getClass().getName());
         }
@@ -97,8 +101,10 @@ public class PlayerListener {
                     "plugin and suggest them to call the initChannel method of the ChannelInitializers before overriding them.");
                 return;
             } else {
-                // ?!?!?
-                throw new IllegalStateException("Missing ProtocolizeDecoderChannelHandler in pipeline. Maybe there is some incompatible plugin installed?");
+                log.warn("Missing ProtocolizeDecoderChannelHandler in pipeline. Maybe there is some incompatible plugin installed? We are fixing this for you but Protocolize may behave unstable.");
+                decoderChannelHandler = new ProtocolizeDecoderChannelHandler(Direction.UPSTREAM);
+                pipeline.addBefore(Connections.HANDLER, "protocolize2-decoder", decoderChannelHandler);
+                pipeline.addLast("protocolize2-encoder", new ProtocolizeEncoderChannelHandler(Direction.UPSTREAM));
             }
         }
         decoderChannelHandler.connection(connection);
