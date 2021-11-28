@@ -149,18 +149,21 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
     public Object createPacket(Class<? extends AbstractPacket> clazz, Protocol protocol, PacketDirection direction, int protocolVersion) {
         ProtocolUtils.Direction velocityDirection = velocityDirection(direction);
         if (velocityDirection == null) {
+            log.debug("Unable to construct wrapper instance for " + clazz.getName() + ": Unknown packet direction to velocity: " + direction.name());
             return null;
         }
         StateRegistry stateRegistry = velocityProtocol(protocol);
         if (stateRegistry == null) {
+            log.debug("Unable to construct wrapper instance for " + clazz.getName() + ": Unknown protocol: " + protocol.name());
             return null;
         }
         StateRegistry.PacketRegistry.ProtocolRegistry registry = velocityDirection.getProtocolRegistry(stateRegistry,
             ProtocolVersion.getProtocolVersion(protocolVersion));
-        ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new AbstractMap.SimpleEntry<>(direction, clazz), protocolVersion);
+        ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new RegisteredPacket(direction, clazz), protocolVersion);
         if (protocolIdMapping != null) {
             return registry.createPacket(protocolIdMapping.id());
         }
+        log.debug("No protocol id mapping for " + clazz.getName() + " at version " + protocolVersion + " was found.");
         return null;
     }
 
