@@ -40,11 +40,10 @@ In order to use Protocolize, you have to install it onto your proxy server. Prot
 
 ## Compatibility
 Protocolize is shipped with it's default data module which adds support for the following versions:
-| Minecraft Version | Supported |
-|--|--|
-| 1.8.x - 1.12.2 | ❌ (Only with [additional legacy module](https://ci.exceptionflug.de/job/Protocolize-Legacy-Data/)) |
-| 1.13 - 1.13.2 | ✔️ (Sounds only with [additional legacy module](https://ci.exceptionflug.de/job/Protocolize-Legacy-Data/)) |
-| 1.14 - 1.17.1 | ✔️ |
+| Minecraft Version | Supported | |--|--| | 1.8.x - 1.12.2 | ❌ (Only
+with [additional legacy module](https://ci.exceptionflug.de/job/Protocolize-Legacy-Data/)) | | 1.13 - 1.13.2 | ✔️ (
+Sounds only with [additional legacy module](https://ci.exceptionflug.de/job/Protocolize-Legacy-Data/)) | | 1.14 - 1.18 |
+✔️ |
 
 Implemented packets by default:
 
