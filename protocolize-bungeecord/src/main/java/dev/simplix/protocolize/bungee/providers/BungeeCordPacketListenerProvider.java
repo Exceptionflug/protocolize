@@ -180,6 +180,9 @@ public final class BungeeCordPacketListenerProvider implements PacketListenerPro
                     serverInfo = server.getInfo();
                 }
             }
+        } else if (connection instanceof ProxiedPlayer) {
+            player = (ProxiedPlayer) connection;
+            serverInfo = player.getServer() != null ? player.getServer().getInfo() : null;
         } else {
             serverInfo = ReflectionUtil.getServerInfo(abstractPacketHandler);
         }
@@ -197,6 +200,9 @@ public final class BungeeCordPacketListenerProvider implements PacketListenerPro
                     serverInfo = server.getInfo();
                 }
             }
+        } else if (connection instanceof ProxiedPlayer) {
+            player = (ProxiedPlayer) connection;
+            serverInfo = player.getServer() != null ? player.getServer().getInfo() : null;
         } else {
             serverInfo = ReflectionUtil.getServerInfo(abstractPacketHandler);
         }
