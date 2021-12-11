@@ -1,5 +1,6 @@
 package dev.simplix.protocolize.api.item;
 
+import com.google.common.base.Preconditions;
 import dev.simplix.protocolize.api.ComponentConverter;
 import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.providers.ComponentConverterProvider;
@@ -126,6 +127,7 @@ public class ItemStack {
     }
 
     public void lore(List<?> list, boolean legacyString) {
+        Preconditions.checkNotNull(list, "The lore list cannot be null.");
         List<String> out = new ArrayList<>();
         for (Object line : list) {
             if (legacyString) {
