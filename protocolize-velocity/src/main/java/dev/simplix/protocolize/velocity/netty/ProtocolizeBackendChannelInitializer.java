@@ -24,11 +24,14 @@ public class ProtocolizeBackendChannelInitializer extends BackendChannelInitiali
         super(server);
         this.wrapped = wrapped;
 
-        try {
-            initMethod = wrapped.getClass().getDeclaredMethod("initChannel", Channel.class);
-            initMethod.setAccessible(true);
-        } catch (NoSuchMethodException e) {
-            log.error("Unsupported backend channel initializer: " + wrapped.getClass().getName(), e);
+        if (wrapped != null) {
+            log.info("Respecting the previous registered BackendChannelInitializer: " + wrapped.getClass().getName());
+            try {
+                initMethod = wrapped.getClass().getDeclaredMethod("initChannel", Channel.class);
+                initMethod.setAccessible(true);
+            } catch (NoSuchMethodException e) {
+                log.error("Unsupported backend channel initializer: " + wrapped.getClass().getName(), e);
+            }
         }
     }
 
@@ -36,12 +39,14 @@ public class ProtocolizeBackendChannelInitializer extends BackendChannelInitiali
     protected void initChannel(Channel ch) throws Exception {
         try {
             if (wrapped != null && initMethod != null) {
+                log.debug("Calling the underlying backend channel initializer: " + wrapped.getClass().getName());
                 initMethod.invoke(wrapped, ch);
             }
         } catch (Exception e) {
-            log.error("There was a problem while calling the underlying channel initializer", e);
+            log.error("There was a problem while calling the underlying backend channel initializer", e);
         } finally {
             if (!ch.pipeline().toMap().containsKey("frame-decoder")) {
+                log.debug("Initialize vanilla pipeline handlers for downstream");
                 super.initChannel(ch);
             }
             ch.pipeline().addLast("protocolize2-decoder", new ProtocolizeDecoderChannelHandler(Direction.DOWNSTREAM));

@@ -1,4 +1,4 @@
-package dev.simplix.protocolize.velocity.netty.pipelineaccessors;
+package dev.simplix.protocolize.velocity.netty.accessors;
 
 import com.velocitypowered.api.proxy.InboundConnection;
 import com.velocitypowered.proxy.connection.client.ConnectedPlayer;

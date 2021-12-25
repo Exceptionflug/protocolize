@@ -27,11 +27,14 @@ public class ProtocolizeServerChannelInitializer extends ServerChannelInitialize
         super(server);
         this.wrapped = wrapped;
 
-        try {
-            initMethod = this.wrapped.getClass().getDeclaredMethod("initChannel", Channel.class);
-            initMethod.setAccessible(true);
-        } catch (NoSuchMethodException e) {
-            log.error("Unsupported server channel initializer: " + this.wrapped.getClass().getName(), e);
+        if (wrapped != null) {
+            log.info("Respecting the previous registered ServerChannelInitializer: " + wrapped.getClass().getName());
+            try {
+                initMethod = this.wrapped.getClass().getDeclaredMethod("initChannel", Channel.class);
+                initMethod.setAccessible(true);
+            } catch (NoSuchMethodException e) {
+                log.error("Unsupported server channel initializer: " + this.wrapped.getClass().getName(), e);
+            }
         }
     }
 
@@ -39,12 +42,14 @@ public class ProtocolizeServerChannelInitializer extends ServerChannelInitialize
     protected void initChannel(Channel ch) {
         try {
             if (wrapped != null && initMethod != null) {
+                log.debug("Calling the underlying server channel initializer: " + wrapped.getClass().getName());
                 initMethod.invoke(wrapped, ch);
             }
         } catch (Exception e) {
-            log.error("There was a problem while calling the underlying channel initializer", e);
+            log.error("There was a problem while calling the underlying server channel initializer", e);
         } finally {
             if (!ch.pipeline().toMap().containsKey("frame-decoder")) {
+                log.debug("Initialize vanilla pipeline handlers for upstream");
                 super.initChannel(ch);
             }
             ch.pipeline().addBefore(Connections.HANDLER, "protocolize2-decoder", new ProtocolizeDecoderChannelHandler(Direction.UPSTREAM));
