@@ -110,7 +110,9 @@ public class PlayerListener {
             } else {
                 // WTF??
                 log.error("Pipeline is not initialized. This is a bug. Please report. Pipeline handlers = " + pipeline.toMap());
+                log.error("Initializer: " + initializer.getClass().getName());
             }
+            return;
         }
         decoderChannelHandler.connection(connection);
         pipeline.get(ProtocolizeEncoderChannelHandler.class).connection(connection);

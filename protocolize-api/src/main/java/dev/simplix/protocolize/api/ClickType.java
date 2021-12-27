@@ -45,7 +45,7 @@ public enum ClickType {
             if (clickType.button() == button && clickType.mode() == mode)
                 return clickType;
         }
-        return null;
+        return UNDOCUMENTED;
     }
 
     public int button() {
