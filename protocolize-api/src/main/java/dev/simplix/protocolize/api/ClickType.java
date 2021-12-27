@@ -30,7 +30,8 @@ public enum ClickType {
     DRAG_STOP_LEFT(5, 2),
     DRAG_STOP_RIGHT(5, 6),
     DRAG_STOP_CREATIVE_MIDDLE(6, 10),
-    DOUBLE_CLICK(6, 0);
+    DOUBLE_CLICK(6, 0),
+    UNDOCUMENTED(99, 99);
 
     private final int mode, button;
 
