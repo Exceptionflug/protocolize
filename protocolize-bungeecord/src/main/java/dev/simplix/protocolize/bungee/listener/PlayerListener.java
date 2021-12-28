@@ -24,6 +24,12 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPing(ProxyPingEvent e) {
+        if (e.getConnection().isLegacy()) {
+            return;
+        }
+        if (!e.getConnection().isConnected()) {
+            return;
+        }
         plugin.nettyPipelineInjector().injectBefore(e.getConnection(), "inbound-boss", "protocolize2-decoder", new ProtocolizeDecoderChannelHandler((AbstractPacketHandler) e.getConnection(), Direction.UPSTREAM));
         plugin.nettyPipelineInjector().injectAfter(e.getConnection(), "protocolize2-decoder", "protocolize2-encoder", new ProtocolizeEncoderChannelHandler((AbstractPacketHandler) e.getConnection()));
     }
