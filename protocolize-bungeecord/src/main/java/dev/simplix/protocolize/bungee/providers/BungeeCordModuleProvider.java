@@ -35,6 +35,17 @@ public final class BungeeCordModuleProvider implements ModuleProvider {
     }
 
     @Override
+    public boolean moduleInstalled(String name) {
+        return modules.stream().anyMatch(protocolizeModule -> protocolizeModule.getClass().getSimpleName().equals(name));
+    }
+
+    @Override
+    public ProtocolizeModule module(String name) {
+        return modules.stream().filter(protocolizeModule -> protocolizeModule.getClass().getSimpleName().equals(name))
+            .findAny().orElse(null);
+    }
+
+    @Override
     public Collection<ProtocolizeModule> modules() {
         return modules;
     }

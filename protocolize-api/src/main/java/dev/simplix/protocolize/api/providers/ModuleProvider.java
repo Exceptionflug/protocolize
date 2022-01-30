@@ -1,5 +1,6 @@
 package dev.simplix.protocolize.api.providers;
 
+import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.module.ProtocolizeModule;
 
 import java.util.Collection;
@@ -12,6 +13,10 @@ import java.util.Collection;
 public interface ModuleProvider {
 
     void registerModule(ProtocolizeModule module);
+
+    boolean moduleInstalled(String name);
+
+    ProtocolizeModule module(String name);
 
     Collection<ProtocolizeModule> modules();
 }

@@ -6,12 +6,14 @@ import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.PluginDescription;
+import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.proxy.VelocityServer;
 import com.velocitypowered.proxy.network.ConnectionManager;
 import dev.simplix.protocolize.api.PlatformInitializer;
 import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.providers.*;
+import dev.simplix.protocolize.api.util.ProtocolVersions;
 import dev.simplix.protocolize.velocity.commands.ProtocolizeCommand;
 import dev.simplix.protocolize.velocity.listener.PlayerListener;
 import dev.simplix.protocolize.velocity.netty.ProtocolizeBackendChannelInitializer;
@@ -108,6 +110,19 @@ public class ProtocolizePlugin {
         proxyServer.getEventManager().register(this, new PlayerListener(this));
 
         ((VelocityModuleProvider) Protocolize.getService(ModuleProvider.class)).enableAll();
+
+        if (!Protocolize.getService(ModuleProvider.class).moduleInstalled("LegacyModule")) {
+            Protocolize.playerProvider().onConstruct(protocolizePlayer -> {
+                Player player = protocolizePlayer.handle();
+                if (protocolizePlayer.protocolVersion() < ProtocolVersions.MINECRAFT_1_13) {
+                    logger.warn("=== WARNING ===");
+                    logger.warn("The player " + player.getUsername() + " is using "
+                        + player.getProtocolVersion().getMostRecentSupportedVersion() + " which is not supported by protocolize by default.");
+                    logger.warn("You may experience log spamming due to protocolize not finding appropriate mappings for the clients protocol version.");
+                    logger.warn("To fix this you have to install the legacy support module for velocity. More info at: https://simplixsoft.com/protocolize");
+                }
+            });
+        }
     }
 
     private void swapChannelInitializers() throws ReflectiveOperationException {
