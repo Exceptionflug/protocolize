@@ -89,18 +89,19 @@ public class ProtocolizePlugin extends Plugin {
 
         ((BungeeCordModuleProvider) Protocolize.getService(ModuleProvider.class)).enableAll();
 
-        if (!Protocolize.getService(ModuleProvider.class).moduleInstalled("LegacyModule")) {
-            Protocolize.playerProvider().onConstruct(protocolizePlayer -> {
-                ProxiedPlayer player = protocolizePlayer.handle();
-                if (protocolizePlayer.protocolVersion() < ProtocolVersions.MINECRAFT_1_13) {
-                    ProxyServer.getInstance().getLogger().warning("=== WARNING ===");
-                    ProxyServer.getInstance().getLogger().warning("The player " + player.getName() + " is using protocol version "
-                        + protocolizePlayer.protocolVersion() + " (earlier than 1.13) which is not supported by protocolize by default.");
-                    ProxyServer.getInstance().getLogger().warning("You may experience log spamming due to protocolize not finding appropriate mappings for the clients protocol version.");
-                    ProxyServer.getInstance().getLogger().warning("To fix this you have to install the legacy support module for BungeeCord. More info at: https://simplixsoft.com/protocolize");
-                }
-            });
-        }
+        Protocolize.playerProvider().onConstruct(protocolizePlayer -> {
+            if (Protocolize.getService(ModuleProvider.class).moduleInstalled("LegacyModule")) {
+                return;
+            }
+            ProxiedPlayer player = protocolizePlayer.handle();
+            if (protocolizePlayer.protocolVersion() < ProtocolVersions.MINECRAFT_1_13) {
+                ProxyServer.getInstance().getLogger().warning("=== WARNING ===");
+                ProxyServer.getInstance().getLogger().warning("The player " + player.getName() + " is using protocol version "
+                    + protocolizePlayer.protocolVersion() + " (earlier than 1.13) which is not supported by protocolize by default.");
+                ProxyServer.getInstance().getLogger().warning("You may experience log spamming due to protocolize not finding appropriate mappings for the clients protocol version.");
+                ProxyServer.getInstance().getLogger().warning("To fix this you have to install the legacy support module for BungeeCord. More info at: https://simplixsoft.com/protocolize");
+            }
+        });
     }
 
     public NettyPipelineInjector nettyPipelineInjector() {

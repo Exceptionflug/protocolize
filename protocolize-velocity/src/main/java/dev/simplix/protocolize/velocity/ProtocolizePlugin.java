@@ -111,18 +111,19 @@ public class ProtocolizePlugin {
 
         ((VelocityModuleProvider) Protocolize.getService(ModuleProvider.class)).enableAll();
 
-        if (!Protocolize.getService(ModuleProvider.class).moduleInstalled("LegacyModule")) {
-            Protocolize.playerProvider().onConstruct(protocolizePlayer -> {
-                Player player = protocolizePlayer.handle();
-                if (protocolizePlayer.protocolVersion() < ProtocolVersions.MINECRAFT_1_13) {
-                    logger.warn("=== WARNING ===");
-                    logger.warn("The player " + player.getUsername() + " is using "
-                        + player.getProtocolVersion().getMostRecentSupportedVersion() + " which is not supported by protocolize by default.");
-                    logger.warn("You may experience log spamming due to protocolize not finding appropriate mappings for the clients protocol version.");
-                    logger.warn("To fix this you have to install the legacy support module for velocity. More info at: https://simplixsoft.com/protocolize");
-                }
-            });
-        }
+        Protocolize.playerProvider().onConstruct(protocolizePlayer -> {
+            if (Protocolize.getService(ModuleProvider.class).moduleInstalled("LegacyModule")) {
+                return;
+            }
+            Player player = protocolizePlayer.handle();
+            if (protocolizePlayer.protocolVersion() < ProtocolVersions.MINECRAFT_1_13) {
+                logger.warn("=== WARNING ===");
+                logger.warn("The player " + player.getUsername() + " is using "
+                    + player.getProtocolVersion().getMostRecentSupportedVersion() + " which is not supported by protocolize by default.");
+                logger.warn("You may experience log spamming due to protocolize not finding appropriate mappings for the clients protocol version.");
+                logger.warn("To fix this you have to install the legacy support module for velocity. More info at: https://simplixsoft.com/protocolize");
+            }
+        });
     }
 
     private void swapChannelInitializers() throws ReflectiveOperationException {
