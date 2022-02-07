@@ -49,6 +49,7 @@ public class PlayerListener {
         PIPELINE_ACCESSOR_MAP.put(ConnectedPlayer.class.getName(), new ConnectedPlayerPipelineAccessor());
         PIPELINE_ACCESSOR_MAP.put("com.velocitypowered.proxy.connection.client.HandshakeSessionHandler$LegacyInboundConnection", new NullPipelineAccessor());
         PIPELINE_ACCESSOR_MAP.put("org.geysermc.platform.velocity.GeyserVelocityPingPassthrough$GeyserInboundConnection", new NullPipelineAccessor());
+        PIPELINE_ACCESSOR_MAP.put("org.geysermc.geyser.platform.velocity.GeyserVelocityPingPassthrough$GeyserInboundConnection", new NullPipelineAccessor());
     }
 
     public PlayerListener(ProtocolizePlugin plugin) {
