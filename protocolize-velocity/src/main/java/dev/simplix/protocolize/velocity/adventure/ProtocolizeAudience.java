@@ -1,11 +1,9 @@
 package dev.simplix.protocolize.velocity.adventure;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.HashSet;
 
 import com.velocitypowered.api.proxy.Player;
-import com.velocitypowered.api.proxy.ProxyServer;
-import com.velocitypowered.api.proxy.server.RegisteredServer;
 
 import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.SoundCategory;
@@ -22,60 +20,23 @@ import net.kyori.adventure.audience.ForwardingAudience;
  * @author 4drian3d
  */
 public class ProtocolizeAudience {
-    private AudienceType TYPE;
-    private ProtocolizePlayer PLAYER;
-    private Collection<ProtocolizePlayer> PLAYERS;
+    private Collection<ProtocolizePlayer> players = new HashSet<>();
     private static final ProtocolizePlayerProvider PLAYER_PROVIDER = Protocolize.playerProvider();
-
-    private enum AudienceType{
-        COLLECTION, SINGLE, NOTSUPPORTED
-    }
 
     /**
      * Obtain a {@link ProtocolizeAudience} from an {@link Audience}
      * @param audience The Audience
      */
     public ProtocolizeAudience(Audience audience){
-        if(audience instanceof RegisteredServer){
-            this.TYPE = AudienceType.COLLECTION;
-            this.PLAYERS = ((RegisteredServer)audience).getPlayersConnected().stream()
-                .map(player -> PLAYER_PROVIDER.player(player.getUniqueId()))
-                .collect(Collectors.toList());
-        } else if(audience instanceof ProxyServer){
-            this.TYPE = AudienceType.COLLECTION;
-            this.PLAYERS = ((ProxyServer)audience).getAllPlayers().stream()
-                .map(player -> PLAYER_PROVIDER.player(player.getUniqueId()))
-                .collect(Collectors.toList());
-        } else if(audience instanceof ForwardingAudience){
-            this.TYPE = AudienceType.COLLECTION;
-            for(Audience singleAudience : ((ForwardingAudience)audience).audiences()){
-                if(singleAudience instanceof Player){
-                    this.PLAYERS.add(getPlayer(singleAudience));
-                } else if(singleAudience instanceof RegisteredServer){
-                    ((RegisteredServer)singleAudience).getPlayersConnected().stream()
-                        .map(player -> PLAYER_PROVIDER.player(player.getUniqueId()))
-                        .forEach(this.PLAYERS::add);
-                } else if(singleAudience instanceof ForwardingAudience) {
-                    for(Audience miniAudience : ((ForwardingAudience)singleAudience).audiences()){
-                        if(miniAudience instanceof Player){
-                            this.PLAYERS.add(getPlayer(singleAudience));
-                        } else if(miniAudience instanceof RegisteredServer){
-                            ((RegisteredServer)miniAudience).getPlayersConnected().stream()
-                                .map(player -> PLAYER_PROVIDER.player(player.getUniqueId()))
-                                .forEach(this.PLAYERS::add);
-                        } else {
-                            /*
-                            It does not make sense to include the ProxyServer in a FowardingAudience
-                            */
-                        }
-                    }
-                }
+        if(audience instanceof ForwardingAudience.Single){
+            Audience singleAudience = ((ForwardingAudience.Single)audience).audience();
+            if(singleAudience instanceof Player){
+                players.add(getPlayer(singleAudience));
             }
+        } else if(audience instanceof ForwardingAudience){
+            checkAndAddPlayers(((ForwardingAudience)audience));
         } else if(audience instanceof Player){
-            this.TYPE = AudienceType.SINGLE;
-            this.PLAYER = getPlayer(audience);
-        } else {
-            this.TYPE = AudienceType.NOTSUPPORTED;
+            players.add(getPlayer(audience));
         }
     }
 
@@ -87,14 +48,8 @@ public class ProtocolizeAudience {
      * @param pitch Sound pitch
      */
     public void playSound(Sound sound, SoundCategory category, float volume, float pitch){
-        switch(TYPE){
-            case COLLECTION:
-                this.PLAYERS.forEach(pPlayer -> pPlayer.playSound(sound, category, volume, pitch));
-                break;
-            case SINGLE:
-                this.PLAYER.playSound(sound, category, volume, pitch);
-                break;
-            case NOTSUPPORTED: break;
+        for(ProtocolizePlayer player : players){
+            player.playSound(sound, category, volume, pitch);
         }
     }
 
@@ -103,14 +58,8 @@ public class ProtocolizeAudience {
      * @param inventory The inventory
      */
     public void openInventory(Inventory inventory){
-        switch(TYPE){
-            case COLLECTION:
-                this.PLAYERS.forEach(pPlayer -> pPlayer.openInventory(inventory));
-                break;
-            case SINGLE:
-                this.PLAYER.openInventory(inventory);
-                break;
-            case NOTSUPPORTED: break;
+        for(ProtocolizePlayer player : players){
+            player.openInventory(inventory);
         }
     }
 
@@ -118,14 +67,8 @@ public class ProtocolizeAudience {
      * Closes the open inventories of the {@link ProtocolizeAudience}
      */
     public void closeInventory(){
-        switch(TYPE){
-            case COLLECTION:
-                this.PLAYERS.forEach(pPlayer -> pPlayer.closeInventory());
-                break;
-            case SINGLE:
-                this.PLAYER.closeInventory();
-                break;
-            case NOTSUPPORTED: break;
+        for(ProtocolizePlayer player : players){
+            player.closeInventory();
         }
     }
 
@@ -135,14 +78,8 @@ public class ProtocolizeAudience {
      * @param inventory The Inventory
      */
     public void registerInventory(int windowId, Inventory inventory){
-        switch(TYPE){
-            case COLLECTION:
-                this.PLAYERS.forEach(pPlayer -> pPlayer.registerInventory(windowId, inventory));
-                break;
-            case SINGLE:
-                this.PLAYER.registerInventory(windowId, inventory);
-                break;
-            case NOTSUPPORTED: break;
+        for(ProtocolizePlayer player : players){
+            player.registerInventory(windowId, inventory);
         }
     }
 
@@ -154,5 +91,20 @@ public class ProtocolizeAudience {
     private static ProtocolizePlayer getPlayer(Audience audience){
         Player player = (Player) audience;
         return PLAYER_PROVIDER.player(player.getUniqueId());
+    }
+
+    private void checkAndAddPlayers(ForwardingAudience fAudience){
+        for(Audience audience : fAudience.audiences()){
+            if(audience instanceof Player){
+                players.add(getPlayer(audience));
+            } else if(audience instanceof ForwardingAudience.Single){
+                Audience singleAudience = ((ForwardingAudience.Single)audience).audience();
+                if(singleAudience instanceof Player){
+                    players.add(getPlayer(singleAudience));
+                }
+            } else if(audience instanceof ForwardingAudience){
+                checkAndAddPlayers((ForwardingAudience)audience);
+            }
+        }
     }
 }
