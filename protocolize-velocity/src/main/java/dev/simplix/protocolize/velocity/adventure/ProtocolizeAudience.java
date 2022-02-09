@@ -2,6 +2,7 @@ package dev.simplix.protocolize.velocity.adventure;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 
 import com.velocitypowered.api.proxy.Player;
 
@@ -20,7 +21,7 @@ import net.kyori.adventure.audience.ForwardingAudience;
  * @author 4drian3d
  */
 public class ProtocolizeAudience {
-    private Collection<ProtocolizePlayer> players = new HashSet<>();
+    private final Collection<ProtocolizePlayer> players = new HashSet<>();
     private static final ProtocolizePlayerProvider PLAYER_PROVIDER = Protocolize.playerProvider();
 
     /**
@@ -28,16 +29,26 @@ public class ProtocolizeAudience {
      * @param audience The Audience
      */
     public ProtocolizeAudience(Audience audience){
-        if(audience instanceof ForwardingAudience.Single){
+        Objects.requireNonNull(audience, "the audience cannot be null");
+        if(audience instanceof Player){
+            players.add(getPlayer(audience));
+        } else if(audience instanceof ForwardingAudience.Single){
             Audience singleAudience = ((ForwardingAudience.Single)audience).audience();
             if(singleAudience instanceof Player){
                 players.add(getPlayer(singleAudience));
             }
         } else if(audience instanceof ForwardingAudience){
-            checkAndAddPlayers(((ForwardingAudience)audience));
-        } else if(audience instanceof Player){
-            players.add(getPlayer(audience));
+            checkAndAddPlayers((ForwardingAudience)audience);
         }
+    }
+
+    /**
+     * Obtain a {@link ProtocolizeAudience} from an {@link Audience}
+     * @param audience The Audience
+     * @return The {@link ProtocolizeAudience}
+     */
+    public static ProtocolizeAudience audience(Audience audience){
+        return new ProtocolizeAudience(audience);
     }
 
     /**
