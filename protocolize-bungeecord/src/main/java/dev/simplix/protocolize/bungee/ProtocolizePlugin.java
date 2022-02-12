@@ -8,6 +8,7 @@ import dev.simplix.protocolize.bungee.commands.ProtocolizeCommand;
 import dev.simplix.protocolize.bungee.listener.PlayerListener;
 import dev.simplix.protocolize.bungee.netty.NettyPipelineInjector;
 import dev.simplix.protocolize.bungee.providers.*;
+import dev.simplix.protocolize.bungee.strategies.AegisPacketRegistrationStrategy;
 import dev.simplix.protocolize.bungee.strategies.BungeeCordPacketRegistrationStrategy;
 import dev.simplix.protocolize.bungee.strategies.LegacyBungeeCordPacketRegistrationStrategy;
 import dev.simplix.protocolize.bungee.strategy.PacketRegistrationStrategy;
@@ -58,7 +59,7 @@ public class ProtocolizePlugin extends Plugin {
         List<PacketRegistrationStrategy> strategies = new ArrayList<>();
         strategies.add(new BungeeCordPacketRegistrationStrategy());
         strategies.add(new LegacyBungeeCordPacketRegistrationStrategy());
-        strategies.add(new dev.simplix.protocolize.bungee.strategies.AegisPacketRegistrationStrategy());
+        strategies.add(new AegisPacketRegistrationStrategy());
         try {
             registrationProvider = new BungeeCordProtocolRegistrationProvider(strategies);
             supported = true;
@@ -77,8 +78,12 @@ public class ProtocolizePlugin extends Plugin {
         ProxyServer.getInstance().getLogger().info("======= PROTOCOLIZE =======");
         ProxyServer.getInstance().getLogger()
             .info("Version " + getDescription().getVersion() + " by " + getDescription().getAuthor());
-        ProxyServer.getInstance().getLogger().info("Supported: "
+        ProxyServer.getInstance().getLogger().info("Supported Platform: "
             + (supported ? "Yes (" + registrationProvider.strategy().getClass().getSimpleName() + ")" : "No"));
+        if (!supported) {
+            ProxyServer.getInstance().getLogger().warning("Your BungeeCord version or fork is not supported by" +
+                " Protocolize. Protocolize will not work. Please use a supported version or fork.");
+        }
         if (getDescription().getVersion().endsWith(":unknown")) {
             ProxyServer.getInstance().getLogger().warning(
                 "WARNING: YOU ARE RUNNING AN UNOFFICIAL BUILD OF PROTOCOLIZE. DON'T REPORT ANY BUGS REGARDING THIS VERSION.");
