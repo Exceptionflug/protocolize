@@ -31,7 +31,7 @@ We provide some documentation on how to migrate your existing plugin to use the 
 <dependency>
     <groupId>dev.simplix</groupId>
     <artifactId>protocolize-api</artifactId>
-    <version>2.1.2</version>
+    <version>2.2.0</version>
     <scope>provided</scope>
 </dependency>
 ```
