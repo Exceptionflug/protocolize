@@ -81,12 +81,14 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
             Class<? extends MinecraftPacket> velocityPacket = generateVelocityPacket(packetClass);
             List<StateRegistry.PacketMapping> velocityMappings = new ArrayList<>();
 
-            var sortedMappings = mappings.stream().sorted(Comparator.comparingInt(ProtocolMapping::protocolRangeEnd)).toArray(ProtocolIdMapping[]::new);
+            var sortedMappings = mappings.stream()
+                .filter(mapping -> !(ProtocolVersion.MAXIMUM_VERSION.getProtocol() < mapping.protocolRangeStart() || ProtocolVersion.MAXIMUM_VERSION.getProtocol() < mapping.protocolRangeEnd()))
+                .sorted(Comparator.comparingInt(ProtocolMapping::protocolRangeEnd))
+                .toArray(ProtocolIdMapping[]::new);
 
             for (int i = 0; i < sortedMappings.length; i++) {
                 var mapping = sortedMappings[i];
                 mappingProvider.registerMapping(new RegisteredPacket(direction, packetClass), mapping);
-                if (ProtocolVersion.MAXIMUM_VERSION.getProtocol() < mapping.protocolRangeStart() || ProtocolVersion.MAXIMUM_VERSION.getProtocol() < mapping.protocolRangeEnd()) continue;
                 velocityMappings.add(createVelocityMapping(mapping.protocolRangeStart(), mapping.protocolRangeEnd(), mapping.id(), i == sortedMappings.length - 1));
             }
             try {
