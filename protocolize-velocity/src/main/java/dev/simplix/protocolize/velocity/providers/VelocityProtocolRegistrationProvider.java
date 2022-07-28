@@ -9,6 +9,7 @@ import dev.simplix.protocolize.api.PacketDirection;
 import dev.simplix.protocolize.api.Protocol;
 import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.mapping.ProtocolIdMapping;
+import dev.simplix.protocolize.api.mapping.ProtocolMapping;
 import dev.simplix.protocolize.api.packet.AbstractPacket;
 import dev.simplix.protocolize.api.packet.RegisteredPacket;
 import dev.simplix.protocolize.api.providers.MappingProvider;
@@ -25,8 +26,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -79,9 +80,16 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
             StateRegistry.PacketRegistry registry = direction == PacketDirection.SERVERBOUND ? stateRegistry.serverbound : stateRegistry.clientbound;
             Class<? extends MinecraftPacket> velocityPacket = generateVelocityPacket(packetClass);
             List<StateRegistry.PacketMapping> velocityMappings = new ArrayList<>();
-            for (ProtocolIdMapping mapping : mappings) {
+
+            var sortedMappings = mappings.stream()
+                .filter(mapping -> !(ProtocolVersion.MAXIMUM_VERSION.getProtocol() < mapping.protocolRangeStart() || ProtocolVersion.MAXIMUM_VERSION.getProtocol() < mapping.protocolRangeEnd()))
+                .sorted(Comparator.comparingInt(ProtocolMapping::protocolRangeEnd))
+                .toArray(ProtocolIdMapping[]::new);
+
+            for (int i = 0; i < sortedMappings.length; i++) {
+                var mapping = sortedMappings[i];
                 mappingProvider.registerMapping(new RegisteredPacket(direction, packetClass), mapping);
-                velocityMappings.add(createVelocityMapping(mapping.protocolRangeStart(), 0, mapping.id(), false));
+                velocityMappings.add(createVelocityMapping(mapping.protocolRangeStart(), mapping.protocolRangeEnd(), mapping.id(), i == sortedMappings.length - 1));
             }
             try {
                 doRegisterPacket(registry, velocityPacket, velocityMappings.toArray(new StateRegistry.PacketMapping[0]));

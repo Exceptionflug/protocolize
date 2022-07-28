@@ -35,6 +35,18 @@ We provide some documentation on how to migrate your existing plugin to use the 
     <scope>provided</scope>
 </dependency>
 ```
+**Or alternatively, with Gradle:**
+```kotlin
+repsitories {
+    maven {
+        url = uri('https://mvn.exceptionflug.de/repository/exceptionflug-public/')
+    }
+}
+
+dependencies {
+    compileOnly("dev.simplix:protocolize-api:2.2.1")
+}
+```
 ### Install the plugin
 In order to use Protocolize, you have to install it onto your proxy server. Protocolize is supporting BungeeCord and Velocity proxy servers.
 
