@@ -29,7 +29,7 @@ public class ItemStack implements BaseItemStack {
 
   public static final ItemStack NO_DATA = new ItemStack(null);
 
-  private static final ComponentConverter CONVERTER = Protocolize.getService(ComponentConverterProvider.class)
+  protected static final ComponentConverter CONVERTER = Protocolize.getService(ComponentConverterProvider.class)
           .platformConverter();
 
   @Getter(AccessLevel.PACKAGE)
@@ -40,11 +40,11 @@ public class ItemStack implements BaseItemStack {
   @Setter(AccessLevel.PACKAGE)
   private List<String> loreJson = new ArrayList<>();
 
-  private ItemType itemType;
-  private CompoundTag nbtData = new CompoundTag();
-  private byte amount;
-  private short durability;
-  private int hideFlags;
+  protected ItemType itemType;
+  protected CompoundTag nbtData = new CompoundTag();
+  protected byte amount;
+  protected short durability;
+  protected int hideFlags;
 
   public ItemStack(ItemType itemType) {
     this(itemType, 1);
