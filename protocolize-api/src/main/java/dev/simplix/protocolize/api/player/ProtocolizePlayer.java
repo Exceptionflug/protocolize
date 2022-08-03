@@ -6,18 +6,18 @@ import dev.simplix.protocolize.api.PlayerInteract;
 import dev.simplix.protocolize.api.SoundCategory;
 import dev.simplix.protocolize.api.inventory.Inventory;
 import dev.simplix.protocolize.api.inventory.PlayerInventory;
-import dev.simplix.protocolize.api.item.ItemStack;
+import dev.simplix.protocolize.api.item.BaseItemStack;
 import dev.simplix.protocolize.data.Sound;
 import dev.simplix.protocolize.data.packets.CloseWindow;
 import dev.simplix.protocolize.data.packets.NamedSoundEffect;
 import dev.simplix.protocolize.data.packets.OpenWindow;
 import dev.simplix.protocolize.data.packets.WindowItems;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * Date: 26.08.2021
@@ -113,11 +113,8 @@ public interface ProtocolizePlayer {
         } catch (Throwable t) {
             protocolVersion = 47;
         }
-        List<ItemStack> items = Lists
-            .newArrayList(inventory.itemsIndexed(protocolVersion))
-            .stream()
-            .map(ItemStack::new) // Temporary fix
-            .collect(Collectors.toList());
+        List<BaseItemStack> items = new ArrayList<>(Lists
+            .newArrayList(inventory.itemsIndexed(protocolVersion)));
         sendPacket(new WindowItems((short) windowId, items, 0));
     }
 
