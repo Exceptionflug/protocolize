@@ -27,16 +27,15 @@ import net.querz.nbt.tag.CompoundTag;
 @ToString
 public class ItemStack implements BaseItemStack {
 
-  public static final ItemStack NO_DATA = new ItemStack(null);
+  public static final ItemStack NO_DATA = new ItemStack((ItemType) null);
 
-  protected static final ComponentConverter CONVERTER = Protocolize.getService(ComponentConverterProvider.class)
-          .platformConverter();
+  protected static final ComponentConverter CONVERTER = Protocolize.getService(ComponentConverterProvider.class).platformConverter();
 
-  @Getter(AccessLevel.PACKAGE)
+  @Getter
   @Setter(AccessLevel.PACKAGE)
   private String displayNameJson;
 
-  @Getter(AccessLevel.PACKAGE)
+  @Getter
   @Setter(AccessLevel.PACKAGE)
   private List<String> loreJson = new ArrayList<>();
 
@@ -52,6 +51,17 @@ public class ItemStack implements BaseItemStack {
 
   public ItemStack(ItemType itemType, int amount) {
     this(itemType, amount, (short) -1);
+  }
+
+  public ItemStack(BaseItemStack baseItemStack) {
+    this(baseItemStack.itemType(), baseItemStack.amount(), baseItemStack.durability());
+    nbtData(baseItemStack.nbtData());
+    for (ItemFlag itemFlag : itemFlags()) {
+      flagSet(itemFlag);
+    }
+
+    displayNameJson(baseItemStack.displayNameJson());
+    loreJson(baseItemStack.loreJson());
   }
 
   public ItemStack(ItemType itemType, int amount, short durability) {
@@ -86,7 +96,7 @@ public class ItemStack implements BaseItemStack {
   }
 
   @Override
-  public boolean canBeStacked(ItemStack stack) {
+  public boolean canBeStacked(BaseItemStack stack) {
     return stack.itemType()==this.itemType && stack.nbtData().equals(this.nbtData);
   }
 

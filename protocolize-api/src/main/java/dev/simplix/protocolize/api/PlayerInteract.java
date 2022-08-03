@@ -1,6 +1,6 @@
 package dev.simplix.protocolize.api;
 
-import dev.simplix.protocolize.api.item.ItemStack;
+import dev.simplix.protocolize.api.item.BaseItemStack;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -15,7 +15,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 public class PlayerInteract {
 
-    private ItemStack currentItem;
+    private BaseItemStack currentItem;
     private BlockPosition clickedBlockPosition;
     private Hand hand;
     private boolean cancelled;

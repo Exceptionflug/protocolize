@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Date: 26.08.2021
@@ -112,7 +113,11 @@ public interface ProtocolizePlayer {
         } catch (Throwable t) {
             protocolVersion = 47;
         }
-        List<ItemStack> items = Lists.newArrayList(inventory.itemsIndexed(protocolVersion));
+        List<ItemStack> items = Lists
+            .newArrayList(inventory.itemsIndexed(protocolVersion))
+            .stream()
+            .map(ItemStack::new) // Temporary fix
+            .collect(Collectors.toList());
         sendPacket(new WindowItems((short) windowId, items, 0));
     }
 

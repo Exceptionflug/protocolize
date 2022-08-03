@@ -10,15 +10,19 @@ public interface BaseItemStack {
 
   Set<ItemFlag> itemFlags();
 
-  boolean canBeStacked(ItemStack stack);
+  List<String> loreJson();
+
+  String displayNameJson();
+
+  boolean canBeStacked(BaseItemStack stack);
 
   <T> T displayName();
 
   <T> T displayName(boolean legacyString);
 
-  ItemStack displayName(String legacyName);
+  BaseItemStack displayName(String legacyName);
 
-  ItemStack displayName(Object displayName);
+  BaseItemStack displayName(Object displayName);
 
   <T> List<T> lore();
 
@@ -34,9 +38,9 @@ public interface BaseItemStack {
 
   void addToLore(Object component);
 
-  ItemStack deepClone();
+  BaseItemStack deepClone();
 
-  ItemStack deepClone(int protocolVersion);
+  BaseItemStack deepClone(int protocolVersion);
 
   dev.simplix.protocolize.data.ItemType itemType();
 
@@ -48,13 +52,13 @@ public interface BaseItemStack {
 
   int hideFlags();
 
-  ItemStack itemType(dev.simplix.protocolize.data.ItemType itemType);
+  BaseItemStack itemType(dev.simplix.protocolize.data.ItemType itemType);
 
-  ItemStack nbtData(net.querz.nbt.tag.CompoundTag nbtData);
+  BaseItemStack nbtData(net.querz.nbt.tag.CompoundTag nbtData);
 
-  ItemStack amount(byte amount);
+  BaseItemStack amount(byte amount);
 
-  ItemStack durability(short durability);
+  BaseItemStack durability(short durability);
 
-  ItemStack hideFlags(int hideFlags);
+  BaseItemStack hideFlags(int hideFlags);
 }

@@ -1,7 +1,7 @@
 package dev.simplix.protocolize.api.inventory;
 
 import dev.simplix.protocolize.api.ClickType;
-import dev.simplix.protocolize.api.item.ItemStack;
+import dev.simplix.protocolize.api.item.BaseItemStack;
 import dev.simplix.protocolize.api.player.ProtocolizePlayer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,8 +28,8 @@ public class InventoryClick {
     @Setter
     private boolean cancelled;
 
-    public ItemStack clickedItem() {
-        return inventory.item(slot);
+    public BaseItemStack clickedItem() {
+        return this.inventory.item(this.slot);
     }
 
 }
