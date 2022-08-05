@@ -44,7 +44,7 @@ repsitories {
 }
 
 dependencies {
-    compileOnly("dev.simplix:protocolize-api:2.2.1")
+    compileOnly("dev.simplix:protocolize-api:2.2.2")
 }
 ```
 ### Install the plugin
