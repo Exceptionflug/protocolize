@@ -13,7 +13,7 @@
 # Protocolize v2
 This is the official repository for the next generation proxy server protocol manipulation framework. If you wish to see the repository for Protocolize v1, click [here](https://github.com/Exceptionflug/protocolize/tree/v1).
 
-## Why a completely recode?
+## Why a complete recode?
 Protocolize v1 was already a successful approach on how to interact with the Minecraft protocol. The downsides were severe: An outdated code base that was hard to maintain and only supported BungeeCord. All those reasons resulted in the making of an whole new fresh code base that supports Velocity and that also takes a new approach on how to provide mappings for all supported protocol mappings.
 
 ### Migration
