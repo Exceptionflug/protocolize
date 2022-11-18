@@ -1,5 +1,6 @@
 package dev.simplix.protocolize.api.inventory;
 
+import dev.simplix.protocolize.api.item.BaseItemStack;
 import dev.simplix.protocolize.api.item.ItemStack;
 import dev.simplix.protocolize.api.player.ProtocolizePlayer;
 import dev.simplix.protocolize.data.packets.HeldItemChange;
@@ -21,9 +22,9 @@ import java.util.*;
 public class PlayerInventory {
 
     private final ProtocolizePlayer player;
-    private final Map<Integer, ItemStack> items = new HashMap<>();
+    private final Map<Integer, BaseItemStack> items = new HashMap<>();
     private final Set<Integer> draggingSlots = new HashSet<>();
-    private ItemStack cursorItem;
+    private BaseItemStack cursorItem;
     private short heldItem;
     private boolean dragging;
 
@@ -31,11 +32,11 @@ public class PlayerInventory {
         this.player = player;
     }
 
-    public void item(int slot, ItemStack stack) {
+    public void item(int slot, BaseItemStack stack) {
         items.put(slot, stack);
     }
 
-    public ItemStack item(int slot) {
+    public BaseItemStack item(int slot) {
         return items.get(slot);
     }
 
@@ -43,16 +44,16 @@ public class PlayerInventory {
         return items.remove(slot) != null;
     }
 
-    public List<ItemStack> itemsIndexed() {
-        ItemStack[] outArray = new ItemStack[46];
+    public List<BaseItemStack> itemsIndexed() {
+        BaseItemStack[] outArray = new ItemStack[46];
         for (Integer id : items.keySet()) {
             outArray[id] = items.get(id);
         }
         return Arrays.asList(outArray);
     }
 
-    public List<ItemStack> itemsIndexedContainer() {
-        ItemStack[] outArray = new ItemStack[45 - 9];
+    public List<BaseItemStack> itemsIndexedContainer() {
+        BaseItemStack[] outArray = new ItemStack[45 - 9];
         for (Integer id : items.keySet()) {
             if (id < 9 || id == 45)
                 continue;
@@ -79,7 +80,7 @@ public class PlayerInventory {
 
     public void update() {
         for (int i = 0; i <= 44; i++) {
-            ItemStack stack = item(i);
+            BaseItemStack stack = item(i);
             if (stack != null) {
                 player.sendPacket(new SetSlot((byte) 0, (short) i, stack, 0));
             }
