@@ -2,6 +2,7 @@ package dev.simplix.protocolize.api.inventory;
 
 import dev.simplix.protocolize.api.ComponentConverter;
 import dev.simplix.protocolize.api.Protocolize;
+import dev.simplix.protocolize.api.item.BaseItemStack;
 import dev.simplix.protocolize.api.item.ItemStack;
 import dev.simplix.protocolize.api.providers.ComponentConverterProvider;
 import dev.simplix.protocolize.data.inventory.InventoryType;
@@ -31,7 +32,7 @@ public class Inventory {
     private static final ComponentConverter CONVERTER = Protocolize.getService(ComponentConverterProvider.class)
         .platformConverter();
 
-    private final Map<Integer, ItemStack> items = new ConcurrentHashMap<>();
+    private final Map<Integer, BaseItemStack> items = new ConcurrentHashMap<>();
     private final List<Consumer<InventoryClick>> clickConsumers = new ArrayList<>();
     private final List<Consumer<InventoryClose>> closeConsumers = new ArrayList<>();
     private InventoryType type;
@@ -41,9 +42,9 @@ public class Inventory {
         this.type = type;
     }
 
-    public void items(List<ItemStack> itemsIndexed) {
+    public void items(List<BaseItemStack> itemsIndexed) {
         int slot = 0;
-        for (ItemStack stack : itemsIndexed) {
+        for (BaseItemStack stack : itemsIndexed) {
             if (stack != null && stack.itemType() != null) {
                 items.put(slot, stack);
             }
@@ -51,8 +52,8 @@ public class Inventory {
         }
     }
 
-    public List<ItemStack> itemsIndexed(int protocolVersion) {
-        ItemStack[] outArray = new ItemStack[type.getTypicalSize(protocolVersion)];
+    public List<BaseItemStack> itemsIndexed(int protocolVersion) {
+        BaseItemStack[] outArray = new ItemStack[type.getTypicalSize(protocolVersion)];
         for (Integer id : items.keySet()) {
             outArray[id] = items.get(id);
         }
@@ -63,7 +64,7 @@ public class Inventory {
         return items.remove(slot) != null;
     }
 
-    public ItemStack item(int slot) {
+    public BaseItemStack item(int slot) {
         return items.get(slot);
     }
 
