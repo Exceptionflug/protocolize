@@ -11,6 +11,8 @@ public interface ProtocolMapping {
 
     int protocolRangeEnd();
 
+    void protocolRangeEnd(int protocolRangeStart);
+
     default boolean inRange(int version) {
         return version >= protocolRangeStart() && version <= protocolRangeEnd();
     }

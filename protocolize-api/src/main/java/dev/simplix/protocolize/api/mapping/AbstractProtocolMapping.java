@@ -15,7 +15,12 @@ import lombok.experimental.Accessors;
 public abstract class AbstractProtocolMapping implements ProtocolMapping {
 
     private final int protocolRangeStart;
-    private final int protocolRangeEnd;
+    private int protocolRangeEnd;
+
+    @Override
+    public final void protocolRangeEnd(int protocolRangeEnd) {
+        this.protocolRangeEnd = protocolRangeEnd;
+    }
 
     public static ProtocolIdMapping rangedIdMapping(int start, int end, int id) {
         return new RangeProtocolIdMapping(start, end, id);
