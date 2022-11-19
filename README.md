@@ -79,6 +79,11 @@ Implemented packets by default:
 
 You can easily add support for new packets and versions by installing modules.
 
+
+## FAQ
+You're experiencing uncommon packet errors and have ViaVersion/ViaBackwards installed on your proxy?
+This is likely caused by some bugs in those plugins. We recomment you to only install them on your sub-server when usign Protocolize.
+
 ## Get some help
 For documentation take a look at the wiki pages.
 If you have questions feel free to join our [discord server](https://discord.simplixsoft.com/).
