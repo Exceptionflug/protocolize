@@ -23,7 +23,7 @@
         <bungeecord.version>1.17-R0.1-SNAPSHOT</bungeecord.version>
         <velocity.version>3.0.0</velocity.version>
         <bytebuddy.version>1.11.13</bytebuddy.version>
-        <data.version>2.2.1</data.version>
+        <data.version>2.2.2</data.version>
     </properties>
 
     <repositories>
