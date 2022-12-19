@@ -31,7 +31,6 @@ We provide some documentation on how to migrate your existing plugin to use the 
 <dependency>
     <groupId>dev.simplix</groupId>
     <artifactId>protocolize-api</artifactId>
-    <version>2.2.2</version>
     <version>2.2.3</version>
     <scope>provided</scope>
 </dependency>
@@ -45,7 +44,7 @@ repsitories {
 }
 
 dependencies {
-    compileOnly("dev.simplix:protocolize-api:2.2.2")
+    compileOnly("dev.simplix:protocolize-api:2.2.3")
 }
 ```
 ### Install the plugin
@@ -57,7 +56,7 @@ Protocolize is shipped with it's default data module which adds support for the 
 |--|--|
 | 1.8.x - 1.12.2 | ❌ (Only with [additional legacy module](https://ci.exceptionflug.de/job/Protocolize-Legacy-Data/)) |
 | 1.13 - 1.13.2 | ✔️ (Sounds only with [additional legacy module](https://ci.exceptionflug.de/job/Protocolize-Legacy-Data/)) |
-| 1.14 - 1.19.2 | ✔️ |
+| 1.14 - 1.19.3 | ✔️ |
 
 Implemented packets by default:
 
