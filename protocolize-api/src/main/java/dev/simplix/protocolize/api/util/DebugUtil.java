@@ -30,11 +30,12 @@ public final class DebugUtil {
     private static final Hastebin HASTEBIN = new Hastebin();
     private static final File FOLDER = new File("protocolize-logs");
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy - HH:mm:ss");
+    private static final DateFormat DATE_FORMAT_FILE = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
 
     public static final boolean enabled = System.getProperties().contains("dev.simplix.protocolize.debug");
 
     public static void writeDump(ByteBuf buf, Throwable throwable) {
-        File file = new File(FOLDER, new Date().toString().replace(" ", "-") + ".zip");
+        File file = new File(FOLDER, DATE_FORMAT_FILE.format(new Date()) + ".zip");
         file.getParentFile().mkdirs();
         try (ZipOutputStream outputStream = new ZipOutputStream(new FileOutputStream(file), StandardCharsets.UTF_8)) {
             ZipEntry throwableEntry = new ZipEntry("throwable.txt");
