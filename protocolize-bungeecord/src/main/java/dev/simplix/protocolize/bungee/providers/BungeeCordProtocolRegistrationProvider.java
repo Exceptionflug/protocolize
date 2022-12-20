@@ -14,6 +14,7 @@ import dev.simplix.protocolize.bungee.packet.BungeeCordProtocolizePacket;
 import dev.simplix.protocolize.bungee.strategy.PacketRegistrationStrategy;
 import gnu.trove.map.TIntObjectMap;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.implementation.MethodDelegation;
 import net.bytebuddy.implementation.bind.annotation.RuntimeType;
@@ -34,6 +35,7 @@ import java.util.logging.Level;
  *
  * @author Exceptionflug
  */
+@Slf4j
 public final class BungeeCordProtocolRegistrationProvider implements ProtocolRegistrationProvider {
 
     private final MappingProvider mappingProvider = Protocolize.mappingProvider();
@@ -61,8 +63,7 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
             toClientField = net.md_5.bungee.protocol.Protocol.class.getDeclaredField("TO_CLIENT");
             toClientField.setAccessible(true);
         } catch (final Exception e) {
-            ProxyServer.getInstance().getLogger().log(Level.SEVERE,
-                "Exception occurred while initializing BungeeCordProtocolRegistrationProvider: ", e);
+            log.error("Exception occurred while initializing BungeeCordProtocolRegistrationProvider: ", e);
         }
     }
 
@@ -70,8 +71,7 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
         for (PacketRegistrationStrategy strategy : strategies) {
             if (strategy.compatible()) {
                 this.strategy = strategy;
-                ProxyServer.getInstance().getLogger()
-                    .info("[Protocolize] Using " + strategy.getClass().getSimpleName());
+                log.info("[Protocolize] Using " + strategy.getClass().getSimpleName());
                 return;
             }
         }
@@ -96,11 +96,11 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
                 mappingProvider.registerMapping(new RegisteredPacket(direction, packetClass), mapping);
                 for (int i = mapping.protocolRangeStart(); i <= mapping.protocolRangeEnd(); i++) {
                     strategy.registerPacket(protocols, i, mapping.id(), definedPacketClass);
+                    log.debug("[Protocolize] Register packet " + definedPacketClass.getName() + " (0x" + Integer.toHexString(mapping.id()) + ") in direction " + direction.name() + " at protocol " + protocol.name() + " for version " + i);
                 }
             }
         } catch (Exception e) {
-            ProxyServer.getInstance().getLogger().log(Level.WARNING,
-                "Exception while registering packet " + packetClass.getName(), e);
+            log.warn("Exception while registering packet " + packetClass.getName(), e);
         }
     }
 
@@ -186,7 +186,7 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
             else
                 return toClientField.get(protocol);
         } catch (final IllegalAccessException e) {
-            ProxyServer.getInstance().getLogger().log(Level.SEVERE, "Unable to get DirectionData", e);
+            log.error("Unable to get DirectionData", e);
         }
         return null;
     }

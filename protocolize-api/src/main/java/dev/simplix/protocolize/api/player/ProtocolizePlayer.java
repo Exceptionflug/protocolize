@@ -7,11 +7,9 @@ import dev.simplix.protocolize.api.SoundCategory;
 import dev.simplix.protocolize.api.inventory.Inventory;
 import dev.simplix.protocolize.api.inventory.PlayerInventory;
 import dev.simplix.protocolize.api.item.BaseItemStack;
+import dev.simplix.protocolize.api.util.ProtocolVersions;
 import dev.simplix.protocolize.data.Sound;
-import dev.simplix.protocolize.data.packets.CloseWindow;
-import dev.simplix.protocolize.data.packets.NamedSoundEffect;
-import dev.simplix.protocolize.data.packets.OpenWindow;
-import dev.simplix.protocolize.data.packets.WindowItems;
+import dev.simplix.protocolize.data.packets.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +51,11 @@ public interface ProtocolizePlayer {
     }
 
     default void playSound(Location location, Sound sound, SoundCategory category, float volume, float pitch) {
-        sendPacket(new NamedSoundEffect(sound, category, location.x(), location.y(), location.z(), volume, pitch));
+        if (protocolVersion() >= ProtocolVersions.MINECRAFT_1_19_3) {
+            sendPacket(new SoundEffect(sound, category, location.x(), location.y(), location.z(), volume, pitch));
+        } else {
+            sendPacket(new NamedSoundEffect(sound, category, location.x(), location.y(), location.z(), volume, pitch));
+        }
     }
 
     default void registerInventory(int windowId, Inventory inventory) {

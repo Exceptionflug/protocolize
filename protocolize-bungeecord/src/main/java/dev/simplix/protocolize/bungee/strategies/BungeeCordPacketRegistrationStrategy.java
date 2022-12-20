@@ -4,6 +4,7 @@ import dev.simplix.protocolize.api.util.ReflectionUtil;
 import dev.simplix.protocolize.bungee.strategy.PacketRegistrationStrategy;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.TObjectIntMap;
+import lombok.extern.slf4j.Slf4j;
 import net.md_5.bungee.api.ProxyServer;
 
 import java.lang.reflect.Field;
@@ -14,6 +15,7 @@ import java.util.function.Supplier;
  *
  * @author Exceptionflug
  */
+@Slf4j
 public final class BungeeCordPacketRegistrationStrategy implements PacketRegistrationStrategy {
 
     private final Class<?> protocolDataClass = ReflectionUtil.getClassOrNull("net.md_5.bungee.protocol.Protocol$ProtocolData");
@@ -24,7 +26,7 @@ public final class BungeeCordPacketRegistrationStrategy implements PacketRegistr
     public void registerPacket(TIntObjectMap<Object> protocols, int protocolVersion, int packetId, Class<?> clazz) throws IllegalAccessException {
         final Object protocolData = protocols.get(protocolVersion);
         if (protocolData == null) {
-            ProxyServer.getInstance().getLogger().finest("[Protocolize | DEBUG] Protocol version " + protocolVersion + " is not supported on this version. Skipping registration for that specific version.");
+            log.debug("[Protocolize | DEBUG] Protocol version " + protocolVersion + " is not supported on this version. Skipping registration for that specific version.");
             return;
         }
         ((TObjectIntMap<Class<?>>) protocolDataPacketMapField.get(protocolData)).put(clazz, packetId);
