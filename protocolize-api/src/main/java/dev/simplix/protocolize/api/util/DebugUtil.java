@@ -40,9 +40,8 @@ public final class DebugUtil {
         try (ZipOutputStream outputStream = new ZipOutputStream(new FileOutputStream(file), StandardCharsets.UTF_8)) {
             ZipEntry throwableEntry = new ZipEntry("throwable.txt");
             outputStream.putNextEntry(throwableEntry);
-            try (PrintWriter printWriter = new PrintWriter(outputStream)) {
-                throwable.printStackTrace(printWriter);
-            }
+            PrintWriter printWriter = new PrintWriter(outputStream);
+            throwable.printStackTrace(printWriter);
             outputStream.closeEntry();
 
             ZipEntry data = new ZipEntry("data.bin");
