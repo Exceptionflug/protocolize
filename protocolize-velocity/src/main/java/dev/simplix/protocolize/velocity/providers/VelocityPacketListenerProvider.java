@@ -41,6 +41,8 @@ public final class VelocityPacketListenerProvider implements PacketListenerProvi
     private final List<AbstractPacketListener<?>> listeners = new ArrayList<>();
 
     private Field packetIdToSupplierField;
+    private Field serverboundField;
+    private Field clientboundField;
     private Method getProtocolRegistryMethod;
 
     {
@@ -49,6 +51,10 @@ public final class VelocityPacketListenerProvider implements PacketListenerProvi
             getProtocolRegistryMethod.setAccessible(true);
             packetIdToSupplierField = StateRegistry.PacketRegistry.ProtocolRegistry.class.getDeclaredField("packetIdToSupplier");
             packetIdToSupplierField.setAccessible(true);
+            clientboundField = StateRegistry.class.getDeclaredField("clientbound");
+            clientboundField.setAccessible(true);
+            serverboundField = StateRegistry.class.getDeclaredField("serverbound");
+            serverboundField.setAccessible(true);
         } catch (Exception e) {
             log.error("Unable to initialize VelocityPacketListenerProvider", e);
         }
@@ -76,8 +82,8 @@ public final class VelocityPacketListenerProvider implements PacketListenerProvi
     private void ensureAlsoEncode(Class<? extends MinecraftPacket> type) throws Exception {
         for (StateRegistry state : StateRegistry.values()) {
             for (ProtocolVersion protocolVersion : ProtocolVersion.SUPPORTED_VERSIONS) {
-                addDefaultSupplier(protocolRegistry(state.serverbound, protocolVersion), type);
-                addDefaultSupplier(protocolRegistry(state.clientbound, protocolVersion), type);
+                addDefaultSupplier(protocolRegistry((StateRegistry.PacketRegistry) serverboundField.get(state), protocolVersion), type);
+                addDefaultSupplier(protocolRegistry((StateRegistry.PacketRegistry) clientboundField.get(state), protocolVersion), type);
             }
         }
     }
