@@ -44,6 +44,8 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
     private Constructor<StateRegistry.PacketMapping> packetMappingConstructor;
     private Field versionsField;
     private Field packetClassToIdField;
+    private Field serverboundField;
+    private Field clientboundField;
     private Method registerMethod;
 
     {
@@ -56,6 +58,10 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
             versionsField.setAccessible(true);
             packetClassToIdField = StateRegistry.PacketRegistry.ProtocolRegistry.class.getDeclaredField("packetClassToId");
             packetClassToIdField.setAccessible(true);
+            clientboundField = StateRegistry.class.getDeclaredField("clientbound");
+            clientboundField.setAccessible(true);
+            serverboundField = StateRegistry.class.getDeclaredField("serverbound");
+            serverboundField.setAccessible(true);
         } catch (Exception exception) {
             log.error("Exception occurred while initializing VelocityProtocolRegistrationProvider:", exception);
         }
@@ -77,7 +83,9 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
             if (stateRegistry == null) {
                 return;
             }
-            StateRegistry.PacketRegistry registry = direction == PacketDirection.SERVERBOUND ? stateRegistry.serverbound : stateRegistry.clientbound;
+            StateRegistry.PacketRegistry registry = direction == PacketDirection.SERVERBOUND ?
+                (StateRegistry.PacketRegistry) serverboundField.get(stateRegistry) :
+                (StateRegistry.PacketRegistry) clientboundField.get(stateRegistry);
             Class<? extends MinecraftPacket> velocityPacket = generateVelocityPacket(packetClass);
             List<StateRegistry.PacketMapping> velocityMappings = new ArrayList<>();
 
