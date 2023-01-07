@@ -6,6 +6,7 @@ import com.velocitypowered.api.proxy.InboundConnection;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.server.ServerInfo;
+import com.velocitypowered.proxy.connection.client.InitialInboundConnection;
 import com.velocitypowered.proxy.protocol.MinecraftPacket;
 import com.velocitypowered.proxy.protocol.StateRegistry;
 import dev.simplix.protocolize.api.Direction;
@@ -19,6 +20,7 @@ import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.api.providers.ProtocolizePlayerProvider;
 import dev.simplix.protocolize.api.util.ReflectionUtil;
 import dev.simplix.protocolize.velocity.packet.VelocityProtocolizePacket;
+import dev.simplix.protocolize.velocity.player.InitialInboundConnectionProtocolizePlayer;
 import io.netty.util.collection.IntObjectMap;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -249,9 +251,16 @@ public final class VelocityPacketListenerProvider implements PacketListenerProvi
             Player player = serverConnection.getPlayer();
             return new PacketSendEvent<>(player != null ? PLAYER_PROVIDER.player(player.getUniqueId()) : null, serverConnection.getServerInfo(), apiPacket, false);
         } else if (connection != null) {
-            Player player = (Player) connection;
-            ServerInfo info = player.getCurrentServer().isPresent() ? player.getCurrentServer().get().getServerInfo() : null;
-            return new PacketSendEvent<>(PLAYER_PROVIDER.player(player.getUniqueId()), info, apiPacket, false);
+            if (connection instanceof Player) {
+                Player player = (Player) connection;
+                ServerInfo info = player.getCurrentServer().isPresent() ? player.getCurrentServer().get().getServerInfo() : null;
+                return new PacketSendEvent<>(PLAYER_PROVIDER.player(player.getUniqueId()), info, apiPacket, false);
+            } else if (connection instanceof InitialInboundConnection) {
+                return new PacketSendEvent<>(new InitialInboundConnectionProtocolizePlayer((InitialInboundConnection) connection),
+                    null, apiPacket, false);
+            } else {
+                throw new IllegalArgumentException("Unsupported connection type: " + connection.getClass().getName());
+            }
         } else {
             return new PacketSendEvent<>(null, null, apiPacket, false);
         }
