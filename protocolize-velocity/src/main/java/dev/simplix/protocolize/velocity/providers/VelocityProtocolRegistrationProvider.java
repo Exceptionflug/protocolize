@@ -158,7 +158,7 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
             if (stateRegistry == null) {
                 return -1;
             }
-            StateRegistry.PacketRegistry.ProtocolRegistry registry = velocityDirection.getProtocolRegistry(stateRegistry,
+            StateRegistry.PacketRegistry.ProtocolRegistry registry = stateRegistry.getProtocolRegistry(velocityDirection,
                 ProtocolVersion.getProtocolVersion(protocolVersion));
             return registry.getPacketId((MinecraftPacket) packet);
         }
@@ -177,7 +177,7 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
             log.debug("Unable to construct wrapper instance for " + clazz.getName() + ": Unknown protocol: " + protocol.name());
             return null;
         }
-        StateRegistry.PacketRegistry.ProtocolRegistry registry = velocityDirection.getProtocolRegistry(stateRegistry,
+        StateRegistry.PacketRegistry.ProtocolRegistry registry = stateRegistry.getProtocolRegistry(velocityDirection,
             ProtocolVersion.getProtocolVersion(protocolVersion));
         ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new RegisteredPacket(direction, clazz), protocolVersion);
         if (protocolIdMapping != null) {
@@ -202,7 +202,7 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
             builder.append("  - ").append(stateRegistry.name()).append(":\n");
             for (ProtocolVersion version : ProtocolVersion.SUPPORTED_VERSIONS) {
                 builder.append("    - ").append("Minecraft ").append(version.getVersionsSupportedBy()).append(":\n");
-                StateRegistry.PacketRegistry.ProtocolRegistry registry = direction.getProtocolRegistry(stateRegistry, version);
+                StateRegistry.PacketRegistry.ProtocolRegistry registry = stateRegistry.getProtocolRegistry(direction, version);
                 Map<Class<? extends MinecraftPacket>, Integer> packetMap = (Map<Class<? extends MinecraftPacket>, Integer>) packetClassToIdField.get(registry);
                 for (Class<? extends MinecraftPacket> clazz : packetMap.keySet()) {
                     builder.append("      - ").append(clazz.getName()).append(" id = 0x").append(Integer.toHexString(packetMap.get(clazz))).append("\n");
