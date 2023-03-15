@@ -19,10 +19,10 @@ import java.util.Map;
  */
 final class SimpleMappingProvider implements MappingProvider {
 
-    private final Multimap<Object, ProtocolMapping> mappingMultimap = Multimaps.synchronizedListMultimap(ArrayListMultimap.create());
+    private final Multimap<Object, ProtocolMapping> mappingMultimap = ArrayListMultimap.create();
 
     @Override
-    public void registerMapping(Object mappable, ProtocolMapping mapping) {
+    public synchronized void registerMapping(Object mappable, ProtocolMapping mapping) {
         mappingMultimap.put(mappable, mapping);
     }
 
