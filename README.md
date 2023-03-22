@@ -55,8 +55,9 @@ Protocolize is shipped with it's default data module which adds support for the 
 | Minecraft Version | Supported |
 |--|--|
 | 1.8.x - 1.12.2 | ❌ (Only with [additional legacy module](https://ci.exceptionflug.de/job/Protocolize-Legacy-Data/)) |
-| 1.13 - 1.13.2 | ✔️ (Sounds only with [additional legacy module](https://ci.exceptionflug.de/job/Protocolize-Legacy-Data/)) |
-| 1.14 - 1.19.3 | ✔️ |
+| 1.13 - 1.13.2 | ✔️ (Sounds only
+with [additional legacy module](https://ci.exceptionflug.de/job/Protocolize-Legacy-Data/)) |
+| 1.14 - 1.19.4 | ✔️ |
 
 Implemented packets by default:
 
@@ -68,6 +69,7 @@ Implemented packets by default:
 | Confirm transaction | dev.simplix.protocolize.data.packets.ConfirmTransaction |
 | Held item change | dev.simplix.protocolize.data.packets.HeldItemChange |
 | Named sound effect | dev.simplix.protocolize.data.packets.NamedSoundEffect |
+| Sound effect | dev.simplix.protocolize.data.packets.SoundEffect |
 | Open inventory | dev.simplix.protocolize.data.packets.OpenWindow |
 | Player look update | dev.simplix.protocolize.data.packets.PlayerLook |
 | Player position update | dev.simplix.protocolize.data.packets.PlayerPosition |
