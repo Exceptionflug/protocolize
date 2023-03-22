@@ -6,8 +6,6 @@ import dev.simplix.protocolize.api.util.DebugUtil;
 import dev.simplix.protocolize.velocity.ProtocolizePlugin;
 import dev.simplix.protocolize.velocity.util.MessageUtil;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
