@@ -5,6 +5,7 @@ import com.velocitypowered.proxy.connection.MinecraftSessionHandler;
 import com.velocitypowered.proxy.protocol.MinecraftPacket;
 import com.velocitypowered.proxy.protocol.ProtocolUtils;
 import dev.simplix.protocolize.api.PacketDirection;
+import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.packet.AbstractPacket;
 import dev.simplix.protocolize.api.util.DebugUtil;
 import io.netty.buffer.ByteBuf;
@@ -25,6 +26,7 @@ import org.checkerframework.checker.units.qual.C;
 public class VelocityProtocolizePacket implements MinecraftPacket {
 
     private AbstractPacket wrapper;
+    private byte[] skipBuffer;
 
     public VelocityProtocolizePacket() {
         Class<? extends AbstractPacket> wrapperClass = obtainProtocolizePacketClass();
@@ -46,6 +48,11 @@ public class VelocityProtocolizePacket implements MinecraftPacket {
     @Override
     public void decode(ByteBuf byteBuf, ProtocolUtils.Direction direction, ProtocolVersion protocolVersion) {
         try {
+            if (Protocolize.listenerProvider().listenersForType(obtainProtocolizePacketClass()).isEmpty()) {
+                skipBuffer = new byte[byteBuf.readableBytes()];
+                byteBuf.readBytes(skipBuffer); // Don't decode packet if nobody has interest in it
+                return;
+            }
             wrapper.read(byteBuf,
                 direction == ProtocolUtils.Direction.CLIENTBOUND ? PacketDirection.CLIENTBOUND : PacketDirection.SERVERBOUND,
                 protocolVersion.getProtocol());
@@ -63,6 +70,10 @@ public class VelocityProtocolizePacket implements MinecraftPacket {
 
     @Override
     public void encode(ByteBuf byteBuf, ProtocolUtils.Direction direction, ProtocolVersion protocolVersion) {
+        if (skipBuffer != null) {
+            byteBuf.writeBytes(skipBuffer);
+            return;
+        }
         wrapper.write(byteBuf,
             direction == ProtocolUtils.Direction.CLIENTBOUND ? PacketDirection.CLIENTBOUND : PacketDirection.SERVERBOUND,
             protocolVersion.getProtocol());

@@ -1,6 +1,7 @@
 package dev.simplix.protocolize.bungee.packet;
 
 import dev.simplix.protocolize.api.PacketDirection;
+import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.packet.AbstractPacket;
 import dev.simplix.protocolize.api.util.DebugUtil;
 import io.netty.buffer.ByteBuf;
@@ -24,6 +25,7 @@ import net.md_5.bungee.protocol.ProtocolConstants;
 public class BungeeCordProtocolizePacket extends DefinedPacket {
 
     private AbstractPacket wrapper;
+    private byte[] skipBuffer;
 
     public BungeeCordProtocolizePacket() {
         Class<? extends AbstractPacket> wrapperClass = obtainProtocolizePacketClass();
@@ -39,12 +41,17 @@ public class BungeeCordProtocolizePacket extends DefinedPacket {
     }
 
     public Class<? extends AbstractPacket> obtainProtocolizePacketClass() {
-        return null; // Will be overridden by cglib
+        return null; // Will be overridden by ByteBuddy
     }
 
     @Override
     public void read(ByteBuf buf, ProtocolConstants.Direction direction, int protocolVersion) {
         try {
+            if (Protocolize.listenerProvider().listenersForType(obtainProtocolizePacketClass()).isEmpty()) {
+                skipBuffer = new byte[buf.readableBytes()];
+                buf.readBytes(skipBuffer); // Don't decode packet if nobody has interest in it
+                return;
+            }
             wrapper.read(buf, direction == ProtocolConstants.Direction.TO_CLIENT ? PacketDirection.CLIENTBOUND : PacketDirection.SERVERBOUND,
                 protocolVersion);
             if (buf.isReadable() && DebugUtil.enabled) {
@@ -61,6 +68,10 @@ public class BungeeCordProtocolizePacket extends DefinedPacket {
 
     @Override
     public void write(ByteBuf buf, ProtocolConstants.Direction direction, int protocolVersion) {
+        if (skipBuffer != null) {
+            buf.writeBytes(skipBuffer);
+            return;
+        }
         wrapper.write(buf, direction == ProtocolConstants.Direction.TO_CLIENT ? PacketDirection.CLIENTBOUND : PacketDirection.SERVERBOUND,
             protocolVersion);
     }

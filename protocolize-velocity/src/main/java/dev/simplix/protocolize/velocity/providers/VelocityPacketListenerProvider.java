@@ -192,7 +192,8 @@ public final class VelocityPacketListenerProvider implements PacketListenerProvi
         }
     }
 
-    private List<AbstractPacketListener<?>> listenersForType(Class<?> clazz) {
+    @Override
+    public List<AbstractPacketListener<?>> listenersForType(Class<?> clazz) {
         Preconditions.checkNotNull(clazz, "The clazz cannot be null!");
         List<AbstractPacketListener<?>> out = new ArrayList<>();
         for (AbstractPacketListener<?> listener : listeners) {
