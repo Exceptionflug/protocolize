@@ -18,6 +18,7 @@ import dev.simplix.protocolize.velocity.ProtocolizePlugin;
 import dev.simplix.protocolize.velocity.providers.VelocityPacketListenerProvider;
 import dev.simplix.protocolize.velocity.util.ConversionUtils;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.CorruptedFrameException;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.util.ReferenceCountUtil;
 import lombok.Getter;
@@ -100,7 +101,7 @@ public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDeco
         if (cause instanceof ClosedChannelException) {
             return;
         }
-        if (ProtocolizePlugin.isExceptionCausedByProtocolize(cause)) {
+        if (ProtocolizePlugin.isExceptionCausedByProtocolize(cause) && !(cause instanceof CorruptedFrameException)) {
             log.error("=== EXCEPTION CAUGHT IN DECODER ===");
             log.error("Protocolize " + ProtocolizePlugin.version());
             log.error("Stream Direction: " + streamDirection.name());

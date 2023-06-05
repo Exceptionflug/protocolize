@@ -128,7 +128,7 @@ public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDeco
         } else if (cause instanceof NativeIoException) {
             return; // Suppress this annoying shit...
         }
-        if (ProtocolizePlugin.isExceptionCausedByProtocolize(cause)) {
+        if (ProtocolizePlugin.isExceptionCausedByProtocolize(cause) && !(cause instanceof BadPacketException)) {
             ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] === EXCEPTION CAUGHT IN DECODER ===");
             ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Protocolize " + VERSION);
             ProxyServer.getInstance().getLogger().log(Level.SEVERE, "[Protocolize] Stream Direction: " + streamDirection.name());

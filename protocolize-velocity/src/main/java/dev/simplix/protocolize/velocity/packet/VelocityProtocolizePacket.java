@@ -63,7 +63,9 @@ public class VelocityProtocolizePacket implements MinecraftPacket {
         } catch (Throwable throwable) {
             CorruptedFrameException corruptedFrameException = new CorruptedFrameException("Protocolize is unable to read packet " + obtainProtocolizePacketClass().getName()
                 + " at protocol version " + protocolVersion + " in direction " + direction.name(), throwable);
-            DebugUtil.writeDump(byteBuf, corruptedFrameException);
+            if (DebugUtil.enabled) {
+                DebugUtil.writeDump(byteBuf, corruptedFrameException);
+            }
             throw corruptedFrameException;
         }
     }
