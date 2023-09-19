@@ -25,7 +25,7 @@
         <bytebuddy.version>1.11.13</bytebuddy.version>
         <data.version>2.3.0</data.version>
     </properties>
-i
+
     <repositories>
         <repository>
             <id>exceptionflug</id>
