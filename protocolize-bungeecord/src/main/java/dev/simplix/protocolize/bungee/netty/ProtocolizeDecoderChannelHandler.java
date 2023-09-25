@@ -20,6 +20,7 @@ import net.md_5.bungee.protocol.*;
 import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 
 import java.nio.channels.ClosedChannelException;
+import java.sql.Ref;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -38,7 +39,7 @@ public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDeco
 
     public ProtocolizeDecoderChannelHandler(AbstractPacketHandler abstractPacketHandler, dev.simplix.protocolize.api.Direction streamDirection) {
         this.abstractPacketHandler = abstractPacketHandler;
-        connection = ReflectionUtil.getConnection(abstractPacketHandler, ReflectionUtil.serverConnectorClass.isInstance(abstractPacketHandler));
+        connection = ReflectionUtil.getConnection(abstractPacketHandler, ReflectionUtil.downstreamBridgeClass.isInstance(abstractPacketHandler));
         this.streamDirection = streamDirection;
         try {
             if (ReflectionUtil.isServerConnector(abstractPacketHandler)) {
@@ -55,12 +56,14 @@ public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDeco
                     final MinecraftDecoder minecraftDecoder = channel.pipeline().get(MinecraftDecoder.class);
                     protocolVersion = (int) ReflectionUtil.protocolVersionField.get(minecraftDecoder);
                     protocol = (Protocol) ReflectionUtil.protocolField.get(minecraftDecoder);
-                } else {
-                    final Object ch = ReflectionUtil.userConnectionChannelWrapperField.get(abstractPacketHandler);
+                } else if (ReflectionUtil.downstreamBridgeClass.isInstance(abstractPacketHandler)) {
+                    final Object ch = ReflectionUtil.userConnectionChannelWrapperField.get(connection);
                     final Channel channel = (Channel) ReflectionUtil.channelWrapperChannelField.get(ch);
                     final MinecraftDecoder minecraftDecoder = channel.pipeline().get(MinecraftDecoder.class);
                     protocolVersion = (int) ReflectionUtil.protocolVersionField.get(minecraftDecoder);
                     protocol = (Protocol) ReflectionUtil.protocolField.get(minecraftDecoder);
+                } else {
+                    throw new IllegalStateException("Unsupported packet handler: " + abstractPacketHandler.getClass().getName());
                 }
                 direction = Direction.TO_SERVER;
             }
