@@ -118,6 +118,8 @@ public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDeco
                 return dev.simplix.protocolize.api.Protocol.STATUS;
             case HANDSHAKE:
                 return dev.simplix.protocolize.api.Protocol.HANDSHAKE;
+            case CONFIGURATION:
+                return dev.simplix.protocolize.api.Protocol.CONFIGURATION;
         }
         return null;
     }

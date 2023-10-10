@@ -9,6 +9,6 @@ package dev.simplix.protocolize.api;
  */
 public enum Protocol {
 
-    STATUS, HANDSHAKE, LOGIN, PLAY
+    STATUS, HANDSHAKE, LOGIN, PLAY, CONFIGURATION
 
 }

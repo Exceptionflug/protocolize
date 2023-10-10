@@ -167,6 +167,8 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
                 return net.md_5.bungee.protocol.Protocol.LOGIN;
             case PLAY:
                 return net.md_5.bungee.protocol.Protocol.GAME;
+            case CONFIGURATION:
+                return net.md_5.bungee.protocol.Protocol.CONFIGURATION;
         }
         return null;
     }

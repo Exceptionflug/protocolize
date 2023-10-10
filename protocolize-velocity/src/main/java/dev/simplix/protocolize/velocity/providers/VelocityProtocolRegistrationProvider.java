@@ -243,6 +243,8 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
                 return StateRegistry.STATUS;
             case PLAY:
                 return StateRegistry.PLAY;
+            case CONFIGURATION:
+                return StateRegistry.CONFIG;
         }
         return null;
     }
