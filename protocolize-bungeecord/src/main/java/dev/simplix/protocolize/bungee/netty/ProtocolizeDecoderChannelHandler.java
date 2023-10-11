@@ -20,7 +20,6 @@ import net.md_5.bungee.protocol.*;
 import net.md_5.bungee.protocol.ProtocolConstants.Direction;
 
 import java.nio.channels.ClosedChannelException;
-import java.sql.Ref;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -118,6 +117,8 @@ public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDeco
                 return dev.simplix.protocolize.api.Protocol.STATUS;
             case HANDSHAKE:
                 return dev.simplix.protocolize.api.Protocol.HANDSHAKE;
+            case CONFIGURATION:
+                return dev.simplix.protocolize.api.Protocol.CONFIGURATION;
         }
         return null;
     }

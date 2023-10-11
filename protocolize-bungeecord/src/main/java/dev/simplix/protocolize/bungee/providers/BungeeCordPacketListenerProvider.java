@@ -137,7 +137,8 @@ public final class BungeeCordPacketListenerProvider implements PacketListenerPro
             apiPacket = packet;
         }
         List<AbstractPacketListener<?>> listeners = listenersForType(clazz);
-        final boolean sentByServer = ReflectionUtil.downstreamBridgeClass.isInstance(abstractPacketHandler);
+        final boolean sentByServer = ReflectionUtil.downstreamBridgeClass.isInstance(abstractPacketHandler) ||
+            ReflectionUtil.serverConnectorClass.isInstance(abstractPacketHandler);
         final Connection connection = ReflectionUtil.getConnection(abstractPacketHandler, sentByServer);
         if (connection == null) {
             return null;
@@ -147,10 +148,7 @@ public final class BungeeCordPacketListenerProvider implements PacketListenerPro
             Direction stream = it.direction();
             if (stream == Direction.DOWNSTREAM && sentByServer) {
                 return true;
-            } else if (stream == Direction.UPSTREAM && !sentByServer) {
-                return true;
-            }
-            return false;
+            } else return stream == Direction.UPSTREAM && !sentByServer;
         }).forEach(it -> {
             try {
                 it.packetReceive(event);

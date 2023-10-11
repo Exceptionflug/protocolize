@@ -159,10 +159,7 @@ public final class VelocityPacketListenerProvider implements PacketListenerProvi
             Direction stream = it.direction();
             if (stream == Direction.DOWNSTREAM && sentByServer) {
                 return true;
-            } else if (stream == Direction.UPSTREAM && !sentByServer) {
-                return true;
-            }
-            return false;
+            } else return stream == Direction.UPSTREAM && !sentByServer;
         }).forEach(it -> {
             try {
                 it.packetReceive(event);
@@ -225,10 +222,7 @@ public final class VelocityPacketListenerProvider implements PacketListenerProvi
             Direction stream = it.direction();
             if (stream == Direction.DOWNSTREAM && sentToServer) {
                 return true;
-            } else if (stream == Direction.UPSTREAM && !sentToServer) {
-                return true;
-            }
-            return false;
+            } else return stream == Direction.UPSTREAM && !sentToServer;
         }).forEach(it -> {
             try {
                 it.packetSend(event);
