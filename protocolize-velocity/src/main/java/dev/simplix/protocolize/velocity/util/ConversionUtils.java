@@ -35,6 +35,8 @@ public final class ConversionUtils {
                 return Protocol.HANDSHAKE;
             case STATUS:
                 return Protocol.STATUS;
+            case CONFIG:
+                return Protocol.CONFIGURATION;
         }
         return null;
     }
