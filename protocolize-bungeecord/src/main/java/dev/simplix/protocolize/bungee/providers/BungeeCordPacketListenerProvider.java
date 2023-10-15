@@ -85,7 +85,8 @@ public final class BungeeCordPacketListenerProvider implements PacketListenerPro
             apiPacket = packet;
         }
         List<AbstractPacketListener<?>> listeners = listenersForType(clazz);
-        boolean sentToServer = ReflectionUtil.downstreamBridgeClass.isInstance(abstractPacketHandler);
+        boolean sentToServer = ReflectionUtil.downstreamBridgeClass.isInstance(abstractPacketHandler) ||
+            ReflectionUtil.serverConnectorClass.isInstance(abstractPacketHandler);
         Connection connection = ReflectionUtil.getConnection(abstractPacketHandler, sentToServer);
         if (connection == null) {
             return packet;
