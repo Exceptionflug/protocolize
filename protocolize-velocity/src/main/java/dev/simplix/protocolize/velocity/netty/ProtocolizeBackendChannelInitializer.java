@@ -18,28 +18,29 @@ import java.lang.reflect.Method;
 public class ProtocolizeBackendChannelInitializer extends BackendChannelInitializer {
 
     private final ChannelInitializer<Channel> wrapped;
-    private static final Method INIT_METHOD;
-
-    static {
-        try {
-            INIT_METHOD = ChannelInitializer.class.getDeclaredMethod("initChannel", Channel.class);
-            INIT_METHOD.setAccessible(true);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException("Unsupported velocity version. Please use a different version.", e);
-        }
-    }
+    private Method initMethod;
 
     public ProtocolizeBackendChannelInitializer(VelocityServer server, ChannelInitializer<Channel> wrapped) {
         super(server);
         this.wrapped = wrapped;
+
+        if (wrapped != null) {
+            log.info("Respecting the previous registered BackendChannelInitializer: " + wrapped.getClass().getName());
+            try {
+                initMethod = wrapped.getClass().getDeclaredMethod("initChannel", Channel.class);
+                initMethod.setAccessible(true);
+            } catch (NoSuchMethodException e) {
+                log.error("Unsupported backend channel initializer: " + wrapped.getClass().getName(), e);
+            }
+        }
     }
 
     @Override
     protected void initChannel(Channel ch) throws Exception {
         try {
-            if (wrapped != null) {
+            if (wrapped != null && initMethod != null) {
                 log.debug("Calling the underlying backend channel initializer: " + wrapped.getClass().getName());
-                INIT_METHOD.invoke(wrapped, ch);
+                initMethod.invoke(wrapped, ch);
             }
         } catch (Exception e) {
             log.error("There was a problem while calling the underlying backend channel initializer", e);
