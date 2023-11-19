@@ -46,10 +46,10 @@ public class VelocityProtocolizePlayer implements ProtocolizePlayer {
     }
 
     @Override
-    public void sendPacket(Object packet) {
+    public void sendPacket(Object packet, Protocol protocol) {
         if (packet instanceof AbstractPacket) {
             VelocityProtocolizePacket pack = (VelocityProtocolizePacket) REGISTRATION_PROVIDER.createPacket((Class<? extends AbstractPacket>) packet.getClass(),
-                Protocol.PLAY, PacketDirection.CLIENTBOUND, protocolVersion());
+                protocol, PacketDirection.CLIENTBOUND, protocolVersion());
             if (pack == null) {
                 throw new IllegalStateException("Cannot send " + packet.getClass().getName() + " to players with protocol version " + protocolVersion());
             }
@@ -63,10 +63,10 @@ public class VelocityProtocolizePlayer implements ProtocolizePlayer {
     }
 
     @Override
-    public void sendPacketToServer(Object packet) {
+    public void sendPacketToServer(Object packet, Protocol protocol) {
         if (packet instanceof AbstractPacket) {
             VelocityProtocolizePacket pack = (VelocityProtocolizePacket) REGISTRATION_PROVIDER.createPacket((Class<? extends AbstractPacket>) packet.getClass(),
-                Protocol.PLAY, PacketDirection.SERVERBOUND, protocolVersion());
+                protocol, PacketDirection.SERVERBOUND, protocolVersion());
             if (pack == null) {
                 throw new IllegalStateException("Cannot send " + packet.getClass().getName() + " to players with protocol version " + protocolVersion());
             }

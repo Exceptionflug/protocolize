@@ -45,10 +45,10 @@ public class BungeeCordProtocolizePlayer implements ProtocolizePlayer {
     }
 
     @Override
-    public void sendPacket(Object packet) {
+    public void sendPacket(Object packet, Protocol protocol) {
         if (packet instanceof AbstractPacket) {
             BungeeCordProtocolizePacket pack = (BungeeCordProtocolizePacket) REGISTRATION_PROVIDER.createPacket((Class<? extends AbstractPacket>) packet.getClass(),
-                Protocol.PLAY, PacketDirection.CLIENTBOUND, protocolVersion());
+                protocol, PacketDirection.CLIENTBOUND, protocolVersion());
             pack.wrapper((AbstractPacket) packet);
             packet = pack;
         }
@@ -59,10 +59,10 @@ public class BungeeCordProtocolizePlayer implements ProtocolizePlayer {
     }
 
     @Override
-    public void sendPacketToServer(Object packet) {
+    public void sendPacketToServer(Object packet, Protocol protocol) {
         if (packet instanceof AbstractPacket) {
             BungeeCordProtocolizePacket pack = (BungeeCordProtocolizePacket) REGISTRATION_PROVIDER.createPacket((Class<? extends AbstractPacket>) packet.getClass(),
-                Protocol.PLAY, PacketDirection.SERVERBOUND, protocolVersion());
+                protocol, PacketDirection.SERVERBOUND, protocolVersion());
             pack.wrapper((AbstractPacket) packet);
             packet = pack;
         }

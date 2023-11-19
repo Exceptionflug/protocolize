@@ -50,9 +50,14 @@ public class InitialInboundConnectionProtocolizePlayer implements ProtocolizePla
 
     @Override
     public void sendPacket(Object packet) {
+        sendPacket(packet, Protocol.STATUS);
+    }
+
+    @Override
+    public void sendPacket(Object packet, Protocol protocol) {
         if (packet instanceof AbstractPacket) {
             VelocityProtocolizePacket pack = (VelocityProtocolizePacket) REGISTRATION_PROVIDER.createPacket((Class<? extends AbstractPacket>) packet.getClass(),
-                Protocol.STATUS, PacketDirection.CLIENTBOUND, protocolVersion());
+                protocol, PacketDirection.CLIENTBOUND, protocolVersion());
             if (pack == null) {
                 throw new IllegalStateException("Cannot send " + packet.getClass().getName() + " to players with protocol version " + protocolVersion());
             }
@@ -69,7 +74,7 @@ public class InitialInboundConnectionProtocolizePlayer implements ProtocolizePla
     }
 
     @Override
-    public void sendPacketToServer(Object packet) {
+    public void sendPacketToServer(Object packet, Protocol protocol) {
         throw new IllegalStateException("Not possible for initial inbound connections");
     }
 
