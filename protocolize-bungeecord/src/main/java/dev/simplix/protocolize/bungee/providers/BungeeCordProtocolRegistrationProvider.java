@@ -12,6 +12,7 @@ import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.api.util.ReflectionUtil;
 import dev.simplix.protocolize.bungee.packet.BungeeCordProtocolizePacket;
 import dev.simplix.protocolize.bungee.strategy.PacketRegistrationStrategy;
+import dev.simplix.protocolize.bungee.util.ConversionUtils;
 import gnu.trove.map.TIntObjectMap;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -19,16 +20,13 @@ import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.implementation.MethodDelegation;
 import net.bytebuddy.implementation.bind.annotation.RuntimeType;
 import net.bytebuddy.matcher.ElementMatchers;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.protocol.DefinedPacket;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.AbstractMap;
 import java.util.List;
-import java.util.logging.Level;
 
 /**
  * Date: 20.08.2021
@@ -91,7 +89,7 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
         try {
             Class<? extends DefinedPacket> definedPacketClass = generateBungeePacket(packetClass);
             TIntObjectMap<Object> protocols = (TIntObjectMap<Object>) protocolsField
-                .get(getDirectionData(bungeeCordProtocol(protocol), direction));
+                .get(getDirectionData(ConversionUtils.bungeeCordProtocol(protocol), direction));
             for (ProtocolIdMapping mapping : mappings) {
                 mappingProvider.registerMapping(new RegisteredPacket(direction, packetClass), mapping);
                 for (int i = mapping.protocolRangeStart(); i <= mapping.protocolRangeEnd(); i++) {
@@ -118,7 +116,7 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
                 }
             }
         } else {
-            Object data = getDirectionData(bungeeCordProtocol(protocol), direction);
+            Object data = getDirectionData(ConversionUtils.bungeeCordProtocol(protocol), direction);
             try {
                 return (int) getIdMethod.invoke(data, packet.getClass(), protocolVersion);
             } catch (final IllegalAccessException | InvocationTargetException e) {
@@ -140,7 +138,7 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
         Preconditions.checkNotNull(protocol, "Protocol cannot be null");
         Preconditions.checkNotNull(direction, "Direction cannot be null");
         Preconditions.checkNotNull(clazz, "Clazz cannot be null");
-        Object directionData = getDirectionData(bungeeCordProtocol(protocol), direction);
+        Object directionData = getDirectionData(ConversionUtils.bungeeCordProtocol(protocol), direction);
         ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new RegisteredPacket(direction, clazz),
             protocolVersion);
         int id;
@@ -155,22 +153,6 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
     @Override
     public String debugInformation() {
         return "Strategy = " + strategy.getClass().getName() + "\nPacket listing not supported on this platform";
-    }
-
-    private net.md_5.bungee.protocol.Protocol bungeeCordProtocol(Protocol protocol) {
-        switch (protocol) {
-            case HANDSHAKE:
-                return net.md_5.bungee.protocol.Protocol.HANDSHAKE;
-            case STATUS:
-                return net.md_5.bungee.protocol.Protocol.STATUS;
-            case LOGIN:
-                return net.md_5.bungee.protocol.Protocol.LOGIN;
-            case PLAY:
-                return net.md_5.bungee.protocol.Protocol.GAME;
-            case CONFIGURATION:
-                return net.md_5.bungee.protocol.Protocol.CONFIGURATION;
-        }
-        return null;
     }
 
     private Class<? extends DefinedPacket> generateBungeePacket(Class<? extends AbstractPacket> c) {

@@ -7,6 +7,7 @@ import dev.simplix.protocolize.api.packet.AbstractPacket;
 import dev.simplix.protocolize.api.player.ProtocolizePlayer;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.bungee.packet.BungeeCordProtocolizePacket;
+import dev.simplix.protocolize.bungee.util.ConversionUtils;
 import dev.simplix.protocolize.bungee.util.ReflectionUtil;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -89,6 +90,18 @@ public class BungeeCordProtocolizePlayer implements ProtocolizePlayer {
     @Override
     public int protocolVersion() {
         return ReflectionUtil.getProtocolVersion(player());
+    }
+
+    @Override
+    public Protocol decodeProtocol() {
+        net.md_5.bungee.protocol.Protocol protocol = ReflectionUtil.getDecodeProtocol(player());
+        return protocol == null ? null : ConversionUtils.protocolizeProtocol(protocol);
+    }
+
+    @Override
+    public Protocol encodeProtocol() {
+        net.md_5.bungee.protocol.Protocol protocol = ReflectionUtil.getEncodeProtocol(player());
+        return protocol == null ? null : ConversionUtils.protocolizeProtocol(protocol);
     }
 
     @Override

@@ -2,6 +2,9 @@ package dev.simplix.protocolize.velocity.player;
 
 import com.velocitypowered.proxy.connection.MinecraftConnection;
 import com.velocitypowered.proxy.connection.client.InitialInboundConnection;
+import com.velocitypowered.proxy.protocol.StateRegistry;
+import com.velocitypowered.proxy.protocol.netty.MinecraftDecoder;
+import com.velocitypowered.proxy.protocol.netty.MinecraftEncoder;
 import dev.simplix.protocolize.api.*;
 import dev.simplix.protocolize.api.inventory.Inventory;
 import dev.simplix.protocolize.api.inventory.PlayerInventory;
@@ -9,6 +12,7 @@ import dev.simplix.protocolize.api.packet.AbstractPacket;
 import dev.simplix.protocolize.api.player.ProtocolizePlayer;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.velocity.packet.VelocityProtocolizePacket;
+import dev.simplix.protocolize.velocity.util.ConversionUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
@@ -91,6 +95,32 @@ public class InitialInboundConnectionProtocolizePlayer implements ProtocolizePla
     @Override
     public int protocolVersion() {
         return connection.getProtocolVersion().getProtocol();
+    }
+
+    @Override
+    public Protocol decodeProtocol() {
+        try {
+            MinecraftDecoder minecraftDecoder = connection.getConnection().getChannel().pipeline().get(MinecraftDecoder.class);
+            if (minecraftDecoder != null) {
+                return ConversionUtils.protocolizeProtocol((StateRegistry) VelocityProtocolizePlayer.decoderStateField.get(minecraftDecoder));
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Protocol encodeProtocol() {
+        try {
+            MinecraftEncoder minecraftEncoder = connection.getConnection().getChannel().pipeline().get(MinecraftEncoder.class);
+            if (minecraftEncoder != null) {
+                return ConversionUtils.protocolizeProtocol((StateRegistry) VelocityProtocolizePlayer.encoderStateField.get(minecraftEncoder));
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

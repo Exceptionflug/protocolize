@@ -44,6 +44,10 @@ public interface ProtocolizePlayer {
 
     int protocolVersion();
 
+    Protocol decodeProtocol();
+
+    Protocol encodeProtocol();
+
     <T> T handle();
 
     Location location();

@@ -4,6 +4,9 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.proxy.connection.backend.VelocityServerConnection;
 import com.velocitypowered.proxy.connection.client.ConnectedPlayer;
+import com.velocitypowered.proxy.protocol.StateRegistry;
+import com.velocitypowered.proxy.protocol.netty.MinecraftDecoder;
+import com.velocitypowered.proxy.protocol.netty.MinecraftEncoder;
 import dev.simplix.protocolize.api.*;
 import dev.simplix.protocolize.api.inventory.Inventory;
 import dev.simplix.protocolize.api.inventory.PlayerInventory;
@@ -11,9 +14,11 @@ import dev.simplix.protocolize.api.packet.AbstractPacket;
 import dev.simplix.protocolize.api.player.ProtocolizePlayer;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.velocity.packet.VelocityProtocolizePacket;
+import dev.simplix.protocolize.velocity.util.ConversionUtils;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +37,19 @@ import java.util.function.Consumer;
 public class VelocityProtocolizePlayer implements ProtocolizePlayer {
 
     private static final ProtocolRegistrationProvider REGISTRATION_PROVIDER = Protocolize.protocolRegistration();
+    protected static Field decoderStateField, encoderStateField;
+
+    static {
+        try {
+            decoderStateField = MinecraftDecoder.class.getDeclaredField("state");
+            decoderStateField.setAccessible(true);
+            encoderStateField = MinecraftEncoder.class.getDeclaredField("state");
+            encoderStateField.setAccessible(true);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+    }
+
     private final List<Consumer<PlayerInteract>> interactConsumers = new ArrayList<>();
     private final AtomicInteger windowId = new AtomicInteger(101);
     private final Map<Integer, Inventory> registeredInventories = new ConcurrentHashMap<>();
@@ -96,6 +114,38 @@ public class VelocityProtocolizePlayer implements ProtocolizePlayer {
             return player.getProtocolVersion().getProtocol();
         }
         return 0;
+    }
+
+    @Override
+    public Protocol decodeProtocol() {
+        Player player = proxyServer.getPlayer(uniqueId).orElse(null);
+        if (player != null) {
+            try {
+                MinecraftDecoder minecraftDecoder = ((ConnectedPlayer) player).getConnection().getChannel().pipeline().get(MinecraftDecoder.class);
+                if (minecraftDecoder != null) {
+                    return ConversionUtils.protocolizeProtocol((StateRegistry) decoderStateField.get(minecraftDecoder));
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Protocol encodeProtocol() {
+        Player player = proxyServer.getPlayer(uniqueId).orElse(null);
+        if (player != null) {
+            try {
+                MinecraftEncoder minecraftEncoder = ((ConnectedPlayer) player).getConnection().getChannel().pipeline().get(MinecraftEncoder.class);
+                if (minecraftEncoder != null) {
+                    return ConversionUtils.protocolizeProtocol((StateRegistry) encoderStateField.get(minecraftEncoder));
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
     @Override

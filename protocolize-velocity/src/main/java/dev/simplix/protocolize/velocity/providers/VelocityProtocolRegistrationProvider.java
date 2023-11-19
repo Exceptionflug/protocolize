@@ -15,6 +15,7 @@ import dev.simplix.protocolize.api.packet.RegisteredPacket;
 import dev.simplix.protocolize.api.providers.MappingProvider;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.velocity.packet.VelocityProtocolizePacket;
+import dev.simplix.protocolize.velocity.util.ConversionUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.ByteBuddy;
@@ -75,11 +76,11 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
         Preconditions.checkNotNull(direction, "Direction cannot be null");
         Preconditions.checkNotNull(packetClass, "Packet class cannot be null");
         try {
-            ProtocolUtils.Direction velocityDirection = velocityDirection(direction);
+            ProtocolUtils.Direction velocityDirection = ConversionUtils.velocityDirection(direction);
             if (velocityDirection == null) {
                 return;
             }
-            StateRegistry stateRegistry = velocityProtocol(protocol);
+            StateRegistry stateRegistry = ConversionUtils.velocityProtocol(protocol);
             if (stateRegistry == null) {
                 return;
             }
@@ -150,11 +151,11 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
                 log.debug("Unable to obtain id for " + direction.name() + " " + packetClass.getName() + " at protocol " + protocolVersion);
             }
         } else if (packet instanceof MinecraftPacket) {
-            ProtocolUtils.Direction velocityDirection = velocityDirection(direction);
+            ProtocolUtils.Direction velocityDirection = ConversionUtils.velocityDirection(direction);
             if (velocityDirection == null) {
                 return -1;
             }
-            StateRegistry stateRegistry = velocityProtocol(protocol);
+            StateRegistry stateRegistry = ConversionUtils.velocityProtocol(protocol);
             if (stateRegistry == null) {
                 return -1;
             }
@@ -167,12 +168,12 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
 
     @Override
     public Object createPacket(Class<? extends AbstractPacket> clazz, Protocol protocol, PacketDirection direction, int protocolVersion) {
-        ProtocolUtils.Direction velocityDirection = velocityDirection(direction);
+        ProtocolUtils.Direction velocityDirection = ConversionUtils.velocityDirection(direction);
         if (velocityDirection == null) {
             log.debug("Unable to construct wrapper instance for " + clazz.getName() + ": Unknown packet direction to velocity: " + direction.name());
             return null;
         }
-        StateRegistry stateRegistry = velocityProtocol(protocol);
+        StateRegistry stateRegistry = ConversionUtils.velocityProtocol(protocol);
         if (stateRegistry == null) {
             log.debug("Unable to construct wrapper instance for " + clazz.getName() + ": Unknown protocol: " + protocol.name());
             return null;
@@ -221,32 +222,6 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
             .make()
             .load(getClass().getClassLoader())
             .getLoaded();
-    }
-
-    private ProtocolUtils.Direction velocityDirection(PacketDirection direction) {
-        switch (direction) {
-            case CLIENTBOUND:
-                return ProtocolUtils.Direction.CLIENTBOUND;
-            case SERVERBOUND:
-                return ProtocolUtils.Direction.SERVERBOUND;
-        }
-        return null;
-    }
-
-    private StateRegistry velocityProtocol(Protocol protocol) {
-        switch (protocol) {
-            case LOGIN:
-                return StateRegistry.LOGIN;
-            case HANDSHAKE:
-                return StateRegistry.HANDSHAKE;
-            case STATUS:
-                return StateRegistry.STATUS;
-            case PLAY:
-                return StateRegistry.PLAY;
-            case CONFIGURATION:
-                return StateRegistry.CONFIG;
-        }
-        return null;
     }
 
     public static class ByteBuddyClassInjector {
