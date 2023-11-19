@@ -15,7 +15,7 @@ import dev.simplix.protocolize.api.listener.AbstractPacketListener;
 import dev.simplix.protocolize.api.listener.PacketReceiveEvent;
 import dev.simplix.protocolize.api.listener.PacketSendEvent;
 import dev.simplix.protocolize.api.packet.AbstractPacket;
-import dev.simplix.protocolize.api.providers.PacketListenerProvider;
+import dev.simplix.protocolize.api.providers.AbstractPacketListenerProvider;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.api.providers.ProtocolizePlayerProvider;
 import dev.simplix.protocolize.api.util.ReflectionUtil;
@@ -36,11 +36,10 @@ import java.util.function.Supplier;
  * @author Exceptionflug
  */
 @Slf4j
-public final class VelocityPacketListenerProvider implements PacketListenerProvider {
+public final class VelocityPacketListenerProvider extends AbstractPacketListenerProvider {
 
     private static final ProtocolizePlayerProvider PLAYER_PROVIDER = Protocolize.playerProvider();
     private final ProtocolRegistrationProvider registrationProvider = Protocolize.protocolRegistration();
-    private final List<AbstractPacketListener<?>> listeners = new ArrayList<>();
 
     private Field packetIdToSupplierField;
     private Field serverboundField;
@@ -63,11 +62,7 @@ public final class VelocityPacketListenerProvider implements PacketListenerProvi
     }
 
     @Override
-    public void registerListener(AbstractPacketListener<?> listener) {
-        Preconditions.checkNotNull(listener, "The listener cannot be null!");
-        if (listeners.contains(listener)) {
-            throw new IllegalStateException("Listener already registered.");
-        }
+    protected void addListener(AbstractPacketListener<?> listener) {
         if (!AbstractPacket.class.isAssignableFrom(listener.type()) && !MinecraftPacket.class.isAssignableFrom(listener.type())) {
             throw new IllegalStateException("The packet type is not a valid packet type. Allowed: AbstractPacket and MinecraftPacket");
         }
@@ -78,7 +73,7 @@ public final class VelocityPacketListenerProvider implements PacketListenerProvi
                 log.error("Unable to register additional suppliers for velocity packet " + listener.type().getName(), e);
             }
         }
-        listeners.add(listener);
+        super.addListener(listener);
     }
 
     private void ensureAlsoEncode(Class<? extends MinecraftPacket> type) throws Exception {
@@ -116,26 +111,6 @@ public final class VelocityPacketListenerProvider implements PacketListenerProvi
                 throw new RuntimeException("Unable to dynamically construct packet " + clazz.getName(), e);
             }
         });
-    }
-
-    @Override
-    public void unregisterListener(AbstractPacketListener<?> listener) throws IllegalArgumentException {
-        if (listeners.contains(listener)) {
-            listeners.remove(listener);
-        } else {
-            throw new IllegalArgumentException("Did not find " + listener.getClass().getName() + " as a registered listener");
-        }
-    }
-
-    @Override
-    public String debugInformation() {
-        StringBuilder builder = new StringBuilder("Generated export of " + getClass().getName() + ":\n\n");
-        for (AbstractPacketListener<?> listener : listeners) {
-            builder.append(" - ").append(listener.getClass().getName()).append(" listening for ")
-                .append(listener.type().getName()).append(" on ").append(listener.direction().name())
-                .append(" with priority ").append(listener.priority()).append("\n");
-        }
-        return builder.toString();
     }
 
     public Map.Entry<MinecraftPacket, Boolean> handleInboundPacket(MinecraftPacket packet, ServerConnection serverConnection, InboundConnection connection) {
@@ -187,18 +162,6 @@ public final class VelocityPacketListenerProvider implements PacketListenerProvi
             ServerInfo info = player.getCurrentServer().isPresent() ? player.getCurrentServer().get().getServerInfo() : null;
             return new PacketReceiveEvent<>(PLAYER_PROVIDER.player(player.getUniqueId()), info, packet, false, false);
         }
-    }
-
-    @Override
-    public List<AbstractPacketListener<?>> listenersForType(Class<?> clazz) {
-        Preconditions.checkNotNull(clazz, "The clazz cannot be null!");
-        List<AbstractPacketListener<?>> out = new ArrayList<>();
-        for (AbstractPacketListener<?> listener : listeners) {
-            if (listener.type().equals(clazz)) {
-                out.add(listener);
-            }
-        }
-        return out;
     }
 
     public MinecraftPacket handleOutboundPacket(MinecraftPacket packet, InboundConnection inboundConnection, ServerConnection serverConnection) {

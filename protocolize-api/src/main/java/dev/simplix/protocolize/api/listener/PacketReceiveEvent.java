@@ -1,7 +1,6 @@
 package dev.simplix.protocolize.api.listener;
 
 import dev.simplix.protocolize.api.player.ProtocolizePlayer;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,35 +16,14 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(fluent = true)
-@AllArgsConstructor
 @ToString
-public class PacketReceiveEvent<T> {
+public class PacketReceiveEvent<T> extends AbstractPacketEvent<T> {
 
-    private final ProtocolizePlayer player;
-    private final Object server;
-    private T packet;
-    private boolean cancelled;
     private boolean dirty;
 
-    /**
-     * The platform {@link ProtocolizePlayer} instance.
-     *
-     * @return The player instance or null if Protocolize was unable to track down the player
-     * during early communication phases like HANDSHAKE or STATUS.
-     */
-    public ProtocolizePlayer player() {
-        return player;
-    }
-
-    /**
-     * The platform dependent server info instance.
-     *
-     * @param <S> The type of the server info
-     * @return The platform dependent server info instance or null if Protocolize was unable to track down the server
-     * during early communication phases like HANDSHAKE or STATUS.
-     */
-    public <S> S server() {
-        return (S) server;
+    public PacketReceiveEvent(ProtocolizePlayer player, Object server, T packet, boolean cancelled, boolean dirty) {
+        super(player, server, packet, cancelled);
+        this.dirty = dirty;
     }
 
     /**

@@ -1,5 +1,6 @@
 package dev.simplix.protocolize.api.providers;
 
+import dev.simplix.protocolize.api.Direction;
 import dev.simplix.protocolize.api.listener.AbstractPacketListener;
 
 import java.util.List;
@@ -11,9 +12,17 @@ import java.util.List;
  */
 public interface PacketListenerProvider {
 
-    void registerListener(AbstractPacketListener<?> listener);
+    default <T> AbstractPacketListener<T> registerListener(Class<T> packet, Direction direction) {
+        return registerListener(packet, direction, 0);
+    }
 
-    void unregisterListener(AbstractPacketListener<?> listener) throws IllegalArgumentException;
+    default <T> AbstractPacketListener<T> registerListener(Class<T> packet, Direction direction, int priority) {
+        return registerListener(new AbstractPacketListener<T>(packet, direction, priority) { });
+    }
+
+    <T, A extends AbstractPacketListener<T>> A registerListener(A listener);
+
+    <T, A extends AbstractPacketListener<T>> A unregisterListener(A listener) throws IllegalArgumentException;
 
     List<AbstractPacketListener<?>> listenersForType(Class<?> type);
 
