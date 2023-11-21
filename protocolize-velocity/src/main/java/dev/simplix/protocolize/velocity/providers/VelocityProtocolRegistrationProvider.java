@@ -98,7 +98,7 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
 
             for (int i = 0; i < sortedMappings.length; i++) {
                 var mapping = sortedMappings[i];
-                mappingProvider.registerMapping(new RegisteredPacket(direction, packetClass), mapping);
+                mappingProvider.registerMapping(new RegisteredPacket(protocol, direction, packetClass), mapping);
                 if (mapping.protocolRangeEnd() > maximumProtocolVersion) {
                     mapping.protocolRangeEnd(maximumProtocolVersion);
                 }
@@ -143,7 +143,7 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
         Preconditions.checkNotNull(packet, "Packet cannot be null");
         if (packet instanceof VelocityProtocolizePacket) {
             Class<? extends AbstractPacket> packetClass = ((VelocityProtocolizePacket) packet).obtainProtocolizePacketClass();
-            ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new RegisteredPacket(direction,
+            ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new RegisteredPacket(protocol, direction,
                 packetClass), protocolVersion);
             if (protocolIdMapping != null) {
                 return protocolIdMapping.id();
@@ -180,7 +180,7 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
         }
         StateRegistry.PacketRegistry.ProtocolRegistry registry = stateRegistry.getProtocolRegistry(velocityDirection,
             ProtocolVersion.getProtocolVersion(protocolVersion));
-        ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new RegisteredPacket(direction, clazz), protocolVersion);
+        ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new RegisteredPacket(protocol, direction, clazz), protocolVersion);
         if (protocolIdMapping != null) {
             return registry.createPacket(protocolIdMapping.id());
         }

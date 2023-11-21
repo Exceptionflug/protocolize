@@ -91,7 +91,7 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
             TIntObjectMap<Object> protocols = (TIntObjectMap<Object>) protocolsField
                 .get(getDirectionData(ConversionUtils.bungeeCordProtocol(protocol), direction));
             for (ProtocolIdMapping mapping : mappings) {
-                mappingProvider.registerMapping(new RegisteredPacket(direction, packetClass), mapping);
+                mappingProvider.registerMapping(new RegisteredPacket(protocol, direction, packetClass), mapping);
                 for (int i = mapping.protocolRangeStart(); i <= mapping.protocolRangeEnd(); i++) {
                     strategy.registerPacket(protocols, i, mapping.id(), definedPacketClass);
                     log.debug("[Protocolize] Register packet " + definedPacketClass.getName() + " (0x" + Integer.toHexString(mapping.id()) + ") in direction " + direction.name() + " at protocol " + protocol.name() + " for version " + i);
@@ -109,7 +109,7 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
         Preconditions.checkNotNull(packet, "Packet cannot be null");
         if (packet instanceof BungeeCordProtocolizePacket) {
             List<ProtocolIdMapping> protocolIdMappings = mappingProvider.mappings(new RegisteredPacket(
-                direction, ((BungeeCordProtocolizePacket) packet).obtainProtocolizePacketClass()));
+                protocol, direction, ((BungeeCordProtocolizePacket) packet).obtainProtocolizePacketClass()));
             for (ProtocolIdMapping mapping : protocolIdMappings) {
                 if (mapping.inRange(protocolVersion)) {
                     return mapping.id();
@@ -139,7 +139,7 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
         Preconditions.checkNotNull(direction, "Direction cannot be null");
         Preconditions.checkNotNull(clazz, "Clazz cannot be null");
         Object directionData = getDirectionData(ConversionUtils.bungeeCordProtocol(protocol), direction);
-        ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new RegisteredPacket(direction, clazz),
+        ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new RegisteredPacket(protocol, direction, clazz),
             protocolVersion);
         int id;
         if (protocolIdMapping != null) {

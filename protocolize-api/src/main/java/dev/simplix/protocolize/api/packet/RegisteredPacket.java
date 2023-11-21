@@ -1,6 +1,7 @@
 package dev.simplix.protocolize.api.packet;
 
 import dev.simplix.protocolize.api.PacketDirection;
+import dev.simplix.protocolize.api.Protocol;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -15,6 +16,7 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public class RegisteredPacket {
 
+    private final Protocol protocol;
     private final PacketDirection direction;
     private final Class<? extends AbstractPacket> packetClass;
 
