@@ -88,4 +88,4 @@ This is likely caused by some bugs in those plugins. We recomment you to only in
 
 ## Get some help
 For documentation take a look at the wiki pages.
-If you have questions feel free to join our [discord server](https://discord.simplixsoft.com/).
+If you have questions feel free to join our [discord server](https://discord.gg/ZsYjwcNRbV).
