@@ -2,6 +2,7 @@ package dev.simplix.protocolize.api.inventory;
 
 import dev.simplix.protocolize.api.ComponentConverter;
 import dev.simplix.protocolize.api.Protocolize;
+import dev.simplix.protocolize.api.chat.ChatElement;
 import dev.simplix.protocolize.api.item.BaseItemStack;
 import dev.simplix.protocolize.api.item.ItemStack;
 import dev.simplix.protocolize.api.providers.ComponentConverterProvider;
@@ -29,14 +30,11 @@ import java.util.function.Consumer;
 @Accessors(fluent = true)
 public class Inventory {
 
-    private static final ComponentConverter CONVERTER = Protocolize.getService(ComponentConverterProvider.class)
-        .platformConverter();
-
     private final Map<Integer, BaseItemStack> items = new ConcurrentHashMap<>();
     private final List<Consumer<InventoryClick>> clickConsumers = new ArrayList<>();
     private final List<Consumer<InventoryClose>> closeConsumers = new ArrayList<>();
     private InventoryType type;
-    private String titleJson;
+    private ChatElement<?> title;
 
     public Inventory(InventoryType type) {
         this.type = type;
@@ -70,28 +68,6 @@ public class Inventory {
 
     public Inventory item(int slot, ItemStack stack) {
         items.put(slot, stack);
-        return this;
-    }
-
-    public <T> T title() {
-        return title(false);
-    }
-
-    public <T> T title(boolean legacyString) {
-        if (legacyString) {
-            return (T) CONVERTER.toLegacyText(CONVERTER.fromJson(titleJson));
-        } else {
-            return (T) CONVERTER.fromJson(titleJson);
-        }
-    }
-
-    public Inventory title(String legacyName) {
-        this.titleJson = CONVERTER.toJson(CONVERTER.fromLegacyText(legacyName));
-        return this;
-    }
-
-    public Inventory title(Object titleComponent) {
-        this.titleJson = CONVERTER.toJson(titleComponent);
         return this;
     }
 
