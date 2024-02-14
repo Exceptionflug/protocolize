@@ -28,12 +28,9 @@ final class SimpleMappingProvider implements MappingProvider {
 
     @Override
     public <T extends ProtocolMapping> T mapping(Object mappable, int protocolVersion) {
-        for (ProtocolMapping mapping : mappingMultimap.get(mappable)) {
-            if (mapping.inRange(protocolVersion)) {
-                return (T) mapping;
-            }
-        }
-        return null;
+        return (T) mappingMultimap.get(mappable).parallelStream()
+            .filter(protocolMapping -> protocolMapping.inRange(protocolVersion))
+            .findFirst().orElse(null);
     }
 
     @Override

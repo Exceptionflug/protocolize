@@ -58,6 +58,7 @@ public class BungeeCordProtocolizePacket extends DefinedPacket {
                 DebugUtil.writeDump(buf, new CorruptedFrameException("Protocolize is unable to read packet " + obtainProtocolizePacketClass().getName()
                     + " at protocol version " + protocolVersion + " in direction " + direction.name()));
             }
+            buf.resetReaderIndex();
         } catch (Throwable throwable) {
             BadPacketException badPacketException = new BadPacketException("Protocolize is unable to read packet " + obtainProtocolizePacketClass().getName()
                 + " at protocol version " + protocolVersion + " in direction " + direction.name(), throwable);
