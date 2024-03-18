@@ -1,7 +1,11 @@
 package dev.simplix.protocolize.velocity.providers;
 
+import com.velocitypowered.api.network.ProtocolVersion;
+import com.velocitypowered.proxy.protocol.packet.chat.ComponentHolder;
 import dev.simplix.protocolize.api.ComponentConverter;
 import dev.simplix.protocolize.api.providers.ComponentConverterProvider;
+import dev.simplix.protocolize.velocity.util.AdventureNbtToQuerzNbtMapper;
+import net.kyori.adventure.nbt.BinaryTag;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
@@ -44,7 +48,8 @@ public final class VelocityComponentConverterProvider implements ComponentConver
 
         @Override
         public Tag<?> toNbt(Component component) {
-            throw new UnsupportedOperationException("Adventure does not support nbt serialization yet");
+            BinaryTag adventureNbtTag = new ComponentHolder(ProtocolVersion.MINECRAFT_1_20_3, component).getBinaryTag();
+            return AdventureNbtToQuerzNbtMapper.adventureToQuerz(adventureNbtTag);
         }
 
         @Override
@@ -59,7 +64,8 @@ public final class VelocityComponentConverterProvider implements ComponentConver
 
         @Override
         public Component fromNbt(Tag<?> tag) {
-            throw new UnsupportedOperationException("Adventure does not support nbt deserialization yet");
+            BinaryTag adventureNbtTag = AdventureNbtToQuerzNbtMapper.querzToAdventure(tag);
+            return new ComponentHolder(ProtocolVersion.MINECRAFT_1_20_3, adventureNbtTag).getComponent();
         }
 
         @Override

@@ -58,6 +58,11 @@
             <version>${bytebuddy.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-nbt</artifactId>
+            <version>4.16.0</version>
+        </dependency>
     </dependencies>
 
     <build>
