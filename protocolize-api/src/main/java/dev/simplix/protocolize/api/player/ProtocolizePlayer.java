@@ -1,9 +1,7 @@
 package dev.simplix.protocolize.api.player;
 
 import com.google.common.collect.Lists;
-import dev.simplix.protocolize.api.Location;
-import dev.simplix.protocolize.api.PlayerInteract;
-import dev.simplix.protocolize.api.SoundCategory;
+import dev.simplix.protocolize.api.*;
 import dev.simplix.protocolize.api.inventory.Inventory;
 import dev.simplix.protocolize.api.inventory.PlayerInventory;
 import dev.simplix.protocolize.api.item.BaseItemStack;
@@ -28,15 +26,27 @@ public interface ProtocolizePlayer {
 
     PlayerInventory proxyInventory();
 
-    void sendPacket(Object packet);
+    default void sendPacket(Object packet) {
+        sendPacket(packet, Protocol.PLAY);
+    }
 
-    void sendPacketToServer(Object packet);
+    void sendPacket(Object packet, Protocol protocol);
+
+    default void sendPacketToServer(Object packet) {
+        sendPacketToServer(packet, Protocol.PLAY);
+    }
+
+    void sendPacketToServer(Object packet, Protocol protocol);
 
     Map<Integer, Inventory> registeredInventories();
 
     int generateWindowId();
 
     int protocolVersion();
+
+    Protocol decodeProtocol();
+
+    Protocol encodeProtocol();
 
     <T> T handle();
 
