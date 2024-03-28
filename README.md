@@ -78,7 +78,7 @@ You can easily add support for new packets and versions by installing modules.
 
 
 ## Known issues
-- Protocolize is unstable when being used with **proxy installations** of Geyser and/or ViaVersion.
+- Protocolize is unstable when being used with **proxy installations** of Geyser / Floodgate and/or ViaVersion.
 
 ## Get some help
 For documentation take a look at the wiki pages.
