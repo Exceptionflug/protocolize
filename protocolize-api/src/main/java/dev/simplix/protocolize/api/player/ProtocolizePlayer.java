@@ -117,7 +117,7 @@ public interface ProtocolizePlayer {
         }
 
         if (!alreadyOpen) {
-            sendPacket(new OpenWindow(windowId, inventory.type(), inventory.titleJson()));
+            sendPacket(new OpenWindow(windowId, inventory.type(), inventory.title()));
         }
         int protocolVersion;
         try {

@@ -14,6 +14,8 @@ import net.md_5.bungee.protocol.BadPacketException;
 import net.md_5.bungee.protocol.DefinedPacket;
 import net.md_5.bungee.protocol.ProtocolConstants;
 
+import java.util.Objects;
+
 /**
  * Date: 21.08.2021
  *
@@ -57,6 +59,9 @@ public class BungeeCordProtocolizePacket extends DefinedPacket {
             if (buf.isReadable() && DebugUtil.enabled) {
                 DebugUtil.writeDump(buf, new CorruptedFrameException("Protocolize is unable to read packet " + obtainProtocolizePacketClass().getName()
                     + " at protocol version " + protocolVersion + " in direction " + direction.name()));
+            }
+            if (Objects.equals(System.getProperty("protocolize.reset.readerindex"), "true")) {
+                buf.resetReaderIndex();
             }
         } catch (Throwable throwable) {
             BadPacketException badPacketException = new BadPacketException("Protocolize is unable to read packet " + obtainProtocolizePacketClass().getName()

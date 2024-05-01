@@ -6,7 +6,7 @@
 
     <groupId>dev.simplix</groupId>
     <artifactId>protocolize</artifactId>
-    <version>2.3.1</version>
+    <version>2.3.3</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -21,9 +21,9 @@
 
         <build.number>unknown</build.number>
         <bungeecord.version>1.20-R0.2-SNAPSHOT</bungeecord.version>
-        <velocity.version>3.2.0-SNAPSHOT</velocity.version>
+        <velocity.version>3.3.0-SNAPSHOT</velocity.version>
         <bytebuddy.version>1.11.13</bytebuddy.version>
-        <data.version>2.3.1</data.version>
+        <data.version>2.3.3</data.version>
     </properties>
 
     <repositories>

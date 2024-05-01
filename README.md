@@ -13,13 +13,10 @@
 # Protocolize v2
 This is the official repository for the next generation proxy server protocol manipulation framework. If you wish to see the repository for Protocolize v1, click [here](https://github.com/Exceptionflug/protocolize/tree/v1).
 
-## Why a complete recode?
-Protocolize v1 was already a successful approach on how to interact with the Minecraft protocol. The downsides were severe: An outdated code base that was hard to maintain and only supported BungeeCord. All those reasons resulted in the making of an whole new fresh code base that supports Velocity and that also takes a new approach on how to provide mappings for all supported protocol mappings.
-
-### Migration
-We provide some documentation on how to migrate your existing plugin to use the new Protocolize v2 API. [Click here](https://github.com/Exceptionflug/protocolize/wiki/Migrating-from-Protocolize-v1).
-
 ## Getting started
+### Installation
+In order to use Protocolize, you have to install it onto your proxy server. Protocolize is supporting BungeeCord and Velocity proxy servers.
+Download the latest protocolize version for your proxy software right here: https://exceptionflug.de/protocolize.
 ### Maven dependency and repository
 ```xml
 <repository>
@@ -31,7 +28,7 @@ We provide some documentation on how to migrate your existing plugin to use the 
 <dependency>
     <groupId>dev.simplix</groupId>
     <artifactId>protocolize-api</artifactId>
-    <version>2.3.1</version>
+    <version>2.3.3</version>
     <scope>provided</scope>
 </dependency>
 ```
@@ -44,11 +41,9 @@ repsitories {
 }
 
 dependencies {
-    compileOnly("dev.simplix:protocolize-api:2.2.5")
+    compileOnly("dev.simplix:protocolize-api:2.3.3")
 }
 ```
-### Install the plugin
-In order to use Protocolize, you have to install it onto your proxy server. Protocolize is supporting BungeeCord and Velocity proxy servers.
 
 ## Compatibility
 
@@ -57,7 +52,7 @@ Protocolize is shipped with it's default data module which adds support for the 
 |--|--|
 | 1.8.x - 1.12.2 | ❌ (Only with [additional legacy module](https://ci.exceptionflug.de/job/Protocolize-Legacy-Data/)) |
 | 1.13 - 1.13.2 | ✔️ (Sounds only with [additional legacy module](https://ci.exceptionflug.de/job/Protocolize-Legacy-Data/)) |
-| 1.14 - 1.20.2 | ✔️ |
+| 1.14 - 1.20.4 | ✔️ |
 
 Implemented packets by default:
 
@@ -82,10 +77,9 @@ Implemented packets by default:
 You can easily add support for new packets and versions by installing modules.
 
 
-## FAQ
-You're experiencing uncommon packet errors and have ViaVersion/ViaBackwards installed on your proxy?
-This is likely caused by some bugs in those plugins. We recomment you to only install them on your sub-server when usign Protocolize.
+## Known issues
+- Protocolize is unstable when being used with **proxy installations** of Geyser / Floodgate and/or ViaVersion.
 
 ## Get some help
 For documentation take a look at the wiki pages.
-If you have questions feel free to join our [discord server](https://discord.simplixsoft.com/).
+If you have questions feel free to join our [discord server](https://discord.gg/ZsYjwcNRbV).

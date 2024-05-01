@@ -8,7 +8,7 @@ import com.velocitypowered.proxy.connection.backend.VelocityServerConnection;
 import com.velocitypowered.proxy.connection.client.ConnectedPlayer;
 import com.velocitypowered.proxy.connection.client.InitialInboundConnection;
 import com.velocitypowered.proxy.protocol.MinecraftPacket;
-import com.velocitypowered.proxy.protocol.packet.KeepAlive;
+import com.velocitypowered.proxy.protocol.packet.KeepAlivePacket;
 import dev.simplix.protocolize.api.Direction;
 import dev.simplix.protocolize.api.PacketDirection;
 import dev.simplix.protocolize.api.Protocol;
@@ -75,7 +75,7 @@ public final class ProtocolizeEncoderChannelHandler extends MessageToMessageEnco
         if (msg != null) {
             try {
                 msg = LISTENER_PROVIDER.handleOutboundPacket(msg, inboundConnection, serverConnection);
-                out.add(Objects.requireNonNullElseGet(msg, KeepAlive::new));
+                out.add(Objects.requireNonNullElseGet(msg, KeepAlivePacket::new));
             } finally {
                 ReferenceCountUtil.retain(msg);
             }

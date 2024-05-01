@@ -1,5 +1,7 @@
 package dev.simplix.protocolize.api.item;
 
+import dev.simplix.protocolize.api.chat.ChatElement;
+
 import java.util.List;
 import java.util.Set;
 
@@ -10,33 +12,19 @@ public interface BaseItemStack {
 
   Set<ItemFlag> itemFlags();
 
-  List<String> loreJson();
-
-  String displayNameJson();
-
   boolean canBeStacked(BaseItemStack stack);
 
-  <T> T displayName();
+    ChatElement<?> displayName();
 
-  <T> T displayName(boolean legacyString);
+    BaseItemStack displayName(ChatElement<?> displayName);
 
-  BaseItemStack displayName(String legacyName);
+    <T> List<ChatElement<?>> lore();
 
-  BaseItemStack displayName(Object displayName);
+    void lore(List<ChatElement<?>> list);
 
-  <T> List<T> lore();
+    void lore(int index, ChatElement<?> element);
 
-  <T> List<T> lore(boolean legacyString);
-
-  void lore(List<?> list, boolean legacyString);
-
-  void lore(int index, String legacyText);
-
-  void lore(int index, Object component);
-
-  void addToLore(String legacyText);
-
-  void addToLore(Object component);
+    void addToLore(ChatElement<?> element);
 
   BaseItemStack deepClone();
 
