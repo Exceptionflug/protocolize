@@ -12,17 +12,25 @@ import java.util.List;
  */
 public interface PacketListenerProvider {
 
-    default <T> AbstractPacketListener<T> registerListener(Class<T> packet, Direction direction) {
-        return registerListener(packet, direction, 0);
+    default <T> AbstractPacketListener<T> register(Class<T> packet, Direction direction) {
+        return register(packet, direction, 0);
     }
 
-    default <T> AbstractPacketListener<T> registerListener(Class<T> packet, Direction direction, int priority) {
-        return registerListener(new AbstractPacketListener<T>(packet, direction, priority) { });
+    default <T> AbstractPacketListener<T> register(Class<T> packet, Direction direction, int priority) {
+        return register(new AbstractPacketListener<T>(packet, direction, priority) { });
     }
 
-    <T, A extends AbstractPacketListener<T>> A registerListener(A listener);
+    <T, A extends AbstractPacketListener<T>> A register(A listener);
 
-    <T, A extends AbstractPacketListener<T>> A unregisterListener(A listener) throws IllegalArgumentException;
+    default void registerListener(AbstractPacketListener<?> listener) {
+        register(listener);
+    }
+
+    <T, A extends AbstractPacketListener<T>> A unregister(A listener) throws IllegalArgumentException;
+
+    default void unregisterListener(AbstractPacketListener<?> listener) throws IllegalArgumentException {
+        unregister(listener);
+    }
 
     List<AbstractPacketListener<?>> listenersForType(Class<?> type);
 

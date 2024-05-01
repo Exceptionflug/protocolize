@@ -16,7 +16,7 @@ public abstract class AbstractPacketListenerProvider  implements PacketListenerP
     protected final List<AbstractPacketListener<?>> listeners = new ArrayList<>();
 
     @Override
-    public <T, A extends AbstractPacketListener<T>> A registerListener(A listener) {
+    public <T, A extends AbstractPacketListener<T>> A register(A listener) {
         Preconditions.checkNotNull(listener, "The listener cannot be null!");
         if (listeners.contains(listener)) {
             throw new IllegalStateException("Listener already registered.");
@@ -31,7 +31,7 @@ public abstract class AbstractPacketListenerProvider  implements PacketListenerP
     }
 
     @Override
-    public <T, A extends AbstractPacketListener<T>> A unregisterListener(A listener) throws IllegalArgumentException {
+    public <T, A extends AbstractPacketListener<T>> A unregister(A listener) throws IllegalArgumentException {
         if (listeners.contains(listener)) {
             listeners.remove(listener);
             listener.registered(false);
