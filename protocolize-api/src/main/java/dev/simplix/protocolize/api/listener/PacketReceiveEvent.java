@@ -26,6 +26,16 @@ public class PacketReceiveEvent<T> extends AbstractPacketEvent<T> {
         this.dirty = dirty;
     }
 
+    @Override
+    public ProtocolizePlayer player() {
+        return super.player();
+    }
+
+    @Override
+    public <S> S server() {
+        return super.server();
+    }
+
     /**
      * This marks the packet ready for rewriting. Rewriting is necessary when manipulating packets on receive.
      * This does the same as {@code event.dirty(true)}.

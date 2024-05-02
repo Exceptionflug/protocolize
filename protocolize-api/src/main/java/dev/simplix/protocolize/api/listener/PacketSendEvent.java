@@ -23,6 +23,16 @@ public class PacketSendEvent<T> extends AbstractPacketEvent<T> {
         super(player, server, packet, cancelled);
     }
 
+    @Override
+    public ProtocolizePlayer player() {
+        return super.player();
+    }
+
+    @Override
+    public <S> S server() {
+        return super.server();
+    }
+
     /**
      * @return Returns true when Protocolize was unable to track down the server or player
      * during early communication phases like HANDSHAKE or STATUS.
