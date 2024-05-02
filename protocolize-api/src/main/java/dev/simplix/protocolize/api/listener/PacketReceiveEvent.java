@@ -36,6 +36,26 @@ public class PacketReceiveEvent<T> extends AbstractPacketEvent<T> {
         return super.server();
     }
 
+    @Override
+    public T packet() {
+        return super.packet();
+    }
+
+    @Override
+    public AbstractPacketEvent<T> packet(T packet) {
+        return super.packet(packet);
+    }
+
+    @Override
+    public boolean cancelled() {
+        return super.cancelled();
+    }
+
+    @Override
+    public AbstractPacketEvent<T> cancelled(boolean cancelled) {
+        return super.cancelled(cancelled);
+    }
+
     /**
      * This marks the packet ready for rewriting. Rewriting is necessary when manipulating packets on receive.
      * This does the same as {@code event.dirty(true)}.

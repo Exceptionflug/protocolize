@@ -33,6 +33,26 @@ public class PacketSendEvent<T> extends AbstractPacketEvent<T> {
         return super.server();
     }
 
+    @Override
+    public T packet() {
+        return super.packet();
+    }
+
+    @Override
+    public AbstractPacketEvent<T> packet(T packet) {
+        return super.packet(packet);
+    }
+
+    @Override
+    public boolean cancelled() {
+        return super.cancelled();
+    }
+
+    @Override
+    public AbstractPacketEvent<T> cancelled(boolean cancelled) {
+        return super.cancelled(cancelled);
+    }
+
     /**
      * @return Returns true when Protocolize was unable to track down the server or player
      * during early communication phases like HANDSHAKE or STATUS.
