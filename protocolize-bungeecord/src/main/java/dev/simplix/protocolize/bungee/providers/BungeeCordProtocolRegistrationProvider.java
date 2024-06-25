@@ -4,6 +4,8 @@ import com.google.common.base.Preconditions;
 import dev.simplix.protocolize.api.PacketDirection;
 import dev.simplix.protocolize.api.Protocol;
 import dev.simplix.protocolize.api.Protocolize;
+import dev.simplix.protocolize.api.item.component.StructuredComponent;
+import dev.simplix.protocolize.api.item.component.StructuredComponentType;
 import dev.simplix.protocolize.api.mapping.ProtocolIdMapping;
 import dev.simplix.protocolize.api.packet.AbstractPacket;
 import dev.simplix.protocolize.api.packet.RegisteredPacket;
@@ -101,6 +103,14 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
             }
         } catch (Exception e) {
             log.warn("Exception while registering packet " + packetClass.getName(), e);
+        }
+    }
+
+    @Override
+    public void registerItemStructuredComponentType(StructuredComponentType<?> type) {
+        Preconditions.checkNotNull(type, "Type cannot be null");
+        for (ProtocolIdMapping mapping : type.getMappings()) {
+            mappingProvider.registerMapping(type, mapping);
         }
     }
 

@@ -1,6 +1,8 @@
 package dev.simplix.protocolize.api.item;
 
 import dev.simplix.protocolize.api.chat.ChatElement;
+import dev.simplix.protocolize.api.item.component.StructuredComponent;
+import dev.simplix.protocolize.api.item.component.StructuredComponentType;
 import dev.simplix.protocolize.api.util.ProtocolVersions;
 import dev.simplix.protocolize.data.ItemType;
 import io.netty.buffer.ByteBuf;
@@ -27,11 +29,17 @@ public class ItemStack implements BaseItemStack {
 
     public static final ItemStack NO_DATA = new ItemStack((ItemType) null);
 
+    @Getter(AccessLevel.NONE)
+    private final Map<Class<? extends StructuredComponent>, StructuredComponent> componentsToAdd = new HashMap<>();
+    @Getter(AccessLevel.NONE)
+    private final Set<StructuredComponentType<?>> componentsToRemove = new HashSet<>();
+
     @Setter(AccessLevel.NONE)
     private ChatElement<?> displayName;
     @Setter(AccessLevel.NONE)
     private List<ChatElement<?>> lore = new ArrayList<>();
     protected ItemType itemType;
+    @Deprecated
     protected CompoundTag nbtData = new CompoundTag();
     protected byte amount;
     protected short durability;
@@ -125,6 +133,40 @@ public class ItemStack implements BaseItemStack {
         ItemStack itemStack = ItemStackSerializer.read(buf, protocolVersion);
         buf.release();
         return itemStack;
+    }
+
+    @Override
+    public Collection<StructuredComponent> getComponents() {
+        return componentsToAdd.values();
+    }
+
+    @Override
+    public Collection<StructuredComponentType<?>> getComponentsToRemove() {
+        return componentsToRemove;
+    }
+
+    @Override
+    public <T extends StructuredComponent> T getComponent(Class<? extends StructuredComponent> type) {
+        for (StructuredComponent component : componentsToAdd.values()) {
+            if (type.isAssignableFrom(component.getClass())) {
+                return (T) component;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public BaseItemStack addComponent(StructuredComponent component) {
+        componentsToAdd.put(component.getClass(), component);
+        componentsToRemove.remove(component.getType());
+        return this;
+    }
+
+    @Override
+    public BaseItemStack removeComponent(StructuredComponentType<?> type) {
+        componentsToAdd.values().removeIf(component -> type.equals(component.getType()));
+        componentsToRemove.add(type);
+        return this;
     }
 
 }

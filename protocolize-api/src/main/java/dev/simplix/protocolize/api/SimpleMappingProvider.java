@@ -1,6 +1,7 @@
 package dev.simplix.protocolize.api;
 
 import com.google.common.collect.*;
+import dev.simplix.protocolize.api.item.component.StructuredComponentType;
 import dev.simplix.protocolize.api.mapping.ProtocolMapping;
 import dev.simplix.protocolize.api.packet.RegisteredPacket;
 import dev.simplix.protocolize.api.providers.MappingProvider;
@@ -71,6 +72,9 @@ final class SimpleMappingProvider implements MappingProvider {
             }
             if (o1 instanceof Sound && o2 instanceof Sound) {
                 return ((Sound) o1).name().compareTo(((Sound) o2).name());
+            }
+            if (o1 instanceof StructuredComponentType<?> && o2 instanceof StructuredComponentType<?>) {
+                return ((StructuredComponentType<?>) o1).getName().compareTo(((StructuredComponentType<?>) o2).getName());
             }
             return o1.getClass().getSimpleName().compareTo(o2.getClass().getSimpleName());
         });

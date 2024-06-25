@@ -56,4 +56,8 @@ class ChatElementImpl<T> implements ChatElement<T> {
         return componentConverter.toNbt(component);
     }
 
+    @Override
+    public String toString() {
+        return asLegacyText();
+    }
 }

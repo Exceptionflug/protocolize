@@ -1,18 +1,21 @@
 package dev.simplix.protocolize.api.item;
 
 import dev.simplix.protocolize.api.chat.ChatElement;
+import dev.simplix.protocolize.api.item.component.StructuredComponent;
+import dev.simplix.protocolize.api.item.component.StructuredComponentType;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 public interface BaseItemStack {
-  boolean flagSet(ItemFlag flag);
+    boolean flagSet(ItemFlag flag);
 
-  void itemFlag(ItemFlag flag, boolean active);
+    void itemFlag(ItemFlag flag, boolean active);
 
-  Set<ItemFlag> itemFlags();
+    Set<ItemFlag> itemFlags();
 
-  boolean canBeStacked(BaseItemStack stack);
+    boolean canBeStacked(BaseItemStack stack);
 
     ChatElement<?> displayName();
 
@@ -26,27 +29,39 @@ public interface BaseItemStack {
 
     void addToLore(ChatElement<?> element);
 
-  BaseItemStack deepClone();
+    BaseItemStack deepClone();
 
-  BaseItemStack deepClone(int protocolVersion);
+    BaseItemStack deepClone(int protocolVersion);
 
-  dev.simplix.protocolize.data.ItemType itemType();
+    dev.simplix.protocolize.data.ItemType itemType();
 
-  net.querz.nbt.tag.CompoundTag nbtData();
+    @Deprecated
+    net.querz.nbt.tag.CompoundTag nbtData();
 
-  byte amount();
+    byte amount();
 
-  short durability();
+    short durability();
 
-  int hideFlags();
+    int hideFlags();
 
-  BaseItemStack itemType(dev.simplix.protocolize.data.ItemType itemType);
+    Collection<StructuredComponent> getComponents();
 
-  BaseItemStack nbtData(net.querz.nbt.tag.CompoundTag nbtData);
+    Collection<StructuredComponentType<?>> getComponentsToRemove();
 
-  BaseItemStack amount(byte amount);
+    <T extends StructuredComponent> T getComponent(Class<? extends StructuredComponent> type);
 
-  BaseItemStack durability(short durability);
+    BaseItemStack addComponent(StructuredComponent component);
 
-  BaseItemStack hideFlags(int hideFlags);
+    BaseItemStack removeComponent(StructuredComponentType<?> type);
+
+    BaseItemStack itemType(dev.simplix.protocolize.data.ItemType itemType);
+
+    @Deprecated
+    BaseItemStack nbtData(net.querz.nbt.tag.CompoundTag nbtData);
+
+    BaseItemStack amount(byte amount);
+
+    BaseItemStack durability(short durability);
+
+    BaseItemStack hideFlags(int hideFlags);
 }

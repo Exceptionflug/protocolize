@@ -28,7 +28,7 @@ Download the latest protocolize version for your proxy software right here: http
 <dependency>
     <groupId>dev.simplix</groupId>
     <artifactId>protocolize-api</artifactId>
-    <version>2.3.3</version>
+    <version>2.4.0</version>
     <scope>provided</scope>
 </dependency>
 ```
@@ -41,7 +41,7 @@ repsitories {
 }
 
 dependencies {
-    compileOnly("dev.simplix:protocolize-api:2.3.3")
+    compileOnly("dev.simplix:protocolize-api:2.3.4")
 }
 ```
 

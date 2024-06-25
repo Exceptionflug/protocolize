@@ -49,9 +49,12 @@ public final class ProtocolVersions {
     public final static int MINECRAFT_1_20_1 = MINECRAFT_1_20;
     public final static int MINECRAFT_1_20_2 = 764;
     public final static int MINECRAFT_1_20_3 = 765;
+    public final static int MINECRAFT_1_20_4 = MINECRAFT_1_20_3;
+    public final static int MINECRAFT_1_20_5 = 766;
+    public final static int MINECRAFT_1_20_6 = MINECRAFT_1_20_5;
+    public final static int MINECRAFT_1_21 = 767;
 
-
-    public final static int MINECRAFT_LATEST = MINECRAFT_1_20_3;
+    public final static int MINECRAFT_LATEST = MINECRAFT_1_21;
 
     private ProtocolVersions() {
     }
