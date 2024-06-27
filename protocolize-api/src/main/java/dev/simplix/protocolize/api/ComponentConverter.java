@@ -21,6 +21,6 @@ public interface ComponentConverter<T> {
 
     T fromNbt(Tag<?> tag);
 
-    void disableItalic(T component);
+    T disableItalic(T component);
 
 }

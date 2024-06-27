@@ -69,10 +69,11 @@ public final class VelocityComponentConverterProvider implements ComponentConver
         }
 
         @Override
-        public void disableItalic(Component component) {
+        public Component disableItalic(Component component) {
             if (component.decoration(TextDecoration.ITALIC) == TextDecoration.State.NOT_SET) {
-                component.decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE);
+                return component.decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE);
             }
+            return component;
         }
 
     }

@@ -32,7 +32,7 @@ class ChatElementImpl<T> implements ChatElement<T> {
 
     @Override
     public ChatElement<T> disableItalic() {
-        componentConverter.disableItalic(component);
+        component = componentConverter.disableItalic(component);
         return this;
     }
 

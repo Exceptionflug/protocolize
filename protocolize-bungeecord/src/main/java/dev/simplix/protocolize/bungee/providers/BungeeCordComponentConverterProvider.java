@@ -71,12 +71,13 @@ public final class BungeeCordComponentConverterProvider implements ComponentConv
 
         @SneakyThrows
         @Override
-        public void disableItalic(BaseComponent[] component) {
+        public BaseComponent[] disableItalic(BaseComponent[] component) {
             for (BaseComponent c : component) {
                 if (c.isItalicRaw() == null) {
                     c.setItalic(false);
                 }
             }
+            return component;
         }
 
     }
