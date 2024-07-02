@@ -1,6 +1,7 @@
 package dev.simplix.protocolize.velocity.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -98,7 +99,7 @@ public class AdventureNbtToQuerzNbtMapper {
     public static BinaryTag querzToAdventure(Tag<?> tag) {
         if (tag instanceof CompoundTag) {
             CompoundTag compoundTag = (CompoundTag) tag;
-            Map<String, BinaryTag> entries = Map.of();
+            Map<String, BinaryTag> entries = new HashMap<>(compoundTag.size());
             for (Map.Entry<String, Tag<?>> entry : compoundTag.entrySet()) {
                 entries.put(entry.getKey(), querzToAdventure(entry.getValue()));
             }
