@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
  *
  * @author Exceptionflug
  */
-@Slf4j
+@Slf4j(topic = "Protocolize")
 public class ProtocolizeBackendChannelInitializer extends BackendChannelInitializer {
 
     private final ChannelInitializer<Channel> wrapped;

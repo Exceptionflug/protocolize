@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
  *
  * @author Exceptionflug
  */
-@Slf4j
+@Slf4j(topic = "Protocolize")
 public class ProtocolizeServerChannelInitializer extends ServerChannelInitializer {
 
     private final ChannelInitializer<Channel> wrapped;
