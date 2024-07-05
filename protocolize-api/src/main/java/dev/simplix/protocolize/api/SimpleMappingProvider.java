@@ -4,6 +4,7 @@ import com.google.common.collect.*;
 import dev.simplix.protocolize.api.item.component.StructuredComponentType;
 import dev.simplix.protocolize.api.mapping.ProtocolIdMapping;
 import dev.simplix.protocolize.api.mapping.ProtocolMapping;
+import dev.simplix.protocolize.api.mapping.ProtocolStringMapping;
 import dev.simplix.protocolize.api.packet.RegisteredPacket;
 import dev.simplix.protocolize.api.providers.MappingProvider;
 import dev.simplix.protocolize.data.ItemType;
@@ -68,6 +69,10 @@ final class SimpleMappingProvider implements MappingProvider {
             for (ProtocolMapping mapping : mappings.get(type)) {
                 if (mapping instanceof ProtocolIdMapping) {
                     if (((ProtocolIdMapping) mapping).id() == id) {
+                        return type;
+                    }
+                } else if (mapping instanceof ProtocolStringMapping) {
+                    if(((ProtocolStringMapping) mapping).protocolId() == id){
                         return type;
                     }
                 }
