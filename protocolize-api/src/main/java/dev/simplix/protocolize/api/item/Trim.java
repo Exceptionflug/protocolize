@@ -12,30 +12,30 @@ import java.util.Map;
 @NoArgsConstructor
 public class Trim {
 
-    Integer materialType;
-    TrimMaterial trimMaterial;
-    Integer patternType;
-    TrimPattern trimPattern;
+    private Integer materialType;
+    private TrimMaterial trimMaterial;
+    private Integer patternType;
+    private TrimPattern trimPattern;
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     public static class TrimMaterial {
-        String assetName;
-        int ingredient;
-        float itemModelIndex;
-        Map<Integer, String> overrides;
-        ChatElement<?> description;
+        private String assetName;
+        private int ingredient;
+        private float itemModelIndex;
+        private Map<Integer, String> overrides;
+        private ChatElement<?> description;
     }
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     public static class TrimPattern {
-        String assetName;
-        int templateItem;
-        ChatElement<?> description;
-        boolean decal;
+        private String assetName;
+        private int templateItem;
+        private ChatElement<?> description;
+        private boolean decal;
     }
 
 }

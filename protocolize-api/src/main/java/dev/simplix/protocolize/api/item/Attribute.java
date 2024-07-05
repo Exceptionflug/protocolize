@@ -12,12 +12,12 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Attribute {
 
-    AttributeType type;
-    UUID uuid;
-    String name;
-    double value;
-    Operation operation;
-    EquipmentSlot slot;
+    private AttributeType type;
+    private UUID uuid;
+    private String name;
+    private double value;
+    private Operation operation;
+    private EquipmentSlot slot;
 
     /* These may change in the future */
     public enum Operation {

@@ -12,18 +12,18 @@ import java.util.List;
 @NoArgsConstructor
 public class BlockPredicate {
 
-    BlockSet blockSet;
-    List<Property> properties;
-    CompoundTag nbtData;
+    private BlockSet blockSet;
+    private List<Property> properties;
+    private CompoundTag nbtData;
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Property {
-        String name;
-        String exactValue;
-        String minValue;
-        String maxValue;
+        private String name;
+        private String exactValue;
+        private String minValue;
+        private String maxValue;
     }
 
 }

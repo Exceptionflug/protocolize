@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SoundEvent {
-    Sound sound;
-    String identifier;
-    Float fixedRange;
+    private Sound sound;
+    private String identifier;
+    private Float fixedRange;
 }

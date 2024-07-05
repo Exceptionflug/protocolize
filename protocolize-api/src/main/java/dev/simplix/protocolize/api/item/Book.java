@@ -11,18 +11,18 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Book {
-    String title;
-    String filteredTitle;
-    String author;
-    int generation;
-    List<Page> pages;
-    boolean resolved;
+    private String title;
+    private String filteredTitle;
+    private String author;
+    private int generation;
+    private List<Page> pages;
+    private boolean resolved;
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Page {
-        ChatElement<?> content;
-        ChatElement<?> filteredContent;
+        private ChatElement<?> content;
+        private ChatElement<?> filteredContent;
     }
 }

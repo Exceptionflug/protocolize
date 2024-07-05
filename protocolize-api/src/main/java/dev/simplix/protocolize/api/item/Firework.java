@@ -11,18 +11,18 @@ import java.util.List;
 @NoArgsConstructor
 public class Firework {
 
-    int flightDuration;
-    List<Meta> explosions;
+    private int flightDuration;
+    private List<Meta> explosions;
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Meta {
-        Shape shape;
-        List<Integer> colors;
-        List<Integer> fadeColors;
-        boolean trail;
-        boolean twinkle;
+        private Shape shape;
+        private List<Integer> colors;
+        private List<Integer> fadeColors;
+        private boolean trail;
+        private boolean twinkle;
 
         public enum Shape {
             SMALL_BALL,

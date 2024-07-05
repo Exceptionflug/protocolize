@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BannerLayer {
-    boolean direct;
-    int patternType;
-    String identifier;
-    String translationKey;
-    DyeColor color;
+    private boolean direct;
+    private int patternType;
+    private String identifier;
+    private String translationKey;
+    private DyeColor color;
 }

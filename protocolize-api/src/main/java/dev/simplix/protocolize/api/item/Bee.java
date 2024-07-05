@@ -9,7 +9,7 @@ import net.querz.nbt.tag.CompoundTag;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Bee {
-    CompoundTag entityData;
-    int ticksInHive;
-    int minTicksInHive;
+    private CompoundTag entityData;
+    private int ticksInHive;
+    private int minTicksInHive;
 }

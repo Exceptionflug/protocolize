@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BlockSet {
-    Integer type;
-    String identifier;
-    List<Integer> blockIds;
+    private Integer type;
+    private String identifier;
+    private List<Integer> blockIds;
 }
