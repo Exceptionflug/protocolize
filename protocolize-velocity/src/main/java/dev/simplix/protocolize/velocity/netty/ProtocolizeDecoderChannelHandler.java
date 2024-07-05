@@ -103,10 +103,10 @@ public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDeco
         }
         if (ProtocolizePlugin.isExceptionCausedByProtocolize(cause) && !(cause instanceof CorruptedFrameException)) {
             log.error("=== EXCEPTION CAUGHT IN DECODER ===");
-            log.error("Protocolize " + ProtocolizePlugin.version());
-            log.error("Stream Direction: " + streamDirection.name());
-            log.error("InboundConnection: " + inboundConnection + ", ServerConnection: " + serverConnection);
-            log.error("Protocol version: " + protocolVersion.getVersionsSupportedBy().toString().replace("[", "").replace("]", ""));
+            log.error("Protocolize {}", ProtocolizePlugin.version());
+            log.error("Stream Direction: {}", streamDirection.name());
+            log.error("InboundConnection: {}, ServerConnection: {}", inboundConnection, serverConnection);
+            log.error("Protocol version: {}", protocolVersion.getVersionsSupportedBy().toString().replace("[", "").replace("]", ""));
             cause.printStackTrace();
         } else {
             super.exceptionCaught(ctx, cause); // We don't argue with foreign exceptions anymore.

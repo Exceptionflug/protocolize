@@ -1,7 +1,6 @@
 package dev.simplix.protocolize.api.util;
 
 import dev.simplix.protocolize.api.Protocolize;
-import dev.simplix.protocolize.api.mapping.ProtocolMapping;
 import dev.simplix.protocolize.api.module.ProtocolizeModule;
 import dev.simplix.protocolize.api.providers.ModuleProvider;
 import io.netty.buffer.ByteBuf;
@@ -54,7 +53,7 @@ public final class DebugUtil {
 
             outputStream.flush();
         } catch (IOException e) {
-            log.error("Unable to write dump file " + file.getName(), e);
+            log.error("Unable to write dump file {}", file.getName(), e);
         }
     }
 

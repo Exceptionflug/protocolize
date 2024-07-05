@@ -1,11 +1,8 @@
 package dev.simplix.protocolize.api.inventory;
 
-import dev.simplix.protocolize.api.ComponentConverter;
-import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.chat.ChatElement;
 import dev.simplix.protocolize.api.item.BaseItemStack;
 import dev.simplix.protocolize.api.item.ItemStack;
-import dev.simplix.protocolize.api.providers.ComponentConverterProvider;
 import dev.simplix.protocolize.data.inventory.InventoryType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

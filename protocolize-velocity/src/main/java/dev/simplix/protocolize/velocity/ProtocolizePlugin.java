@@ -98,7 +98,7 @@ public class ProtocolizePlugin {
     @Subscribe
     public void onInit(ProxyInitializeEvent event) throws ReflectiveOperationException {
         logger.info("======= PROTOCOLIZE =======");
-        logger.info("Version " + version + " by " + description().getAuthors().toString().replace("[", "").replace("]", ""));
+        logger.info("Version {} by {}", version, description().getAuthors().toString().replace("[", "").replace("]", ""));
         if (version.endsWith(":unknown")) {
             logger.warn("WARNING: YOU ARE RUNNING AN UNOFFICIAL BUILD OF PROTOCOLIZE. DON'T REPORT ANY BUGS REGARDING THIS VERSION.");
         }
@@ -118,8 +118,7 @@ public class ProtocolizePlugin {
             Player player = protocolizePlayer.handle();
             if (protocolizePlayer.protocolVersion() < ProtocolVersions.MINECRAFT_1_13) {
                 logger.warn("=== WARNING ===");
-                logger.warn("The player " + player.getUsername() + " is using "
-                    + player.getProtocolVersion().getMostRecentSupportedVersion() + " which is not supported by protocolize by default.");
+                logger.warn("The player {} is using {} which is not supported by protocolize by default.", player.getUsername(), player.getProtocolVersion().getMostRecentSupportedVersion());
                 logger.warn("You may experience log spamming due to protocolize not finding appropriate mappings for the clients protocol version.");
                 logger.warn("To fix this you have to install the legacy support module for velocity. More info at: https://simplixsoft.com/protocolize");
             }

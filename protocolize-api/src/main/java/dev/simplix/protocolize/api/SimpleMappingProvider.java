@@ -2,6 +2,7 @@ package dev.simplix.protocolize.api;
 
 import com.google.common.collect.*;
 import dev.simplix.protocolize.api.item.component.StructuredComponentType;
+import dev.simplix.protocolize.api.mapping.ProtocolIdMapping;
 import dev.simplix.protocolize.api.mapping.ProtocolMapping;
 import dev.simplix.protocolize.api.packet.RegisteredPacket;
 import dev.simplix.protocolize.api.providers.MappingProvider;
@@ -58,6 +59,21 @@ final class SimpleMappingProvider implements MappingProvider {
             }
         }
         return out;
+    }
+
+    @Override
+    public <T extends Enum<T>> T mapIdToEnum(int id, int protocolVersion, Class<T> clazz) {
+        Multimap<T, ProtocolMapping> mappings = mappings(clazz, protocolVersion);
+        for (T type : mappings.keySet()) {
+            for (ProtocolMapping mapping : mappings.get(type)) {
+                if (mapping instanceof ProtocolIdMapping) {
+                    if (((ProtocolIdMapping) mapping).id() == id) {
+                        return type;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     @Override

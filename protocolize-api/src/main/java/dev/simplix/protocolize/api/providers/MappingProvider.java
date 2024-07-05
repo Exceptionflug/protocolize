@@ -52,6 +52,8 @@ public interface MappingProvider {
      */
     <O, T extends ProtocolMapping> Multimap<O, T> mappings(Class<O> type, int protocolVersion);
 
+    <T extends Enum<T>> T mapIdToEnum(int id, int protocolVersion, Class<T> clazz);
+
     /**
      * @return this returns information about this provider
      */

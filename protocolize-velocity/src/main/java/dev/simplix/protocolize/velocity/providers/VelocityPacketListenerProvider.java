@@ -75,7 +75,7 @@ public final class VelocityPacketListenerProvider implements PacketListenerProvi
             try {
                 ensureAlsoEncode((Class<? extends MinecraftPacket>) listener.type());
             } catch (Exception e) {
-                log.error("Unable to register additional suppliers for velocity packet " + listener.type().getName(), e);
+                log.error("Unable to register additional suppliers for velocity packet {}", listener.type().getName(), e);
             }
         }
         listeners.add(listener);
@@ -164,7 +164,7 @@ public final class VelocityPacketListenerProvider implements PacketListenerProvi
             try {
                 it.packetReceive(event);
             } catch (final Exception e) {
-                log.error("[Protocolize] Exception caught in listener while receiving packet " + apiPacket.getClass().getName(), e);
+                log.error("[Protocolize] Exception caught in listener while receiving packet {}", apiPacket.getClass().getName(), e);
             }
         });
         if (event.cancelled())
@@ -227,7 +227,7 @@ public final class VelocityPacketListenerProvider implements PacketListenerProvi
             try {
                 it.packetSend(event);
             } catch (final Exception e) {
-                log.error("[Protocolize] Exception caught in listener while sending packet " + apiPacket.getClass().getName(), e);
+                log.error("[Protocolize] Exception caught in listener while sending packet {}", apiPacket.getClass().getName(), e);
             }
         });
         if (event.cancelled())

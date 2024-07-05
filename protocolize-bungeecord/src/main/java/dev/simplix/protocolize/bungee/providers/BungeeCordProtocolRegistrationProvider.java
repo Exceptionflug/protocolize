@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import dev.simplix.protocolize.api.PacketDirection;
 import dev.simplix.protocolize.api.Protocol;
 import dev.simplix.protocolize.api.Protocolize;
-import dev.simplix.protocolize.api.item.component.StructuredComponent;
 import dev.simplix.protocolize.api.item.component.StructuredComponentType;
 import dev.simplix.protocolize.api.mapping.ProtocolIdMapping;
 import dev.simplix.protocolize.api.packet.AbstractPacket;
@@ -21,16 +20,13 @@ import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.implementation.MethodDelegation;
 import net.bytebuddy.implementation.bind.annotation.RuntimeType;
 import net.bytebuddy.matcher.ElementMatchers;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.protocol.DefinedPacket;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.AbstractMap;
 import java.util.List;
-import java.util.logging.Level;
 
 /**
  * Date: 20.08.2021
@@ -73,7 +69,7 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
         for (PacketRegistrationStrategy strategy : strategies) {
             if (strategy.compatible()) {
                 this.strategy = strategy;
-                log.info("[Protocolize] Using " + strategy.getClass().getSimpleName());
+                log.info("[Protocolize] Using {}", strategy.getClass().getSimpleName());
                 return;
             }
         }
@@ -98,11 +94,11 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
                 mappingProvider.registerMapping(new RegisteredPacket(direction, packetClass), mapping);
                 for (int i = mapping.protocolRangeStart(); i <= mapping.protocolRangeEnd(); i++) {
                     strategy.registerPacket(protocols, i, mapping.id(), definedPacketClass);
-                    log.debug("[Protocolize] Register packet " + definedPacketClass.getName() + " (0x" + Integer.toHexString(mapping.id()) + ") in direction " + direction.name() + " at protocol " + protocol.name() + " for version " + i);
+                    log.debug("[Protocolize] Register packet {} (0x{}) in direction {} at protocol {} for version {}", definedPacketClass.getName(), Integer.toHexString(mapping.id()), direction.name(), protocol.name(), i);
                 }
             }
         } catch (Exception e) {
-            log.warn("Exception while registering packet " + packetClass.getName(), e);
+            log.warn("Exception while registering packet {}", packetClass.getName(), e);
         }
     }
 

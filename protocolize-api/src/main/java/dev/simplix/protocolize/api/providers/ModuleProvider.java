@@ -1,6 +1,5 @@
 package dev.simplix.protocolize.api.providers;
 
-import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.module.ProtocolizeModule;
 
 import java.util.Collection;

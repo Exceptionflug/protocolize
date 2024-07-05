@@ -20,7 +20,7 @@ public final class InitialInboundConnectionPipelineAccessor implements PipelineA
         try {
             return ((MinecraftConnection) MINECRAFT_CONNECTION_FIELD.get(connection)).getChannel().pipeline();
         } catch (Exception e) {
-            log.error("Unable to get pipeline from " + connection + ": ", e);
+            log.error("Unable to get pipeline from {}: ", connection, e);
             return null;
         }
     }

@@ -103,15 +103,14 @@ public class PlayerListener {
             // Ah yes expecting an overridden channel initializer
             ChannelInitializer<Channel> initializer = plugin.currentBackendChannelInitializer();
             if (initializer.getClass() != ProtocolizeBackendChannelInitializer.class) {
-                log.error("It seems like there is an incompatible plugin installed. Velocity channel initializers are overridden by: "
-                    + initializer.getClass().getName());
+                log.error("It seems like there is an incompatible plugin installed. Velocity channel initializers are overridden by: {}", initializer.getClass().getName());
                 log.error("Protocolize is unable to work under this circumstances. Please contact the developers of the incompatible " +
                     "plugin and suggest them to call the initChannel method of the ChannelInitializers before overriding them.");
                 return;
             } else {
                 // WTF??
-                log.error("Pipeline is not initialized. This is a bug. Please report. Pipeline handlers = " + pipeline.toMap());
-                log.error("Initializer: " + initializer.getClass().getName());
+                log.error("Pipeline is not initialized. This is a bug. Please report. Pipeline handlers = {}", pipeline.toMap());
+                log.error("Initializer: {}", initializer.getClass().getName());
             }
             return;
         }

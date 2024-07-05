@@ -8,7 +8,6 @@ import com.velocitypowered.proxy.protocol.StateRegistry;
 import dev.simplix.protocolize.api.PacketDirection;
 import dev.simplix.protocolize.api.Protocol;
 import dev.simplix.protocolize.api.Protocolize;
-import dev.simplix.protocolize.api.item.component.StructuredComponent;
 import dev.simplix.protocolize.api.item.component.StructuredComponentType;
 import dev.simplix.protocolize.api.mapping.ProtocolIdMapping;
 import dev.simplix.protocolize.api.mapping.ProtocolMapping;
@@ -109,13 +108,13 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
                 doRegisterPacket(registry, velocityPacket, velocityMappings.toArray(new StateRegistry.PacketMapping[0]));
             } catch (InvocationTargetException e) {
                 if (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("already registered")) {
-                    log.debug(e.getCause().getMessage() + ". Skipping...");
+                    log.debug("{}. Skipping...", e.getCause().getMessage());
                 } else {
                     throw e;
                 }
             }
         } catch (Exception exception) {
-            log.error("Exception while registering packet " + packetClass.getName(), exception);
+            log.error("Exception while registering packet {}", packetClass.getName(), exception);
         }
     }
 
@@ -157,7 +156,7 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
             if (protocolIdMapping != null) {
                 return protocolIdMapping.id();
             } else {
-                log.debug("Unable to obtain id for " + direction.name() + " " + packetClass.getName() + " at protocol " + protocolVersion);
+                log.debug("Unable to obtain id for {} {} at protocol {}", direction.name(), packetClass.getName(), protocolVersion);
             }
         } else if (packet instanceof MinecraftPacket) {
             ProtocolUtils.Direction velocityDirection = velocityDirection(direction);
@@ -179,12 +178,12 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
     public Object createPacket(Class<? extends AbstractPacket> clazz, Protocol protocol, PacketDirection direction, int protocolVersion) {
         ProtocolUtils.Direction velocityDirection = velocityDirection(direction);
         if (velocityDirection == null) {
-            log.debug("Unable to construct wrapper instance for " + clazz.getName() + ": Unknown packet direction to velocity: " + direction.name());
+            log.debug("Unable to construct wrapper instance for {}: Unknown packet direction to velocity: {}", clazz.getName(), direction.name());
             return null;
         }
         StateRegistry stateRegistry = velocityProtocol(protocol);
         if (stateRegistry == null) {
-            log.debug("Unable to construct wrapper instance for " + clazz.getName() + ": Unknown protocol: " + protocol.name());
+            log.debug("Unable to construct wrapper instance for {}: Unknown protocol: {}", clazz.getName(), protocol.name());
             return null;
         }
         StateRegistry.PacketRegistry.ProtocolRegistry registry = stateRegistry.getProtocolRegistry(velocityDirection,
@@ -193,7 +192,7 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
         if (protocolIdMapping != null) {
             return registry.createPacket(protocolIdMapping.id());
         }
-        log.debug("No protocol id mapping for " + clazz.getName() + " at version " + protocolVersion + " was found.");
+        log.debug("No protocol id mapping for {} at version {} was found.", clazz.getName(), protocolVersion);
         return null;
     }
 
