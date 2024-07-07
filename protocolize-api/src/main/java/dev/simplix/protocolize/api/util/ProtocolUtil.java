@@ -3,12 +3,9 @@ package dev.simplix.protocolize.api.util;
 import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 import io.netty.handler.codec.CorruptedFrameException;
 import io.netty.handler.codec.DecoderException;
 
-import java.net.ProtocolException;
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 /**

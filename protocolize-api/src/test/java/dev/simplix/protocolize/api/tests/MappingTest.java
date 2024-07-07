@@ -6,9 +6,7 @@ import dev.simplix.protocolize.api.mapping.AbstractProtocolMapping;
 import dev.simplix.protocolize.api.mapping.ProtocolMapping;
 import dev.simplix.protocolize.api.packet.AbstractPacket;
 import dev.simplix.protocolize.api.packet.RegisteredPacket;
-import dev.simplix.protocolize.api.providers.MappingProvider;
 import io.netty.buffer.ByteBuf;
-import junit.framework.TestFailure;
 import org.junit.Test;
 
 import java.util.List;

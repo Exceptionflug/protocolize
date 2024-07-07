@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-public interface GameProfileComponent extends StructuredComponent {
+public interface ProfileComponent extends StructuredComponent {
 
     @Nullable
     String getName();
@@ -23,13 +23,13 @@ public interface GameProfileComponent extends StructuredComponent {
 
     void setProperties(List<Property> properties);
 
-    static GameProfileComponent create(String name, UUID uniqueId, List<Property> properties) {
+    static ProfileComponent create(String name, UUID uniqueId, List<Property> properties) {
         return Protocolize.getService(Factory.class).create(name, uniqueId, properties);
     }
 
     interface Factory {
 
-        GameProfileComponent create(String name, UUID uniqueId, List<Property> properties);
+        ProfileComponent create(String name, UUID uniqueId, List<Property> properties);
 
     }
 

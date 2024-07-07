@@ -14,14 +14,16 @@ import lombok.experimental.Accessors;
 public class RangeProtocolStringMapping extends AbstractProtocolMapping implements ProtocolStringMapping {
 
     private final String id;
+    private final int protocolId;
 
-    RangeProtocolStringMapping(int protocolVersionStart, int protocolVersionEnd, String id) {
+    RangeProtocolStringMapping(int protocolVersionStart, int protocolVersionEnd, String id, int protocolId) {
         super(protocolVersionStart, protocolVersionEnd);
         this.id = id;
+        this.protocolId = protocolId;
     }
 
     @Override
     public String toString() {
-        return "(" + protocolRangeStart() + "-" + protocolRangeEnd() + ": " + id + ")";
+        return "(" + protocolRangeStart() + "-" + protocolRangeEnd() + ": " + id + ":" + protocolId + ")";
     }
 }

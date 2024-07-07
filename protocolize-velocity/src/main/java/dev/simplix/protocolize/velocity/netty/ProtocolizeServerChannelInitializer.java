@@ -6,10 +6,8 @@ import com.velocitypowered.proxy.network.ServerChannelInitializer;
 import dev.simplix.protocolize.api.Direction;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -17,7 +15,7 @@ import java.lang.reflect.Method;
  *
  * @author Exceptionflug
  */
-@Slf4j
+@Slf4j(topic = "Protocolize")
 public class ProtocolizeServerChannelInitializer extends ServerChannelInitializer {
 
     private final ChannelInitializer<Channel> wrapped;
@@ -28,12 +26,12 @@ public class ProtocolizeServerChannelInitializer extends ServerChannelInitialize
         this.wrapped = wrapped;
 
         if (wrapped != null) {
-            log.info("Respecting the previous registered ServerChannelInitializer: " + wrapped.getClass().getName());
+            log.info("Respecting the previous registered ServerChannelInitializer: {}", wrapped.getClass().getName());
             try {
                 initMethod = this.wrapped.getClass().getDeclaredMethod("initChannel", Channel.class);
                 initMethod.setAccessible(true);
             } catch (NoSuchMethodException e) {
-                log.error("Unsupported server channel initializer: " + this.wrapped.getClass().getName(), e);
+                log.error("Unsupported server channel initializer: {}", this.wrapped.getClass().getName(), e);
             }
         }
     }
@@ -42,7 +40,7 @@ public class ProtocolizeServerChannelInitializer extends ServerChannelInitialize
     protected void initChannel(Channel ch) {
         try {
             if (wrapped != null && initMethod != null) {
-                log.debug("Calling the underlying server channel initializer: " + wrapped.getClass().getName());
+                log.debug("Calling the underlying server channel initializer: {}", wrapped.getClass().getName());
                 initMethod.invoke(wrapped, ch);
             }
         } catch (Exception e) {

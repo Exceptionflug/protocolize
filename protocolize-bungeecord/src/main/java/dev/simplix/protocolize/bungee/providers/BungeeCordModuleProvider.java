@@ -25,7 +25,7 @@ public final class BungeeCordModuleProvider implements ModuleProvider {
     @Override
     public void registerModule(ProtocolizeModule module) {
         if (!supportedPlatform(module.supportedPlatforms())) {
-            log.warn("Won't register module " + module.getClass().getName() + ": Only supports " + Arrays.toString(module.supportedPlatforms()));
+            log.warn("Won't register module {}: Only supports {}", module.getClass().getName(), Arrays.toString(module.supportedPlatforms()));
             return;
         }
         modules.add(module);
@@ -72,7 +72,7 @@ public final class BungeeCordModuleProvider implements ModuleProvider {
     private void enableModule(ProtocolizeModule module) {
         module.registerMappings(Protocolize.mappingProvider());
         module.registerPackets(Protocolize.protocolRegistration());
-        log.info("Enabled module " + module.getClass().getName());
+        log.info("Enabled module {}", module.getClass().getName());
     }
 
 }

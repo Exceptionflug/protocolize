@@ -15,7 +15,6 @@ import dev.simplix.protocolize.bungee.strategy.PacketRegistrationStrategy;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
-import net.md_5.bungee.protocol.BadPacketException;
 
 import java.util.ArrayList;
 import java.util.Arrays;

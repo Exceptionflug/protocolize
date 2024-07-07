@@ -8,5 +8,6 @@ package dev.simplix.protocolize.api.mapping;
 public interface ProtocolStringMapping extends ProtocolMapping {
 
     String id();
+    int protocolId();
 
 }

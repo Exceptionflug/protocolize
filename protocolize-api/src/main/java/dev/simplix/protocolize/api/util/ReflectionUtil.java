@@ -184,17 +184,17 @@ public final class ReflectionUtil {
     }
 
     public static void listFields(@NonNull Object object) {
-        log.info(object.getClass().getName() + " contains " + object
+        log.info("{} contains {} declared fields.", object.getClass().getName(), object
             .getClass()
-            .getDeclaredFields().length + " declared fields.");
-        log.info(object.getClass().getName() + " contains " + object
+            .getDeclaredFields().length);
+        log.info("{} contains {} declared classes.", object.getClass().getName(), object
             .getClass()
-            .getDeclaredClasses().length + " declared classes.");
+            .getDeclaredClasses().length);
         Field[] declaredFields = object.getClass().getDeclaredFields();
         for (Field field : declaredFields) {
             field.setAccessible(true);
             try {
-                log.info(field.getName() + " -> " + field.get(object));
+                log.info("{} -> {}", field.getName(), field.get(object));
             } catch (IllegalArgumentException | IllegalAccessException exception) {
                 log.error(EXCEPTION_OCCURRED, exception);
             }

@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
  *
  * @author Exceptionflug
  */
-@Slf4j
+@Slf4j(topic = "Protocolize")
 public class ProtocolizeBackendChannelInitializer extends BackendChannelInitializer {
 
     private final ChannelInitializer<Channel> wrapped;
@@ -25,12 +25,12 @@ public class ProtocolizeBackendChannelInitializer extends BackendChannelInitiali
         this.wrapped = wrapped;
 
         if (wrapped != null) {
-            log.info("Respecting the previous registered BackendChannelInitializer: " + wrapped.getClass().getName());
+            log.info("Respecting the previous registered BackendChannelInitializer: {}", wrapped.getClass().getName());
             try {
                 initMethod = wrapped.getClass().getDeclaredMethod("initChannel", Channel.class);
                 initMethod.setAccessible(true);
             } catch (NoSuchMethodException e) {
-                log.error("Unsupported backend channel initializer: " + wrapped.getClass().getName(), e);
+                log.error("Unsupported backend channel initializer: {}", wrapped.getClass().getName(), e);
             }
         }
     }
@@ -39,7 +39,7 @@ public class ProtocolizeBackendChannelInitializer extends BackendChannelInitiali
     protected void initChannel(Channel ch) throws Exception {
         try {
             if (wrapped != null && initMethod != null) {
-                log.debug("Calling the underlying backend channel initializer: " + wrapped.getClass().getName());
+                log.debug("Calling the underlying backend channel initializer: {}", wrapped.getClass().getName());
                 initMethod.invoke(wrapped, ch);
             }
         } catch (Exception e) {
