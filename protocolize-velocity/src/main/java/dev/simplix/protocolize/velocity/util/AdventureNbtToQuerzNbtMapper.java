@@ -21,6 +21,7 @@ import net.kyori.adventure.nbt.LongArrayBinaryTag;
 import net.kyori.adventure.nbt.LongBinaryTag;
 import net.kyori.adventure.nbt.ShortBinaryTag;
 import net.kyori.adventure.nbt.StringBinaryTag;
+import net.querz.nbt.tag.ArrayTag;
 import net.querz.nbt.tag.ByteArrayTag;
 import net.querz.nbt.tag.ByteTag;
 import net.querz.nbt.tag.CompoundTag;
@@ -109,7 +110,7 @@ public class AdventureNbtToQuerzNbtMapper {
             List<BinaryTag> items = new ArrayList<>(list.size());
             list.iterator().forEachRemaining((item) -> items.add(querzToAdventure(item)));
             return ListBinaryTag.listBinaryTag(querzTagTypeToAdventure(list.getTypeClass()), items);
-        } else if (tag instanceof ArrayBinaryTag) {
+        } else if (tag instanceof ArrayTag) {
             if (tag instanceof ByteArrayTag) {
                 return ByteArrayBinaryTag.byteArrayBinaryTag(((ByteArrayTag) tag).getValue());
             } else if (tag instanceof IntArrayTag) {
