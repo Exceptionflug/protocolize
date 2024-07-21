@@ -41,7 +41,7 @@ repsitories {
 }
 
 dependencies {
-    compileOnly("dev.simplix:protocolize-api:2.4.0")
+    compileOnly("dev.simplix:protocolize-api:2.4.1")
 }
 ```
 
