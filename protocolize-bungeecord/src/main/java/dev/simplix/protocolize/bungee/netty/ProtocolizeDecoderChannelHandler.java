@@ -7,6 +7,7 @@ import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.bungee.ProtocolizePlugin;
 import dev.simplix.protocolize.bungee.providers.BungeeCordPacketListenerProvider;
 import dev.simplix.protocolize.bungee.util.CancelSendSignal;
+import dev.simplix.protocolize.bungee.util.ConversionUtils;
 import dev.simplix.protocolize.bungee.util.ReflectionUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -86,7 +87,7 @@ public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDeco
                     try {
                         // Try packet rewrite
                         final ByteBuf buf = Unpooled.directBuffer();
-                        int packetID = REGISTRATION_PROVIDER.packetId(packet, protocolizeProtocol(),
+                        int packetID = REGISTRATION_PROVIDER.packetId(packet, ConversionUtils.protocolizeProtocol(protocol),
                             direction == Direction.TO_CLIENT ? PacketDirection.CLIENTBOUND : PacketDirection.SERVERBOUND,
                             protocolVersion);
                         if (packetID != -1) {
@@ -105,22 +106,6 @@ public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDeco
                 out.add(msg);
             }
         }
-    }
-
-    private dev.simplix.protocolize.api.Protocol protocolizeProtocol() {
-        switch (protocol) {
-            case GAME:
-                return dev.simplix.protocolize.api.Protocol.PLAY;
-            case LOGIN:
-                return dev.simplix.protocolize.api.Protocol.LOGIN;
-            case STATUS:
-                return dev.simplix.protocolize.api.Protocol.STATUS;
-            case HANDSHAKE:
-                return dev.simplix.protocolize.api.Protocol.HANDSHAKE;
-            case CONFIGURATION:
-                return dev.simplix.protocolize.api.Protocol.CONFIGURATION;
-        }
-        return null;
     }
 
     @Override

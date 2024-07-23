@@ -2,7 +2,10 @@ package dev.simplix.protocolize.api.listener;
 
 import dev.simplix.protocolize.api.Direction;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
+
+import java.util.function.Consumer;
 
 /**
  * Used for listening to incoming and outgoing packets.
@@ -13,12 +16,18 @@ import lombok.experimental.Accessors;
  * @author Exceptionflug
  */
 @Getter
+@Setter
 @Accessors(fluent = true)
 public abstract class AbstractPacketListener<T> {
 
     private final Class<T> type;
     private final Direction direction;
     private final int priority;
+
+    private Consumer<PacketReceiveEvent<T>> onReceive;
+    private Consumer<PacketSendEvent<T>> onSend;
+
+    private transient boolean registered;
 
     /**
      * Creates an instance of your listener.
@@ -38,13 +47,33 @@ public abstract class AbstractPacketListener<T> {
      *
      * @param event The event containing information about the packet
      */
-    public abstract void packetReceive(PacketReceiveEvent<T> event);
+    public void packetReceive(PacketReceiveEvent<T> event) {
+        if (onReceive == null) {
+            packetEvent(event);
+        } else {
+            onReceive.accept(event);
+        }
+    }
 
     /**
      * Gets called when a packet has been processed by the Protocolize encoder handler.
      *
      * @param event The event containing information about the packet
      */
-    public abstract void packetSend(PacketSendEvent<T> event);
+    public void packetSend(PacketSendEvent<T> event) {
+        if (onSend == null) {
+            packetEvent(event);
+        } else {
+            onSend.accept(event);
+        }
+    }
 
+    /**
+     * Gets called when a packet has been processed by any Protocolize handler.
+     *
+     * @param event The event containing information about the packet
+     */
+    public void packetEvent(AbstractPacketEvent<T> event) {
+        // empty default method
+    }
 }

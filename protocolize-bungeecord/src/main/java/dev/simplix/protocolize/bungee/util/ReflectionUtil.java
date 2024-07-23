@@ -8,10 +8,7 @@ import net.md_5.bungee.api.connection.Connection;
 import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.connection.Server;
-import net.md_5.bungee.protocol.AbstractPacketHandler;
-import net.md_5.bungee.protocol.KickStringWriter;
-import net.md_5.bungee.protocol.MinecraftDecoder;
-import net.md_5.bungee.protocol.PacketWrapper;
+import net.md_5.bungee.protocol.*;
 
 import java.lang.reflect.Field;
 import java.util.logging.Logger;
@@ -96,8 +93,7 @@ public final class ReflectionUtil {
     public static AbstractPacketHandler getUpstreamBridge(final ProxiedPlayer player) {
         Preconditions.checkNotNull(player, "The player cannot be null!");
         try {
-            final Object channelWrapper = userConnectionChannelWrapperField.get(player);
-            final Channel channel = (Channel) channelWrapperChannelField.get(channelWrapper);
+            final Channel channel = getChannel(player);
             final Object handlerBoss = channel.pipeline().get("inbound-boss");
             if (handlerBoss == null)
                 return null;
@@ -111,8 +107,7 @@ public final class ReflectionUtil {
     public static AbstractPacketHandler getDownstreamBridge(final Server server) {
         Preconditions.checkNotNull(server, "The server cannot be null!");
         try {
-            final Object channelWrapper = serverConnectionChannelWrapperField.get(server);
-            final Channel channel = (Channel) channelWrapperChannelField.get(channelWrapper);
+            final Channel channel = getChannel(server);
             final Object handlerBoss = channel.pipeline().get("inbound-boss");
             return (AbstractPacketHandler) handlerBossHandlerField.get(handlerBoss);
         } catch (final Exception e) {
@@ -144,6 +139,10 @@ public final class ReflectionUtil {
         return "UNSUPPORTED_CONNECTION_TYPE";
     }
 
+    public static Channel getChannel(final Connection connection) throws IllegalAccessException {
+        return (Channel) channelWrapperChannelField.get(getChannelWrapper(connection));
+    }
+
     public static Object getChannelWrapper(final Connection connection) throws IllegalAccessException {
         final Object channelWrapper;
         if (connection instanceof ProxiedPlayer) {
@@ -160,8 +159,7 @@ public final class ReflectionUtil {
 
     public static int getProtocolVersion(final Connection player) {
         try {
-            final Object channelWrapper = getChannelWrapper(player);
-            final Channel channel = (Channel) channelWrapperChannelField.get(channelWrapper);
+            final Channel channel = getChannel(player);
             MinecraftDecoder minecraftDecoder = channel.pipeline().get(MinecraftDecoder.class);
             if (minecraftDecoder == null) {
                 return -1;
@@ -171,6 +169,34 @@ public final class ReflectionUtil {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    public static Protocol getDecodeProtocol(final Connection player) {
+        try {
+            final Channel channel = getChannel(player);
+            MinecraftDecoder minecraftDecoder = channel.pipeline().get(MinecraftDecoder.class);
+            if (minecraftDecoder == null) {
+                return null;
+            }
+            return minecraftDecoder.getProtocol();
+        } catch (final IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Protocol getEncodeProtocol(final Connection player) {
+        try {
+            final Channel channel = getChannel(player);
+            MinecraftEncoder minecraftEncoder = channel.pipeline().get(MinecraftEncoder.class);
+            if (minecraftEncoder == null) {
+                return null;
+            }
+            return minecraftEncoder.getProtocol();
+        } catch (final IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
