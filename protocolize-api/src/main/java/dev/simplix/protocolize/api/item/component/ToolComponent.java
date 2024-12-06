@@ -1,22 +1,19 @@
 package dev.simplix.protocolize.api.item.component;
 
 import dev.simplix.protocolize.api.Protocolize;
-import dev.simplix.protocolize.api.item.BlockSet;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import dev.simplix.protocolize.api.item.ToolRule;
 
 import java.util.List;
 
 public interface ToolComponent extends StructuredComponent {
 
-    List<Rule> getRules();
+    List<ToolRule> getRules();
 
-    void setRules(List<Rule> rules);
+    void setRules(List<ToolRule> rules);
 
-    void addRule(Rule rule);
+    void addRule(ToolRule rule);
 
-    void removeRule(Rule rule);
+    void removeRule(ToolRule rule);
 
     void removeAllRules();
 
@@ -28,22 +25,13 @@ public interface ToolComponent extends StructuredComponent {
 
     void setDamagePerBlock(int damagePerBlock);
 
-    static ToolComponent create(List<Rule> rules, float miningSpeed, int damagePerBlock) {
+    static ToolComponent create(List<ToolRule> rules, float miningSpeed, int damagePerBlock) {
         return Protocolize.getService(Factory.class).create(rules, miningSpeed, damagePerBlock);
-    }
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    class Rule {
-        BlockSet blockSet;
-        Float speed;
-        Boolean correctToolForDrops;
     }
 
     interface Factory {
 
-        ToolComponent create(List<Rule> rules, float miningSpeed, int damagePerBlock);
+        ToolComponent create(List<ToolRule> rules, float miningSpeed, int damagePerBlock);
 
     }
 

@@ -3,8 +3,8 @@ package dev.simplix.protocolize.api.inventory;
 import dev.simplix.protocolize.api.item.BaseItemStack;
 import dev.simplix.protocolize.api.item.ItemStack;
 import dev.simplix.protocolize.api.player.ProtocolizePlayer;
-import dev.simplix.protocolize.data.packets.HeldItemChange;
-import dev.simplix.protocolize.data.packets.SetSlot;
+import dev.simplix.protocolize.data.packets.ContainerSetSlot;
+import dev.simplix.protocolize.data.packets.SetCarriedItem;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -64,8 +64,8 @@ public class PlayerInventory {
 
     public void heldItem(short slot) {
         heldItem = (short) (slot + 36);
-        player.sendPacket(new HeldItemChange(slot));
-        player.sendPacketToServer(new HeldItemChange(slot));
+        player.sendPacket(new SetCarriedItem(slot));
+        player.sendPacketToServer(new SetCarriedItem(slot));
     }
 
     public void clear() {
@@ -82,7 +82,7 @@ public class PlayerInventory {
         for (int i = 0; i <= 44; i++) {
             BaseItemStack stack = item(i);
             if (stack != null) {
-                player.sendPacket(new SetSlot((byte) 0, (short) i, stack, 0));
+                player.sendPacket(new ContainerSetSlot((byte) 0, (short) i, stack, 0));
             }
         }
     }

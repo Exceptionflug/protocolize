@@ -26,6 +26,10 @@ public interface PotionContentsComponent extends StructuredComponent {
 
     void removeAllCustomEffects();
 
+    String getCustomName();
+
+    void setCustomName(String customName);
+
     static PotionContentsComponent create(Potion potion) {
         return Protocolize.getService(PotionContentsComponent.Factory.class).create(potion);
     }
@@ -34,12 +38,24 @@ public interface PotionContentsComponent extends StructuredComponent {
         return Protocolize.getService(PotionContentsComponent.Factory.class).create(potion, customColor);
     }
 
+    static PotionContentsComponent create(Potion potion, int customColor, String customName) {
+        return Protocolize.getService(PotionContentsComponent.Factory.class).create(potion, customColor, customName);
+    }
+
     static PotionContentsComponent create(Potion potion, int customColor, List<MobEffectInstance> customEffects) {
         return Protocolize.getService(PotionContentsComponent.Factory.class).create(potion, customColor, customEffects);
     }
 
+    static PotionContentsComponent create(Potion potion, int customColor, List<MobEffectInstance> customEffects, String customName) {
+        return Protocolize.getService(PotionContentsComponent.Factory.class).create(potion, customColor, customEffects, customName);
+    }
+
     static PotionContentsComponent create(Potion potion, List<MobEffectInstance> customEffects) {
         return Protocolize.getService(PotionContentsComponent.Factory.class).create(potion, customEffects);
+    }
+
+    static PotionContentsComponent create(Potion potion, List<MobEffectInstance> customEffects, String customName) {
+        return Protocolize.getService(PotionContentsComponent.Factory.class).create(potion, customEffects, customName);
     }
 
     interface Factory {
@@ -48,9 +64,15 @@ public interface PotionContentsComponent extends StructuredComponent {
 
         PotionContentsComponent create(Potion potion, int customColor);
 
+        PotionContentsComponent create(Potion potion, int customColor, String customName);
+
         PotionContentsComponent create(Potion potion, int customColor, List<MobEffectInstance> customEffects);
 
+        PotionContentsComponent create(Potion potion, int customColor, List<MobEffectInstance> customEffects, String customName);
+
         PotionContentsComponent create(Potion potion, List<MobEffectInstance> customEffects);
+
+        PotionContentsComponent create(Potion potion, List<MobEffectInstance> customEffects, String customName);
 
     }
 

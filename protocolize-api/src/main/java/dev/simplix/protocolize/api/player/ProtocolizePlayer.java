@@ -68,7 +68,7 @@ public interface ProtocolizePlayer {
 
     default void closeInventory() {
         registeredInventories().forEach((id, it) -> {
-            sendPacket(new CloseWindow(id));
+            sendPacket(new ContainerClose(id));
         });
         registeredInventories().clear();
     }
@@ -107,7 +107,7 @@ public interface ProtocolizePlayer {
         }
 
         if (!alreadyOpen) {
-            sendPacket(new OpenWindow(windowId, inventory.type(), inventory.title()));
+            sendPacket(new OpenScreen(windowId, inventory.type(), inventory.title()));
         }
         int protocolVersion;
         try {
@@ -117,7 +117,7 @@ public interface ProtocolizePlayer {
         }
         List<BaseItemStack> items = new ArrayList<>(Lists
             .newArrayList(inventory.itemsIndexed(protocolVersion)));
-        sendPacket(new WindowItems((short) windowId, items, 0));
+        sendPacket(new ContainerSetContent((short) windowId, items, 0));
     }
 
 }

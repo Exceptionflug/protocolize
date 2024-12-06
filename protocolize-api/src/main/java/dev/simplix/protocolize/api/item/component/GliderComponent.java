@@ -2,15 +2,15 @@ package dev.simplix.protocolize.api.item.component;
 
 import dev.simplix.protocolize.api.Protocolize;
 
-public interface HideAdvancedTooltipComponent extends StructuredComponent {
+public interface GliderComponent extends StructuredComponent {
 
-    static HideAdvancedTooltipComponent create() {
+    static GliderComponent create() {
         return Protocolize.getService(Factory.class).create();
     }
 
     interface Factory {
 
-        HideAdvancedTooltipComponent create();
+        GliderComponent create();
 
     }
 

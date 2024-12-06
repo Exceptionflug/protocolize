@@ -5,17 +5,13 @@ import net.querz.nbt.tag.CompoundTag;
 
 public interface IntangibleProjectileComponent extends StructuredComponent {
 
-    CompoundTag getData();
-
-    void setData(CompoundTag data);
-
-    static IntangibleProjectileComponent create(CompoundTag data) {
-        return Protocolize.getService(Factory.class).create(data);
+    static IntangibleProjectileComponent create() {
+        return Protocolize.getService(Factory.class).create();
     }
 
     interface Factory {
 
-        IntangibleProjectileComponent create(CompoundTag data);
+        IntangibleProjectileComponent create();
 
     }
 

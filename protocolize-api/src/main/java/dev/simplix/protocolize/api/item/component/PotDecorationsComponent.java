@@ -1,22 +1,23 @@
 package dev.simplix.protocolize.api.item.component;
 
 import dev.simplix.protocolize.api.Protocolize;
+import dev.simplix.protocolize.data.ItemType;
 
 import java.util.List;
 
 public interface PotDecorationsComponent extends StructuredComponent {
 
-    List<Integer> getDecorations();
+    List<ItemType> getDecorations();
 
-    void setDecorations(List<Integer> decorations);
+    void setDecorations(List<ItemType> decorations);
 
-    static PotDecorationsComponent create(List<Integer> decorations) {
+    static PotDecorationsComponent create(List<ItemType> decorations) {
         return Protocolize.getService(Factory.class).create(decorations);
     }
 
     interface Factory {
 
-        PotDecorationsComponent create(List<Integer> decorations);
+        PotDecorationsComponent create(List<ItemType> decorations);
 
     }
 
