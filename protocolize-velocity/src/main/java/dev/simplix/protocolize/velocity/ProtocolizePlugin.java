@@ -45,10 +45,7 @@ import java.util.List;
         "proferabg"
     },
     version = BuildConstants.VERSION,
-    id = "protocolize",
-    dependencies = {
-        @Dependency(id = "ambassador", optional = true),
-    }
+    id = "protocolize"
 )
 public class ProtocolizePlugin {
 
