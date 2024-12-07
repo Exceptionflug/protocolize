@@ -1,21 +1,21 @@
 package dev.simplix.protocolize.api.item.component;
 
 import dev.simplix.protocolize.api.Protocolize;
-import net.querz.nbt.tag.StringTag;
+import net.querz.nbt.tag.Tag;
 
 public interface LockComponent extends StructuredComponent {
 
-    StringTag getKey();
+    Tag<?> getLock();
 
-    void setKey(StringTag key);
+    void setLock(Tag<?> lock);
 
-    static LockComponent create(StringTag key) {
-        return Protocolize.getService(Factory.class).create(key);
+    static LockComponent create(Tag<?> lock) {
+        return Protocolize.getService(Factory.class).create(lock);
     }
 
     interface Factory {
 
-        LockComponent create(StringTag key);
+        LockComponent create(Tag<?> lock);
 
     }
 

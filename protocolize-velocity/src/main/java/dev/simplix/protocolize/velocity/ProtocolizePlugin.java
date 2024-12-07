@@ -4,6 +4,7 @@ import com.google.common.io.ByteStreams;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
+import com.velocitypowered.api.plugin.Dependency;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.PluginDescription;
 import com.velocitypowered.api.proxy.Player;
@@ -37,10 +38,16 @@ import java.util.List;
  *
  * @author Exceptionflug
  */
-@Plugin(name = "Protocolize", authors = "Exceptionflug", version = "v2", id = "protocolize")
+@Plugin(
+    name = "Protocolize",
+    authors = {
+        "Exceptionflug",
+        "proferabg"
+    },
+    version = BuildConstants.VERSION,
+    id = "protocolize"
+)
 public class ProtocolizePlugin {
-
-    private static String version = readVersion();
 
     static {
         PlatformInitializer.initVelocity(version());
@@ -58,7 +65,7 @@ public class ProtocolizePlugin {
     }
 
     public static String version() {
-        return version;
+        return BuildConstants.VERSION;
     }
 
     public static boolean isExceptionCausedByProtocolize(Throwable cause) {
@@ -86,20 +93,11 @@ public class ProtocolizePlugin {
         Protocolize.registerService(PacketListenerProvider.class, new VelocityPacketListenerProvider());
     }
 
-    private static String readVersion() {
-        try (InputStream inputStream = ProtocolizePlugin.class.getResourceAsStream("/version.txt")) {
-            return new String(ByteStreams.toByteArray(inputStream), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            LoggerFactory.getLogger("Protocolize").warn("Unable to read version", e);
-        }
-        return "2.?.?:unknown";
-    }
-
     @Subscribe
     public void onInit(ProxyInitializeEvent event) throws ReflectiveOperationException {
         logger.info("======= PROTOCOLIZE =======");
-        logger.info("Version {} by {}", version, description().getAuthors().toString().replace("[", "").replace("]", ""));
-        if (version.endsWith(":unknown")) {
+        logger.info("Version {} by {}", version(), String.join(", ", description().getAuthors()));
+        if (version().endsWith(":unknown")) {
             logger.warn("WARNING: YOU ARE RUNNING AN UNOFFICIAL BUILD OF PROTOCOLIZE. DON'T REPORT ANY BUGS REGARDING THIS VERSION.");
         }
         logger.info("Swap channel initializers (ignore the following two warnings)...");

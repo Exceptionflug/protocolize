@@ -42,9 +42,15 @@ public interface FoodComponent extends StructuredComponent {
         return Protocolize.getService(FoodComponent.Factory.class).create(nutrition, saturation, canAlwaysEat, secondsToEat, usingConvertsTo, effects);
     }
 
+    static FoodComponent create(int nutrition, float saturation, boolean canAlwaysEat) {
+        return Protocolize.getService(FoodComponent.Factory.class).create(nutrition, saturation, canAlwaysEat);
+    }
+
     interface Factory {
 
         FoodComponent create(int nutrition, float saturation, boolean canAlwaysEat, float secondsToEat, BaseItemStack usingConvertsTo, Map<MobEffectInstance, Float> effects);
+
+        FoodComponent create(int nutrition, float saturation, boolean canAlwaysEat);
 
     }
 
