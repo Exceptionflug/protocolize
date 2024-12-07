@@ -13,6 +13,7 @@ import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.api.util.ReflectionUtil;
 import dev.simplix.protocolize.bungee.packet.BungeeCordProtocolizePacket;
 import dev.simplix.protocolize.bungee.strategy.PacketRegistrationStrategy;
+import dev.simplix.protocolize.bungee.util.ConversionUtils;
 import gnu.trove.map.TIntObjectMap;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -89,9 +90,9 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
         try {
             Class<? extends DefinedPacket> definedPacketClass = generateBungeePacket(packetClass);
             TIntObjectMap<Object> protocols = (TIntObjectMap<Object>) protocolsField
-                .get(getDirectionData(bungeeCordProtocol(protocol), direction));
+                .get(getDirectionData(ConversionUtils.bungeeCordProtocol(protocol), direction));
             for (ProtocolIdMapping mapping : mappings) {
-                mappingProvider.registerMapping(new RegisteredPacket(direction, packetClass), mapping);
+                mappingProvider.registerMapping(new RegisteredPacket(protocol, direction, packetClass), mapping);
                 for (int i = mapping.protocolRangeStart(); i <= mapping.protocolRangeEnd(); i++) {
                     strategy.registerPacket(protocols, i, mapping.id(), definedPacketClass);
                     log.debug("[Protocolize] Register packet {} (0x{}) in direction {} at protocol {} for version {}", definedPacketClass.getName(), Integer.toHexString(mapping.id()), direction.name(), protocol.name(), i);
@@ -117,14 +118,14 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
         Preconditions.checkNotNull(packet, "Packet cannot be null");
         if (packet instanceof BungeeCordProtocolizePacket) {
             List<ProtocolIdMapping> protocolIdMappings = mappingProvider.mappings(new RegisteredPacket(
-                direction, ((BungeeCordProtocolizePacket) packet).obtainProtocolizePacketClass()));
+                protocol, direction, ((BungeeCordProtocolizePacket) packet).obtainProtocolizePacketClass()));
             for (ProtocolIdMapping mapping : protocolIdMappings) {
                 if (mapping.inRange(protocolVersion)) {
                     return mapping.id();
                 }
             }
         } else {
-            Object data = getDirectionData(bungeeCordProtocol(protocol), direction);
+            Object data = getDirectionData(ConversionUtils.bungeeCordProtocol(protocol), direction);
             try {
                 return (int) getIdMethod.invoke(data, packet.getClass(), protocolVersion);
             } catch (final IllegalAccessException | InvocationTargetException e) {
@@ -146,8 +147,8 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
         Preconditions.checkNotNull(protocol, "Protocol cannot be null");
         Preconditions.checkNotNull(direction, "Direction cannot be null");
         Preconditions.checkNotNull(clazz, "Clazz cannot be null");
-        Object directionData = getDirectionData(bungeeCordProtocol(protocol), direction);
-        ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new RegisteredPacket(direction, clazz),
+        Object directionData = getDirectionData(ConversionUtils.bungeeCordProtocol(protocol), direction);
+        ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new RegisteredPacket(protocol, direction, clazz),
             protocolVersion);
         int id;
         if (protocolIdMapping != null) {
@@ -161,22 +162,6 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
     @Override
     public String debugInformation() {
         return "Strategy = " + strategy.getClass().getName() + "\nPacket listing not supported on this platform";
-    }
-
-    private net.md_5.bungee.protocol.Protocol bungeeCordProtocol(Protocol protocol) {
-        switch (protocol) {
-            case HANDSHAKE:
-                return net.md_5.bungee.protocol.Protocol.HANDSHAKE;
-            case STATUS:
-                return net.md_5.bungee.protocol.Protocol.STATUS;
-            case LOGIN:
-                return net.md_5.bungee.protocol.Protocol.LOGIN;
-            case PLAY:
-                return net.md_5.bungee.protocol.Protocol.GAME;
-            case CONFIGURATION:
-                return net.md_5.bungee.protocol.Protocol.CONFIGURATION;
-        }
-        return null;
     }
 
     private Class<? extends DefinedPacket> generateBungeePacket(Class<? extends AbstractPacket> c) {
