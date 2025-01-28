@@ -9,6 +9,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.*;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import net.querz.nbt.tag.CompoundTag;
 
 import java.util.*;
@@ -20,6 +21,7 @@ import java.util.*;
  *
  * @author Exceptionflug
  */
+@Slf4j(topic = "Protocolize")
 @Getter
 @Setter
 @Accessors(fluent = true)
@@ -128,11 +130,16 @@ public class ItemStack implements BaseItemStack {
 
     @Override
     public ItemStack deepClone(int protocolVersion) {
-        ByteBuf buf = Unpooled.buffer();
-        ItemStackSerializer.write(buf, this, protocolVersion);
-        ItemStack itemStack = ItemStackSerializer.read(buf, protocolVersion);
-        buf.release();
-        return itemStack;
+        try {
+            ByteBuf buf = Unpooled.buffer();
+            ItemStackSerializer.write(buf, this, protocolVersion);
+            ItemStack itemStack = ItemStackSerializer.read(buf, protocolVersion);
+            buf.release();
+            return itemStack;
+        } catch (Exception e){
+            log.error("Failed to clone ItemStack", e);
+            return ItemStack.NO_DATA;
+        }
     }
 
     @Override
