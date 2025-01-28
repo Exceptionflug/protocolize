@@ -59,7 +59,7 @@ public class PlayerListener {
     @Subscribe
     public void onPing(ProxyPingEvent event) {
         try {
-            initConnection(event.getConnection());
+            initConnection(event.getConnection(), true);
         } catch (Exception e) {
             log.error("Unable to initialize InboundConnection on ping", e);
         }
@@ -68,7 +68,7 @@ public class PlayerListener {
     @Subscribe
     public void onPreLogin(LoginEvent event) {
         try {
-            initConnection(event.getPlayer());
+            initConnection(event.getPlayer(), false);
         } catch (Exception e) {
             log.error("Unable to initialize InboundConnection on pre login", e);
         }
@@ -88,7 +88,7 @@ public class PlayerListener {
         PLAYER_PROVIDER.playerDisconnect(event.getPlayer().getUniqueId());
     }
 
-    private void initConnection(InboundConnection connection) throws ReflectiveOperationException {
+    private void initConnection(InboundConnection connection, boolean isPing) throws ReflectiveOperationException {
         PipelineAccessor accessor = PIPELINE_ACCESSOR_MAP.get(connection.getClass().getName());
         if (accessor == null) {
             throw new UnsupportedOperationException("InboundConnection of type " + connection.getClass().getName()
@@ -102,15 +102,17 @@ public class PlayerListener {
         if (decoderChannelHandler == null) {
             // Ah yes expecting an overridden channel initializer
             ChannelInitializer<Channel> initializer = plugin.currentBackendChannelInitializer();
-            if (initializer.getClass() != ProtocolizeBackendChannelInitializer.class) {
-                log.error("It seems like there is an incompatible plugin installed. Velocity channel initializers are overridden by: {}", initializer.getClass().getName());
-                log.error("Protocolize is unable to work under this circumstances. Please contact the developers of the incompatible " +
-                    "plugin and suggest them to call the initChannel method of the ChannelInitializers before overriding them.");
-                return;
-            } else {
-                // WTF??
-                log.error("Pipeline is not initialized. This is a bug. Please report. Pipeline handlers = {}", pipeline.toMap());
-                log.error("Initializer: {}", initializer.getClass().getName());
+            if(!isPing) {
+                if (initializer.getClass() != ProtocolizeBackendChannelInitializer.class) {
+                    log.error("It seems like there is an incompatible plugin installed. Velocity channel initializers are overridden by: {}", initializer.getClass().getName());
+                    log.error("Protocolize is unable to work under this circumstances. Please contact the developers of the incompatible " +
+                        "plugin and suggest them to call the initChannel method of the ChannelInitializers before overriding them.");
+                    return;
+                } else {
+                    // WTF??
+                    log.error("Pipeline is not initialized. This is a bug. Please report. Pipeline handlers = {}", pipeline.toMap());
+                    log.error("Initializer: {}", initializer.getClass().getName());
+                }
             }
             return;
         }
