@@ -13,7 +13,7 @@ import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.api.util.ReflectionUtil;
 import dev.simplix.protocolize.bungee.packet.BungeeCordProtocolizePacket;
 import dev.simplix.protocolize.bungee.strategy.PacketRegistrationStrategy;
-import gnu.trove.map.TIntObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.ByteBuddy;
@@ -88,7 +88,7 @@ public final class BungeeCordProtocolRegistrationProvider implements ProtocolReg
         Preconditions.checkNotNull(packetClass, "Packet class cannot be null");
         try {
             Class<? extends DefinedPacket> definedPacketClass = generateBungeePacket(packetClass);
-            TIntObjectMap<Object> protocols = (TIntObjectMap<Object>) protocolsField
+            Int2ObjectMap<Object> protocols = (Int2ObjectMap<Object>) protocolsField
                 .get(getDirectionData(bungeeCordProtocol(protocol), direction));
             for (ProtocolIdMapping mapping : mappings) {
                 mappingProvider.registerMapping(new RegisteredPacket(direction, packetClass), mapping);

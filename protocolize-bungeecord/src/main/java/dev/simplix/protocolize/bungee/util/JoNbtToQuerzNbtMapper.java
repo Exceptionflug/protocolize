@@ -1,54 +1,56 @@
 package dev.simplix.protocolize.bungee.util;
 
+import net.md_5.bungee.nbt.TypedTag;
+import net.md_5.bungee.nbt.NamedTag;
 import net.querz.nbt.tag.*;
-import se.llbit.nbt.NamedTag;
-import se.llbit.nbt.SpecificTag;
+
+import java.util.Map;
 
 public class JoNbtToQuerzNbtMapper {
 
-    public static ByteTag convertByteTag(se.llbit.nbt.ByteTag in) {
-        return new ByteTag((byte) in.value);
+    public static ByteTag convertByteTag(net.md_5.bungee.nbt.type.ByteTag in) {
+        return new ByteTag((byte) in.getValue());
     }
 
-    public static StringTag convertStringTag(se.llbit.nbt.StringTag in) {
-        return new StringTag(in.value);
+    public static StringTag convertStringTag(net.md_5.bungee.nbt.type.StringTag in) {
+        return new StringTag(in.getValue());
     }
 
-    public static IntTag convertIntTag(se.llbit.nbt.IntTag in) {
-        return new IntTag(in.value);
+    public static IntTag convertIntTag(net.md_5.bungee.nbt.type.IntTag in) {
+        return new IntTag(in.getValue());
     }
 
-    public static ShortTag convertShortTag(se.llbit.nbt.ShortTag in) {
-        return new ShortTag(in.value);
+    public static ShortTag convertShortTag(net.md_5.bungee.nbt.type.ShortTag in) {
+        return new ShortTag(in.getValue());
     }
 
-    public static LongTag convertLongTag(se.llbit.nbt.LongTag in) {
-        return new LongTag(in.value);
+    public static LongTag convertLongTag(net.md_5.bungee.nbt.type.LongTag in) {
+        return new LongTag(in.getValue());
     }
 
-    public static FloatTag convertFloatTag(se.llbit.nbt.FloatTag in) {
-        return new FloatTag(in.value);
+    public static FloatTag convertFloatTag(net.md_5.bungee.nbt.type.FloatTag in) {
+        return new FloatTag(in.getValue());
     }
 
-    public static DoubleTag convertDoubleTag(se.llbit.nbt.DoubleTag in) {
-        return new DoubleTag(in.value);
+    public static DoubleTag convertDoubleTag(net.md_5.bungee.nbt.type.DoubleTag in) {
+        return new DoubleTag(in.getValue());
     }
 
-    public static ByteArrayTag convertByteArrayTag(se.llbit.nbt.ByteArrayTag in) {
-        return new ByteArrayTag(in.value);
+    public static ByteArrayTag convertByteArrayTag(net.md_5.bungee.nbt.type.ByteArrayTag in) {
+        return new ByteArrayTag(in.getValue());
     }
 
-    public static LongArrayTag convertLongArrayTag(se.llbit.nbt.LongArrayTag in) {
-        return new LongArrayTag(in.value);
+    public static LongArrayTag convertLongArrayTag(net.md_5.bungee.nbt.type.LongArrayTag in) {
+        return new LongArrayTag(in.getValue());
     }
 
-    public static IntArrayTag convertIntArrayTag(se.llbit.nbt.IntArrayTag in) {
-        return new IntArrayTag(in.value);
+    public static IntArrayTag convertIntArrayTag(net.md_5.bungee.nbt.type.IntArrayTag in) {
+        return new IntArrayTag(in.getValue());
     }
 
-    public static ListTag<?> convertListTag(se.llbit.nbt.ListTag in) {
-        ListTag tag = new ListTag<>(convertTagType(in.type));
-        for (SpecificTag stag : in) {
+    public static ListTag<?> convertListTag(net.md_5.bungee.nbt.type.ListTag in) {
+        ListTag tag = new ListTag<>(convertTagType(in.getListType()));
+        for (TypedTag stag : in.getValue()) {
             tag.add(convertSpecificTag(stag));
         }
         return tag;
@@ -85,44 +87,40 @@ public class JoNbtToQuerzNbtMapper {
         }
     }
 
-    public static Tag<?> convertSpecificTag(SpecificTag in) {
-        if (in.isCompoundTag()) {
-            return convertCompoundTag(in.asCompound());
-        } else if (in instanceof se.llbit.nbt.ByteTag) {
-            return convertByteTag((se.llbit.nbt.ByteTag) in);
-        } else if (in instanceof se.llbit.nbt.StringTag) {
-            return convertStringTag((se.llbit.nbt.StringTag) in);
-        } else if (in instanceof se.llbit.nbt.IntTag) {
-            return convertIntTag((se.llbit.nbt.IntTag) in);
-        } else if (in instanceof se.llbit.nbt.ShortTag) {
-            return convertShortTag((se.llbit.nbt.ShortTag) in);
-        } else if (in instanceof se.llbit.nbt.LongTag) {
-            return convertLongTag((se.llbit.nbt.LongTag) in);
-        } else if (in instanceof se.llbit.nbt.FloatTag) {
-            return convertFloatTag((se.llbit.nbt.FloatTag) in);
-        } else if (in instanceof se.llbit.nbt.DoubleTag) {
-            return convertDoubleTag((se.llbit.nbt.DoubleTag) in);
-        } else if (in instanceof se.llbit.nbt.ByteArrayTag) {
-            return convertByteArrayTag((se.llbit.nbt.ByteArrayTag) in);
-        } else if (in instanceof se.llbit.nbt.LongArrayTag) {
-            return convertLongArrayTag((se.llbit.nbt.LongArrayTag) in);
-        } else if (in instanceof se.llbit.nbt.IntArrayTag) {
-            return convertIntArrayTag((se.llbit.nbt.IntArrayTag) in);
-        } else if (in instanceof se.llbit.nbt.ListTag) {
-            return convertListTag((se.llbit.nbt.ListTag) in);
+    public static Tag<?> convertSpecificTag(TypedTag in) {
+        if (in instanceof CompoundTag) {
+            return convertCompoundTag((net.md_5.bungee.nbt.type.CompoundTag) in);
+        } else if (in instanceof net.md_5.bungee.nbt.type.ByteTag) {
+            return convertByteTag((net.md_5.bungee.nbt.type.ByteTag) in);
+        } else if (in instanceof net.md_5.bungee.nbt.type.StringTag) {
+            return convertStringTag((net.md_5.bungee.nbt.type.StringTag) in);
+        } else if (in instanceof net.md_5.bungee.nbt.type.IntTag) {
+            return convertIntTag((net.md_5.bungee.nbt.type.IntTag) in);
+        } else if (in instanceof net.md_5.bungee.nbt.type.ShortTag) {
+            return convertShortTag((net.md_5.bungee.nbt.type.ShortTag) in);
+        } else if (in instanceof net.md_5.bungee.nbt.type.LongTag) {
+            return convertLongTag((net.md_5.bungee.nbt.type.LongTag) in);
+        } else if (in instanceof net.md_5.bungee.nbt.type.FloatTag) {
+            return convertFloatTag((net.md_5.bungee.nbt.type.FloatTag) in);
+        } else if (in instanceof net.md_5.bungee.nbt.type.DoubleTag) {
+            return convertDoubleTag((net.md_5.bungee.nbt.type.DoubleTag) in);
+        } else if (in instanceof net.md_5.bungee.nbt.type.ByteArrayTag) {
+            return convertByteArrayTag((net.md_5.bungee.nbt.type.ByteArrayTag) in);
+        } else if (in instanceof net.md_5.bungee.nbt.type.LongArrayTag) {
+            return convertLongArrayTag((net.md_5.bungee.nbt.type.LongArrayTag) in);
+        } else if (in instanceof net.md_5.bungee.nbt.type.IntArrayTag) {
+            return convertIntArrayTag((net.md_5.bungee.nbt.type.IntArrayTag) in);
+        } else if (in instanceof net.md_5.bungee.nbt.type.ListTag) {
+            return convertListTag((net.md_5.bungee.nbt.type.ListTag) in);
         } else {
-            throw new IllegalArgumentException("Unsupported tag type " + in.tagType());
+            throw new IllegalArgumentException("Unsupported tag type " + in.getClass().getSimpleName());
         }
     }
 
-    public static CompoundTag convertCompoundTag(se.llbit.nbt.CompoundTag in) {
+    public static CompoundTag convertCompoundTag(net.md_5.bungee.nbt.type.CompoundTag in) {
         CompoundTag out = new CompoundTag();
-        for (NamedTag tag : in) {
-            if (tag.isCompoundTag()) {
-                out.put(tag.name(), convertCompoundTag(tag.asCompound()));
-            } else {
-                out.put(tag.name(), convertSpecificTag(tag.getTag()));
-            }
+        for (Map.Entry<String, TypedTag> tag : in.getValue().entrySet()) {
+            out.put(tag.getKey(), convertSpecificTag(tag.getValue()));
         }
         return out;
     }

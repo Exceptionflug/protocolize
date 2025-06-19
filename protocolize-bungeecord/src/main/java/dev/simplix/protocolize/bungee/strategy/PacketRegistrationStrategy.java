@@ -1,6 +1,6 @@
 package dev.simplix.protocolize.bungee.strategy;
 
-import gnu.trove.map.TIntObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 
 /**
  * Date: 21.08.2021
@@ -9,7 +9,7 @@ import gnu.trove.map.TIntObjectMap;
  */
 public interface PacketRegistrationStrategy {
 
-    void registerPacket(TIntObjectMap<Object> protocols, int protocolVersion, int packetId, Class<?> clazz) throws IllegalAccessException;
+    void registerPacket(Int2ObjectMap<Object> protocols, int protocolVersion, int packetId, Class<?> clazz) throws IllegalAccessException;
 
     boolean compatible();
 

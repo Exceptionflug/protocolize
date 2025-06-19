@@ -1,6 +1,8 @@
 package dev.simplix.protocolize.bungee.util;
 
-import se.llbit.nbt.*;
+import net.md_5.bungee.nbt.TypedTag;
+import net.md_5.bungee.nbt.type.*;
+import net.md_5.bungee.nbt.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,43 +51,43 @@ public class QuerzNbtToJoNbtMapper {
     }
 
     public static ListTag convertListTag(net.querz.nbt.tag.ListTag<?> in) {
-        List<SpecificTag> tags = new ArrayList<>();
+        List<TypedTag> tags = new ArrayList<>();
         for (net.querz.nbt.tag.Tag<?> stag : in) {
             tags.add(convertSpecificTag(stag));
         }
-        return new ListTag(convertTagType(in.getTypeClass()), tags);
+        return new ListTag(tags, convertTagType(in.getTypeClass()));
     }
 
-    private static int convertTagType(Class<?> clazz) {
+    private static byte convertTagType(Class<?> clazz) {
         if (clazz.equals(net.querz.nbt.tag.ByteTag.class)) {
-            return Tag.TAG_BYTE;
+            return Tag.BYTE;
         } else if (clazz.equals(net.querz.nbt.tag.StringTag.class)) {
-            return Tag.TAG_STRING;
+            return Tag.STRING;
         } else if (clazz.equals(net.querz.nbt.tag.IntTag.class)) {
-            return Tag.TAG_INT;
+            return Tag.INT;
         } else if (clazz.equals(net.querz.nbt.tag.ShortTag.class)) {
-            return Tag.TAG_SHORT;
+            return Tag.SHORT;
         } else if (clazz.equals(net.querz.nbt.tag.LongTag.class)) {
-            return Tag.TAG_LONG;
+            return Tag.LONG;
         } else if (clazz.equals(net.querz.nbt.tag.FloatTag.class)) {
-            return Tag.TAG_FLOAT;
+            return Tag.FLOAT;
         } else if (clazz.equals(net.querz.nbt.tag.DoubleTag.class)) {
-            return Tag.TAG_DOUBLE;
+            return Tag.DOUBLE;
         } else if (clazz.equals(net.querz.nbt.tag.ByteArrayTag.class)) {
-            return Tag.TAG_BYTE_ARRAY;
+            return Tag.BYTE_ARRAY;
         } else if (clazz.equals(net.querz.nbt.tag.LongArrayTag.class)) {
-            return Tag.TAG_LONG_ARRAY;
+            return Tag.LONG_ARRAY;
         } else if (clazz.equals(net.querz.nbt.tag.IntArrayTag.class)) {
-            return Tag.TAG_INT_ARRAY;
+            return Tag.INT_ARRAY;
         } else if (clazz.equals(net.querz.nbt.tag.ListTag.class)) {
-            return Tag.TAG_LIST;
+            return Tag.LIST;
         } else if (clazz.equals(net.querz.nbt.tag.CompoundTag.class)) {
-            return Tag.TAG_COMPOUND;
+            return Tag.COMPOUND;
         }
         throw new IllegalArgumentException("Unsupported tag type " + clazz.getSimpleName());
     }
 
-    public static SpecificTag convertSpecificTag(net.querz.nbt.tag.Tag<?> in) {
+    public static TypedTag convertSpecificTag(net.querz.nbt.tag.Tag<?> in) {
         if (in instanceof net.querz.nbt.tag.CompoundTag) {
             return convertCompoundTag((net.querz.nbt.tag.CompoundTag) in);
         } else if (in instanceof net.querz.nbt.tag.ByteTag) {
@@ -118,7 +120,7 @@ public class QuerzNbtToJoNbtMapper {
     public static CompoundTag convertCompoundTag(net.querz.nbt.tag.CompoundTag in) {
         CompoundTag out = new CompoundTag();
         for (Map.Entry<String, net.querz.nbt.tag.Tag<?>> tag : in) {
-            out.add(tag.getKey(), convertSpecificTag(tag.getValue()));
+            out.getValue().put(tag.getKey(), convertSpecificTag(tag.getValue()));
         }
         return out;
     }
