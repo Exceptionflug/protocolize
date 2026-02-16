@@ -16,6 +16,7 @@ import dev.simplix.protocolize.api.packet.RegisteredPacket;
 import dev.simplix.protocolize.api.providers.MappingProvider;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
 import dev.simplix.protocolize.velocity.packet.VelocityProtocolizePacket;
+import dev.simplix.protocolize.velocity.util.ConversionUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.ByteBuddy;
@@ -76,11 +77,11 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
         Preconditions.checkNotNull(direction, "Direction cannot be null");
         Preconditions.checkNotNull(packetClass, "Packet class cannot be null");
         try {
-            ProtocolUtils.Direction velocityDirection = velocityDirection(direction);
+            ProtocolUtils.Direction velocityDirection = ConversionUtils.velocityDirection(direction);
             if (velocityDirection == null) {
                 return;
             }
-            StateRegistry stateRegistry = velocityProtocol(protocol);
+            StateRegistry stateRegistry = ConversionUtils.velocityProtocol(protocol);
             if (stateRegistry == null) {
                 return;
             }
@@ -98,7 +99,7 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
 
             for (int i = 0; i < sortedMappings.length; i++) {
                 var mapping = sortedMappings[i];
-                mappingProvider.registerMapping(new RegisteredPacket(direction, packetClass), mapping);
+                mappingProvider.registerMapping(new RegisteredPacket(protocol, direction, packetClass), mapping);
                 if (mapping.protocolRangeEnd() > maximumProtocolVersion) {
                     mapping.protocolRangeEnd(maximumProtocolVersion);
                 }
@@ -151,7 +152,7 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
         Preconditions.checkNotNull(packet, "Packet cannot be null");
         if (packet instanceof VelocityProtocolizePacket) {
             Class<? extends AbstractPacket> packetClass = ((VelocityProtocolizePacket) packet).obtainProtocolizePacketClass();
-            ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new RegisteredPacket(direction,
+            ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new RegisteredPacket(protocol, direction,
                 packetClass), protocolVersion);
             if (protocolIdMapping != null) {
                 return protocolIdMapping.id();
@@ -159,11 +160,11 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
                 log.debug("Unable to obtain id for {} {} at protocol {}", direction.name(), packetClass.getName(), protocolVersion);
             }
         } else if (packet instanceof MinecraftPacket) {
-            ProtocolUtils.Direction velocityDirection = velocityDirection(direction);
+            ProtocolUtils.Direction velocityDirection = ConversionUtils.velocityDirection(direction);
             if (velocityDirection == null) {
                 return -1;
             }
-            StateRegistry stateRegistry = velocityProtocol(protocol);
+            StateRegistry stateRegistry = ConversionUtils.velocityProtocol(protocol);
             if (stateRegistry == null) {
                 return -1;
             }
@@ -176,19 +177,19 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
 
     @Override
     public Object createPacket(Class<? extends AbstractPacket> clazz, Protocol protocol, PacketDirection direction, int protocolVersion) {
-        ProtocolUtils.Direction velocityDirection = velocityDirection(direction);
+        ProtocolUtils.Direction velocityDirection = ConversionUtils.velocityDirection(direction);
         if (velocityDirection == null) {
             log.debug("Unable to construct wrapper instance for {}: Unknown packet direction to velocity: {}", clazz.getName(), direction.name());
             return null;
         }
-        StateRegistry stateRegistry = velocityProtocol(protocol);
+        StateRegistry stateRegistry = ConversionUtils.velocityProtocol(protocol);
         if (stateRegistry == null) {
             log.debug("Unable to construct wrapper instance for {}: Unknown protocol: {}", clazz.getName(), protocol.name());
             return null;
         }
         StateRegistry.PacketRegistry.ProtocolRegistry registry = stateRegistry.getProtocolRegistry(velocityDirection,
             ProtocolVersion.getProtocolVersion(protocolVersion));
-        ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new RegisteredPacket(direction, clazz), protocolVersion);
+        ProtocolIdMapping protocolIdMapping = mappingProvider.mapping(new RegisteredPacket(protocol, direction, clazz), protocolVersion);
         if (protocolIdMapping != null) {
             return registry.createPacket(protocolIdMapping.id());
         }
@@ -230,32 +231,6 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
             .make()
             .load(getClass().getClassLoader())
             .getLoaded();
-    }
-
-    private ProtocolUtils.Direction velocityDirection(PacketDirection direction) {
-        switch (direction) {
-            case CLIENTBOUND:
-                return ProtocolUtils.Direction.CLIENTBOUND;
-            case SERVERBOUND:
-                return ProtocolUtils.Direction.SERVERBOUND;
-        }
-        return null;
-    }
-
-    private StateRegistry velocityProtocol(Protocol protocol) {
-        switch (protocol) {
-            case LOGIN:
-                return StateRegistry.LOGIN;
-            case HANDSHAKE:
-                return StateRegistry.HANDSHAKE;
-            case STATUS:
-                return StateRegistry.STATUS;
-            case PLAY:
-                return StateRegistry.PLAY;
-            case CONFIGURATION:
-                return StateRegistry.CONFIG;
-        }
-        return null;
     }
 
     public static class ByteBuddyClassInjector {

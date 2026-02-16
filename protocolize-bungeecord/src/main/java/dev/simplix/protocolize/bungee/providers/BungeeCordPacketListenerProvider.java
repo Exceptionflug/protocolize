@@ -7,7 +7,7 @@ import dev.simplix.protocolize.api.listener.AbstractPacketListener;
 import dev.simplix.protocolize.api.listener.PacketReceiveEvent;
 import dev.simplix.protocolize.api.listener.PacketSendEvent;
 import dev.simplix.protocolize.api.packet.AbstractPacket;
-import dev.simplix.protocolize.api.providers.PacketListenerProvider;
+import dev.simplix.protocolize.api.providers.AbstractPacketListenerProvider;
 import dev.simplix.protocolize.api.providers.ProtocolizePlayerProvider;
 import dev.simplix.protocolize.bungee.packet.BungeeCordProtocolizePacket;
 import dev.simplix.protocolize.bungee.util.ReflectionUtil;
@@ -28,41 +28,16 @@ import java.util.logging.Level;
  *
  * @author Exceptionflug
  */
-public final class BungeeCordPacketListenerProvider implements PacketListenerProvider {
+public final class BungeeCordPacketListenerProvider extends AbstractPacketListenerProvider {
 
     private static final ProtocolizePlayerProvider PLAYER_PROVIDER = Protocolize.playerProvider();
-    private final List<AbstractPacketListener<?>> listeners = new ArrayList<>();
 
     @Override
-    public void registerListener(AbstractPacketListener<?> listener) {
-        Preconditions.checkNotNull(listener, "The listener cannot be null!");
-        if (listeners.contains(listener)) {
-            throw new IllegalStateException("Listener already registered.");
-        }
+    protected void addListener(AbstractPacketListener<?> listener) {
         if (!AbstractPacket.class.isAssignableFrom(listener.type()) && !DefinedPacket.class.isAssignableFrom(listener.type())) {
             throw new IllegalStateException("The packet type is not a valid packet type. Allowed: AbstractPacket and DefinedPacket");
         }
-        listeners.add(listener);
-    }
-
-    @Override
-    public void unregisterListener(AbstractPacketListener<?> listener) throws IllegalArgumentException {
-        if (listeners.contains(listener)) {
-            listeners.remove(listener);
-        } else {
-            throw new IllegalArgumentException("Did not find " + listener.getClass().getName() + " as a registered listener");
-        }
-    }
-
-    @Override
-    public String debugInformation() {
-        StringBuilder builder = new StringBuilder("Generated export of " + getClass().getName() + ":\n\n");
-        for (AbstractPacketListener<?> listener : listeners) {
-            builder.append(" - ").append(listener.getClass().getName()).append(" listening for ")
-                .append(listener.type().getName()).append(" on ").append(listener.direction().name())
-                .append(" with priority ").append(listener.priority()).append("\n");
-        }
-        return builder.toString();
+        super.addListener(listener);
     }
 
     /**
@@ -214,18 +189,6 @@ public final class BungeeCordPacketListenerProvider implements PacketListenerPro
         if (connection instanceof ProxiedPlayer)
             return (ProxiedPlayer) connection;
         return null;
-    }
-
-    @Override
-    public List<AbstractPacketListener<?>> listenersForType(Class<?> clazz) {
-        Preconditions.checkNotNull(clazz, "The clazz cannot be null!");
-        List<AbstractPacketListener<?>> out = new ArrayList<>();
-        for (AbstractPacketListener<?> listener : listeners) {
-            if (listener.type().equals(clazz)) {
-                out.add(listener);
-            }
-        }
-        return out;
     }
 
 }

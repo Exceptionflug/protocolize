@@ -15,12 +15,28 @@ public final class ConversionUtils {
     private ConversionUtils() {
     }
 
-    private static ProtocolUtils.Direction velocityDirection(PacketDirection direction) {
+    public static ProtocolUtils.Direction velocityDirection(PacketDirection direction) {
         switch (direction) {
             case SERVERBOUND:
                 return ProtocolUtils.Direction.SERVERBOUND;
             case CLIENTBOUND:
                 return ProtocolUtils.Direction.CLIENTBOUND;
+        }
+        return null;
+    }
+
+    public static StateRegistry velocityProtocol(Protocol protocol) {
+        switch (protocol) {
+            case LOGIN:
+                return StateRegistry.LOGIN;
+            case HANDSHAKE:
+                return StateRegistry.HANDSHAKE;
+            case STATUS:
+                return StateRegistry.STATUS;
+            case PLAY:
+                return StateRegistry.PLAY;
+            case CONFIGURATION:
+                return StateRegistry.CONFIG;
         }
         return null;
     }
