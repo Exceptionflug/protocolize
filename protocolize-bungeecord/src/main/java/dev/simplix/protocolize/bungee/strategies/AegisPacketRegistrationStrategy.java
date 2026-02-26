@@ -3,8 +3,8 @@ package dev.simplix.protocolize.bungee.strategies;
 import com.google.common.base.Supplier;
 import dev.simplix.protocolize.api.util.ReflectionUtil;
 import dev.simplix.protocolize.bungee.strategy.PacketRegistrationStrategy;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.TObjectIntMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.md_5.bungee.api.ProxyServer;
 
 import java.lang.reflect.Field;
@@ -22,13 +22,13 @@ public class AegisPacketRegistrationStrategy implements PacketRegistrationStrate
     private final Field protocolDataPacketMapField = ReflectionUtil.fieldOrNull(protocolDataClass, "packetMap", true);
 
     @Override
-    public void registerPacket(TIntObjectMap<Object> protocols, int protocolVersion, int packetId, Class<?> clazz) throws IllegalAccessException {
+    public void registerPacket(Int2ObjectMap<Object> protocols, int protocolVersion, int packetId, Class<?> clazz) throws IllegalAccessException {
         final Object protocolData = protocols.get(protocolVersion);
         if (protocolData == null) {
             ProxyServer.getInstance().getLogger().finest("[Protocolize | DEBUG] Protocol version " + protocolVersion + " is not supported on this aegis version. Skipping registration for that specific version.");
             return;
         }
-        ((TObjectIntMap<Class<?>>) protocolDataPacketMapField.get(protocolData)).put(clazz, packetId);
+        ((Object2IntMap<Class<?>>) protocolDataPacketMapField.get(protocolData)).put(clazz, packetId);
         ((Supplier[]) protocolDataConstructorsField.get(protocolData))[packetId] = () -> {
             try {
                 return clazz.getDeclaredConstructor().newInstance();

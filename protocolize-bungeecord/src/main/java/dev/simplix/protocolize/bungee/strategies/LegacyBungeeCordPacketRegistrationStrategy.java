@@ -2,8 +2,8 @@ package dev.simplix.protocolize.bungee.strategies;
 
 import dev.simplix.protocolize.api.util.ReflectionUtil;
 import dev.simplix.protocolize.bungee.strategy.PacketRegistrationStrategy;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.TObjectIntMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import lombok.SneakyThrows;
 import net.md_5.bungee.api.ProxyServer;
 
@@ -23,13 +23,13 @@ public final class LegacyBungeeCordPacketRegistrationStrategy implements PacketR
 
     @SneakyThrows
     @Override
-    public void registerPacket(TIntObjectMap<Object> protocols, int protocolVersion, int packetId, Class<?> clazz) throws IllegalAccessException {
+    public void registerPacket(Int2ObjectMap<Object> protocols, int protocolVersion, int packetId, Class<?> clazz) throws IllegalAccessException {
         final Object protocolData = protocols.get(protocolVersion);
         if (protocolData == null) {
             ProxyServer.getInstance().getLogger().finest("[Protocolize | DEBUG] Protocol version " + protocolVersion + " is not supported on this version. Skipping registration for that specific version.");
             return;
         }
-        TObjectIntMap<Class<?>> map = ((TObjectIntMap<Class<?>>) protocolDataPacketMapField.get(protocolData));
+        Object2IntMap<Class<?>> map = ((Object2IntMap<Class<?>>) protocolDataPacketMapField.get(protocolData));
         map.put(clazz, packetId);
         ((Constructor[]) protocolDataConstructorsField.get(protocolData))[packetId] = clazz.getDeclaredConstructor();
     }
